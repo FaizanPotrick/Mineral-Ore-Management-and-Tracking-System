@@ -22,6 +22,11 @@ app.use(createRouter({
       path: '/about',
       name: 'about',
       component: () => import('@/views/AboutView.vue')
+    },
+    {
+      path: '/miner/registration',
+      name: 'MinerRegistration',
+      component: () => import('@/views/Miner/Registration.vue')
     }
   ]
 }))
