@@ -24,6 +24,11 @@ app.use(createRouter({
       component: () => import('@/views/Miner/Login.vue')
     },
     {
+      path: '/miner/ores',
+      name: 'MinerOres',
+      component: () => import('@/views/Miner/OresForm.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import('@/views/AboutView.vue')
