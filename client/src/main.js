@@ -25,7 +25,7 @@ app.use(createRouter({
     },
     {
       path: '/miner/ores',
-      name: 'MinerOres',
+      name: 'Miner Ores',
       component: () => import('@/views/Miner/OresForm.vue')
     },
     {
@@ -33,6 +33,11 @@ app.use(createRouter({
       name: 'about',
       component: () => import('@/views/AboutView.vue')
     },
+    {
+      path: '/header',
+      name: 'Header',
+      component: () => import('@/components/Header.vue')
+    }
   ]
 }))
 app.mount('#app')
