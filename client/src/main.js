@@ -14,8 +14,13 @@ app.use(createRouter({
       component: () => import('@/views/HomeView.vue')
     },
     {
+      path: '/miner/registration',
+      name: 'Miner Registration',
+      component: () => import('@/views/Miner/Registration.vue')
+    },
+    {
       path: '/miner/login',
-      name: 'MinerLogin',
+      name: 'Miner Login',
       component: () => import('@/views/Miner/Login.vue')
     },
     {
@@ -23,11 +28,6 @@ app.use(createRouter({
       name: 'about',
       component: () => import('@/views/AboutView.vue')
     },
-    {
-      path: '/miner/registration',
-      name: 'MinerRegistration',
-      component: () => import('@/views/Miner/Registration.vue')
-    }
   ]
 }))
 app.mount('#app')
