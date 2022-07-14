@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const Miner = require("../../model/MinerSchema");
 const jwt = require("jsonwebtoken");
-const { generatePassword } = require("../../function/PasswordGenerator");
+const ShortUniqueId = require("short-unique-id");
 const { EmailSender } = require("../../middleware/EmailSender");
 
 router.post(
@@ -42,7 +42,8 @@ router.post(
           type: "warning",
         });
       }
-      const password = generatePassword();
+      const uid = new ShortUniqueId({ length: 6 });
+      const password = uid();
       const auth = jwt.sign({ auth_id: email_address }, gst_no);
       const today = new Date();
       const response = await new Miner({
