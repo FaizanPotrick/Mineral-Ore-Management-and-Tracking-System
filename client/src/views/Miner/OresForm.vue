@@ -7,7 +7,7 @@
             </div>
             <form class="space-y-5">
                 <div class="space-y-2">
-                    <label class="text-sm font-medium text-gray-700">Amount</label>
+                    <label class="text-sm font-medium text-gray-700">Amount (In Tons)</label>
                     <input
                         class=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
                         type="Ore Amount" placeholder="Ore Amount" required>
@@ -16,21 +16,30 @@
                     <label class="mb-5 text-sm font-medium text-gray-700 ">
                         Type
                     </label>
-                    <input
-                        class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
-                        type="Ore Type" placeholder="eg. Haemitite, Magnetite" required>
+                    <!-- <input
+                        
+                        type="text" placeholder="eg. Haemitite, Magnetite" required> -->
+                    <select id="countries" class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400" required>
+                    <option selected>Select the Type</option>
+                    <option value="">Lumps</option>
+                    <option value="">Fines</option>
+                    <option value="">Iron Pellets</option>
+                    
+                    </select>
                 </div>
+
                 <div class="space-y-2">
                     <label class="mb-5 text-sm font-medium text-gray-700 ">
-                        Grade
+                        Fe %
                     </label>
                     <input
                         class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
-                        type="Ore Grade" placeholder="eg. High Grade 88" required>
+                        type="Ore Grade" placeholder="Enter the Fe percentage" required>
                 </div>
                 <div class="space-y-2">
-                    <label class="mb-2 text-sm font-medium text-gray-700 dark:text-gray-700" for="default_size">Upload File</label>
-                    <input class="mb-5 w-full h-full text-md text-gray-700 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:border-gray-300 dark:placeholder-gray-400" id="upload_file" type="file">
+                    <label class="mb-2 text-sm font-medium text-gray-700 dark:text-gray-700" for="default_size">Upload File (In Pdf)</label>
+                    <input class="mb-5 w-full h-full text-md text-gray-700 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:border-gray-300 dark:placeholder-gray-400" id="upload_file" 
+                    type="file" accept="application/pdf">
                 </div>
                 <div class="my-5">
                 <button type="submit"
