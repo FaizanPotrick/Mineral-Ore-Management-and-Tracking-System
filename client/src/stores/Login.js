@@ -92,10 +92,15 @@ export const useLoginStore = defineStore({
       });
       const data = await res.json();
       this.isLoading = false;
+      if (res.status === 201) {
+        open_alert_text(data.message, data.type);
+        return;
+      }
       if (res.status === 200) {
         this.gov_login.email_address.value = "";
         this.gov_login.password.value = "";
         open_alert_box(data.message, data.type);
+        $cookies.set("auth", data.auth, 60 * 60 * 24 * 7);
         return;
       }
       if (res.status === 400) {
@@ -126,10 +131,15 @@ export const useLoginStore = defineStore({
       });
       const data = await res.json();
       this.isLoading = false;
+      if (res.status === 201) {
+        open_alert_text(data.message, data.type);
+        return;
+      }
       if (res.status === 200) {
         this.miner_login.email_address.value = "";
         this.miner_login.password.value = "";
         open_alert_box(data.message, data.type);
+        $cookies.set("auth", data.auth, 60 * 60 * 24 * 7);
         return;
       }
       if (res.status === 400) {
@@ -160,10 +170,15 @@ export const useLoginStore = defineStore({
       });
       const data = await res.json();
       this.isLoading = false;
+      if (res.status === 201) {
+        open_alert_text(data.message, data.type);
+        return;
+      }
       if (res.status === 200) {
         this.buyer_login.email_address.value = "";
         this.buyer_login.password.value = "";
         open_alert_box(data.message, data.type);
+        $cookies.set("auth", data.auth, 60 * 60 * 24 * 7);
         return;
       }
       if (res.status === 400) {

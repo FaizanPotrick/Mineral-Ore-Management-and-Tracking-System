@@ -30,12 +30,10 @@ const Ores = new mongoose.Schema(
       required: true,
     },
     document: {
-      type: String,
-      trim: true,
-      default: "document",
+      type: Object,
       required: true,
     },
   },
   { timestamps: true }
 );
-module.exports = mongoose.connection.useDb("Datas").model("Ores", Ores);
+module.exports = mongoose.connection.useDb("Miner").model("Ores", Ores);

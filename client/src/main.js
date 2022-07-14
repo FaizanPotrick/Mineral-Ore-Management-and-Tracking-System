@@ -17,9 +17,9 @@ app.use(
         component: () => import("@/views/HomeView.vue"),
       },
       {
-        path: "/miner/registration",
-        name: "Miner Registration",
-        component: () => import("@/views/Miner/Registration.vue"),
+        path: "/miner/mine_registration",
+        name: "Miner Mine Registration",
+        component: () => import("@/views/Miner/MineRegistration.vue"),
       },
       {
         path: "/login",
@@ -28,24 +28,16 @@ app.use(
         props: (route) => ({ login_id: route.query.login_id }),
       },
       {
-        path: "/miner/ores",
-        name: "Miner Ores",
-        component: () => import("@/views/Miner/OresForm.vue"),
+        path: "/miner/ores_registration",
+        name: "Miner Ores Registration",
+        component: () => import("@/views/Miner/OresRegistration.vue"),
       },
       {
-        path: "/about",
-        name: "about",
-        component: () => import("@/views/AboutView.vue"),
+        path: "/header",
+        name: "Header",
+        component: () => import("@/components/Header.vue"),
       },
-      {
-        path: '/header',
-        name: 'Header',
-        component: () => import('@/components/Header.vue')
-      }
     ],
   })
 );
 app.mount("#app");
- 
-  
-    

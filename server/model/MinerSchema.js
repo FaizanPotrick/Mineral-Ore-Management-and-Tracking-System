@@ -95,4 +95,4 @@ const Miner = new mongoose.Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.connection.useDb("Credentials").model("Miner", Miner);
+module.exports = mongoose.connection.useDb("Miner").model("Registration", Miner);

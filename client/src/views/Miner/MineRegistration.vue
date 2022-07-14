@@ -19,8 +19,8 @@ const { mine_name,
         <div
             class="max-w-4xl p-10 border border-orange-300 drop-shadow-md shadow-lg shadow-orange-300/80 rounded-2xl m-5 sm:m-10">
             <div class="mb-4">
-                <div class="font-semibold text-2xl text-gray-800">Registeration</div>
-                <div class="text-gray-500 text-sm">Please registeration to your account.</div>
+                <div class="font-semibold text-2xl text-gray-800">Registration</div>
+                <div class="text-gray-500 text-sm">Please register your account.</div>
                 <span
                     :class="{ 'text-red-500': alertStore.alert_text.type === 'error', 'text-green-500': alertStore.alert_text.type === 'success', 'text-blue-500': alertStore.alert_text.type === 'info', 'text-yellow-500': alertStore.alert_text.type === 'warning' }"
                     class="text-center text-sm"

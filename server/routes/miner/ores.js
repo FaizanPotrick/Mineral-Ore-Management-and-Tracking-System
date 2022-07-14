@@ -1,21 +1,25 @@
 const express = require("express");
 const router = express.Router();
 const Ores = require("../../model/OresSchema");
-// const { EmailSender } = require("../../middleware/EmailSender");
 
-router.post("/ores_registration", async (req, res, next) => {
+router.post("/miner/ores_registration", async (req, res, next) => {
   const { type, grade, quantity, document } = req.body;
   try {
-    if (!type || !grade || !quantity) {
+    if (!type || !grade || !quantity || !document) {
       return res.status(201).json({
         message: "Please fill all the required fields correctly",
         type: "error",
       });
     }
+    const auth =
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15);
     const response = await new Ores({
+      auth: auth,
       type: type,
       grade: grade,
       quantity: quantity,
+      document: document,
     });
     await response.save();
     res.status(200).json({

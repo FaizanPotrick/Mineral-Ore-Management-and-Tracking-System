@@ -15,4 +15,5 @@ try {
 app.use(express.json());
 app.use(cors());
 app.use(require("./routes/miner/credentials.js"));
+app.use(require("./routes/miner/ores.js"));
 app.listen(process.env.PORT || 8000);
