@@ -37,7 +37,15 @@ app.use(
         name: "about",
         component: () => import("@/views/AboutView.vue"),
       },
+      {
+        path: '/header',
+        name: 'Header',
+        component: () => import('@/components/Header.vue')
+      }
     ],
   })
 );
 app.mount("#app");
+ 
+  
+    
