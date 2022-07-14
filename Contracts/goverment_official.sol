@@ -3,6 +3,7 @@ import "./mines.sol";
 
 
 contract goverment_official is mines{
+       uint id=1;
     
      function approve_batch() public{  }
      
