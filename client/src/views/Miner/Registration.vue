@@ -1,7 +1,10 @@
 <script setup>
-import { useCredentialStore } from '@/stores/Miner/Credentials.js';
-import { useAlertStore } from '@/stores/Alert.js';
+import { useCredentialStore } from '@/stores/Miner/Registration';
+import { useAlertStore } from '@/stores/Alert';
+import { useValidationStore } from '@/stores/Validation';
 const registerStore = useCredentialStore();
+const validationStore = useValidationStore();
+const alertStore = useAlertStore();
 const { mine_name,
     location,
     owner_name,
@@ -10,7 +13,6 @@ const { mine_name,
     block_no,
     gst_no,
     period } = registerStore.registration;
-const alertStore = useAlertStore();
 </script>
 <template>
     <div class="flex justify-center items-center min-h-screen">
@@ -32,7 +34,7 @@ const alertStore = useAlertStore();
                         <label class="text-sm font-medium text-gray-700">Mine Name*</label>
                         <input type="text"
                             class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
-                            placeholder="Enter the Mine Name" @change="registerStore.validation(mine_name)"
+                            placeholder="Enter the Mine Name" @change="validationStore.validation(mine_name)"
                             v-model="mine_name.value" minlength="5" maxlength="100" required>
                         <span class="text-center text-sm text-red-500" v-if="!mine_name.valid">{{ mine_name.message
                         }}</span>
@@ -41,7 +43,7 @@ const alertStore = useAlertStore();
                         <label class="text-sm font-medium text-gray-700">Location*</label>
                         <input type="text"
                             class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
-                            placeholder="Enter the Location of the Mine" @change="registerStore.validation(location)"
+                            placeholder="Enter the Location of the Mine" @change="validationStore.validation(location)"
                             v-model="location.value" minlength="5" maxlength="150" required>
                         <span class="text-center text-sm text-red-500" v-if="!location.valid">{{ location.message
                         }}</span>
@@ -52,7 +54,7 @@ const alertStore = useAlertStore();
                         <label class="text-sm font-medium text-gray-700">Owner Name*</label>
                         <input type="text"
                             class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
-                            placeholder="Enter the Owner Name" @change="registerStore.validation(owner_name)"
+                            placeholder="Enter the Owner Name" @change="validationStore.validation(owner_name)"
                             v-model="owner_name.value" minlength="5" maxlength="50" required>
                         <span class="text-center text-sm text-red-500" v-if="!owner_name.valid">{{
                                 owner_name.message
@@ -65,7 +67,7 @@ const alertStore = useAlertStore();
                             Address*</label>
                         <input type="email"
                             class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
-                            placeholder="Enter the Email Address" @change="registerStore.validation(email_address)"
+                            placeholder="Enter the Email Address" @change="validationStore.validation(email_address)"
                             v-model="email_address.value" minlength="10" maxlength="30" required>
                         <span class="text-center text-sm text-red-500" v-if="!email_address.valid">{{
                                 email_address.message
@@ -77,10 +79,10 @@ const alertStore = useAlertStore();
                         <div class="flex">
                             <input type="text"
                                 class="w-16 text-base px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:border-orange-400"
-                                :value="phone_no.country_code">
+                                :value="phone_no.country_code" disabled>
                             <input type="text"
                                 class="w-full text-base px-4 py-2 border border-gray-300 rounded-r-lg focus:outline-none focus:border-orange-400"
-                                placeholder="Enter the Phone No." @change="registerStore.validation(phone_no)"
+                                placeholder="Enter the Phone No." @change="validationStore.validation(phone_no)"
                                 v-model="phone_no.value" minlength="10" maxlength="10" required>
                         </div>
                         <span class="text-center text-sm text-red-500" v-if="!phone_no.valid">{{ phone_no.message
@@ -92,7 +94,7 @@ const alertStore = useAlertStore();
                         <label class="text-sm font-medium text-gray-700">Block No.*</label>
                         <input type="text"
                             class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
-                            placeholder="Enter the Block No." @change="registerStore.validation(block_no)"
+                            placeholder="Enter the Block No." @change="validationStore.validation(block_no)"
                             v-model="block_no.value" minlength="12" maxlength="12" required>
                         <span class="text-center text-sm text-red-500" v-if="!block_no.valid">{{ block_no.message
                         }}</span>
@@ -101,7 +103,7 @@ const alertStore = useAlertStore();
                         <label class="text-sm font-medium text-gray-700">GST No.*</label>
                         <input type="text"
                             class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
-                            placeholder="Enter the GST No." @change="registerStore.validation(gst_no)"
+                            placeholder="Enter the GST No." @change="validationStore.validation(gst_no)"
                             v-model="gst_no.value" minlength="15" maxlength="15" required>
                         <span class="text-center text-sm text-red-500" v-if="!gst_no.valid">{{ gst_no.message }}</span>
                     </div>
@@ -109,7 +111,7 @@ const alertStore = useAlertStore();
                         <label class="text-sm font-medium text-gray-700">Lease Period(in year)*</label>
                         <input type="number"
                             class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
-                            @change="registerStore.validation(period)" v-model="period.value" minlength="1"
+                            @change="validationStore.validation(period)" v-model="period.value" minlength="1"
                             maxlength="3" required>
                         <span class="text-center text-sm text-red-500" v-if="!period.valid || period.value <= 0">{{
                                 period.message

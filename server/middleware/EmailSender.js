@@ -13,14 +13,22 @@ const EmailSender = (req, res) => {
   const password = req.password;
   const template = `
      <h2>Hello, ${owner_name}</h2>
-     <p>Your Mine has been successfully registered.</p>
-     <p>Here are your Credentials for the Login.</p>
-     <h3>UserName: ${email_address}</h3>
-     <h3>Password: ${password}</h3>
+     <div>Your Mine has been successfully registered.</div>
+     <div>Here are your Credentials for the Login:</div>
+     <div><strong>UserName: ${email_address}<strong/></div>
+     <div><strong>Password: ${password}<strong/></div>
+     <br/>
+     <div>Here are your Registration Details:</div>
+     <div><strong>Mine Name: ${mine_name}<strong/></div>
+     <div><strong>Mine Location: ${location}<strong/></div>
+     <div><strong>Phone No.: ${phone_no}<strong/></div>
+     <div><strong>Block No.: ${block_no}<strong/></div>
+     <div><strong>GST No.: ${gst_no}<strong/></div>
+     <div><strong>Lease Period: upto ${period} years<strong/></div>
      <br/>
      <br/>
-     <p>Regards,</p>
-     <p>Ministry of Mines</p>
+     <div>Regards,</div>
+     <div>Ministry of Mines</div>
     `;
 
   nodemailer
