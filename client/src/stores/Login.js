@@ -80,7 +80,7 @@ export const useLoginStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("/gov/credentials", {
+      const res = await fetch("/gov_api/credentials", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -118,7 +118,7 @@ export const useLoginStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("/miner/credentials", {
+      const res = await fetch("/miner_api/credentials", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -156,7 +156,7 @@ export const useLoginStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("/buyer/credentials", {
+      const res = await fetch("/buyer_api/credentials", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
