@@ -2,11 +2,9 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import { createRouter, createWebHistory } from "vue-router";
-import VueCookies from "vue-cookies";
 
 const app = createApp(App);
 app.use(createPinia());
-app.use(VueCookies);
 app.use(
   createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),

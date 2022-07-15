@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const Miner = require("../../model/MinerSchema");
+const Miner = require("../../models/MinerSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const { EmailSender } = require("../../middleware/EmailSender");
@@ -112,11 +112,15 @@ router.put("/miner/credentials", async (req, res) => {
         type: "error",
       });
     }
-    res.status(200).json({
-      message: "Successfully Logged In",
-      type: "success",
-      auth: response[0].auth,
-    });
+    res
+      .cookie("auth", response[0].auth, {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+      })
+      .status(200)
+      .json({
+        message: "Successfully Logged In",
+        type: "success",
+      });
   } catch (error) {
     res.status(400).json({
       message: "Invalid Request",

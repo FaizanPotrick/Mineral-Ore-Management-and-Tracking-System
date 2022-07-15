@@ -80,7 +80,7 @@ export const useLoginStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("http://localhost:8000/gov/credentials", {
+      const res = await fetch("/gov/credentials", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +100,6 @@ export const useLoginStore = defineStore({
         this.gov_login.email_address.value = "";
         this.gov_login.password.value = "";
         open_alert_box(data.message, data.type);
-        $cookies.set("auth", data.auth, 60 * 60 * 24 * 7);
         return;
       }
       if (res.status === 400) {
@@ -119,7 +118,7 @@ export const useLoginStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("http://localhost:8000/miner/credentials", {
+      const res = await fetch("/miner/credentials", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -139,7 +138,6 @@ export const useLoginStore = defineStore({
         this.miner_login.email_address.value = "";
         this.miner_login.password.value = "";
         open_alert_box(data.message, data.type);
-        $cookies.set("auth", data.auth, 60 * 60 * 24 * 7);
         return;
       }
       if (res.status === 400) {
@@ -158,7 +156,7 @@ export const useLoginStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("http://localhost:8000/buyer/credentials", {
+      const res = await fetch("/buyer/credentials", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -178,7 +176,6 @@ export const useLoginStore = defineStore({
         this.buyer_login.email_address.value = "";
         this.buyer_login.password.value = "";
         open_alert_box(data.message, data.type);
-        $cookies.set("auth", data.auth, 60 * 60 * 24 * 7);
         return;
       }
       if (res.status === 400) {

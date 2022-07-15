@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Ores = require("../../model/OresSchema");
+const Ores = require("../../models/OresSchema");
 
 router.post("/miner/ores_registration", async (req, res, next) => {
   const { type, grade, quantity, document } = req.body;
