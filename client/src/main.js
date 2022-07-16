@@ -39,6 +39,11 @@ app.use(
         path: "/alert",
         name: "Alert",
         component: () => import("@/components/Alert.vue"),
+      },
+      {
+        path: "/servererror",
+        name: "Server Error",
+        component: () => import("@/components/servererror.vue"),
       } 
     ],
   })
