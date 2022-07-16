@@ -37,6 +37,11 @@ app.use(
         name: "Header",
         component: () => import("@/components/Header.vue"),
       },
+      {
+        path: "/alert",
+        name: "Alert",
+        component: () => import("@/components/Alert.vue"),
+      } 
     ],
   })
 );
