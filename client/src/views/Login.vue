@@ -1,47 +1,37 @@
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useAlertStore } from '@/stores/Alert.js';
 import { useLoginStore } from '@/stores/Login';
 import { useValidationStore } from '@/stores/Validation';
+const route = useRoute();
 const loginStore = useLoginStore();
 const alertStore = useAlertStore();
 const validationStore = useValidationStore();
-const props = defineProps({
-    login_id: {
-        type: String,
-        default: 'gov_login',
-    },
-});
-const router = useRouter();
-if (props.login_id !== 'gov_login' &&
-    props.login_id !== 'miner_login' &&
-    props.login_id !== 'buyer_login') {
-    router.back();
-}
 </script>
 <template>
     <div class="flex justify-center items-center min-h-screen">
-        <div
+        <div v-if="route.params.login_id === 'gov_login' || route.params.login_id === 'miner_login' || route.params.login_id === 'buyer_login'"
             class="max-w-md w-[28rem] p-10 border border-orange-300 drop-shadow-md shadow-lg shadow-orange-300/80 rounded-2xl m-5 sm:10">
             <div class="mb-5 border-b border-orange-300 font-medium drop-shadow-md">
                 <div class="flex -mb-px justify-around items-center">
-                    <RouterLink to="/login?login_id=gov_login" :class="{
-                        'bg-orange-400 text-white': props.login_id === 'gov_login',
-                        'hover:text-orange-400': props.login_id !== 'gov_login'
+                    <RouterLink to="/login/gov_login" :class="{
+                        'bg-orange-400 text-white': route.params.login_id === 'gov_login',
+                        'hover:text-orange-400': route.params.login_id !== 'gov_login'
                     }" class="px-6 py-2 rounded-t-lg">
                         Gov.</RouterLink>
-                    <RouterLink to="/login?login_id=miner_login" :class="{
-                        'bg-orange-400 text-white': props.login_id === 'miner_login',
-                        'hover:text-orange-400': props.login_id !== 'miner_login'
+                    <RouterLink to="/login/miner_login" :class="{
+                        'bg-orange-400 text-white': route.params.login_id === 'miner_login',
+                        'hover:text-orange-400': route.params.login_id !== 'miner_login'
                     }" class=" px-6 py-2 rounded-t-lg">Miner</RouterLink>
-                    <RouterLink to="/login?login_id=buyer_login"
-                        :class="{ 'bg-orange-400 text-white': props.login_id === 'buyer_login', 'hover:text-orange-400': props.login_id !== 'buyer_login' }"
+                    <RouterLink to="/login/buyer_login"
+                        :class="{ 'bg-orange-400 text-white': route.params.login_id === 'buyer_login', 'hover:text-orange-400': route.params.login_id !== 'buyer_login' }"
                         class=" px-6 py-2 rounded-t-lg">Buyer</RouterLink>
                 </div>
             </div>
             <div class="mb-4">
                 <div class="font-semibold text-2xl text-gray-800">{{
-                        props.login_id === 'gov_login' ? "Gov." : (props.login_id === 'miner_login' ? "Miner" : "Buyer")
+                        route.params.login_id === 'gov_login' ? "Gov." : (route.params.login_id === 'miner_login' ? "Miner"
+                            : "Buyer")
                 }} Login</div>
                 <div class="text-gray-500 text-sm">Please login to your account.</div>
                 <span
@@ -51,17 +41,17 @@ if (props.login_id !== 'gov_login' &&
                             alertStore.alert_text.message
                     }}</span>
             </div>
-            <form class="space-y-5" @submit.prevent="loginStore.login_fn(props)">
+            <form class="space-y-5" @submit.prevent="loginStore.login_fn(route.params.login_id)">
                 <div class="space-y-2">
                     <label class="text-sm font-medium text-gray-700">Email Address*</label>
                     <input
                         class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
-                        @change="validationStore.validation(loginStore.login_credentials(props.login_id).email_address)"
-                        v-model="loginStore.login_credentials(props.login_id).email_address.value" minlength="10"
+                        @change="validationStore.validation(loginStore.login_credentials(route.params.login_id).email_address)"
+                        v-model="loginStore.login_credentials(route.params.login_id).email_address.value" minlength="10"
                         type="email" placeholder="Enter the Email Address" maxlength="30" required>
                     <span class="text-center text-sm text-red-500"
-                        v-if="!loginStore.login_credentials(props.login_id).email_address.valid">{{
-                                loginStore.login_credentials(props.login_id).email_address.message
+                        v-if="!loginStore.login_credentials(route.params.login_id).email_address.valid">{{
+                                loginStore.login_credentials(route.params.login_id).email_address.message
                         }}</span>
                 </div>
                 <div class="space-y-2">
@@ -71,12 +61,12 @@ if (props.login_id !== 'gov_login' &&
                     <input
                         class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
                         type="password" placeholder="Enter the Password"
-                        @change="validationStore.validation(loginStore.login_credentials(props.login_id).password)"
-                        v-model="loginStore.login_credentials(props.login_id).password.value" minlength="6"
+                        @change="validationStore.validation(loginStore.login_credentials(route.params.login_id).password)"
+                        v-model="loginStore.login_credentials(route.params.login_id).password.value" minlength="6"
                         maxlength="12" autocomplete required>
                     <span class="text-center text-sm text-red-500"
-                        v-if="!loginStore.login_credentials(props.login_id).password.valid">{{
-                                loginStore.login_credentials(props.login_id).password.message
+                        v-if="!loginStore.login_credentials(route.params.login_id).password.valid">{{
+                                loginStore.login_credentials(route.params.login_id).password.message
                         }}</span>
                 </div>
                 <div class="space-y-3">
@@ -105,5 +95,6 @@ if (props.login_id !== 'gov_login' &&
                 </div>
             </form>
         </div>
+        <div v-else>Opps</div>
     </div>
 </template>

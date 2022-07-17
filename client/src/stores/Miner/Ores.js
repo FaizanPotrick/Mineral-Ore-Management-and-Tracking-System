@@ -39,7 +39,7 @@ export const useOresStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("/miner_api/ores_registration", {
+      const res = await fetch("/api/miner/ores_registration", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -51,21 +51,21 @@ export const useLoginStore = defineStore({
     isLoading: false,
   }),
   actions: {
-    login_fn(props) {
-      if (props.login_id === "gov_login") {
+    login_fn(login_id) {
+      if (login_id === "gov_login") {
         return this.gov_login_fn();
-      } else if (props.login_id === "miner_login") {
+      } else if (login_id === "miner_login") {
         return this.miner_login_fn();
-      } else if (props.login_id === "buyer_login") {
+      } else if (login_id === "buyer_login") {
         return this.buyer_login_fn();
       }
     },
-    login_credentials(props) {
-      if (props === "gov_login") {
+    login_credentials(login_id) {
+      if (login_id === "gov_login") {
         return this.gov_login;
-      } else if (props === "miner_login") {
+      } else if (login_id === "miner_login") {
         return this.miner_login;
-      } else if (props === "buyer_login") {
+      } else if (login_id === "buyer_login") {
         return this.buyer_login;
       }
     },
@@ -80,7 +80,7 @@ export const useLoginStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("/gov_api/credentials", {
+      const res = await fetch("/api/gov/credentials", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -118,7 +118,7 @@ export const useLoginStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("/miner_api/credentials", {
+      const res = await fetch("/api/miner/credentials", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -156,7 +156,7 @@ export const useLoginStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("/buyer_api/credentials", {
+      const res = await fetch("/api/buyer/credentials", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

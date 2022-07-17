@@ -14,15 +14,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "^/miner_api": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "^/gov_api": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "^/buyer_api": {
+      "^/api": {
         target: "http://localhost:8000",
         changeOrigin: true,
       },

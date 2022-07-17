@@ -95,7 +95,7 @@ export const useCredentialStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("/miner_api/credentials", {
+      const res = await fetch("/api/miner/credentials", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

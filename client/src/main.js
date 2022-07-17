@@ -12,19 +12,21 @@ app.use(
       {
         path: "/",
         name: "home",
-        component: () => import("@/views/HomeView.vue"),
+        component: () => import("@/views/Landing.vue"),
+        children: [
+          {
+            path: ":login_id",
+            name: "Login",
+            component: () => import("@/views/Login.vue"),
+          },
+        ],
       },
       {
         path: "/miner/mine_registration",
         name: "Miner Mine Registration",
         component: () => import("@/views/Miner/MineRegistration.vue"),
       },
-      {
-        path: "/login",
-        name: "Login",
-        component: () => import("@/views/Login.vue"),
-        props: (route) => ({ login_id: route.query.login_id }),
-      },
+
       {
         path: "/miner/ores_registration",
         name: "Miner Ores Registration",
