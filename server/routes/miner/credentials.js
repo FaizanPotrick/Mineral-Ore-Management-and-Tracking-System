@@ -7,7 +7,7 @@ const ShortUniqueId = require("short-unique-id");
 const { EmailSender } = require("../../middleware/EmailSender");
 
 router.post(
-  "/miner_api/credentials",
+  "/api/miner/credentials",
   async (req, res, next) => {
     const {
       mine_name,
@@ -87,7 +87,7 @@ router.post(
   },
   EmailSender
 );
-router.put("/miner_api/credentials", async (req, res) => {
+router.put("/api/miner/credentials", async (req, res) => {
   const { email_address, password } = req.body;
   try {
     if (!email_address || !password) {

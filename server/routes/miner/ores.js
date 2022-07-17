@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Ores = require("../../models/OresSchema");
 
-router.post("/miner_api/ores_registration", async (req, res, next) => {
+router.post("/api/miner/ores_registration", async (req, res, next) => {
   const { type, grade, quantity, document } = req.body;
   try {
     if (!type || !grade || !quantity || !document) {
