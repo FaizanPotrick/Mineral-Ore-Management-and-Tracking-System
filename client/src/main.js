@@ -37,6 +37,21 @@ app.use(
         name: "Header",
         component: () => import("@/components/Header.vue"),
       },
+      {
+        path: "/footer",
+        name: "Footer",
+        component: () => import("@/components/Footer.vue"),
+      },
+      {
+        path: "/alert",
+        name: "Alert",
+        component: () => import("@/components/Alert.vue"),
+      },
+      {
+        path: "/servererror",
+        name: "Server Error",
+        component: () => import("@/components/servererror.vue"),
+      },
     ],
   })
 );
