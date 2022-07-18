@@ -20,7 +20,7 @@ export const useLoginStore = defineStore({
         message: "Password must be alphanumeric, numeric and special character",
       },
     },
-    gov_login: {
+    officials_login: {
       email_address: {
         value: "",
         valid: true,
@@ -52,8 +52,8 @@ export const useLoginStore = defineStore({
   }),
   actions: {
     login_fn(login_id) {
-      if (login_id === "gov_login") {
-        return this.gov_login_fn();
+      if (login_id === "officials_login") {
+        return this.officials_login_fn();
       } else if (login_id === "miner_login") {
         return this.miner_login_fn();
       } else if (login_id === "buyer_login") {
@@ -61,16 +61,16 @@ export const useLoginStore = defineStore({
       }
     },
     login_credentials(login_id) {
-      if (login_id === "gov_login") {
-        return this.gov_login;
+      if (login_id === "officials_login") {
+        return this.officials_login;
       } else if (login_id === "miner_login") {
         return this.miner_login;
       } else if (login_id === "buyer_login") {
         return this.buyer_login;
       }
     },
-    async gov_login_fn() {
-      const { email_address, password } = this.gov_login;
+    async officials_login_fn() {
+      const { email_address, password } = this.officials_login;
       if (!email_address.valid || !password.valid) {
         open_alert_text(
           "Please fill all the required fields correctly",
@@ -80,7 +80,7 @@ export const useLoginStore = defineStore({
       }
       open_alert_text("", "");
       this.isLoading = true;
-      const res = await fetch("/api/gov/credentials", {
+      const res = await fetch("/api/officials/credentials", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -97,8 +97,8 @@ export const useLoginStore = defineStore({
         return;
       }
       if (res.status === 200) {
-        this.gov_login.email_address.value = "";
-        this.gov_login.password.value = "";
+        this.officials_login.email_address.value = "";
+        this.officials_login.password.value = "";
         open_alert_box(data.message, data.type);
         return;
       }

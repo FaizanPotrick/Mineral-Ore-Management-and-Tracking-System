@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const EmailSender = (req, res) => {
+const MinerEmailSender = (req) => {
   const {
     mine_name,
     location,
@@ -60,4 +60,4 @@ const EmailSender = (req, res) => {
       }
     );
 };
-module.exports = { EmailSender };
+module.exports = MinerEmailSender;

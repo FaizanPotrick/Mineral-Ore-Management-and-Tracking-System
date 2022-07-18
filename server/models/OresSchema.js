@@ -6,6 +6,11 @@ const Ores = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    batch_id: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     type: {
       type: String,
       trim: true,

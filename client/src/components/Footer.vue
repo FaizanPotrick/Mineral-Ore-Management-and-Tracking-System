@@ -1,15 +1,7 @@
 <template>
-
- <footer class="p-4 bg-white sm:p-6 font-semibold text-md">
-          
-          <hr class="my-6 border-orange-400 sm:mx-auto lg:my-8">
-          <div class="sm:flex sm:items-center sm:justify-between">
-              <span class="text-md text-red-900 sm:text-center font-semibold dark:text-gray-400">© <a href="https://www.mines.gov.in/" class="hover:underline text-md ">Ministry Of Mines</a>. All Rights Reserved.
-              </span>
-              <div class="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
-                <span class="text-md text-red-900 sm:text-center font-semibold dark:text-gray-400"> Team: Mining.Eth </span>
-              </div>
-          </div>
-      </footer>
-
+    <footer
+        class="flex items-center justify-around bg-white w-full h-[6vh] border-t border-gray-400/25 text-base font-semibold text-yellow-700">
+        <div>© Ministry of Mines. All Rights Reserved.</div>
+        <div>@Team Mining.eth</div>
+    </footer>
 </template>

@@ -1,10 +1,10 @@
 <script setup>
-import AlertBox from '@/components/AlertBox.vue';
+import AlertBoxVue from '@/components/AlertBox.vue';
 </script>
 
 <template>
   <div>
     <RouterView />
-    <AlertBox />
+    <AlertBoxVue />
   </div>
 </template>

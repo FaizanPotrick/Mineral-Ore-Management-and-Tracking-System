@@ -42,7 +42,7 @@ export const useOresStore = defineStore({
       const res = await fetch("/api/miner/ores_registration", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Encoding": "multipart/form-data",
         },
         body: JSON.stringify({
           type: type,

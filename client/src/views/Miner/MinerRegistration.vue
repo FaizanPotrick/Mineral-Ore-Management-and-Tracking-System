@@ -15,11 +15,10 @@ const { mine_name,
     period } = registerStore.registration;
 </script>
 <template>
-    <div class="flex justify-center items-center min-h-screen">
-        <div
-            class="max-w-4xl p-10 border border-orange-300 drop-shadow-md shadow-lg shadow-orange-300/80 rounded-2xl m-5 sm:m-10">
+    <div class="flex justify-center items-center">
+        <div class="max-w-4xl p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl m-5 sm:10 text-gray-800">
             <div class="mb-4">
-                <div class="font-semibold text-2xl text-gray-800">Registration</div>
+                <div class="font-semibold text-2xl text-yellow-700">Registration</div>
                 <div class="text-gray-500 text-sm">Please register your account.</div>
                 <span
                     :class="{ 'text-red-500': alertStore.alert_text.type === 'error', 'text-green-500': alertStore.alert_text.type === 'success', 'text-blue-500': alertStore.alert_text.type === 'info', 'text-yellow-500': alertStore.alert_text.type === 'warning' }"
@@ -28,12 +27,12 @@ const { mine_name,
                             alertStore.alert_text.message
                     }}</span>
             </div>
-            <form class="space-y-5" @submit.prevent="registerStore.register()">
+            <form class="space-y-5 drop-shadow-md" @submit.prevent="registerStore.register()">
                 <div class="grid gap-6 mb-6 sm:grid-cols-2">
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-gray-700">Mine Name*</label>
                         <input type="text"
-                            class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
+                            class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
                             placeholder="Enter the Mine Name" @change="validationStore.validation(mine_name)"
                             v-model="mine_name.value" minlength="5" maxlength="100" required>
                         <span class="text-center text-sm text-red-500" v-if="!mine_name.valid">{{ mine_name.message
@@ -42,7 +41,7 @@ const { mine_name,
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-gray-700">Location*</label>
                         <input type="text"
-                            class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
+                            class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
                             placeholder="Enter the Location of the Mine" @change="validationStore.validation(location)"
                             v-model="location.value" minlength="5" maxlength="150" required>
                         <span class="text-center text-sm text-red-500" v-if="!location.valid">{{ location.message
@@ -53,7 +52,7 @@ const { mine_name,
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-gray-700">Owner Name*</label>
                         <input type="text"
-                            class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
+                            class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
                             placeholder="Enter the Owner Name" @change="validationStore.validation(owner_name)"
                             v-model="owner_name.value" minlength="5" maxlength="50" required>
                         <span class="text-center text-sm text-red-500" v-if="!owner_name.valid">{{
@@ -66,7 +65,7 @@ const { mine_name,
                         <label class="text-sm font-medium text-gray-700">Email
                             Address*</label>
                         <input type="email"
-                            class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
+                            class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
                             placeholder="Enter the Email Address" @change="validationStore.validation(email_address)"
                             v-model="email_address.value" minlength="10" maxlength="30" required>
                         <span class="text-center text-sm text-red-500" v-if="!email_address.valid">{{
@@ -78,10 +77,10 @@ const { mine_name,
                             No.*</label>
                         <div class="flex">
                             <input type="text"
-                                class="w-16 text-base px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:border-orange-400"
-                                :value="phone_no.country_code" disabled>
+                                class="w-16 text-base px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:border-yellow-600"
+                                :value="phone_no.country_code">
                             <input type="text"
-                                class="w-full text-base px-4 py-2 border border-gray-300 rounded-r-lg focus:outline-none focus:border-orange-400"
+                                class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-r-lg focus:outline-none focus:border-yellow-600"
                                 placeholder="Enter the Phone No." @change="validationStore.validation(phone_no)"
                                 v-model="phone_no.value" minlength="10" maxlength="10" required>
                         </div>
@@ -93,7 +92,7 @@ const { mine_name,
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-gray-700">Block No.*</label>
                         <input type="text"
-                            class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
+                            class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
                             placeholder="Enter the Block No." @change="validationStore.validation(block_no)"
                             v-model="block_no.value" minlength="12" maxlength="12" required>
                         <span class="text-center text-sm text-red-500" v-if="!block_no.valid">{{ block_no.message
@@ -102,7 +101,7 @@ const { mine_name,
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-gray-700">GST No.*</label>
                         <input type="text"
-                            class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
+                            class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
                             placeholder="Enter the GST No." @change="validationStore.validation(gst_no)"
                             v-model="gst_no.value" minlength="15" maxlength="15" required>
                         <span class="text-center text-sm text-red-500" v-if="!gst_no.valid">{{ gst_no.message }}</span>
@@ -110,7 +109,7 @@ const { mine_name,
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-gray-700">Lease Period(in year)*</label>
                         <input type="number"
-                            class="w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-orange-400"
+                            class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
                             @change="validationStore.validation(period)" v-model="period.value" minlength="1"
                             maxlength="3" required>
                         <span class="text-center text-sm text-red-500" v-if="!period.valid || period.value <= 0">{{
@@ -119,13 +118,14 @@ const { mine_name,
                     </div>
                 </div>
                 <div class="space-y-3 py-5">
-                    <button type="submit"
-                        class="w-full flex justify-center bg-orange-400 hover:bg-orange-500 text-gray-100 p-3  rounded-full font-semibold  shadow-lg cursor-pointer transition ease-in duration-300">
+                    <button type="submit" :class="{ 'hover:bg-yellow-600/80': !registerStore.isLoading }"
+                        class="w-full flex text-lg justify-center items-center bg-yellow-600  text-gray-100 p-2.5 rounded-full font-semibold shadow-md"
+                        :disabled="registerStore.isLoading">
                         <span v-if="!registerStore.isLoading" class="h-6">
                             Register
                         </span>
                         <span v-else>
-                            <svg class="w-6 h-6 animate-spin text-gray-400 fill-gray-100" viewBox="0 0 100 101"
+                            <svg class="w-6 h-6 animate-spin text-yellow-600 fill-white" viewBox="0 0 100 101"
                                 fill="none">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

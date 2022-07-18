@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const Miner = require("../../models/MinerSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
-const { EmailSender } = require("../../middleware/EmailSender");
+const MinerEmailSender = require("../../middleware/MinerEmailSender");
 
 router.post(
   "/api/miner/credentials",
@@ -85,7 +85,7 @@ router.post(
       });
     }
   },
-  EmailSender
+  MinerEmailSender
 );
 router.put("/api/miner/credentials", async (req, res) => {
   const { email_address, password } = req.body;

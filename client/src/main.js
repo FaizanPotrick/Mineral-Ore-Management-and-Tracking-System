@@ -11,46 +11,40 @@ app.use(
     routes: [
       {
         path: "/",
-        name: "home",
-        component: () => import("@/views/Landing.vue"),
+        name: "Home",
+        component: () => import("@/views/HOme.vue"),
+      },
+      {
+        path: "/login/:login_id",
+        name: "Login",
+        component: () => import("@/views/Login.vue"),
+      },
+      {
+        path: "/dashboard/:dashboard_id",
+        name: "Dashboard",
+        component: () => import("@/views/DashBoard.vue"),
         children: [
           {
-            path: ":login_id",
-            name: "Login",
-            component: () => import("@/views/Login.vue"),
+            path: "ores_registration",
+            name: "Miner Ores Registration",
+            component: () => import("@/views/Miner/OresRegistration.vue"),
+          },
+          {
+            path: "miner_registration",
+            name: "Miner Registration",
+            component: () => import("@/views/Miner/MinerRegistration.vue"),
           },
         ],
       },
       {
-        path: "/miner/mine_registration",
-        name: "Miner Mine Registration",
-        component: () => import("@/views/Miner/MineRegistration.vue"),
-      },
-
-      {
-        path: "/miner/ores_registration",
-        name: "Miner Ores Registration",
-        component: () => import("@/views/Miner/OresRegistration.vue"),
-      },
-      {
-        path: "/header",
-        name: "Header",
-        component: () => import("@/components/Header.vue"),
-      },
-      {
-        path: "/footer",
-        name: "Footer",
-        component: () => import("@/components/Footer.vue"),
-      },
-      {
-        path: "/alert",
-        name: "Alert",
-        component: () => import("@/components/Alert.vue"),
-      },
-      {
         path: "/servererror",
         name: "Server Error",
-        component: () => import("@/components/servererror.vue"),
+        component: () => import("@/components/InternalServerError.vue"),
+      },
+      {
+        path: "/:catchAll(.*)",
+        name: "404",
+        component: () => import("@/components/PageNotFound.vue"),
       },
     ],
   })
