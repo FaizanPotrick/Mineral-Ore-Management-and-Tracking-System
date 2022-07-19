@@ -116,6 +116,9 @@ router.put("/api/miner/credentials", async (req, res) => {
       .cookie("auth", response[0].auth, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
       })
+      .cookie("user", "miner", {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+      })
       .status(200)
       .json({
         message: "Successfully Logged In",

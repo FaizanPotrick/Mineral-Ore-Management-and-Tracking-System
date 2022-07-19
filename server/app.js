@@ -3,6 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const fileupload = require("express-fileupload");
 const app = express();
 const url = process.env.DATABASE_URL;
 try {
@@ -14,6 +15,7 @@ try {
   console.log(error);
 }
 app.use(express.json());
+app.use(fileupload());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({

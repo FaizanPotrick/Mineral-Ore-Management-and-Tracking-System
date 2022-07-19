@@ -5,22 +5,20 @@ import { useLoginStore } from '@/stores/Login';
 import { useValidationStore } from '@/stores/Validation';
 import HeaderVue from '@/components/Header.vue';
 import FooterVue from '@/components/Footer.vue';
-import PageNotFoundVue from '@/components/PageNotFound.vue';
 const route = useRoute();
 const loginStore = useLoginStore();
 const alertStore = useAlertStore();
 const validationStore = useValidationStore();
 </script>
 <template>
-    <div
-        v-if="route.params.login_id === 'officials_login' || route.params.login_id === 'miner_login' || route.params.login_id === 'buyer_login'">
+    <div>
         <HeaderVue />
         <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
             <div
                 class="max-w-md bg-white w-[28rem] p-10 border border-gray-400/20 shadow-md rounded-2xl m-5 sm:m-10 text-gray-800">
                 <div class="mb-4">
                     <div class="font-semibold text-2xl text-yellow-700">{{
-                            route.params.login_id === 'officials_login' ? "Officials" : (route.params.login_id ===
+                            route.name === 'officials_login' ? "Officials" : (route.name ===
                                 'miner_login'
                                 ?
                                 "Miner"
@@ -34,17 +32,17 @@ const validationStore = useValidationStore();
                                 alertStore.alert_text.message
                         }}</span>
                 </div>
-                <form class="space-y-5 drop-shadow-md" @submit.prevent="loginStore.login_fn(route.params.login_id)">
+                <form class="space-y-5 drop-shadow-md" @submit.prevent="loginStore.login_fn(route.name)">
                     <div class="space-y-2">
                         <label class="text-sm font-medium">Email Address*</label>
                         <input
                             class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                            @change="validationStore.validation(loginStore.login_credentials(route.params.login_id).email_address)"
-                            v-model="loginStore.login_credentials(route.params.login_id).email_address.value"
+                            @change="validationStore.validation(loginStore.login_credentials(route.name).email_address)"
+                            v-model="loginStore.login_credentials(route.name).email_address.value"
                             minlength="10" type="email" placeholder="Enter the Email Address" maxlength="30" required>
                         <span class="text-center text-sm text-red-500"
-                            v-if="!loginStore.login_credentials(route.params.login_id).email_address.valid">{{
-                                    loginStore.login_credentials(route.params.login_id).email_address.message
+                            v-if="!loginStore.login_credentials(route.name).email_address.valid">{{
+                                    loginStore.login_credentials(route.name).email_address.message
                             }}</span>
                     </div>
                     <div class="space-y-2">
@@ -54,12 +52,12 @@ const validationStore = useValidationStore();
                         <input
                             class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
                             type="password" placeholder="Enter the Password"
-                            @change="validationStore.validation(loginStore.login_credentials(route.params.login_id).password)"
-                            v-model="loginStore.login_credentials(route.params.login_id).password.value" minlength="6"
+                            @change="validationStore.validation(loginStore.login_credentials(route.name).password)"
+                            v-model="loginStore.login_credentials(route.name).password.value" minlength="6"
                             maxlength="12" autocomplete required>
                         <span class="text-center text-sm text-red-500"
-                            v-if="!loginStore.login_credentials(route.params.login_id).password.valid">{{
-                                    loginStore.login_credentials(route.params.login_id).password.message
+                            v-if="!loginStore.login_credentials(route.name).password.valid">{{
+                                    loginStore.login_credentials(route.name).password.message
                             }}</span>
                     </div>
                     <div class="space-y-3">
@@ -92,5 +90,4 @@ const validationStore = useValidationStore();
         </div>
         <FooterVue />
     </div>
-    <PageNotFoundVue v-else />
 </template>

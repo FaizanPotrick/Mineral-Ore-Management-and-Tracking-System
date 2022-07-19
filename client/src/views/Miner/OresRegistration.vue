@@ -5,12 +5,32 @@ import { useValidationStore } from '@/stores/Validation';
 const oresStore = useOresStore();
 const alertStore = useAlertStore();
 const validationStore = useValidationStore();
+const myFile = async () => {
+    const response = await fetch("/api/miner/file", {
+        method: "Get",
+    });
+    const file = await response.blob();
+    // const reader = new FileReader();
+    // reader.readAsDataURL(file);
+    // reader.onload = () => {
+    //   const data = reader.result;
+    //   console.log(data);
+    // };
+
+    var files = new Blob([file], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(files);
+    //Open the URL on new Window
+    window.open(fileURL);
+    // const data = await response.json();
+    console.log(fileURL);
+}
 </script>
 <template>
     <div class="flex justify-center items-center">
         <div class="max-w-lg p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl m-5 sm:10 text-gray-800">
             <div class="mb-4">
-                <div class="font-semibold text-2xl text-yellow-700">Ores Registration</div>
+                <div class="font-semibold text-2xl text-yellow-700" @click="myFile">Ores
+                    Registration</div>
                 <div class="text-gray-500 text-sm">Please fill ores details</div>
                 <span
                     :class="{ 'text-red-500': alertStore.alert_text.type === 'error', 'text-green-500': alertStore.alert_text.type === 'success', 'text-blue-500': alertStore.alert_text.type === 'info', 'text-yellow-500': alertStore.alert_text.type === 'warning' }"
@@ -19,7 +39,8 @@ const validationStore = useValidationStore();
                             alertStore.alert_text.message
                     }}</span>
             </div>
-            <form class="space-y-5 drop-shadow-md" @submit.prevent="oresStore.oresRegistration()">
+            <form class="space-y-5 drop-shadow-md" @submit.prevent="oresStore.oresRegistration()"
+                enctype="multipart/form-data">
                 <div class="grid gap-6 mb-6 sm:grid-cols-2">
                     <div class="space-y-2">
                         <label class="text-sm font-medium text-gray-700">Type*</label>
@@ -71,7 +92,7 @@ const validationStore = useValidationStore();
                 <div class="space-y-3 py-5">
                     <button type="submit" :class="{ 'hover:bg-yellow-600/80': !oresStore.isLoading }"
                         class="w-full flex text-lg justify-center items-center bg-yellow-600  text-gray-100 p-2.5 rounded-full font-semibold shadow-md"
-                        :disabled="!oresStore.isLoading">
+                        :disabled="oresStore.isLoading">
                         <span v-if="!oresStore.isLoading" class="h-6">
                             Create Batch
                         </span>

@@ -18,13 +18,13 @@ import MinistryOfMine from "@/assets/ministry_of_mine.png";
             </svg>
             <span
                 class="invisible group-hover:visible flex flex-col justify-center items-start flex-shrink-0 w-40 absolute top-12 -m-0.5 z-10 rounded-lg shadow-md bg-green-100 text-gray-800 text-base p-2 border border-gray-400/20">
-                <RouterLink to="/login/officials_login" class="w-full rounded-lg py-2 px-4 hover:bg-green-200">
+                <RouterLink to="/officials_login" class="w-full rounded-lg py-2 px-4 hover:bg-green-200">
                     Officials Login
                 </RouterLink>
-                <RouterLink to="/login/miner_login" class="w-full rounded-lg py-2 px-4 hover:bg-green-200">Miner
+                <RouterLink to="/miner_login" class="w-full rounded-lg py-2 px-4 hover:bg-green-200">Miner
                     Login
                 </RouterLink>
-                <RouterLink to="/login/buyer_login" class="w-full rounded-lg py-2 px-4 hover:bg-green-200">Buyer
+                <RouterLink to="/buyer_login" class="w-full rounded-lg py-2 px-4 hover:bg-green-200">Buyer
                     Login
                 </RouterLink>
             </span>

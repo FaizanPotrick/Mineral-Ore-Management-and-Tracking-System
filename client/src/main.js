@@ -15,24 +15,41 @@ app.use(
         component: () => import("@/views/HOme.vue"),
       },
       {
-        path: "/login/:login_id",
-        name: "Login",
+        path: "/officials_login/",
+        name: "officials_login",
         component: () => import("@/views/Login.vue"),
       },
       {
-        path: "/dashboard/:dashboard_id",
-        name: "Dashboard",
+        path: "/miner_login",
+        name: "miner_login",
+        component: () => import("@/views/Login.vue"),
+      },
+      {
+        path: "/buyer_login",
+        name: "buyer_login",
+        component: () => import("@/views/Login.vue"),
+      },
+      {
+        path: "/officials_dashboard",
+        name: "officials",
         component: () => import("@/views/DashBoard.vue"),
         children: [
-          {
-            path: "ores_registration",
-            name: "Miner Ores Registration",
-            component: () => import("@/views/Miner/OresRegistration.vue"),
-          },
           {
             path: "miner_registration",
             name: "Miner Registration",
             component: () => import("@/views/Miner/MinerRegistration.vue"),
+          },
+        ],
+      },
+      {
+        path: "/miner_dashboard",
+        name: "miner",
+        component: () => import("@/views/DashBoard.vue"),
+        children: [
+          {
+            path: "ores_registration",
+            name: "Ores Registration",
+            component: () => import("@/views/Miner/OresRegistration.vue"),
           },
         ],
       },

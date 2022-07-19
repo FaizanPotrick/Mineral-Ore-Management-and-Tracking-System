@@ -1,6 +1,3 @@
-<script setup>
-
-</script>
 <template>
     <div
         class="border-r border-gray-400/20 bg-white min-w-[18rem] flex flex-col justify-start drop-shadow-md font-bold h-screen">
