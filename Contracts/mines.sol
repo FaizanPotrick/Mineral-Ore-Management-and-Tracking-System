@@ -1,9 +1,12 @@
-pragma solidity >=0.4.0;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.4.22 <0.9.0;
 
 contract mines {
-        uint id=1;
-        uint batch_id=1;   
     
+    uint id=1;
+    uint batch_id;
+         
+
     struct mines_detail {
       string mine_name;
       string location;
@@ -14,7 +17,6 @@ contract mines {
       string gst_no;
       string lease_periog;
       bool authorized ;
- 
    }
 
    struct ore_details{
@@ -25,11 +27,16 @@ contract mines {
    }
 
     mapping ( uint => mines_detail ) public minesdetail;
+    mapping (uint => uint) public batch_number;
     mapping (uint => mapping (uint => ore_details) ) public oredetails; 
 
+
+    
     function batch(uint mine_id,string memory _amount, string memory ore_type, string memory _grade, string memory _file) public{
+        batch_id= batch_number[mine_id];
         oredetails[mine_id][batch_id]=ore_details(_amount,ore_type,_grade,_file);
         batch_id=batch_id+1;
+        batch_number[mine_id]=batch_id;
     }
 
 }
