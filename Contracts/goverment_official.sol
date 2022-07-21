@@ -1,15 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 import "./mines.sol";
+import "./organisations.sol";
 
 
-contract goverment_official is mines{
- 
-    function mine_detail(string memory _mine_name, string memory _location, string memory _owner_name, string memory _email, string memory _phone_no, string memory _block_no, string memory _gst_no, string memory _lease_periog) public{
-        minesdetail[id] = mines_detail(_mine_name,_location,_owner_name,_email,_phone_no,_block_no,_gst_no,_lease_periog,true);
-        batch_number[id]=1;
-        id=id+1;
-        
+contract goverment_official is mines,organisations{
+
+    
+    function organisationDetail(string calldata organisation_id,string calldata organisation_hash) external{
+        organisation[organisation_id]=organisation_detail(organisation_id,organisation_hash);
     }
     
+    function mineDetail(string calldata mine_id,string calldata organisation_id,string calldata mine_hash) external{
+        mine[mine_id]=mine_detail(mine_id,organisation_id,mine_hash);
+    }
+
+    function minedBatch(string calldata mine_id,string calldata batch_id,uint amount, string calldata ore_type,string calldata grade, string calldata Fe_amount, string calldata file,bool state) external{
+        oreDetails[mine_id][batch_id]=ore_details(amount,ore_type,grade,Fe_amount,file);
+        approved[mine_id][batch_id]=state;
+        string storage organisation_id=mine[mine_id].organisation_id;
+        batchAmount[organisation_id][grade] +=amount;
+    }
+
 }
