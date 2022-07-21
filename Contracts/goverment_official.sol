@@ -16,6 +16,8 @@ contract goverment_official is mines,organisations{
     }
 
     function minedBatch(string calldata mine_id,string calldata batch_id,uint amount, string calldata ore_type,string calldata grade, string calldata Fe_amount, string calldata file,bool state) external{
+        require(keccak256(abi.encodePacked((mine[mine_id].mine_id))) == keccak256(abi.encodePacked((mine_id))),"Provided Mine ID Doesn't Exist");
+        require(keccak256(abi.encodePacked((oreDetails[mine_id][batch_id].batch_id))) != keccak256(abi.encodePacked((batch_id))),"Provided Batch ID Exist");        
         oreDetails[mine_id][batch_id]=ore_details(amount,ore_type,grade,Fe_amount,file);
         approved[mine_id][batch_id]=state;
         string storage organisation_id=mine[mine_id].organisation_id;
