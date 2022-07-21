@@ -1,52 +1,63 @@
 const mongoose = require("mongoose");
-const OfficerRegistraion = new mongoose.Schema({
+const User = new mongoose.Schema({
     auth: {
         type: String,
         required: true,
         unique: true,
     },
-    officer_id: {
+    user_id: {
         type: String,
         unique: true,
         required: true,
     },
-    officer_name: {
+    type_of_user: {
+        type: String,
+        lowercase: true,
+        required: true,
+    },
+    user_name: {
         type: String,
         trim: true,
         maxlength: 150,
         lowercase: true,
         required: true,
     },
+    aadhar_card: {
+        type: String,
+        trim: true,
+        minlength: 12,
+        maxlength: 12,
+        unique: true,
+        required: true
+    },
     email_address: {
         type: String,
-        maxlength: 30,
-        lowercase: true,
         unique: true,
+        maxlength: 150,
+        lowercase: true,
         required: true,
     },
     phone_no: {
         type: String,
-        maxlength: 20,
+        maxlength: 15,
         required: true,
     },
-    type_of_region: {
-        type: String,
-        lowercase: true,
+    is_valid: {
+        type: boolean,
+        default: true,
         required: true,
     },
-    region_name: {
+    password: {
         type: String,
-        lowercase: true,
+        trim: true,
         required: true,
     },
-    aadhar_card: {
+    c_password: {
         type: String,
-        minlength: 12,
-        maxlength: 12,
-        unique: true,
+        trim: true,
         required: true,
     },
 }, {
     timestamps: true
 });
-module.exports = mongoose.connection.useDb("Officer").model("Registration", OfficerRegistraion);
+module.exports = mongoose.connection.useDb("User").model("User_Data", User);

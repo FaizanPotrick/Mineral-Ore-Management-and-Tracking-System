@@ -5,6 +5,11 @@ const MinedBatch = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  officer_id: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   batch_id: {
     type: String,
     required: true,
@@ -16,7 +21,7 @@ const MinedBatch = new mongoose.Schema({
     lowercase: true,
     required: true,
   },
-  amount_of_Fe: { 
+  amount_of_Fe: {
     type: Number,
     trim: true,
     required: true,
@@ -25,6 +30,11 @@ const MinedBatch = new mongoose.Schema({
     type: Number,
     trim: true,
     required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+    default: "pending"
   },
   sample_image: {
     type: Object,
