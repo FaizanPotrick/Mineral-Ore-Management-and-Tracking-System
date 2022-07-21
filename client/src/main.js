@@ -12,7 +12,7 @@ app.use(
       {
         path: "/",
         name: "Home",
-        component: () => import("@/views/HOme.vue"),
+        component: () => import("@/views/Home.vue"),
       },
       {
         path: "/officials_login/",
