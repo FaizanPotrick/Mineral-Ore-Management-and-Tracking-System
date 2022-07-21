@@ -14,6 +14,8 @@ contract organisations is mines{
     mapping (string =>mapping(string=> uint)) public batchAmount;
 
     function selling(string calldata from_organisation_id,string calldata to_organisation_id,string calldata grade,uint amount)external {
+        require(keccak256(abi.encodePacked((organisation[from_organisation_id].organisation_id))) == keccak256(abi.encodePacked((from_organisation_id))),"Provided Seller Organisation ID Doesn't Exist");
+        require(keccak256(abi.encodePacked((organisation[from_organisation_id].organisation_id))) == keccak256(abi.encodePacked((from_organisation_id))),"Provided Buyer Organisation ID Doesn't Exist");
         batchAmount[from_organisation_id][grade] -= amount;
         batchAmount[to_organisation_id][grade] += amount;
     }
