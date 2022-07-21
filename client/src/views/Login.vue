@@ -1,14 +1,10 @@
 <script setup>
-import { useRoute } from 'vue-router';
 import { useAlertStore } from '@/stores/Alert.js';
 import { useLoginStore } from '@/stores/Login';
-import { useValidationStore } from '@/stores/Validation';
 import HeaderVue from '@/components/Header.vue';
 import FooterVue from '@/components/Footer.vue';
-const route = useRoute();
 const loginStore = useLoginStore();
 const alertStore = useAlertStore();
-const validationStore = useValidationStore();
 </script>
 <template>
     <div>
@@ -17,13 +13,7 @@ const validationStore = useValidationStore();
             <div
                 class="max-w-md bg-white w-[28rem] p-10 border border-gray-400/20 shadow-md rounded-2xl m-5 sm:m-10 text-gray-800">
                 <div class="mb-4">
-                    <div class="font-semibold text-2xl text-yellow-700">{{
-                            route.name === 'officials_login' ? "Officials" : (route.name ===
-                                'miner_login'
-                                ?
-                                "Miner"
-                                : "Buyer")
-                    }} Login</div>
+                    <div class="font-semibold text-2xl text-yellow-700">Login</div>
                     <div class="text-gray-500 text-sm">Please login to your account.</div>
                     <span
                         :class="{ 'text-red-500': alertStore.alert_text.type === 'error', 'text-green-500': alertStore.alert_text.type === 'success', 'text-blue-500': alertStore.alert_text.type === 'info', 'text-yellow-500': alertStore.alert_text.type === 'warning' }"
@@ -32,18 +22,12 @@ const validationStore = useValidationStore();
                                 alertStore.alert_text.message
                         }}</span>
                 </div>
-                <form class="space-y-5 drop-shadow-md" @submit.prevent="loginStore.login_fn(route.name)">
+                <form class="space-y-5 drop-shadow-md" @submit.prevent="loginStore.login_fn()">
                     <div class="space-y-2">
-                        <label class="text-sm font-medium">Email Address*</label>
+                        <label class="text-sm font-medium">User Name*</label>
                         <input
                             class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                            @change="validationStore.validation(loginStore.login_credentials(route.name).email_address)"
-                            v-model="loginStore.login_credentials(route.name).email_address.value"
-                            minlength="10" type="email" placeholder="Enter the Email Address" maxlength="30" required>
-                        <span class="text-center text-sm text-red-500"
-                            v-if="!loginStore.login_credentials(route.name).email_address.valid">{{
-                                    loginStore.login_credentials(route.name).email_address.message
-                            }}</span>
+                            v-model="loginStore.user_name" type="text" placeholder="Enter the User Name" required>
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium">
@@ -51,21 +35,13 @@ const validationStore = useValidationStore();
                         </label>
                         <input
                             class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                            type="password" placeholder="Enter the Password"
-                            @change="validationStore.validation(loginStore.login_credentials(route.name).password)"
-                            v-model="loginStore.login_credentials(route.name).password.value" minlength="6"
-                            maxlength="12" autocomplete required>
-                        <span class="text-center text-sm text-red-500"
-                            v-if="!loginStore.login_credentials(route.name).password.valid">{{
-                                    loginStore.login_credentials(route.name).password.message
-                            }}</span>
+                            type="password" placeholder="Enter the Password" v-model="loginStore.password" autocomplete
+                            required>
                     </div>
                     <div class="space-y-3">
-                        <div>
-                            <button class="text-yellow-600 hover:text-yellow-600/80 text-sm">
-                                Forgot your password?
-                            </button>
-                        </div>
+                        <button class="text-yellow-600 hover:text-yellow-600/80 text-sm">
+                            Forgot your password?
+                        </button>
                         <button type="submit" :class="{ 'hover:bg-yellow-600/80': !loginStore.isLoading }"
                             class="w-full flex text-lg justify-center items-center bg-yellow-600  text-gray-100 p-2.5 rounded-full font-semibold shadow-md"
                             :disabled="loginStore.isLoading">

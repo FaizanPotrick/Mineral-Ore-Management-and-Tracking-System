@@ -43,7 +43,7 @@ const User = new mongoose.Schema({
         required: true,
     },
     is_valid: {
-        type: boolean,
+        type: Boolean,
         default: true,
         required: true,
     },

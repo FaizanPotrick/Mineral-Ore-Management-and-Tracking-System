@@ -15,18 +15,8 @@ app.use(
         component: () => import("@/views/Home.vue"),
       },
       {
-        path: "/officials_login/",
-        name: "officials_login",
-        component: () => import("@/views/Login.vue"),
-      },
-      {
-        path: "/miner_login",
-        name: "miner_login",
-        component: () => import("@/views/Login.vue"),
-      },
-      {
-        path: "/buyer_login",
-        name: "buyer_login",
+        path: "/login",
+        name: "login",
         component: () => import("@/views/Login.vue"),
       },
       {
