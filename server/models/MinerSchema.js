@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
-const MinerRegistration = new mongoose.Schema({
-  auth: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+const Miner = new mongoose.Schema({
   mine_id: {
     type: String,
     unique: true,
@@ -15,31 +10,9 @@ const MinerRegistration = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  manager_name: {
-    type: String,
-    trim: true,
-    maxlength: 150,
-    lowercase: true,
-    required: true,
-  },
-  aadhar_card: {
-    type: String,
-    trim: true,
-    minlength: 12,
-    maxlength: 12,
-    unique: true,
-    required: true,
-  },
-  email_address: {
+  manager_id: {
     type: String,
     unique: true,
-    maxlength: 150,
-    lowercase: true,
-    required: true,
-  },
-  phone_no: {
-    type: String,
-    maxlength: 15,
     required: true,
   },
   location: {
@@ -96,7 +69,5 @@ const MinerRegistration = new mongoose.Schema({
       required: true,
     },
   },
-}, {
-  timestamps: true
 });
-module.exports = mongoose.connection.useDb("Miner").model("Registration", MinerRegistration);
+module.exports = mongoose.connection.useDb("Miner").model("Registration", Miner);
