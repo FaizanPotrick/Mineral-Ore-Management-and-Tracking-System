@@ -20,14 +20,19 @@ app.use(
         component: () => import("@/views/Login.vue"),
       },
       {
-        path: "/officials_dashboard",
-        name: "officials",
+        path: "/organization_registration",
+        name: "Organization Registration",
+        component: () => import("@/views/Registration/Organization.vue"),
+      },
+      {
+        path: "/officer_dashboard",
+        name: "officer",
         component: () => import("@/views/DashBoard.vue"),
         children: [
           {
             path: "miner_registration",
             name: "Miner Registration",
-            component: () => import("@/views/Miner/MinerRegistration.vue"),
+            component: () => import("@/views/Registration/Miner.vue"),
           },
         ],
       },

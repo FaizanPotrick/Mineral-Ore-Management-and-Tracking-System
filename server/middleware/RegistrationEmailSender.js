@@ -1,14 +1,13 @@
 const nodemailer = require("nodemailer");
 const RegistrationEmailSender = (req) => {
-  const {
-    user_id,
-    user_name,
-    email_address,
-    password,
-  } = req.credentails;
+  const user_id = req.user_id;
+  const user_name = req.user_name;
+  const user_type = req.user_type;
+  const email_address = req.email_address;
+  const password = req.password;
   const template = `
      <h2>Hello, ${user_name}</h2>
-     <div>Your Mine has been successfully registered.</div>
+     <div>Your ${user_type} has been successfully registered.</div>
      <div>Here are your Credentials for the Login:</div>
      <div><strong>UserName: ${user_id}<strong/></div>
      <div><strong>Password: ${password}<strong/></div>
@@ -31,7 +30,8 @@ const RegistrationEmailSender = (req) => {
         rejectUnauthorized: false,
       },
     })
-    .sendMail({
+    .sendMail(
+      {
         from: process.env.EMAIL_ID,
         to: email_address,
         subject: "Your Mine is Successfully Registered ✔",

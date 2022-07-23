@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const useAlertStore = defineStore({
+export default defineStore({
   id: "alert",
   state: () => ({
     alert_box: [],

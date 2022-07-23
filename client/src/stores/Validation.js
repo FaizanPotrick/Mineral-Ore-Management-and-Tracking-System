@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
 
-export const useValidationStore = defineStore({
+export default defineStore({
   id: "validation",
-  state: () => ({}),
+  state: () => ({
+    isLoading: false,
+  }),
   actions: {
     validation(input) {
       if (input.value === "") {

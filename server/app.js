@@ -16,9 +16,11 @@ try {
 }
 app.use(express.json());
 app.use(fileupload());
-app.use(express.urlencoded({
-  extended: true
-}));
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -29,5 +31,6 @@ app.use(cookieParser());
 app.use(require("./routes/registration/Miner.js"));
 app.use(require("./routes/registration/Officer.js"));
 app.use(require("./routes/registration/Organization.js"));
+app.use(require("./routes/Login.js"));
 app.use(require("./routes/miner/ores"));
 app.listen(process.env.PORT || 8000);
