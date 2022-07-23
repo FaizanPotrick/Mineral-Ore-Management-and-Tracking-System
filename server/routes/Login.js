@@ -1,27 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../../models/UserSchema");
+const User = require("../models/UserSchema");
+const bcrypt = require("bcrypt");
 
 router.post("/api/login", async (req, res) => {
   const { user_name, password } = req.body;
   try {
-    if (!user_name || !password) {
-      return res.status(201).json({
-        message: "Please fill all the required fields correctly",
-        type: "error",
-      });
-    }
     const response = await User.findOne({
       user_id: user_name,
       is_valid: true,
     });
-    if (response.length === 0) {
+    if (response === null) {
       return res.status(201).json({
         message: "Invalid Credential",
         type: "error",
       });
     }
-    const passwordMatch = await bcrypt.compare(password, response[0].password);
+    const passwordMatch = await bcrypt.compare(password, response.password);
     if (!passwordMatch) {
       return res.status(201).json({
         message: "Invalid Credential",

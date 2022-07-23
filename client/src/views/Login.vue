@@ -1,10 +1,8 @@
 <script setup>
-import { useAlertStore } from '@/stores/Alert.js';
-import { useLoginStore } from '@/stores/Login';
+import useLoginStore from '@/stores/Login';
+import useValidationStore from '@/stores/Validation';
 import HeaderVue from '@/components/Header.vue';
 import FooterVue from '@/components/Footer.vue';
-const loginStore = useLoginStore();
-const alertStore = useAlertStore();
 </script>
 <template>
     <div>
@@ -15,19 +13,13 @@ const alertStore = useAlertStore();
                 <div class="mb-4">
                     <div class="font-semibold text-2xl text-yellow-700">Login</div>
                     <div class="text-gray-500 text-sm">Please login to your account.</div>
-                    <span
-                        :class="{ 'text-red-500': alertStore.alert_text.type === 'error', 'text-green-500': alertStore.alert_text.type === 'success', 'text-blue-500': alertStore.alert_text.type === 'info', 'text-yellow-500': alertStore.alert_text.type === 'warning' }"
-                        class="text-center text-sm"
-                        v-if="alertStore.alert_text.message && !alertStore.alert_text.alertbox">{{
-                                alertStore.alert_text.message
-                        }}</span>
                 </div>
-                <form class="space-y-5 drop-shadow-md" @submit.prevent="loginStore.login_fn()">
+                <form class="space-y-5 drop-shadow-md" @submit.prevent="useLoginStore().login_fn()">
                     <div class="space-y-2">
                         <label class="text-sm font-medium">User Name*</label>
                         <input
                             class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                            v-model="loginStore.user_name" type="text" placeholder="Enter the User Name" required>
+                            v-model="useLoginStore().user_name" type="text" placeholder="Enter the User Name" required>
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium">
@@ -35,17 +27,17 @@ const alertStore = useAlertStore();
                         </label>
                         <input
                             class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                            type="password" placeholder="Enter the Password" v-model="loginStore.password" autocomplete
-                            required>
+                            type="password" placeholder="Enter the Password" v-model="useLoginStore().password"
+                            autocomplete required>
                     </div>
                     <div class="space-y-3">
                         <button class="text-yellow-600 hover:text-yellow-600/80 text-sm">
                             Forgot your password?
                         </button>
-                        <button type="submit" :class="{ 'hover:bg-yellow-600/80': !loginStore.isLoading }"
+                        <button type="submit" :class="{ 'hover:bg-yellow-600/80': !useValidationStore().isLoading }"
                             class="w-full flex text-lg justify-center items-center bg-yellow-600  text-gray-100 p-2.5 rounded-full font-semibold shadow-md"
-                            :disabled="loginStore.isLoading">
-                            <span v-if="!loginStore.isLoading" class="h-6">
+                            :disabled="useValidationStore().isLoading">
+                            <span v-if="!useValidationStore().isLoading" class="h-6">
                                 Login
                             </span>
                             <span v-else>
