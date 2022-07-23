@@ -1,5 +1,5 @@
 <script setup>
-import useOrganizationStore from '@/stores/Registration/Organization';
+import useOrganizationStore from '@/stores/Registration/OrganizationStore';
 import useAlertStore from '@/stores/Alert';
 import useValidationStore from '@/stores/Validation';
 import HeaderVue from '@/components/Header.vue';
@@ -28,7 +28,7 @@ const { organization_name, address, ceo_name, ceo_email_address, ceo_phone_no, c
                             <label class="text-sm font-medium text-gray-700">Organisation Name*</label>
                             <input type="text"
                                 class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                                placeholder="Enter the Organization Name"
+                                placeholder="Organization Name"
                                 @change="useValidationStore().validation(organization_name)"
                                 v-model="organization_name.value" maxlength="300" required>
                             <span class="text-center text-sm text-red-500" v-if="!organization_name.valid">{{
@@ -39,7 +39,7 @@ const { organization_name, address, ceo_name, ceo_email_address, ceo_phone_no, c
                             <label class="text-sm font-medium text-gray-700">Address*</label>
                             <input type="text"
                                 class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                                placeholder="Enter the Address" @change="useValidationStore().validation(address)"
+                                placeholder="Address" @change="useValidationStore().validation(address)"
                                 v-model="address.value" maxlength="300" required>
                             <span class="text-center text-sm text-red-500" v-if="!address.valid">{{
                                     address.message
@@ -49,7 +49,7 @@ const { organization_name, address, ceo_name, ceo_email_address, ceo_phone_no, c
                             <label class="text-sm font-medium text-gray-700">CEO Name*</label>
                             <input type="text"
                                 class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                                placeholder="Enter the CEO Name" @change="useValidationStore().validation(ceo_name)"
+                                placeholder="CEO Name" @change="useValidationStore().validation(ceo_name)"
                                 v-model="ceo_name.value" maxlength="150" required>
                             <span class="text-center text-sm text-red-500" v-if="!ceo_name.valid">{{
                                     ceo_name.message
@@ -62,8 +62,7 @@ const { organization_name, address, ceo_name, ceo_email_address, ceo_phone_no, c
                                 Address*</label>
                             <input type="email"
                                 class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                                placeholder="Enter the Email Address"
-                                @change="useValidationStore().validation(ceo_email_address)"
+                                placeholder="Email Address" @change="useValidationStore().validation(ceo_email_address)"
                                 v-model="ceo_email_address.value" maxlength="150" required>
                             <span class="text-center text-sm text-red-500" v-if="!ceo_email_address.valid">{{
                                     ceo_email_address.message
@@ -74,9 +73,8 @@ const { organization_name, address, ceo_name, ceo_email_address, ceo_phone_no, c
                                 No.*</label>
                             <input type="text"
                                 class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                                placeholder="Enter the Phone No."
-                                @change="useValidationStore().validation(ceo_phone_no)" v-model="ceo_phone_no.value"
-                                minlength="10" maxlength="10" required>
+                                placeholder="Phone Number" @change="useValidationStore().validation(ceo_phone_no)"
+                                v-model="ceo_phone_no.value" minlength="10" maxlength="10" required>
                             <span class="text-center text-sm text-red-500" v-if="!ceo_phone_no.valid">{{
                                     ceo_phone_no.message
                             }}</span>
@@ -85,7 +83,7 @@ const { organization_name, address, ceo_name, ceo_email_address, ceo_phone_no, c
                             <label class="text-sm font-medium text-gray-700">CEO Aadhar Card*</label>
                             <input type="text"
                                 class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                                placeholder="Enter the Aadhar Card Details"
+                                placeholder="Aadhar Card Details"
                                 @change="useValidationStore().validation(ceo_aadhar_card)"
                                 v-model="ceo_aadhar_card.value" minlength="12" maxlength="12" required>
                             <span class="text-center text-sm text-red-500" v-if="!ceo_aadhar_card.valid">{{
@@ -96,7 +94,7 @@ const { organization_name, address, ceo_name, ceo_email_address, ceo_phone_no, c
                             <label class="text-sm font-medium text-gray-700">GST No.*</label>
                             <input type="text"
                                 class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                                placeholder="Enter the GST Number" @change="useValidationStore().validation(gst_no)"
+                                placeholder="GST Number" @change="useValidationStore().validation(gst_no)"
                                 v-model="gst_no.value" minlength="15" maxlength="15" required>
                             <span class="text-center text-sm text-red-500" v-if="!gst_no.valid">{{
                                     gst_no.message

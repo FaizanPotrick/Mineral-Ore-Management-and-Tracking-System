@@ -19,7 +19,7 @@ import FooterVue from '@/components/Footer.vue';
                         <label class="text-sm font-medium">User Name*</label>
                         <input
                             class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                            v-model="useLoginStore().user_name" type="text" placeholder="Enter the User Name" required>
+                            v-model="useLoginStore().user_name" type="text" placeholder="User Name" required>
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-medium">
@@ -27,8 +27,8 @@ import FooterVue from '@/components/Footer.vue';
                         </label>
                         <input
                             class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                            type="password" placeholder="Enter the Password" v-model="useLoginStore().password"
-                            autocomplete required>
+                            type="password" placeholder="Password" v-model="useLoginStore().password" autocomplete
+                            required>
                     </div>
                     <div class="space-y-3">
                         <button class="text-yellow-600 hover:text-yellow-600/80 text-sm">

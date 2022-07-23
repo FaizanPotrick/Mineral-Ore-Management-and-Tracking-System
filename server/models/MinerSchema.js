@@ -7,12 +7,10 @@ const Miner = new mongoose.Schema({
   },
   organization_id: {
     type: String,
-    unique: true,
     required: true,
   },
   manager_id: {
     type: String,
-    unique: true,
     required: true,
   },
   location: {
@@ -30,29 +28,29 @@ const Miner = new mongoose.Schema({
       lowercase: true,
       required: true,
     },
-    pincode: {
+    pin_code: {
       type: String,
       maxlength: 20,
       required: true,
     },
     coordinate: {
       latitude: {
-        type: mongoose.Decimal128,
+        type: String,
         required: true,
       },
       longitude: {
-        type: mongoose.Decimal128,
+        type: String,
         required: true,
-      }
-    }
+      },
+    },
   },
-  mine_warehouse_capacity: {
+  area: {
     type: Number,
+    trim: true,
     required: true,
   },
-  mine_area: {
-    type: mongoose.Decimal128,
-    trim: true,
+  warehouse_capacity: {
+    type: Number,
     required: true,
   },
   lease_period: {
@@ -70,4 +68,6 @@ const Miner = new mongoose.Schema({
     },
   },
 });
-module.exports = mongoose.connection.useDb("Miner").model("Registration", Miner);
+module.exports = mongoose.connection
+  .useDb("Registration")
+  .model("Miner", Miner);
