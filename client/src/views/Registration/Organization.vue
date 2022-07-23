@@ -11,7 +11,7 @@ const { organization_name, address, ceo_name, ceo_email_address, ceo_phone_no, c
         <HeaderVue />
         <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
             <div
-                class="max-w-4xl w-[56rem] p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl m-5 sm:10 text-gray-800">
+                class="max-w-4xl p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl m-5 sm:10 text-gray-800">
                 <div class="mb-4">
                     <div class="font-semibold text-2xl text-yellow-700">Organization Registration</div>
                     <div class="text-gray-500 text-sm">Register your organization.</div>

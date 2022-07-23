@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const ShortUniqueId = require("short-unique-id");
-const Ores = require("../../models/OresSchema");
+const Ores = require("../../models/MinedBatchSchema");
 router.post("/api/miner/ores_registration", async (req, res) => {
   const { type, grade, quantity } = req.body;
   try {

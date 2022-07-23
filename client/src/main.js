@@ -34,6 +34,11 @@ app.use(
             name: "Miner Registration",
             component: () => import("@/views/Registration/Miner.vue"),
           },
+          {
+            path: "officer_registration",
+            name: "Officer Registration",
+            component: () => import("@/views/Registration/Officer.vue"),
+          },
         ],
       },
       {

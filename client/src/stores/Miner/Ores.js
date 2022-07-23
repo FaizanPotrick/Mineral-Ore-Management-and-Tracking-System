@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
-import { useAlertStore } from "../Alert";
-const alertStore = useAlertStore();
-const { open_alert_box, open_alert_text } = alertStore;
+import useAlertStore from "../Alert";
+const { open_alert_box, open_alert_text } = useAlertStore();
 
 export const useOresStore = defineStore({
   id: "miner_ores",

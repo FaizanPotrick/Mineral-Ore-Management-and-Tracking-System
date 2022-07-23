@@ -19,7 +19,7 @@ const {
         <div class="max-w-4xl p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl text-gray-800">
             <div class="mb-4">
                 <div class="font-semibold text-2xl text-yellow-700">Mine Registration</div>
-                <div class="text-gray-500 text-sm">Please register a mine account.</div>
+                <div class="text-gray-500 text-sm">Register a mine.</div>
                 <span
                     :class="{ 'text-red-500': useAlertStore().alert_text.type === 'error', 'text-green-500': useAlertStore().alert_text.type === 'success', 'text-blue-500': useAlertStore().alert_text.type === 'info', 'text-yellow-500': useAlertStore().alert_text.type === 'warning' }"
                     class="text-center text-sm"
