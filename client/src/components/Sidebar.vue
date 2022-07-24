@@ -1,6 +1,6 @@
 <template>
     <div
-        class="border-r border-gray-400/20 bg-white min-w-[18rem] flex flex-col justify-start drop-shadow-md font-bold h-screen">
+        class="border-r border-gray-400/20 bg-white min-w-[18rem] flex flex-col justify-start drop-shadow-md font-bold h-screen sticky top-0 bottom-0">
         <div class="flex items-center justify-center px-4 py-6 border-b">
             <img class="w-10 h-10 rounded-full" src="../assets/ministry_of_mine.png" alt="">
             <div>
@@ -20,7 +20,7 @@
                 <RouterLink to="/dashboard/miner_dashboard/ores_registration"
                     class="flex bg-white hover:bg-yellow-50 rounded-xl text-gray-900 py-2.5 px-4">
                     <img alt="" class="w-5 h-5 mr-4" src="@/assets/icons/file.svg" />
-                Create Batch
+                    Create Batch
                 </RouterLink>
                 <button class="flex bg-white hover:bg-yellow-50 rounded-xl text-gray-900 py-2.5 px-4">
                     <svg fill="currentColor" class="w-5 h-5 mr-4" viewBox="0 0 16 16">

@@ -2,6 +2,18 @@
 import useMinerStore from '@/stores/Registration/MinerStore';
 import useAlertStore from '@/stores/Alert';
 import useValidationStore from '@/stores/Validation';
+import { ref } from 'vue';
+const center = ref({ lat: 51.093048, lng: 6.842120 })
+const zoom = ref(5)
+const marker = ref({
+    lat: 61.093048, lng: 6.842120
+})
+const clickHandler = (e) => {
+    marker.value = {
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng()
+    }
+}
 const {
     manager_name,
     manager_email_address,
@@ -148,6 +160,10 @@ const {
                         }}</span>
                     </div>
                 </div>
+                <GMapMap :center="center" :zoom="zoom" map-type-id="terrain" style="width: 100%; height: 50vh"
+                    @click="clickHandler">
+                    <GMapMarker :position="marker" :clickable="true" :draggable="true" />
+                </GMapMap>
                 <div class="space-y-3 py-5">
                     <button type="submit" :class="{ 'hover:bg-yellow-600/80': !useValidationStore().isLoading }"
                         class="w-full flex text-lg justify-center items-center bg-yellow-600  text-gray-100 p-2.5 rounded-full font-semibold shadow-md"

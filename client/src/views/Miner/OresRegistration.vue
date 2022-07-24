@@ -1,7 +1,7 @@
 <script setup>
-import { useAlertStore } from '@/stores/Alert';
+import useAlertStore from '@/stores/Alert';
 import { useOresStore } from '@/stores/Miner/Ores';
-import { useValidationStore } from '@/stores/Validation';
+import useValidationStore from '@/stores/Validation';
 const oresStore = useOresStore();
 const alertStore = useAlertStore();
 const validationStore = useValidationStore();

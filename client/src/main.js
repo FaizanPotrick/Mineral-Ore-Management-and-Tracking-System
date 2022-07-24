@@ -2,9 +2,16 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import { createRouter, createWebHistory } from "vue-router";
+import VueGoogleMaps from "@fawmi/vue-google-maps";
 
 const app = createApp(App);
 app.use(createPinia());
+app.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyBnpAKWxu7ciOW1OnMqYXkaHeuXOhrb6Es",
+    libraries: "places",
+  },
+});
 app.use(
   createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
