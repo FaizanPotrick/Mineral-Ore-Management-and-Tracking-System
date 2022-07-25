@@ -26,11 +26,7 @@ app.use(
         name: "login",
         component: () => import("@/views/Login.vue"),
       },
-      {
-        path: "/organization_registration",
-        name: "Organization Registration",
-        component: () => import("@/views/Registration/Organization.vue"),
-      },
+
       {
         path: "/officer_dashboard",
         name: "officer",
@@ -40,6 +36,11 @@ app.use(
             path: "miner_registration",
             name: "Miner Registration",
             component: () => import("@/views/Registration/Miner.vue"),
+          },
+          {
+            path: "organization_registration",
+            name: "Organization Registration",
+            component: () => import("@/views/Registration/Organization.vue"),
           },
           {
             path: "officer_registration",

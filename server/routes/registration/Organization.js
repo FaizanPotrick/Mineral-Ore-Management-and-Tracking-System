@@ -94,6 +94,7 @@ router.post(
       });
       next();
     } catch (error) {
+      // console.log(error);
       res.status(400).json({
         message: "Invalid Request",
         type: "error",
