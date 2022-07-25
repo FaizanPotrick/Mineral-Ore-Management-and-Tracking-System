@@ -35,7 +35,7 @@ contract mines{
     mapping (string => mine_detail ) public mine;
     mapping (string => mapping (string => ore_details) ) public batch;
     mapping( string => mapping (string => bool)) public batchState;
-    mapping (string =>mapping(string=> uint)) public mineBatchAmount;
+    mapping (string =>mapping(string=> uint)) public mineOreAmount;
     mapping (string=> transaction_details) transaction;
 
 }
