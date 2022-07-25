@@ -23,7 +23,7 @@ contract goverment_official is mines,organisations{
         batch[mine_id][batch_id]=ore_details(batch_id,amount,ore_type,grade,Fe_amount,file);
         batchState[mine_id][batch_id]=state;
         if(state == true){
-            mineBatchAmount[mine_id][grade] +=amount;            
+            mineOreAmount[mine_id][grade] +=amount;            
         }
     }
 }
