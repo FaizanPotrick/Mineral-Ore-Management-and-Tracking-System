@@ -32,7 +32,6 @@ contract mines{
        string grade;
        string ewaybill;
        string price;
-       string invoice;
    }
 
     
