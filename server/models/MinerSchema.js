@@ -13,23 +13,14 @@ const Miner = new mongoose.Schema({
     type: String,
     required: true,
   },
+  region_id: {
+    type: String,
+    required: true,
+  },
   location: {
-    district: {
-      type: String,
-      trim: true,
-      maxlength: 50,
-      lowercase: true,
-      required: true,
-    },
-    state: {
-      type: String,
-      trim: true,
-      maxlength: 50,
-      lowercase: true,
-      required: true,
-    },
     pin_code: {
       type: String,
+      trim: true,
       maxlength: 20,
       required: true,
     },
@@ -46,7 +37,6 @@ const Miner = new mongoose.Schema({
   },
   area: {
     type: Number,
-    trim: true,
     required: true,
   },
   warehouse_capacity: {
@@ -69,5 +59,5 @@ const Miner = new mongoose.Schema({
   },
 });
 module.exports = mongoose.connection
-  .useDb("Registration")
+  .useDb("Ores_Tracking")
   .model("Miner", Miner);

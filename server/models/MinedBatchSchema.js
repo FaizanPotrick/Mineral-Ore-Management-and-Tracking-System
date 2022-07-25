@@ -1,50 +1,62 @@
 const mongoose = require("mongoose");
 const MinedBatch = new mongoose.Schema({
-  mine_id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  officer_id: {
-    type: String,
-    unique: true,
-    required: true,
-  },
   batch_id: {
     type: String,
     required: true,
     unique: true,
   },
+  mine_id: {
+    type: String,
+    required: true,
+  },
+  manager_id: {
+    type: String,
+    required: true,
+  },
+  officer_id: {
+    type: String,
+    required: true,
+  },
   type_of_ore: {
     type: String,
-    maxlength: 20,
-    lowercase: true,
+    enum: ["fine", "lump", "iron pellet"],
     required: true,
   },
-  amount_of_Fe: {
-    type: Number,
-    trim: true,
+  grade: {
+    type: String,
+    enum: ["high", "medium", "low"],
     required: true,
   },
-  quantity: {
+  Fe_percentage: {
     type: Number,
-    trim: true,
+    required: true,
+  },
+  quantity_of_ore: {
+    type: Number,
     required: true,
   },
   status: {
     type: String,
-    required: true,
-    default: "pending"
-  },
-  sample_image: {
-    type: Object,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
     required: true,
   },
-  document: {
-    type: Object,
+  sample_image_id: {
+    type: String,
+    unique: true,
     required: true,
   },
+  mine_lab_report_id: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  gov_lab_report_id: {
+    type: String,
+    unique: true,
+  },
+
 }, {
   timestamps: true
 });
-module.exports = mongoose.connection.useDb("Miner").model("MinedBatch", MinedBatch);
+module.exports = mongoose.connection.useDb("Ores_Tracking").model("MinedBatch", MinedBatch);

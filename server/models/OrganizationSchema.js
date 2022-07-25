@@ -30,7 +30,60 @@ const Organization = new mongoose.Schema({
     lowercase: true,
     required: true,
   },
+  ores_bought: {
+    fine: {
+      high: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      medium: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      low: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+    },
+    lump: {
+      high: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      medium: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      low: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+    },
+    iron_pellet: {
+      high: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      medium: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      low: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+    }
+  }
 });
 module.exports = mongoose.connection
-  .useDb("Registration")
+  .useDb("Ores_Tracking")
   .model("Organization", Organization);
