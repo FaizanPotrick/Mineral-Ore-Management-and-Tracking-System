@@ -23,7 +23,7 @@ router.post(
       area,
       warehouse_capacity,
       period,
-      coordinate: { latitude, longitude },
+      coordinate,
     } = req.body;
     try {
       const organization_check = await Organization.findOne({
@@ -81,8 +81,8 @@ router.post(
           state: state,
           pin_code: pin_code,
           coordinate: {
-            latitude: latitude,
-            longitude: longitude,
+            latitude: coordinate.latitude,
+            longitude: coordinate.longitude,
           },
         },
         warehouse_capacity: warehouse_capacity,

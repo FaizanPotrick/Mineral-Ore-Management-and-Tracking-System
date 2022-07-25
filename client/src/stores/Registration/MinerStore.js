@@ -96,7 +96,7 @@ export default defineStore({
           area: this.mine_area.value,
           warehouse_capacity: this.mine_warehouse_capacity.value,
           period: this.lease_period.value,
-          coordinate: this.coordinate,
+          coordinate: this.coordinates,
         }),
       });
       const data = await res.json();
