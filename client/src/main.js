@@ -26,6 +26,11 @@ app.use(
         name: "login",
         component: () => import("@/views/Login.vue"),
       },
+      {
+        path: "/forgot_password",
+        name: "forgot",
+        component: () => import("@/views/Forgot.vue"),
+      },
 
       {
         path: "/officer_dashboard",
