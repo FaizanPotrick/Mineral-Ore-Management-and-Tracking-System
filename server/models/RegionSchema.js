@@ -7,23 +7,21 @@ const Officer = new mongoose.Schema({
   },
   officer_id: {
     type: String,
-    default: "",
-    required: true,
   },
   type_of_region: {
     type: String,
-    enum: ['country', 'state', 'district'],
+    enum: ["country", "state", "district"],
     required: true,
   },
-  country_name: {
+  country: {
     type: String,
     default: "india",
     required: true,
   },
-  state_name: {
+  state: {
     type: String,
   },
-  district_name: {
+  district: {
     type: String,
   },
   coordinates: {

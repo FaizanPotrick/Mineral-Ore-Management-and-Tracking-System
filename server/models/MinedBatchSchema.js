@@ -27,7 +27,7 @@ const MinedBatch = new mongoose.Schema({
     enum: ["high", "medium", "low"],
     required: true,
   },
-  Fe_percentage: {
+  fe_percentage: {
     type: Number,
     required: true,
   },

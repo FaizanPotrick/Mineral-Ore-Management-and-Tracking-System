@@ -13,17 +13,16 @@ router.post(
   async (req, res, next) => {
     const {
       organization_id,
+      region_id,
       manager_name,
       email_address,
       phone_no,
       aadhar_card,
-      state,
-      district,
       pin_code,
       area,
       warehouse_capacity,
       period,
-      coordinate,
+      coordinates,
     } = req.body;
     try {
       const organization_check = await Organization.findOne({
@@ -53,16 +52,12 @@ router.post(
           type: "warning",
         });
       }
-      const mine_id_genarate = new ShortUniqueId({
-        length: 15,
-      });
       const manager_id_genarate = new ShortUniqueId({
         length: 10,
       });
       const password_generate = new ShortUniqueId({
         length: 8,
       });
-      const mine_id = mine_id_genarate();
       const manager_id = manager_id_genarate();
       const password = password_generate();
       const auth = jwt.sign(
@@ -72,17 +67,31 @@ router.post(
         aadhar_card
       );
       const today = new Date();
+      await User.create({
+        auth: auth,
+        user_id: manager_id,
+        type_of_user: "miner",
+        user_name: manager_name,
+        aadhar_card: aadhar_card,
+        email_address: email_address,
+        phone_no: phone_no,
+        password: bcrypt.hashSync(password, 10),
+        c_password: bcrypt.hashSync(password, 10),
+      });
+      const mine_id_genarate = new ShortUniqueId({
+        length: 15,
+      });
+      const mine_id = mine_id_genarate();
       await Miner.create({
         mine_id: mine_id,
         organization_id: organization_id,
         manager_id: manager_id,
+        region_id: region_id,
         location: {
-          district: district,
-          state: state,
           pin_code: pin_code,
-          coordinate: {
-            latitude: coordinate.latitude,
-            longitude: coordinate.longitude,
+          coordinates: {
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude,
           },
         },
         warehouse_capacity: warehouse_capacity,
@@ -101,17 +110,7 @@ router.post(
           ),
         },
       });
-      await User.create({
-        auth: auth,
-        user_id: manager_id,
-        type_of_user: "miner",
-        user_name: manager_name,
-        aadhar_card: aadhar_card,
-        email_address: email_address,
-        phone_no: phone_no,
-        password: bcrypt.hashSync(password, 10),
-        c_password: bcrypt.hashSync(password, 10),
-      });
+
       req.user_id = manager_id;
       req.user_name = manager_name;
       req.user_type = "Miner";

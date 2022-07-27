@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const Officer = require("../../models/RegionSchema");
+const Region = require("../../models/RegionSchema");
 const User = require("../../models/UserSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
@@ -37,9 +37,6 @@ router.post(
           type: "warning",
         });
       }
-      const region_id_generate = new ShortUniqueId({
-        length: 15,
-      });
       const officer_id_generate = new ShortUniqueId({
         length: 10,
       });
@@ -47,7 +44,6 @@ router.post(
         length: 8,
       });
       const officer_id = officer_id_generate();
-      const region_id = region_id_generate();
       const password = password_generate();
       const auth = jwt.sign(
         {
@@ -55,34 +51,25 @@ router.post(
         },
         aadhar_card
       );
-      const officer_check = await Officer.findOne({
+      const region_check = await Region.findOne({
         type_of_region: type_of_region,
-        region_name: region_name,
+        [type_of_region]: region_name,
       });
-      if (officer_check !== null) {
+      if (region_check === null) {
+        return res.status(201).json({
+          message: "Region not found",
+          type: "warning",
+        });
+      }
+      if (region_check.officer_id !== null) {
         await User.findOneAndUpdate(
           {
-            user_id: officer_check.officer_id,
+            user_id: region_check.officer_id,
           },
           {
             is_valid: false,
           }
         );
-        await Officer.findOneAndUpdate(
-          {
-            region_id: officer_check.region_id,
-          },
-          {
-            officer_id: officer_id,
-          }
-        );
-      } else {
-        await Officer.create({
-          region_id: region_id,
-          officer_id: officer_id,
-          type_of_region: type_of_region,
-          region_name: region_name,
-        });
       }
       await User.create({
         auth: auth,
@@ -95,6 +82,14 @@ router.post(
         password: bcrypt.hashSync(password, 10),
         c_password: bcrypt.hashSync(password, 10),
       });
+      await Region.findOneAndUpdate(
+        {
+          region_id: region_check.region_id,
+        },
+        {
+          officer_id: officer_id,
+        }
+      );
       req.user_id = officer_id;
       req.user_name = officer_name;
       req.user_type = "Officer";

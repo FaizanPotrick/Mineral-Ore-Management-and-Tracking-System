@@ -24,7 +24,7 @@ const Miner = new mongoose.Schema({
       maxlength: 20,
       required: true,
     },
-    coordinate: {
+    coordinates: {
       latitude: {
         type: String,
         required: true,

@@ -27,14 +27,11 @@ router.post("/api/login", async (req, res) => {
       .cookie("auth", response.auth, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
       })
-      .cookie("user", response.type_of_user, {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-      })
       .status(200)
       .json({
         message: "Successfully Logged In",
         type: "success",
-        type_of_user: response.type_of_user,
+        path: `${response.type_of_user}_dashboard`,
       });
   } catch (error) {
     res.status(400).json({
