@@ -21,11 +21,12 @@ contract goverment_official is mines,organisations{
     }
 
     //Creating Batch 
-    //Input:-1)Batch Detail[Batch ID,Mine Id,Organization Id,Manager Id,Amount,Ore Type,Grade,Fe%,Sample Image(Hash),Lab Document(Hash),Government Officers Id,Government Lab Document(Hash)],
+    //Input:-1)Batch Detail[Batch ID,Mine Id,Organization Id,Manager Id,Quantidy Of Ore,Ore Of Type,Grade,Fe%,OreSample Image(Hash),Lab Document of Miner(Hash),Government Officers Id,Government Lab Document(Hash)],
     //       2)Approve(True) or Disapprove (False)
     function minedBatch(ore_details calldata oredetails,bool state) external{
         require(keccak256(abi.encodePacked((mine[oredetails.mine_id].mine_id))) == keccak256(abi.encodePacked((oredetails.mine_id))),"Provided Mine ID Doesn't Exist");
         require(keccak256(abi.encodePacked((batch[oredetails.mine_id][oredetails.batch_id].batch_id))) != keccak256(abi.encodePacked((oredetails.batch_id))),"Provided Batch ID Exist");        
+        
         batch[oredetails.mine_id][oredetails.batch_id]=ore_details(oredetails.batch_id,
                                                                    oredetails.mine_id,
                                                                    oredetails.organisation_id,
@@ -38,6 +39,7 @@ contract goverment_official is mines,organisations{
                                                                    oredetails.lab_doc,
                                                                    oredetails.officer_id,
                                                                    oredetails.gov_doc);
+        
         batchState[oredetails.mine_id][oredetails.batch_id]=state;
 
         //If Batch Is Approved then only it can be Sell
@@ -46,5 +48,4 @@ contract goverment_official is mines,organisations{
             mineOreAmount[oredetails.mine_id][oredetails.ore_type][oredetails.grade] += oredetails.amount;            
         }
     }
-
 }
