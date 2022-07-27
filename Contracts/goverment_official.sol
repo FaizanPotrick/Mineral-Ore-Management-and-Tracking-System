@@ -6,26 +6,45 @@ import "./organisations.sol";
 
 contract goverment_official is mines,organisations{
 
-    
+    //Register Organization
+    //Input:- 1)Organization ID , 2)Organization Detail(Hash)
     function organisationDetail(string calldata organisation_id,string calldata organisation_hash) external{
         
         organisation[organisation_id]=organisation_detail(organisation_id,organisation_hash);
     }
     
+    //Register Mine
+    //Input:- 1)Mine ID , 2)Mine Detail(Hash)
     function mineDetail(string calldata mine_id,string calldata organisation_id,string calldata mine_hash) external{
         
         mine[mine_id]=mine_detail(mine_id,organisation_id,mine_hash);
     }
 
-    function minedBatch(string calldata mine_id,string calldata batch_id,string calldata manager_id,string calldata sample_img,string calldata lab_doc,string calldata officer_id,string calldata gov_doc,uint amount, string calldata ore_type,string calldata grade, string calldata Fe_amount, string calldata file,bool state) external{
-        require(keccak256(abi.encodePacked((mine[mine_id].mine_id))) == keccak256(abi.encodePacked((mine_id))),"Provided Mine ID Doesn't Exist");
-        require(keccak256(abi.encodePacked((batch[mine_id][batch_id].batch_id))) != keccak256(abi.encodePacked((batch_id))),"Provided Batch ID Exist");        
-        batch[mine_id][batch_id]=ore_details(batch_id,amount,ore_type,grade,Fe_amount,file);
-        batchState[mine_id][batch_id]=state;
-        mineBatch[batch_id]=mine_ore_details(batch_id,mine_id,manager_id,sample_img,lab_doc);
-        govBatch[batch_id]=gov_ore_detail(batch_id,officer_id,gov_doc);
+    //Creating Batch 
+    //Input:-1)Batch Detail[Batch ID,Mine Id,Organization Id,Manager Id,Amount,Ore Type,Grade,Fe%,Sample Image(Hash),Lab Document(Hash),Government Officers Id,Government Lab Document(Hash)],
+    //       2)Approve(True) or Disapprove (False)
+    function minedBatch(ore_details calldata oredetails,bool state) external{
+        require(keccak256(abi.encodePacked((mine[oredetails.mine_id].mine_id))) == keccak256(abi.encodePacked((oredetails.mine_id))),"Provided Mine ID Doesn't Exist");
+        require(keccak256(abi.encodePacked((batch[oredetails.mine_id][oredetails.batch_id].batch_id))) != keccak256(abi.encodePacked((oredetails.batch_id))),"Provided Batch ID Exist");        
+        batch[oredetails.mine_id][oredetails.batch_id]=ore_details(oredetails.batch_id,
+                                                                   oredetails.mine_id,
+                                                                   oredetails.organisation_id,
+                                                                   oredetails.manager_id,
+                                                                   oredetails.amount,
+                                                                   oredetails.ore_type,
+                                                                   oredetails.grade,
+                                                                   oredetails.Fe_amount,
+                                                                   oredetails.sample_img,
+                                                                   oredetails.lab_doc,
+                                                                   oredetails.officer_id,
+                                                                   oredetails.gov_doc);
+        batchState[oredetails.mine_id][oredetails.batch_id]=state;
+
+        //If Batch Is Approved then only it can be Sell
+        //That Batch is Added to Mine Total Batch  
         if(state == true){
-            mineOreAmount[mine_id][ore_type][grade] +=amount;            
+            mineOreAmount[oredetails.mine_id][oredetails.ore_type][oredetails.grade] += oredetails.amount;            
         }
     }
+
 }
