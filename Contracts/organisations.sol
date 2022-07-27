@@ -24,7 +24,7 @@ contract organisations is mines{
         string storage mine_organisation_id=mine[transactionDetails.mine_id].organisation_id;
         
         //Storing All the Transaction Information
-        transactionPartner[transactionDetails.transaction_id]=transaction_details(transactionDetails.transaction_id,
+        transaction[transactionDetails.transaction_id]=transaction_details(transactionDetails.transaction_id,
                                                                                   transactionDetails.mine_id,
                                                                                   mine_organisation_id,
                                                                                   transactionDetails.buyer_organisation_id,
