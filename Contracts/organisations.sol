@@ -11,18 +11,34 @@ contract organisations is mines{
    }
     
     mapping(string => organisation_detail)public organisation;
-    mapping (string => uint) public organisatinAmount;
     mapping (string => mapping (string => mapping(string=> uint))) public organisationOreAmount;
     
-
-    function selling(string calldata transaction_id,string calldata mine_id,string calldata buyer_organisation_id,uint amount,string calldata ore_type,string calldata grade,string calldata price) external{
-        require(keccak256(abi.encodePacked((mine[mine_id].mine_id))) == keccak256(abi.encodePacked((mine_id))),"Provided Seller Mine ID Doesn't Exist");
-        require(keccak256(abi.encodePacked((organisation[buyer_organisation_id].organisation_id))) == keccak256(abi.encodePacked((buyer_organisation_id))),"Provided Seller Organisation ID Doesn't Exist");        
-        require(mineOreAmount[mine_id][ore_type][grade]>= amount,"Amount of Ore is Not Present in the Mine");
-        string storage mine_organisation_id=mine[mine_id].organisation_id;
-        transactionPartner[transaction_id]=transaction_partner_details(transaction_id,mine_id,mine_organisation_id,buyer_organisation_id);
-        transactionOre[transaction_id]=transaction_ore_details(transaction_id,amount,ore_type,grade,price);        
-        mineOreAmount[mine_id][ore_type][grade] -= amount;
-        organisationOreAmount[buyer_organisation_id][ore_type][grade] += amount;
+    //Transaction of Selling
+    //Input:- 1)Transtion Detail[Transaction Id,Mine Id,Buyer Organisation ID,Quantity Of Ore to sell,Ore Type,Grade,Price]
+    function selling(transaction_details calldata transactionDetails ) external{
+        require(keccak256(abi.encodePacked((mine[transactionDetails.mine_id].mine_id))) == keccak256(abi.encodePacked((transactionDetails.mine_id))),"Provided Seller Mine ID Doesn't Exist");
+        require(keccak256(abi.encodePacked((organisation[transactionDetails.buyer_organisation_id].organisation_id))) == keccak256(abi.encodePacked((transactionDetails.buyer_organisation_id))),"Provided Seller Organisation ID Doesn't Exist");        
+        require(mineOreAmount[transactionDetails.mine_id][transactionDetails.ore_type][transactionDetails.grade]>= transactionDetails.amount,"Amount of Ore is Not Present in the Mine");
+        
+        //From Mine Id we get Mine Organisation Id 
+        string storage mine_organisation_id=mine[transactionDetails.mine_id].organisation_id;
+        
+        //Storing All the Transaction Information
+        transactionPartner[transactionDetails.transaction_id]=transaction_details(transactionDetails.transaction_id,
+                                                                                  transactionDetails.mine_id,
+                                                                                  mine_organisation_id,
+                                                                                  transactionDetails.buyer_organisation_id,
+                                                                                  transactionDetails.amount,
+                                                                                  transactionDetails.ore_type,
+                                                                                  transactionDetails.grade,
+                                                                                  transactionDetails.price
+                                                                                  );
+        
+        //Quantity Of Ore Sell is Deduction from Mine
+        mineOreAmount[transactionDetails.mine_id][transactionDetails.ore_type][transactionDetails.grade] -= transactionDetails.amount;
+        
+        //Quantity Of Ore Sell is Added from Organisation
+        organisationOreAmount[transactionDetails.buyer_organisation_id][transactionDetails.ore_type][transactionDetails.grade] += transactionDetails.amount;
     }
+
 }
