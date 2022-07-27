@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Officer = new mongoose.Schema({
+const Region = new mongoose.Schema({
   region_id: {
     type: String,
     unique: true,
@@ -26,15 +26,15 @@ const Officer = new mongoose.Schema({
   },
   coordinates: {
     latitude: {
-      type: String,
+      type: mongoose.Types.Decimal128,
       required: true,
     },
     longitude: {
-      type: String,
+      type: mongoose.Types.Decimal128,
       required: true,
     },
   },
 });
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
-  .model("Officer", Officer);
+  .model("Region", Region);

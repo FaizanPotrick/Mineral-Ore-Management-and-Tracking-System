@@ -3,7 +3,8 @@ import useMinerStore from "@/stores/Registration/MinerStore";
 import useAlertStore from "@/stores/Alert";
 import useValidationStore from "@/stores/Validation";
 import { ref } from "vue";
-const center = ref({ lat: 51.093048, lng: 6.84212 });
+import RegionJson from "@/assets/region.json";
+const center = ref({ lat: 21.2787, lng: 81.8661 });
 const zoom = ref(5);
 const marker = ref({
   lat: 61.093048,
@@ -156,10 +157,9 @@ const {
               required
             >
               <option disabled selected value="">Choose a State</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
+              <option v-for="states in RegionJson">
+                {{ states.state }}
+              </option>
             </select>
           </div>
           <div class="space-y-2">
