@@ -57,7 +57,7 @@ router.post(
         aadhar_card
       );
       const password = id_genarate();
-      const user_response = await User.create({
+      await User.create({
         auth: auth,
         user_id: ceo_id,
         type_of_user: "organization",
@@ -74,17 +74,18 @@ router.post(
         gst_no: gst_no,
         address: address,
       });
-      req.user_id = user_response.user_id;
-      req.user_name = user_response.user_name;
+      req.user_id = ceo_id;
+      req.user_name = ceo_name;
       req.user_type = "Organization";
-      req.email_address = user_response.email_address;
-      req.password = user_response.password;
+      req.email_address = email_address;
+      req.password = password;
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",
       });
       next();
     } catch (error) {
+      console.log(error);
       res.status(400).json({
         message: "Invalid Request",
         type: "error",

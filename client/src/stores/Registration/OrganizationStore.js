@@ -12,12 +12,7 @@ export default defineStore({
       regex: /^([ a-zA-Z]+)$/,
       message: "Name must be alphabetic",
     },
-    address: {
-      value: "",
-      valid: true,
-      regex: /^([ 0-9a-zA-Z-,./]+)$/,
-      message: "Enter a proper address",
-    },
+    address: "",
     ceo_name: {
       value: "",
       valid: true,
@@ -53,7 +48,6 @@ export default defineStore({
     async register_fn() {
       if (
         !this.organization_name.valid ||
-        !this.address.valid ||
         !this.ceo_name.valid ||
         !this.ceo_email_address.valid ||
         !this.ceo_phone_no.valid ||
@@ -75,7 +69,7 @@ export default defineStore({
         },
         body: JSON.stringify({
           organization_name: this.organization_name.value,
-          address: this.address.value,
+          address: this.address,
           ceo_name: this.ceo_name.value,
           email_address: this.ceo_email_address.value,
           phone_no: this.ceo_phone_no.value,
@@ -88,7 +82,7 @@ export default defineStore({
       open_alert_box(data.message, data.type);
       if (res.status === 200) {
         this.organization_name.value = "";
-        this.address.value = "";
+        this.address = "";
         this.ceo_name.value = "";
         this.ceo_email_address.value = "";
         this.ceo_phone_no.value = "";

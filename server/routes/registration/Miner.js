@@ -28,7 +28,7 @@ router.post(
     } = req.body;
     try {
       const organization_check = await Organization.findOne({
-        organization_id: organization_id,
+        _id: organization_id,
       });
       if (organization_check === null) {
         return res.status(201).json({
@@ -63,7 +63,7 @@ router.post(
       );
       const password = id_genarate();
       const today = new Date();
-      const user_response = await User.create({
+      await User.create({
         auth: auth,
         user_id: manager_id,
         type_of_user: "miner",
@@ -81,8 +81,8 @@ router.post(
         location: {
           pin_code: pin_code,
           coordinates: {
-            latitude: coordinates.latitude,
-            longitude: coordinates.longitude,
+            latitude: coordinates.lat,
+            longitude: coordinates.lng,
           },
         },
         warehouse_capacity: warehouse_capacity,
@@ -101,18 +101,18 @@ router.post(
           ),
         },
       });
-
-      req.user_id = user_response.user_id;
-      req.user_name = user_response.user_name;
+      req.user_id = manager_id;
+      req.user_name = manager_name;
       req.user_type = "Miner";
-      req.email_address = user_response.email_address;
-      req.password = user_response.password;
+      req.email_address = email_address;
+      req.password = password;
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",
       });
       next();
     } catch (error) {
+      console.log(error);
       res.status(400).json({
         message: "Invalid Request",
         type: "error",
