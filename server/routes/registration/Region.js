@@ -1,11 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const Region = require("../../models/RegionSchema");
-const ShortUniqueId = require("short-unique-id");
 router.get("/api/registration/region", async (req, res) => {
   try {
-    const regions = await Region.find({ district: { $exists: true } });
-    res.status(200).json(regions);
+    const states = await Region.find({
+      state: { $exists: true },
+      district: { $exists: false },
+    }).select("state");
+    const districts = await Region.find({ district: { $exists: true } }).select(
+      ["state", "district"]
+    );
+    res.status(200).json({ states, districts });
   } catch (error) {
     res.status(400).json({
       message: "Invalid Request",
@@ -13,30 +18,68 @@ router.get("/api/registration/region", async (req, res) => {
     });
   }
 });
-router.post("/api/registration/region", async (req, res) => {
-  const { type_of_region, state_name, district_name, coordinates } = req.body;
+router.post("/api/registration/region/country", async (req, res) => {
   try {
-    const region_id_generate = new ShortUniqueId({
-      length: 15,
+    await Region.create({
+      type_of_region: "country",
+      coordinates: {
+        latitude: 20.5937,
+        longitude: 78.9629,
+      },
     });
-
-    const region_id = region_id_generate();
-    // await Region.insertMany({
-    //   region_id: region_id,
-    //   type_of_region: type_of_region,
-    //   state: state_name,
-    //   district: district_name,
-    //   coordinates: {
-    //     latitude: coordinates.latitude,
-    //     longitude: coordinates.longitude,
-    //   },
-    // });
-
     res.status(200).json({
       message: "Successfully Added",
       type: "success",
     });
   } catch (error) {
+    res.status(400).json({
+      message: "Invalid Request",
+      type: "error",
+    });
+  }
+});
+router.post("/api/registration/region/state", async (req, res) => {
+  try {
+    req.body.map(async (region) => {
+      await Region.create({
+        type_of_region: "state",
+        state: region.state,
+        coordinates: {
+          latitude: region.latitude,
+          longitude: region.longitude,
+        },
+      });
+    });
+    res.status(200).json({
+      message: "Successfully Added",
+      type: "success",
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Invalid Request",
+      type: "error",
+    });
+  }
+});
+router.post("/api/registration/region/district", async (req, res) => {
+  try {
+    req.body.map(async (region) => {
+      await Region.create({
+        type_of_region: "district",
+        state: region.state,
+        district: region.district,
+        coordinates: {
+          latitude: region.latitude,
+          longitude: region.longitude,
+        },
+      });
+    });
+    res.status(200).json({
+      message: "Successfully Added",
+      type: "success",
+    });
+  } catch (error) {
+    console.log(error);
     res.status(400).json({
       message: "Invalid Request",
       type: "error",

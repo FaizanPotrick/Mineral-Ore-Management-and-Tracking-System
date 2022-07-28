@@ -6,7 +6,9 @@ const User = require("../../models/UserSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
-
+const id_genarate = new ShortUniqueId({
+  length: 8,
+});
 router.post(
   "/api/registration/organization",
   async (req, res, next) => {
@@ -47,21 +49,15 @@ router.post(
           type: "warning",
         });
       }
-      const ceo_id_genarate = new ShortUniqueId({
-        length: 10,
-      });
-      const ceo_id = ceo_id_genarate();
+      const ceo_id = id_genarate();
       const auth = jwt.sign(
         {
           auth_id: ceo_id,
         },
         aadhar_card
       );
-      const password_generate = new ShortUniqueId({
-        length: 8,
-      });
-      const password = password_generate();
-      await User.create({
+      const password = id_genarate();
+      const user_response = await User.create({
         auth: auth,
         user_id: ceo_id,
         type_of_user: "organization",
@@ -72,22 +68,17 @@ router.post(
         password: bcrypt.hashSync(password, 10),
         c_password: bcrypt.hashSync(password, 10),
       });
-      const organization_id_genarate = new ShortUniqueId({
-        length: 15,
-      });
-      const organization_id = organization_id_genarate();
       await Organization.create({
-        organization_id: organization_id,
         ceo_id: ceo_id,
         organization_name: organization_name,
         gst_no: gst_no,
         address: address,
       });
-      req.user_id = ceo_id;
-      req.user_name = ceo_name;
+      req.user_id = user_response.user_id;
+      req.user_name = user_response.user_name;
       req.user_type = "Organization";
-      req.email_address = email_address;
-      req.password = password;
+      req.email_address = user_response.email_address;
+      req.password = user_response.password;
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",

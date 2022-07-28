@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
 const Miner = new mongoose.Schema({
-  mine_id: {
-    type: String,
-    unique: true,
-    required: true,
-  },
   organization_id: {
     type: String,
     required: true,

@@ -7,7 +7,9 @@ const Organization = require("../../models/OrganizationSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
-
+const id_genarate = new ShortUniqueId({
+  length: 8,
+});
 router.post(
   "/api/registration/miner",
   async (req, res, next) => {
@@ -52,22 +54,16 @@ router.post(
           type: "warning",
         });
       }
-      const manager_id_genarate = new ShortUniqueId({
-        length: 10,
-      });
-      const password_generate = new ShortUniqueId({
-        length: 8,
-      });
-      const manager_id = manager_id_genarate();
-      const password = password_generate();
+      const manager_id = id_genarate();
       const auth = jwt.sign(
         {
           auth_id: manager_id,
         },
         aadhar_card
       );
+      const password = id_genarate();
       const today = new Date();
-      await User.create({
+      const user_response = await User.create({
         auth: auth,
         user_id: manager_id,
         type_of_user: "miner",
@@ -78,12 +74,7 @@ router.post(
         password: bcrypt.hashSync(password, 10),
         c_password: bcrypt.hashSync(password, 10),
       });
-      const mine_id_genarate = new ShortUniqueId({
-        length: 15,
-      });
-      const mine_id = mine_id_genarate();
       await Miner.create({
-        mine_id: mine_id,
         organization_id: organization_id,
         manager_id: manager_id,
         region_id: region_id,
@@ -111,11 +102,11 @@ router.post(
         },
       });
 
-      req.user_id = manager_id;
-      req.user_name = manager_name;
+      req.user_id = user_response.user_id;
+      req.user_name = user_response.user_name;
       req.user_type = "Miner";
-      req.email_address = email_address;
-      req.password = password;
+      req.email_address = user_response.email_address;
+      req.password = user_response.password;
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",

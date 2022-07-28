@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
 const Organization = new mongoose.Schema({
-  organization_id: {
-    type: String,
-    unique: true,
-    required: true,
-  },
   ceo_id: {
     type: String,
     required: true,
@@ -81,8 +76,8 @@ const Organization = new mongoose.Schema({
         default: 0,
         required: true,
       },
-    }
-  }
+    },
+  },
 });
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")

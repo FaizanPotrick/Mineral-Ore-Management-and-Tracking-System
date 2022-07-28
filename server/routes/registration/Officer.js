@@ -6,7 +6,9 @@ const User = require("../../models/UserSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
-
+const id_generate = new ShortUniqueId({
+  length: 8,
+});
 router.post(
   "/api/registration/officer",
   async (req, res, next) => {
@@ -37,20 +39,14 @@ router.post(
           type: "warning",
         });
       }
-      const officer_id_generate = new ShortUniqueId({
-        length: 10,
-      });
-      const password_generate = new ShortUniqueId({
-        length: 8,
-      });
-      const officer_id = officer_id_generate();
-      const password = password_generate();
+      const officer_id = id_generate();
       const auth = jwt.sign(
         {
           auth_id: officer_id,
         },
         aadhar_card
       );
+      const password = id_generate();
       const region_check = await Region.findOne({
         type_of_region: type_of_region,
         [type_of_region]: region_name,
@@ -71,7 +67,7 @@ router.post(
           }
         );
       }
-      await User.create({
+      const user_response = await User.create({
         auth: auth,
         user_id: officer_id,
         type_of_user: "officer",
@@ -90,11 +86,11 @@ router.post(
           officer_id: officer_id,
         }
       );
-      req.user_id = officer_id;
-      req.user_name = officer_name;
+      req.user_id = user_response.user_id;
+      req.user_name = user_response.user_name;
       req.user_type = "Officer";
-      req.email_address = email_address;
-      req.password = password;
+      req.email_address = user_response.email_address;
+      req.password = user_response.password;
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",
