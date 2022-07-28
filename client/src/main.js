@@ -60,6 +60,11 @@ app.use(
         component: () => import("@/views/DashBoard.vue"),
         children: [
           {
+            path: "",
+            name: "miner_dashboard",
+            component: () => import("@/views/Miner/Dashboard1.vue"),
+          },
+          {
             path: "ores_registration",
             name: "Ores Registration",
             component: () => import("@/views/Miner/OresRegistration.vue"),
