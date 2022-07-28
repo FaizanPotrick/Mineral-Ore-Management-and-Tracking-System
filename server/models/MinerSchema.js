@@ -14,18 +14,16 @@ const Miner = new mongoose.Schema({
   },
   location: {
     pin_code: {
-      type: String,
-      trim: true,
-      maxlength: 20,
+      type: Number,
       required: true,
     },
     coordinates: {
       latitude: {
-        type: String,
+        type: Number,
         required: true,
       },
       longitude: {
-        type: String,
+        type: Number,
         required: true,
       },
     },

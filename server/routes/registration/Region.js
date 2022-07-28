@@ -8,7 +8,7 @@ router.get("/api/registration/region", async (req, res) => {
       district: { $exists: false },
     }).select("state");
     const districts = await Region.find({ district: { $exists: true } }).select(
-      ["state", "district"]
+      ["state", "district", "coordinates"]
     );
     res.status(200).json({ states, districts });
   } catch (error) {
