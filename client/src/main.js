@@ -64,7 +64,23 @@ app.use(
             name: "Ores Registration",
             component: () => import("@/views/Miner/OresRegistration.vue"),
           },
+
         ],
+      },
+      {
+        path: "/ores_transactions",
+        name: "Ores Transactions",
+        component: () => import("@/views/OreTransaction.vue"),
+      },
+      {
+        path: "/officer_check",
+        name: "Officer Checking Form",
+        component: () => import("@/views/OfficerCheckingForm.vue"),
+      },
+      {
+        path: "/transaction",
+        name: "Transaction",
+        component: () => import("@/views/Transaction.vue"),
       },
       {
         path: "/servererror",
