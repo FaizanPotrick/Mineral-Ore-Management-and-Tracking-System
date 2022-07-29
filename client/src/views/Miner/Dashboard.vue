@@ -147,14 +147,14 @@ const doughnut = {
       </div>
     </div>
     <div class="flex justify-around items-start gap-4 w-full drop-shadow-md">
-      <div class="text-xl bg-white p-3 w-full font-medium">Mining Overview
+      <div class="text-xl bg-white p-3 w-full font-medium text-center">Mining Overview
       <Bar
         :chart-options="data.chartOptions"
         :chart-data="data.chartData"
         class="bg-white p-4 w-full rounded-lg"
       />
       </div>
-      <div class="text-xl bg-white p-3 w-full font-medium"> Grades Of Iron Ore
+      <div class="text-xl bg-white p-3 w-full font-medium text-center"> Grades Of Iron Ore
       <Doughnut
         :chart-options="doughnut.chartOptions"
         :chart-data="doughnut.chartData"
@@ -380,5 +380,193 @@ const doughnut = {
         </div>
       </div>
     </div>
+
+
+
+<div class="flex flex-col">
+      <button class="btn bg-blue-200 p-5 font-bold"> Miner Logs</button>
+      <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead class="bg-white border-b">
+                <tr>
+                  <th
+                    scope="col"
+                    class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Sr.No
+                  </th>
+                  <th
+                    scope="col"
+                    class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Batch ID
+                  </th>
+                  <th
+                    scope="col"
+                    class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Mine Name
+                  </th>
+                  <th
+                    scope="col"
+                    class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Total Quantity(Tons)
+                  </th>
+                  <th
+                    scope="col"
+                    class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                   High
+                  </th>
+                  <th
+                    scope="col"
+                    class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Medium
+                  </th>
+                  <th
+                    scope="col"
+                    class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Low
+                  </th>
+                  
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b bg-gray-100">
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                  >
+                    1
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    0x12ojfdasa
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Meghahatuburu
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Lump
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                   350
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    150
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    100
+                  </td>
+                  
+                  
+                </tr>
+
+                <tr class="border-b bg-gray-100">
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                  >
+                    2
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    5rrhsaXpa
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Meghahatuburu
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Lump
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                   250
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    100
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    50
+                  </td>
+                 
+                 
+                </tr>
+
+                <tr class="border-b bg-gray-100">
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                  >
+                    3
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    1h45xkkl
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Meghahatuburu
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Fine
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    500
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    500
+                  </td>
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                 100
+                  </td>
+                  
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    
   </div>
 </template>
