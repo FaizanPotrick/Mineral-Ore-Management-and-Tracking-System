@@ -61,15 +61,14 @@ app.use(
         children: [
           {
             path: "",
-            name: "miner_dashboard",
-            component: () => import("@/views/Miner/Dashboard1.vue"),
+            name: "miner dashboard",
+            component: () => import("@/views/Miner/Dashboard.vue"),
           },
           {
             path: "ores_registration",
             name: "Ores Registration",
             component: () => import("@/views/Miner/OresRegistration.vue"),
           },
-
         ],
       },
       {
