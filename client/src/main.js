@@ -38,6 +38,11 @@ app.use(
         component: () => import("@/views/DashBoard.vue"),
         children: [
           {
+            path: "",
+            name: "officer dashboard",
+            component: () => import("@/views/Officer/Dashboard.vue"),
+          },
+          {
             path: "miner_registration",
             name: "Miner Registration",
             component: () => import("@/views/Registration/Miner.vue"),
@@ -51,6 +56,11 @@ app.use(
             path: "officer_registration",
             name: "Officer Registration",
             component: () => import("@/views/Registration/Officer.vue"),
+          },
+          {
+            path: "/officer_check",
+            name: "Officer Checking Form",
+            component: () => import("@/views/Officer/OfficerCheckingForm.vue"),
           },
         ],
       },
@@ -75,11 +85,6 @@ app.use(
         path: "/ores_transactions",
         name: "Ores Transactions",
         component: () => import("@/views/OreTransaction.vue"),
-      },
-      {
-        path: "/officer_check",
-        name: "Officer Checking Form",
-        component: () => import("@/views/OfficerCheckingForm.vue"),
       },
       {
         path: "/transaction",
