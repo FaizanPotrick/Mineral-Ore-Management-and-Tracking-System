@@ -1,0 +1,152 @@
+[
+    {
+        "batch": "0x12ojfdasa",
+        "Name": "Alpha Traders",
+        "Total Quantity (tons)": {
+            "high": "250",
+            "medium": "150",
+            "low": "100"
+        },
+        "Type": "fine",
+        "Grade": "A",
+        "Status": "Accepted",
+        "Price(Cr)": "3",
+        "Time_Stamp": "2018-12-10T13:45:00.000Z",
+        "Quantity(tons)": "70"
+    },
+    {
+        "batch": "0x12ojggasa",
+        "Name": "Beta Traders",
+        "Total Quantity (tons)": {
+            "high": "150",
+            "medium": "100",
+            "low": "250"
+        },
+        "Type": "lump",
+        "Grade": "A",
+        "Status": "Accepted",
+        "Price(Cr)": "2",
+        "Time_Stamp": "2019-10-10T14:40:00.000Z",
+        "Quantity(tons)": "60"
+    },
+    {
+        "batch": "0bn12wsfdhgf",
+        "Name": "Gamma Traders",
+        "Total Quantity (tons)": {
+            "high": "150",
+            "medium": "100",
+            "low": "250"
+        },
+        "Type": "fine",
+        "Grade": "B",
+        "Status": "Accepted",
+        "Price(Cr)": "3",
+        "Time_Stamp": "2020-08-10T11:40:00.000Z",
+        "Quantity(tons)": "80"
+    },
+    {
+        "batch": "0x12ovcsdsa",
+        "Name": "Super Traders",
+        "Total Quantity (tons)": {
+            "high": "300",
+            "medium": "100",
+            "low": "100"
+        },
+        "Type": "fine",
+        "Grade": "A",
+        "Status": "Accepted",
+        "Price(Cr)": "2",
+        "Time_Stamp": "2021-10-10T14:40:00.000Z",
+        "Quantity(tons)": "90"
+    },
+    {
+        "batch": "74gfojffgbf",
+        "Name": "Fortune Traders",
+        "Total Quantity (tons)": {
+            "high": "200",
+            "medium": "300",
+            "low": "0"
+        },
+        "Type": "fine",
+        "Grade": "C",
+        "Status": "Rejected",
+        "Price(Cr)": "2",
+        "Time_Stamp": "2021-10-10T12:00:00.000Z",
+        "Quantity(tons)": "90"
+    },
+    {
+        "batch": "0x12thgdasa",
+        "Name": "Quickfire Traders",
+        "Total Quantity (tons)": {
+            "high": "200",
+            "medium": "100",
+            "low": "100"
+        },
+        "Type": "fine",
+        "Grade": "High",
+        "Status": "Accepted",
+        "Price(Cr)": "7",
+        "Time_Stamp": "2021-05-10T09:40:00.000Z",
+        "Quantity(tons)": "100"
+    },
+    {
+        "batch": "4x12oLfdGna",
+        "Name": "Legacy Traders",
+        "Total Quantity (tons)": {
+            "high": "400",
+            "medium": "50",
+            "low": "10"
+        },
+        "Type": "fine",
+        "Grade": "B",
+        "Status": "Accepted",
+        "Price(Cr)": "2",
+        "Time_Stamp": "2021-05-09T17:20:00.000Z",
+        "Quantity(tons)": "120"
+    },
+    {
+        "batch": "7x12oRSdasa",
+        "Name": "Clarity Traders",
+        "Total Quantity (tons)": {
+            "high": "40",
+            "medium": "30",
+            "low": "200"
+        },
+        "Type": "fine",
+        "Grade": "C",
+        "Status": "Rejected",
+        "Price(Cr)": "1",
+        "Time_Stamp": "2021-06-12T17:25:30.000Z",
+        "Quantity(tons)": "50"
+    },
+    {
+        "batch": "0x172jfdasa",
+        "Name": "Beacon Traders",
+        "Total Quantity (tons)": {
+            "high": "300",
+            "medium": "100",
+            "low": "100"
+        },
+        "Type": "lump",
+        "Grade": "B",
+        "Status": "Accepted",
+        "Price(Cr)": "5",
+        "Time_Stamp": "2021-12-10T18:20:20.000Z",
+        "Quantity(tons)": "100"
+    },
+    {
+        "batch": "0C32ojfdaFD",
+        "Name": "Super Traders",
+        "Total Quantity (tons)": {
+            "high": "200",
+            "medium": "200",
+            "low": "100"
+        },
+        "Type": "fine",
+        "Grade": "B",
+        "Status": "Accepted",
+        "Price(Cr)": "6",
+        "Time_Stamp": "2022-02-11T1:200:00.000Z",
+        "Quantity(tons)": "150"
+    }
+]
