@@ -97,6 +97,11 @@ app.use(
         component: () => import("@/components/InternalServerError.vue"),
       },
       {
+        path: "/forbidden",
+        name: "403",
+        component: () => import("@/components/ForbiddenPage.vue"),
+      },
+      {
         path: "/:catchAll(.*)",
         name: "404",
         component: () => import("@/components/PageNotFound.vue"),
