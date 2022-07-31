@@ -64,9 +64,6 @@ const doughnut = {
 </script>
 <template>
   <div class="flex flex-col ">
-    
-   
-
     <div class="flex flex-col">
       <button class="btn bg-blue-200 p-5 font-bold">Logs</button>
       <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">

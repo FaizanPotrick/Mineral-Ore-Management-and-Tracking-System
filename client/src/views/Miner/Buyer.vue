@@ -294,7 +294,7 @@ const doughnut = {
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
                     7:30 PM <br />
-                    5 June 2022
+                    4 June 2022
                   </td>
                 </tr>
               </tbody>
