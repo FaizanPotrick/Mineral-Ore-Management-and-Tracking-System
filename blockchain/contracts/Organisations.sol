@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 pragma experimental ABIEncoderV2;
-import "./mines.sol";
+import "./Mines.sol";
 
-contract organisations is mines{
+contract Organisations is Mines{
 
     struct organisation_detail {
       string organisation_id;
       string organisation_hash;
    }
     
-    mapping(string => organisation_detail)public organisation;
-    mapping (string => mapping (string => mapping(string=> uint))) public organisationOreAmount;
+    mapping(string => organisation_detail)public organisation; //map organisation id to organisation details
+    mapping (string => mapping (string => mapping(string=> uint))) public organisationOreAmount; //map organisation id to map ore type to map grade to ore amount
     
     //Selling Of Ore 
     //Input:- 1)Transtion Detail[Transaction Id,Mine Id,Buyer Organisation ID,Quantity Of Ore to sell,Ore Type,Grade,Price]

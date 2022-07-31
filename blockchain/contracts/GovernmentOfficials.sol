@@ -1,29 +1,29 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
-import "./mines.sol";
-import "./organisations.sol";
 
+import "./Organisations.sol";
+ 
 
-contract goverment_official is mines,organisations{
+contract GovernmentOfficials is Organisations{
 
-    //Register Organization
-    //Input:- 1)Organization ID , 2)Organization Detail(Hash)
-    function organisationDetail(string calldata organisation_id,string calldata organisation_hash) external{
+    //Register organisation
+    //Input:- 1)organisation ID , 2)organisation Detail(Hash)
+    function createOrganisation(string calldata organisation_id,string calldata organisation_hash) external{
         
         organisation[organisation_id]=organisation_detail(organisation_id,organisation_hash);
     }
     
     //Register Mine
     //Input:- 1)Mine ID , 2)Mine Detail(Hash)
-    function mineDetail(string calldata mine_id,string calldata organisation_id,string calldata mine_hash) external{
+    function createMine(string calldata mine_id,string calldata organisation_id,string calldata mine_hash) external{
         
         mine[mine_id]=mine_detail(mine_id,organisation_id,mine_hash);
     }
 
     //Creating Batch 
-    //Input:-1)Batch Detail[Batch ID,Mine Id,Organization Id,Manager Id,Quantidy Of Ore,Ore Of Type,Grade,Fe%,OreSample Image(Hash),Lab Document of Miner(Hash),Government Officers Id,Government Lab Document(Hash)],
+    //Input:-1)Batch Detail[Batch ID,Mine Id,organisation Id,Manager Id,Quantidy Of Ore,Ore Of Type,Grade,Fe%,OreSample Image(Hash),Lab Document of Miner(Hash),Government Officers Id,Government Lab Document(Hash)],
     //       2)Approve(True) or Disapprove (False)
-    function minedBatch(ore_details calldata oredetails,bool state) external{
+    function createMinedBatch(ore_details calldata oredetails,bool state) external{
         require(keccak256(abi.encodePacked((mine[oredetails.mine_id].mine_id))) == keccak256(abi.encodePacked((oredetails.mine_id))),"Provided Mine ID Doesn't Exist");
         require(keccak256(abi.encodePacked((batch[oredetails.mine_id][oredetails.batch_id].batch_id))) != keccak256(abi.encodePacked((oredetails.batch_id))),"Provided Batch ID Exist");        
         

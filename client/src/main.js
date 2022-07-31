@@ -57,6 +57,11 @@ app.use(
             name: "Officer Registration",
             component: () => import("@/views/Registration/Officer.vue"),
           },
+          {
+            path: "/officer_check",
+            name: "Officer Checking Form",
+            component: () => import("@/views/Officer/OfficerCheckingForm.vue"),
+          },
         ],
       },
       {
@@ -70,28 +75,16 @@ app.use(
             component: () => import("@/views/Miner/Dashboard.vue"),
           },
           {
-            path: "minebatch",
-            name: "mine batch",
-            component: () => import("@/views/Miner/MineBatch.vue"),
-          },
-          {
             path: "ores_registration",
             name: "Ores Registration",
             component: () => import("@/views/Miner/OresRegistration.vue"),
           },
-          
         ],
       },
-
       {
         path: "/ores_transactions",
         name: "Ores Transactions",
         component: () => import("@/views/OreTransaction.vue"),
-      },
-      {
-        path: "/officer_check",
-        name: "Officer Checking Form",
-        component: () => import("@/views/OfficerCheckingForm.vue"),
       },
       {
         path: "/transaction",
@@ -102,6 +95,11 @@ app.use(
         path: "/servererror",
         name: "Server Error",
         component: () => import("@/components/InternalServerError.vue"),
+      },
+      {
+        path: "/forbidden",
+        name: "403",
+        component: () => import("@/components/ForbiddenPage.vue"),
       },
       {
         path: "/:catchAll(.*)",
