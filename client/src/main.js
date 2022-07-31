@@ -70,13 +70,19 @@ app.use(
             component: () => import("@/views/Miner/Dashboard.vue"),
           },
           {
+            path: "minebatch",
+            name: "mine batch",
+            component: () => import("@/views/Miner/MineBatch.vue"),
+          },
+          {
             path: "ores_registration",
             name: "Ores Registration",
             component: () => import("@/views/Miner/OresRegistration.vue"),
           },
+          
         ],
       },
-      
+
       {
         path: "/ores_transactions",
         name: "Ores Transactions",
