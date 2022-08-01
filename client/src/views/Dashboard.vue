@@ -1,32 +1,22 @@
 <script setup>
 import SidebarVue from "@/components/Sidebar.vue";
-import { onBeforeUpdate, ref } from "vue";
+import { onBeforeUpdate } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import useDashboardStore from "@/stores/DashboardStore";
+import ForbiddenAccess from "@/components/ForbiddenAccess.vue";
 const router = useRouter();
 const route = useRoute();
-const status = ref('')
-const check = async () => {
-  const res = await fetch('/api/type_of_user')
-  if (res.status !== 200) {
-    router.push('/login')
-  }
-  status.value = res.status
-  console.log(res.status)
-}
-check()
+useDashboardStore().auth_check(router)
+useDashboardStore().getAuthRegionData(route)
 onBeforeUpdate(() => {
-  check()
+  useDashboardStore().auth_check(router)
+  useDashboardStore().getAuthRegionData(route)
 })
-
-
 </script>
 <template>
-  <div class="flex bg-yellow-50" v-if="route.meta.type_of_user === $cookies.get('type_of_user')">
+  <div class="flex bg-yellow-50" v-if="useDashboardStore().auth_value">
     <SidebarVue />
     <RouterView class="m-10 w-full" />
   </div>
-  <div v-else>
-    <h1>404</h1>
-    <p>Page not found</p>
-  </div>
+  <ForbiddenAccess v-else />
 </template>

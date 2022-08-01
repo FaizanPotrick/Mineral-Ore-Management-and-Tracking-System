@@ -18,7 +18,7 @@ router.post(
       phone_no,
       aadhar_card,
       type_of_region,
-      region_name,
+      region_name
     } = req.body;
     try {
       const aadhar_card_check = await User.findOne({
@@ -47,9 +47,9 @@ router.post(
         aadhar_card
       );
       const password = id_generate();
-      const region_check = await Region.findOne({
+      const region_check = await Region.find({
         type_of_region: type_of_region,
-        [type_of_region]: region_name,
+        [type_of_region]: region_name
       });
       if (region_check === null) {
         return res.status(201).json({
@@ -57,7 +57,7 @@ router.post(
           type: "warning",
         });
       }
-      if (region_check.officer_id !== null) {
+      if (region_check.officer_id !== undefined) {
         await User.findOneAndUpdate(
           {
             user_id: region_check.officer_id,
@@ -67,7 +67,7 @@ router.post(
           }
         );
       }
-      const user_response = await User.create({
+      await User.create({
         auth: auth,
         user_id: officer_id,
         type_of_user: "officer",
@@ -86,17 +86,18 @@ router.post(
           officer_id: officer_id,
         }
       );
-      req.user_id = user_response.user_id;
-      req.user_name = user_response.user_name;
+      req.user_id = officer_id;
+      req.user_name = officer_name;
       req.user_type = "Officer";
-      req.email_address = user_response.email_address;
-      req.password = user_response.password;
+      req.email_address = email_address;
+      req.password = password;
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",
       });
       next();
     } catch (error) {
+      console.log(error)
       res.status(400).json({
         message: "Invalid Request",
         type: "error",

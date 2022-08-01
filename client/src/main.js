@@ -44,6 +44,7 @@ app.use(
             name: "officer dashboard",
             meta: {
               type_of_user: "officer",
+              type_of_region: ["country", "state", "district"],
             },
             component: () => import("@/views/Officer/Dashboard.vue"),
           },
