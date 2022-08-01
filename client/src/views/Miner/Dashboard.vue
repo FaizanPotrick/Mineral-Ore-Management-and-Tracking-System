@@ -48,11 +48,11 @@ const data = {
 };
 const doughnut = {
   chartData: {
-    labels: ["High", "Medium", "Low"],
+    labels: ["High/Lump","High/Fine", "Medium/Lump","Medium/Fine", "Low/Lump","Low/Fine"],
     datasets: [
       {
-        backgroundColor: ["#41B883", "#E46651", "#00D8FF"],
-        data: [40, 20, 80],
+        backgroundColor: ["#0066ff", "#80b3ff", "#66ff33","#b3ff99","#ff0000","#ff8080"],
+        data: [40, 20, 80,50,23,30],
       },
     ],
   },
@@ -66,7 +66,7 @@ const doughnut = {
   <div class="flex flex-col gap-4 min-h-screen">
     <div class="flex gap-4 w-full min-h-[12vh] font-semibold">
       <div
-        class="flex flex-col justify-around w-full border-l-4 border-yellow-300 relative p-5 bg-white rounded-md overflow-hidden drop-shadow-md"
+        class="flex flex-col justify-around w-full border-l-4 border-yellow-500 relative p-5 bg-white rounded-md overflow-hidden drop-shadow-md"
       >
         <svg
           fill="none"
@@ -79,7 +79,7 @@ const doughnut = {
             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-        <div class="text-xl">500 Metric Tons</div>
+        <div class="text-xl">500Metric Tons</div>
         <div>Iron ore available</div>
       </div>
       <div
@@ -128,6 +128,7 @@ const doughnut = {
         </div>
         <div>Warehouse Capacity</div>
       </div>
+
       <div
         class="flex flex-col justify-around w-full border-l-4 border-green-300 relative p-5 bg-white rounded-md overflow-hidden drop-shadow-md"
       >
@@ -146,25 +147,144 @@ const doughnut = {
         <div>Number Of Visitors</div>
       </div>
     </div>
-    <div class="flex justify-around items-start gap-4 w-full drop-shadow-md">
-      <div class="text-xl bg-white p-3 w-full font-medium text-center">Mining Overview
-      <Bar
-        :chart-options="data.chartOptions"
-        :chart-data="data.chartData"
-        class="bg-white p-4 w-full rounded-lg"
-      />
+    <!-- 2nd CARD LINE -->
+    <div class="flex flex-col gap-4 ">
+      <div class="flex gap-4 w-full  font-semibold">
+        <div
+          class="flex flex-col justify-around w-full border-l-4 border-yellow-300 relative p-5 bg-white rounded-md overflow-hidden drop-shadow-md"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="-z-10 absolute right-0 bottom-0 h-32 w-32 -mr-8 -mb-8 text-yellow-300 opacity-50"
+          >
+            <path
+              stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <div class="text-xl">100 Metric Tons</div>
+          <div class="">Lumps / High</div>
+        </div>
+        <div
+          class="flex flex-col justify-around w-full border-l-4 border-yellow-300 relative p-5 bg-white rounded-md overflow-hidden drop-shadow-md"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="-z-10 absolute right-0 bottom-0 h-32 w-32 -mr-8 -mb-8 text-yellow-300 opacity-50"
+          >
+            <path
+              stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <div class="text-xl">40 Metric Tons</div>
+          <div>Lump / Medium</div>
+        </div>
+        <div
+          class="flex flex-col justify-around w-full border-l-4 border-yellow-300 relative p-5 bg-white rounded-md overflow-hidden drop-shadow-md"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="-z-10 absolute right-0 bottom-0 h-32 w-32 -mr-8 -mb-8 text-yellow-300 opacity-50"
+          >
+            <path
+              stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <div class="text-xl">500 Metric Tons</div>
+          <div>Lump / Low</div>
+        </div>
+       
       </div>
-      <div class="text-xl bg-white p-3 w-full font-medium text-center"> Grades Of Iron Ore
-      <Doughnut
-        :chart-options="doughnut.chartOptions"
-        :chart-data="doughnut.chartData"
-        class="bg-white p-4 rounded-lg"
-      />
+    </div>
+    <!-- end of 2ND CARD LINE -->
+
+<!-- 3rd CARD LINE -->
+<div class="flex flex-col ">
+      <div class="flex gap-4 w-full  font-semibold">
+        <div
+          class="flex flex-col justify-around w-full border-l-4 border-yellow-300 relative p-5 bg-white rounded-md overflow-hidden drop-shadow-md"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="-z-10 absolute right-0 bottom-0 h-32 w-32 -mr-8 -mb-8 text-yellow-300 opacity-50"
+          >
+            <path
+              stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <div class="text-xl">100 Metric Tons</div>
+          <div class="">Fine / High</div>
+        </div>
+        <div
+          class="flex flex-col justify-around w-full border-l-4 border-yellow-300 relative p-5 bg-white rounded-md overflow-hidden drop-shadow-md"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="-z-10 absolute right-0 bottom-0 h-32 w-32 -mr-8 -mb-8 text-yellow-300 opacity-50"
+          >
+            <path
+              stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <div class="text-xl">40 Metric Tons</div>
+          <div>Fine / Medium</div>
+        </div>
+        <div
+          class="flex flex-col justify-around w-full border-l-4 border-yellow-300 relative p-5 bg-white rounded-md overflow-hidden drop-shadow-md"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="-z-10 absolute right-0 bottom-0 h-32 w-32 -mr-8 -mb-8 text-yellow-300 opacity-50"
+          >
+            <path
+              stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <div class="text-xl">500 Metric Tons</div>
+          <div>Fine / Low</div>
+        </div>
+      
+      </div>
+    </div>
+    <!-- END OF 3RD CARD LINE -->
+    <div class="flex justify-around items-start gap-4 w-full drop-shadow-md">
+      <div class="text-xl bg-white p-3 w-full font-medium text-center">
+        Mining Overview
+        <Bar
+          :chart-options="data.chartOptions"
+          :chart-data="data.chartData"
+          class="bg-white p-4 w-full rounded-lg"
+        />
+      </div>
+      <div class="text-xl bg-white p-3 w-full font-medium text-center">
+        Grades Of Iron Ore
+        <Doughnut
+          :chart-options="doughnut.chartOptions"
+          :chart-data="doughnut.chartData"
+          class="bg-white p-4 rounded-lg"
+        />
       </div>
     </div>
 
     <div class="flex flex-col">
-      <button class="btn bg-blue-200 p-5 font-bold">Logs</button>
+      <button class="btn bg-blue-200 p-5 font-bold">Batch Logs</button>
       <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
           <div class="overflow-x-auto">
@@ -211,14 +331,14 @@ const doughnut = {
                     scope="col"
                     class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                   >
-                    Status
+                    State
                   </th>
-                  <th
+                  <!-- <th
                     scope="col"
                     class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                   >
                     Price
-                  </th>
+                  </th> -->
                   <th
                     scope="col"
                     class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
@@ -262,13 +382,13 @@ const doughnut = {
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
-                    Sold
+                    Accepted
                   </td>
-                  <td
+                  <!-- <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
                     5
-                  </td>
+                  </td> -->
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
@@ -311,13 +431,13 @@ const doughnut = {
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
-                    Sold
+                    Pending
                   </td>
-                  <td
+                  <!-- <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
                     9
-                  </td>
+                  </td> -->
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
@@ -360,13 +480,13 @@ const doughnut = {
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
-                    Mined
+                    Rejected
                   </td>
-                  <td
+                  <!-- <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
                     7
-                  </td>
+                  </td> -->
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
@@ -381,10 +501,8 @@ const doughnut = {
       </div>
     </div>
 
-
-
-<div class="flex flex-col">
-      <button class="btn bg-blue-200 p-5 font-bold"> Miner Logs</button>
+    <div class="flex flex-col">
+      <button class="btn bg-blue-200 p-5 font-bold">Transcation Logs</button>
       <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
           <div class="overflow-x-auto">
@@ -401,7 +519,7 @@ const doughnut = {
                     scope="col"
                     class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                   >
-                    Batch ID
+                    Transcation ID
                   </th>
                   <th
                     scope="col"
@@ -413,28 +531,45 @@ const doughnut = {
                     scope="col"
                     class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                   >
-                    Total Quantity(Tons)
+                    Organisation Name
+                  </th>
+                   <th
+                    scope="col"
+                    class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Buy/Sell
                   </th>
                   <th
                     scope="col"
                     class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                   >
-                   High
+                    Type
                   </th>
                   <th
                     scope="col"
                     class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                   >
-                    Medium
+                    Grade
                   </th>
                   <th
                     scope="col"
                     class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                   >
-                    Low
+                    Quantity (Tons)
                   </th>
-                  
-                  
+                  <th
+                    scope="col"
+                    class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Status
+                  </th>
+
+                  <th
+                    scope="col"
+                    class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
+                  >
+                    Time Stamp
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -454,6 +589,17 @@ const doughnut = {
                   >
                     Meghahatuburu
                   </td>
+                   <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Meghahatuburu
+                  </td>
+                   <th
+                    scope="col"
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Sell
+                  </th>
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
@@ -462,20 +608,25 @@ const doughnut = {
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
-                   350
+                    High
                   </td>
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
-                    150
+                    1000
                   </td>
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
-                    100
+                    Transcation Initiated
                   </td>
-                  
-                  
+
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    2:30 PM <br />
+                    13 March 2022
+                  </td>
                 </tr>
 
                 <tr class="border-b bg-gray-100">
@@ -494,6 +645,17 @@ const doughnut = {
                   >
                     Meghahatuburu
                   </td>
+                   <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Meghahatuburu
+                  </td>
+                   <th
+                    scope="col"
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Buy
+                  </th>
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
@@ -502,20 +664,25 @@ const doughnut = {
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
-                   250
+                    High
                   </td>
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
-                    100
+                    1000
                   </td>
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
-                    50
+                    Transcation Completed
                   </td>
-                 
-                 
+
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    8:30 PM <br />
+                    9 May 2022
+                  </td>
                 </tr>
 
                 <tr class="border-b bg-gray-100">
@@ -534,6 +701,17 @@ const doughnut = {
                   >
                     Meghahatuburu
                   </td>
+                   <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Meghahatuburu
+                  </td>
+                   <th
+                    scope="col"
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    Sell
+                  </th>
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
@@ -542,7 +720,7 @@ const doughnut = {
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
-                    500
+                    Medium
                   </td>
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
@@ -552,9 +730,15 @@ const doughnut = {
                   <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
-                 100
+                    Transcation Rejected
                   </td>
-                  
+
+                  <td
+                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
+                  >
+                    7:30 PM <br />
+                    5 June 2022
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -562,11 +746,5 @@ const doughnut = {
         </div>
       </div>
     </div>
-
-
-
-
-
-    
   </div>
 </template>
