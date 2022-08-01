@@ -383,7 +383,6 @@ const abi = [{
   }
 ]
 class BlockchainConnection {
-
   async connectToContract() {
     try {
 
@@ -421,7 +420,76 @@ class BlockchainConnection {
 
     }
   }
+
+  async createMine(mine_id,org_id,mine_hash) {
+
+    try {
+      await this.contract.methods.createOrganisation(mine_id,org_id, mine_hash).send({
+        from: this.accounts[0]
+      }).then(() => {
+        console.log("Mine created successfully");
+      });
+    } catch (e) {
+      console.log("Error in creating mine to contract: ", e);
+
+    }
+  }
+
+  async getMine() {
+
+    try {
+       await this.contract.methods.mine("abc","123").call().then((results) => {
+        console.log("Mine fetched successfully");
+        console.log(results);
+      });
+    } catch (e) {
+      console.log("Error in fetching mine to contract: ", e);
+
+    }
+  }
+
+  async createMinedBatch(mine_id,batch_id,batch={batch_id,mine_id,organisation_id,manager_id,amount,ore_type,grade,Fe_amount,sample_img,lab_doc,officer_id,gov_doc},state) {
+
+    try {
+      await this.contract.methods.createMinedBatch(mine_id,batch_id,batch={batch_id,mine_id,organisation_id,manager_id,amount,ore_type,grade,Fe_amount,sample_img,lab_doc,officer_id,gov_doc},state).send({
+        from: this.accounts[0]
+      }).then(() => {
+        console.log("Mined batch created successfully");
+      });
+    } catch (e) {
+      console.log("Error in creating mined batch to contract: ", e);
+
+    }
+  }
+
+  async getMinedBatch() {
+
+    try {
+       await this.contract.methods.batch("123","abc").call().then((results) => {
+        console.log("Mined batch fetched successfully");
+        console.log(results);
+      });
+    } catch (e) {
+      console.log("Error in fetching mined batch to contract: ", e);
+
+    }
+  }
+
+  async getMinedBatchState() {
+
+    try {
+       await this.contract.methods.batchState("123","abc").call().then((results) => {
+        console.log("Mined batch state fetched successfully");
+        console.log(results);
+      });
+    } catch (e) {
+      console.log("Error in fetching mined batch state to contract: ", e);
+
+    }
+  } 
+  
 }
+
 
 
 
@@ -429,6 +497,7 @@ class BlockchainConnection {
 // Test Data
 
 const mine_id = 123;
+const mine_hash="12345678aygdhsagfhj9";
 const amount = "100";
 const ore_type = "fine";
 const grade = "60";
@@ -436,6 +505,7 @@ const file = "This is file address";
 // createMinedBatch(mine_id, amount, ore_type, grade, file);	
 const org_id = "abc";
 const org_hash = "afdilhnwef8o8Y8N3YR";
+
 
 const connection = new BlockchainConnection();
 connection.connectToContract().then(() => {
