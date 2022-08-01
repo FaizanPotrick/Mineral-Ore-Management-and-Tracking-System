@@ -10,8 +10,8 @@ export default defineStore({
     password: "",
   }),
   actions: {
-    async login_fn() {
-      useValidationStore().isLoading = true;
+    async login_fn(router) {
+      useValidationStore().isButtonLoading = true;
       const res = await fetch("/api/login", {
         method: "POST",
         headers: {
@@ -23,11 +23,12 @@ export default defineStore({
         }),
       });
       const data = await res.json();
-      useValidationStore().isLoading = false;
+      useValidationStore().isButtonLoading = false;
       open_alert_box(data.message, data.type);
       if (res.status === 200) {
         this.user_name = "";
         this.password = "";
+        router.push(data.path);
       }
     },
   },

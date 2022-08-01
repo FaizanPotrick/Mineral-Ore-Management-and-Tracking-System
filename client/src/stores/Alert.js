@@ -5,9 +5,8 @@ export default defineStore({
   state: () => ({
     alert_box: [],
     alert_text: {
-      message: "",
-      type: "",
-      alertbox: false,
+      message: "Please fill all the required fields correctly",
+      isAlert: false,
     },
   }),
   actions: {
@@ -24,10 +23,8 @@ export default defineStore({
         (item) => item.id !== id && item.alertbox
       );
     },
-    open_alert_text(message, type) {
-      this.alert_text.message = message;
-      this.alert_text.type = type;
-      this.alert_text.alertbox = false;
+    isAlert_text(value) {
+      this.alert_text.isAlert = value;
     },
   },
 });

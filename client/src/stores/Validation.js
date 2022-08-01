@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 export default defineStore({
   id: "validation",
   state: () => ({
-    isLoading: false,
+    isButtonLoading: false,
   }),
   actions: {
     validation(input) {

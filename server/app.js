@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const fileupload = require("express-fileupload");
+const session = require("express-session");
 const app = express();
 const url = process.env.DATABASE_URL;
 try {
@@ -28,10 +29,21 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      //  secure: true,
+    },
+  })
+);
+app.use(require("./routes/Authorize.js"));
+app.use(require("./routes/Login.js"));
 app.use(require("./routes/registration/Miner.js"));
 app.use(require("./routes/registration/Officer.js"));
 app.use(require("./routes/registration/Organization.js"));
 app.use(require("./routes/registration/Region.js"));
-app.use(require("./routes/Login.js"));
 app.use(require("./routes/miner/ores"));
 app.listen(process.env.PORT || 8000);

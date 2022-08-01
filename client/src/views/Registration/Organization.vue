@@ -5,7 +5,6 @@ import useValidationStore from "@/stores/Validation";
 
 const {
   organization_name,
-  address,
   ceo_name,
   ceo_email_address,
   ceo_phone_no,
@@ -15,22 +14,16 @@ const {
 } = useOrganizationStore();
 </script>
 <template>
-  <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
-    <div class="max-w-4xl p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl m-5 sm:10 text-gray-800">
+  <div class="flex justify-center items-center min-h-[86vh]">
+    <div class="max-w-4xl w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl m-5 sm:10 text-gray-800">
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
           Organization Registration
         </div>
-        <div class="text-gray-500 text-sm">Register your organization.</div>
-        <span :class="{
-          'text-red-500': useAlertStore().alert_text.type === 'error',
-          'text-green-500': useAlertStore().alert_text.type === 'success',
-          'text-blue-500': useAlertStore().alert_text.type === 'info',
-          'text-yellow-500': useAlertStore().alert_text.type === 'warning',
-        }" class="text-center text-sm" v-if="
-  useAlertStore().alert_text.message &&
-  !useAlertStore().alert_text.alertbox
-">{{ useAlertStore().alert_text.message }}</span>
+        <div class="text-gray-500 text-sm">Register a organization.</div>
+        <span class="text-red-500 text-center text-sm" v-if="
+          useAlertStore().alert_text.isAlert
+        ">{{ useAlertStore().alert_text.message }}</span>
       </div>
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
         <div class="grid gap-6 mb-6 grid-cols-1">
@@ -54,7 +47,7 @@ const {
             <label class="text-sm font-medium text-gray-700">CEO Name*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="CEO Name" @change="useValidationStore().validation(ceo_name)" v-model="ceo_name.value"
+              placeholder="Name" @change="useValidationStore().validation(ceo_name)" v-model="ceo_name.value"
               maxlength="150" required />
             <span class="text-center text-sm text-red-500" v-if="!ceo_name.valid">{{ ceo_name.message }}</span>
           </div>
@@ -81,7 +74,7 @@ const {
             <label class="text-sm font-medium text-gray-700">CEO Aadhar Card*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Aadhar Card Details" @change="useValidationStore().validation(ceo_aadhar_card)"
+              placeholder="Aadhar Card" @change="useValidationStore().validation(ceo_aadhar_card)"
               v-model="ceo_aadhar_card.value" minlength="12" maxlength="12" required />
             <span class="text-center text-sm text-red-500" v-if="!ceo_aadhar_card.valid">{{ ceo_aadhar_card.message
             }}</span>
@@ -97,11 +90,11 @@ const {
         </div>
         <div class="space-y-3 py-5">
           <button type="submit" :class="{
-            'hover:bg-yellow-600/80': !useValidationStore().isLoading,
+            'hover:bg-yellow-600/80': !useValidationStore().isButtonLoading,
           }"
             class="w-full flex text-lg justify-center items-center bg-yellow-600 text-gray-100 p-2.5 rounded-full font-semibold shadow-md"
-            :disabled="useValidationStore().isLoading">
-            <span v-if="!useValidationStore().isLoading" class="h-6">
+            :disabled="useValidationStore().isButtonLoading">
+            <span v-if="!useValidationStore().isButtonLoading" class="h-6">
               Register
             </span>
             <span v-else>

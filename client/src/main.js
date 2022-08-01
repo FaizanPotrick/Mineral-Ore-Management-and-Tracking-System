@@ -3,9 +3,11 @@ import { createPinia } from "pinia";
 import App from "./App.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
+import VueCookies from "vue-cookies";
 
 const app = createApp(App);
 app.use(createPinia());
+app.use(VueCookies);
 app.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyBnpAKWxu7ciOW1OnMqYXkaHeuXOhrb6Es",
@@ -40,27 +42,68 @@ app.use(
           {
             path: "",
             name: "officer dashboard",
+            meta: {
+              type_of_user: "officer",
+            },
             component: () => import("@/views/Officer/Dashboard.vue"),
           },
           {
             path: "miner_registration",
             name: "Miner Registration",
+            meta: {
+              type_of_user: "officer",
+              type_of_region: ["district"],
+            },
             component: () => import("@/views/Registration/Miner.vue"),
           },
           {
             path: "organization_registration",
             name: "Organization Registration",
+            meta: {
+              type_of_user: "officer",
+              type_of_region: ["state"],
+            },
             component: () => import("@/views/Registration/Organization.vue"),
           },
           {
             path: "officer_registration",
             name: "Officer Registration",
+            meta: {
+              type_of_user: "officer",
+              type_of_region: ["country", "state"],
+            },
             component: () => import("@/views/Registration/Officer.vue"),
           },
           {
             path: "/officer_check",
             name: "Officer Checking Form",
+            meta: {
+              type_of_user: "organization",
+            },
             component: () => import("@/views/Officer/OfficerCheckingForm.vue"),
+          },
+        ],
+      },
+      {
+        path: "/organization_dashboard",
+        name: "organization",
+        component: () => import("@/views/DashBoard.vue"),
+        children: [
+          {
+            path: "",
+            name: "organization dashboard",
+            meta: {
+              type_of_user: "organization",
+            },
+            component: () => import("@/views/Miner/Dashboard.vue"),
+          },
+          {
+            path: "ores_registration",
+            name: "ores registration",
+            meta: {
+              type_of_user: "organization",
+            },
+            component: () => import("@/views/Miner/OresRegistration.vue"),
           },
         ],
       },
@@ -72,11 +115,17 @@ app.use(
           {
             path: "",
             name: "miner dashboard",
+            meta: {
+              type_of_user: "miner",
+            },
             component: () => import("@/views/Miner/Dashboard.vue"),
           },
           {
             path: "ores_registration",
             name: "Ores Registration",
+            meta: {
+              type_of_user: "miner",
+            },
             component: () => import("@/views/Miner/OresRegistration.vue"),
           },
         ],

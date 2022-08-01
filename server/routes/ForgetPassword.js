@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/UserSchema");
-const Region = require("../models/RegionSchema");
 const bcrypt = require("bcrypt");
 
-router.post("/api/login", async (req, res) => {
+router.post("/api/forget_password", async (req, res) => {
   const { user_name, password } = req.body;
   try {
     const response = await User.findOne({
@@ -23,16 +22,6 @@ router.post("/api/login", async (req, res) => {
         message: "Invalid Credential",
         type: "error",
       });
-    }
-    if (response.type_of_user === "officer") {
-      const response = await Region.findOne({
-        _id: response.region_id,
-      });
-      req.session.type_of_region = response.type_of_region;
-      req.session.region_id = response._id;
-      res
-        .cookie("type_of_region", response.type_of_region)
-        .cookie("region_id", response._id);
     }
     req.session.type_of_user = response.type_of_user;
     res

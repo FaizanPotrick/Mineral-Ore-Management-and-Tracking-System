@@ -1,20 +1,23 @@
 <script setup>
-import useLoginStore from '@/stores/Login';
+import useLoginStore from '@/stores/LoginStore';
 import useValidationStore from '@/stores/Validation';
 import HeaderVue from '@/components/Header.vue';
 import FooterVue from '@/components/Footer.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 </script>
 <template>
     <div>
         <HeaderVue />
         <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
             <div
-                class="max-w-md bg-white w-[28rem] p-10 border border-gray-400/20 shadow-md rounded-2xl m-5 sm:m-10 text-gray-800">
+                class="max-w-md w-full bg-white p-10 border border-gray-400/20 shadow-md rounded-2xl m-5 sm:m-10 text-gray-800">
                 <div class="mb-4">
-                    <div class="font-semibold text-2xl text-yellow-700">Login</div>
+                    <div class="font-semibold text-2xl text-yellow-700">Login
+                    </div>
                     <div class="text-gray-500 text-sm">Please login to your account.</div>
                 </div>
-                <form class="space-y-5 drop-shadow-md" @submit.prevent="useLoginStore().login_fn()">
+                <form class="space-y-5 drop-shadow-md" @submit.prevent="useLoginStore().login_fn(router)">
                     <div class="space-y-2">
                         <label class="text-sm font-medium">User Name*</label>
                         <input
@@ -34,10 +37,11 @@ import FooterVue from '@/components/Footer.vue';
                         <button class="text-yellow-600 hover:text-yellow-600/80 text-sm">
                             Forgot your password?
                         </button>
-                        <button type="submit" :class="{ 'hover:bg-yellow-600/80': !useValidationStore().isLoading }"
+                        <button type="submit"
+                            :class="{ 'hover:bg-yellow-600/80': !useValidationStore().isButtonLoading }"
                             class="w-full flex text-lg justify-center items-center bg-yellow-600  text-gray-100 p-2.5 rounded-full font-semibold shadow-md"
-                            :disabled="useValidationStore().isLoading">
-                            <span v-if="!useValidationStore().isLoading" class="h-6">
+                            :disabled="useValidationStore().isButtonLoading">
+                            <span v-if="!useValidationStore().isButtonLoading" class="h-6">
                                 Login
                             </span>
                             <span v-else>

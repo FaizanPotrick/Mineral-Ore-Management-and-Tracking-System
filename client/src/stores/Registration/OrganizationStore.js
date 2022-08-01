@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import useAlertStore from "../Alert";
 import useValidationStore from "../Validation";
-const { open_alert_box, open_alert_text } = useAlertStore();
+const { open_alert_box, isAlert_text } = useAlertStore();
 
 export default defineStore({
   id: "organization_registration",
@@ -54,14 +54,10 @@ export default defineStore({
         !this.ceo_aadhar_card.valid ||
         !this.gst_no.valid
       ) {
-        open_alert_text(
-          "Please fill all the required fields correctly",
-          "error"
-        );
-        return;
+        return isAlert_text(true);
       }
-      open_alert_text("", "");
-      useValidationStore().isLoading = true;
+      isAlert_text(false);
+      useValidationStore().isButtonLoading = true;
       const res = await fetch("/api/registration/organization", {
         method: "POST",
         headers: {
@@ -78,7 +74,7 @@ export default defineStore({
         }),
       });
       const data = await res.json();
-      useValidationStore().isLoading = false;
+      useValidationStore().isButtonLoading = false;
       open_alert_box(data.message, data.type);
       if (res.status === 200) {
         this.organization_name.value = "";
