@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-contract user{
+contract Users{
       
     mapping (string => string) public user_detail;
     mapping (string => string) public region_detail;
