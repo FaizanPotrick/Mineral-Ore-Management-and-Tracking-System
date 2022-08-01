@@ -141,6 +141,11 @@ app.use(
         component: () => import("@/views/Transaction.vue"),
       },
       {
+        path: "/minebatch",
+        name: "MineBatch",
+        component: () => import("@/views/MineBatch.vue"),
+      },
+      {
         path: "/servererror",
         name: "Server Error",
         component: () => import("@/components/InternalServerError.vue"),
