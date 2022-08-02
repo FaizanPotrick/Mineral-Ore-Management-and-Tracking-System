@@ -18,7 +18,7 @@ router.post(
       phone_no,
       aadhar_card,
       type_of_region,
-      region_name
+      region_name,
     } = req.body;
     try {
       const aadhar_card_check = await User.findOne({
@@ -47,9 +47,9 @@ router.post(
         aadhar_card
       );
       const password = id_generate();
-      const region_check = await Region.find({
+      const region_check = await Region.findOne({
         type_of_region: type_of_region,
-        [type_of_region]: region_name
+        [type_of_region]: region_name,
       });
       if (region_check === null) {
         return res.status(201).json({
@@ -80,7 +80,7 @@ router.post(
       });
       await Region.findOneAndUpdate(
         {
-          region_id: region_check.region_id,
+          _id: region_check._id,
         },
         {
           officer_id: officer_id,
@@ -97,7 +97,7 @@ router.post(
       });
       next();
     } catch (error) {
-      console.log(error)
+      console.log(error);
       res.status(400).json({
         message: "Invalid Request",
         type: "error",

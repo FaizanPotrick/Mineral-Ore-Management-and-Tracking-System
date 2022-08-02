@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import useAlertStore from "../Alert";
 import useValidationStore from "../Validation";
-const { open_alert_box, open_alert_text } = useAlertStore();
+const { open_alert_box, isAlert_text } = useAlertStore();
 
 export default defineStore({
   id: "officer_registration",
@@ -30,7 +30,7 @@ export default defineStore({
       regex: /^([0-9]+)$/,
       message: "Aadhar card must be numeric",
     },
-    type_of_region: "central",
+    region_list: [],
     region_name: "",
   }),
   actions: {
@@ -41,14 +41,11 @@ export default defineStore({
         !this.officer_phone_no.valid ||
         !this.officer_aadhar_card.valid
       ) {
-        open_alert_text(
-          "Please fill all the required fields correctly",
-          "error"
-        );
+        isAlert_text(true);
         return;
       }
-      open_alert_text("", "");
-      useValidationStore().isLoading = true;
+      isAlert_text(false);
+      useValidationStore().isButtonLoading = true;
       const res = await fetch("/api/registration/officer", {
         method: "POST",
         headers: {
@@ -59,12 +56,13 @@ export default defineStore({
           email_address: this.officer_email_address.value,
           phone_no: this.officer_phone_no.value,
           aadhar_card: this.officer_aadhar_card.value,
-          type_of_region: this.type_of_region,
+          type_of_region:
+            $cookies.get("type_of_region") === "country" ? "state" : "district",
           region_name: this.region_name,
         }),
       });
       const data = await res.json();
-      useValidationStore().isLoading = false;
+      useValidationStore().isButtonLoading = false;
       open_alert_box(data.message, data.type);
       if (res.status === 200) {
         this.officer_name.value = "";

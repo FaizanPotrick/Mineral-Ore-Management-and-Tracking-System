@@ -48,11 +48,25 @@ const data = {
 };
 const doughnut = {
   chartData: {
-    labels: ["High/Lump","High/Fine", "Medium/Lump","Medium/Fine", "Low/Lump","Low/Fine"],
+    labels: [
+      "High/Lump",
+      "High/Fine",
+      "Medium/Lump",
+      "Medium/Fine",
+      "Low/Lump",
+      "Low/Fine",
+    ],
     datasets: [
       {
-        backgroundColor: ["#0066ff", "#80b3ff", "#66ff33","#b3ff99","#ff0000","#ff8080"],
-        data: [40, 20, 80,50,23,30],
+        backgroundColor: [
+          "#0066ff",
+          "#80b3ff",
+          "#66ff33",
+          "#b3ff99",
+          "#ff0000",
+          "#ff8080",
+        ],
+        data: [40, 20, 80, 50, 23, 30],
       },
     ],
   },
@@ -148,8 +162,8 @@ const doughnut = {
       </div>
     </div>
     <!-- 2nd CARD LINE -->
-    <div class="flex flex-col gap-4 ">
-      <div class="flex gap-4 w-full  font-semibold">
+    <div class="flex flex-col gap-4">
+      <div class="flex gap-4 w-full font-semibold">
         <div
           class="flex flex-col justify-around w-full border-l-4 border-yellow-300 relative p-5 bg-white rounded-md overflow-hidden drop-shadow-md"
         >
@@ -201,14 +215,13 @@ const doughnut = {
           <div class="text-xl">500 Metric Tons</div>
           <div>Lump / Low</div>
         </div>
-       
       </div>
     </div>
     <!-- end of 2ND CARD LINE -->
 
-<!-- 3rd CARD LINE -->
-<div class="flex flex-col ">
-      <div class="flex gap-4 w-full  font-semibold">
+    <!-- 3rd CARD LINE -->
+    <div class="flex flex-col">
+      <div class="flex gap-4 w-full font-semibold">
         <div
           class="flex flex-col justify-around w-full border-l-4 border-yellow-300 relative p-5 bg-white rounded-md overflow-hidden drop-shadow-md"
         >
@@ -260,7 +273,6 @@ const doughnut = {
           <div class="text-xl">500 Metric Tons</div>
           <div>Fine / Low</div>
         </div>
-      
       </div>
     </div>
     <!-- END OF 3RD CARD LINE -->
@@ -533,7 +545,7 @@ const doughnut = {
                   >
                     Organisation Name
                   </th>
-                   <th
+                  <th
                     scope="col"
                     class="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                   >
@@ -589,12 +601,12 @@ const doughnut = {
                   >
                     Meghahatuburu
                   </td>
-                   <td
+                  <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
                     Meghahatuburu
                   </td>
-                   <th
+                  <th
                     scope="col"
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
@@ -645,12 +657,12 @@ const doughnut = {
                   >
                     Meghahatuburu
                   </td>
-                   <td
+                  <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
                     Meghahatuburu
                   </td>
-                   <th
+                  <th
                     scope="col"
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
@@ -701,12 +713,12 @@ const doughnut = {
                   >
                     Meghahatuburu
                   </td>
-                   <td
+                  <td
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >
                     Meghahatuburu
                   </td>
-                   <th
+                  <th
                     scope="col"
                     class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                   >

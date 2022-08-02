@@ -13,9 +13,9 @@ const id_genarate = new ShortUniqueId({
 router.post(
   "/api/registration/miner",
   async (req, res, next) => {
+    const { region_id } = req.cookies;
     const {
       organization_id,
-      region_id,
       manager_name,
       email_address,
       phone_no,
@@ -29,7 +29,9 @@ router.post(
     try {
       const organization_check = await Organization.findOne({
         _id: organization_id,
+        type_of_user: "organization",
       });
+      console.log(organization_check);
       if (organization_check === null) {
         return res.status(201).json({
           message: "No Organization Found",
