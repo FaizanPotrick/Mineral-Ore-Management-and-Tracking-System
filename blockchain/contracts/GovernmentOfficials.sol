@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
-
 import "./Organisations.sol";
- 
+import "./Users.sol"; 
 
-contract GovernmentOfficials is Organisations{
+contract GovernmentOfficials is Organisations,Users{
 
     //Register organisation
     //Input:- 1)organisation ID , 2)organisation Detail(Hash)
@@ -55,12 +54,12 @@ contract GovernmentOfficials is Organisations{
     }
 
     //Get Number of Batch Done By Mine
-    function getBatchNo(string calldata mine_id) public view returns(uint batch_no) {
+    function getBatchNo(string calldata mine_id) external view returns(uint batch_no) {
         return minesBatch[mine_id].length;
     }
 
     //Get Batch Id from Array of Batch Ids of mine
-    function getBatchId(string calldata mine_id, uint index) public returns(string memory){
+    function getBatchId(string calldata mine_id, uint index) external view returns(string memory){
         return minesBatch[mine_id][index].batch_id;
     }
 }

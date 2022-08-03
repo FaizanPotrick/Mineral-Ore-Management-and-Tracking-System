@@ -15,7 +15,7 @@ contract Organisations is Mines{
     
     //Selling Of Ore 
     //Input:- 1)Transtion Detail[Transaction Id,Mine Id,Buyer Organisation ID,Quantity Of Ore to sell,Ore Type,Grade,Price]
-    function selling(transaction_details calldata transactionDetails ) external{
+    function selling(transaction_details calldata transactionDetails) external{
         require(keccak256(abi.encodePacked((mine[transactionDetails.mine_id].mine_id))) == keccak256(abi.encodePacked((transactionDetails.mine_id))),"Provided Seller Mine ID Doesn't Exist");
         require(keccak256(abi.encodePacked((organisation[transactionDetails.buyer_organisation_id].organisation_id))) == keccak256(abi.encodePacked((transactionDetails.buyer_organisation_id))),"Provided Seller Organisation ID Doesn't Exist");        
         require(mineOreAmount[transactionDetails.mine_id][transactionDetails.ore_type][transactionDetails.grade]>= transactionDetails.amount,"Amount of Ore is Not Present in the Mine");
@@ -45,12 +45,12 @@ contract Organisations is Mines{
     }
     
     //Get Number of Transaction Done By Mine
-    function getTransaction_no(string calldata mine_id) public view returns(uint transaction_no) {
+    function getTransaction_no(string calldata mine_id) external view returns(uint transaction_no) {
         return minesTransaction[mine_id].length;
     }
 
     //Get Transaction Id from Array of Batch Ids of mine
-    function getTransactionId(string calldata mine_id, uint index) public returns(string memory){
+    function getTransactionId(string calldata mine_id, uint index) external view returns(string memory){
         return minesTransaction[mine_id][index].transaction_id;
     }
 }
