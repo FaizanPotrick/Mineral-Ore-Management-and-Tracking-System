@@ -58,12 +58,10 @@ export default defineStore({
       }
       isAlert_text(false);
       useValidationStore().isButtonLoading = true;
-      const res = await fetch("/api/registration/organization", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      await axios({
+        method: 'post',
+        url: '/api/registration/organization',
+        data: {
           organization_name: this.organization_name.value,
           address: this.address,
           ceo_name: this.ceo_name.value,
@@ -71,20 +69,22 @@ export default defineStore({
           phone_no: this.ceo_phone_no.value,
           aadhar_card: this.ceo_aadhar_card.value,
           gst_no: this.gst_no.value,
-        }),
+        }
+      }).then(res => {
+        open_alert_box(res.data.message, res.data.type);
+        if (res.status === 200) {
+          this.organization_name.value = "";
+          this.address = "";
+          this.ceo_name.value = "";
+          this.ceo_email_address.value = "";
+          this.ceo_phone_no.value = "";
+          this.ceo_aadhar_card.value = "";
+          this.gst_no.value = "";
+        }
+      }).catch(err => {
+        open_alert_box(err.response.data.message);
       });
-      const data = await res.json();
       useValidationStore().isButtonLoading = false;
-      open_alert_box(data.message, data.type);
-      if (res.status === 200) {
-        this.organization_name.value = "";
-        this.address = "";
-        this.ceo_name.value = "";
-        this.ceo_email_address.value = "";
-        this.ceo_phone_no.value = "";
-        this.ceo_aadhar_card.value = "";
-        this.gst_no.value = "";
-      }
     },
   },
 });

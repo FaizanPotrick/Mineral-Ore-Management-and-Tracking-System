@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axios from "axios";
 import useAlertStore from "../Alert";
 import useValidationStore from "../Validation";
 const { open_alert_box, isAlert_text } = useAlertStore();
@@ -93,12 +94,10 @@ export default defineStore({
       }
       isAlert_text(false);
       useValidationStore().isButtonLoading = true;
-      const res = await fetch("/api/registration/miner", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      await axios({
+        method: 'post',
+        url: '/api/registration/mine',
+        data: {
           organization_id: this.organization_id,
           manager_name: this.manager_name.value,
           email_address: this.manager_email_address.value,
@@ -109,31 +108,33 @@ export default defineStore({
           warehouse_capacity: this.mine_warehouse_capacity.value,
           period: this.lease_period.value,
           coordinates: this.coordinates,
-        }),
+        }
+      }).then(res => {
+        open_alert_box(res.data.message, res.data.type);
+        if (res.status === 200) {
+          this.organization_id = "";
+          this.manager_name.value = "";
+          this.manager_email_address.value = "";
+          this.manager_phone_no.value = "";
+          this.manager_aadhar_card.value = "";
+          this.mine_pin_code.value = "";
+          this.mine_area.value = 0;
+          this.mine_warehouse_capacity.value = 0;
+          this.lease_period.value = 0;
+          this.center = {
+            lat: 20.5937,
+            lng: 78.9629,
+          };
+          this.zoom = 4;
+          this.coordinates = {
+            lat: 0,
+            lng: 0,
+          };
+        }
+      }).catch(err => {
+        open_alert_box(err.response.data.message);
       });
-      const data = await res.json();
       useValidationStore().isButtonLoading = false;
-      open_alert_box(data.message, data.type);
-      if (res.status === 200) {
-        this.organization_id = "";
-        this.manager_name.value = "";
-        this.manager_email_address.value = "";
-        this.manager_phone_no.value = "";
-        this.manager_aadhar_card.value = "";
-        this.mine_pin_code.value = "";
-        this.mine_area.value = 0;
-        this.mine_warehouse_capacity.value = 0;
-        this.lease_period.value = 0;
-        this.center = {
-          lat: 20.5937,
-          lng: 78.9629,
-        };
-        this.zoom = 4;
-        this.coordinates = {
-          lat: 0,
-          lng: 0,
-        };
-      }
     },
   },
 });
