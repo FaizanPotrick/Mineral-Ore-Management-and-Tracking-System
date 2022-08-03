@@ -36,12 +36,20 @@ contract Mines{
        string grade;
        string price;
    }
+    struct Batch_id {
+        string batch_id;
+    }
     
+    struct Transaction_id {
+        string transaction_id;
+    }
 
     mapping (string => mine_detail ) public mine;
     mapping (string => mapping (string => ore_details) ) public batch;
-    mapping( string => mapping (string => bool)) public batchState;
+    mapping (string => mapping (string => bool)) public batchState;
+    mapping (string => Batch_id[]) public minesBatch;
     mapping (string => mapping (string => mapping(string=> uint))) public mineOreAmount;
-    mapping (string=> transaction_details) transaction;
+    mapping (string => mapping(string=> transaction_details)) transaction;
+    mapping (string => Transaction_id[]) public minesTransaction;
 
 }
