@@ -27,6 +27,7 @@ contract GovernmentOfficials is Organisations{
         require(keccak256(abi.encodePacked((mine[oredetails.mine_id].mine_id))) == keccak256(abi.encodePacked((oredetails.mine_id))),"Provided Mine ID Doesn't Exist");
         require(keccak256(abi.encodePacked((batch[oredetails.mine_id][oredetails.batch_id].batch_id))) != keccak256(abi.encodePacked((oredetails.batch_id))),"Provided Batch ID Exist");        
         
+        //Storing the Batch Information
         batch[oredetails.mine_id][oredetails.batch_id]=ore_details(oredetails.batch_id,
                                                                    oredetails.mine_id,
                                                                    oredetails.organisation_id,
@@ -38,8 +39,12 @@ contract GovernmentOfficials is Organisations{
                                                                    oredetails.sample_img,
                                                                    oredetails.lab_doc,
                                                                    oredetails.officer_id,
-                                                                   oredetails.gov_doc);
+                                                                   oredetails.gov_doc
+                                                                   );
+        //Storing All Batch_id in Mine_id
+        minesBatch[oredetails.mine_id].push(Batch_id(oredetails.batch_id));
         
+        //Storing the Batch State(Approved or Disapproved)
         batchState[oredetails.mine_id][oredetails.batch_id]=state;
 
         //If Batch Is Approved then only it can be Sell
@@ -47,5 +52,15 @@ contract GovernmentOfficials is Organisations{
         if(state == true){
             mineOreAmount[oredetails.mine_id][oredetails.ore_type][oredetails.grade] += oredetails.amount;            
         }
+    }
+
+    //Get Number of Batch Done By Mine
+    function getBatchNo(string calldata mine_id) public view returns(uint batch_no) {
+        return minesBatch[mine_id].length;
+    }
+
+    //Get Batch Id from Array of Batch Ids of mine
+    function getBatchId(string calldata mine_id, uint index) public returns(string memory){
+        return minesBatch[mine_id][index].batch_id;
     }
 }

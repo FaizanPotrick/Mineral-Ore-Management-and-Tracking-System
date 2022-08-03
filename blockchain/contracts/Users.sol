@@ -3,8 +3,8 @@ pragma solidity >=0.4.22 <0.9.0;
 
 contract Users{
       
-    mapping (string => string) public user_detail;
-    mapping (string => string) public region_detail;
+    mapping (string => string) public user_detail;//map user id to  user details(Hash)
+    mapping (string => string) public region_detail;//map region id to  region details(Hash)
 
     //Register User
     //Input:- 1)User ID , 2)User Detail(Hash)
