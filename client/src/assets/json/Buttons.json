@@ -1,0 +1,83 @@
+[
+    {
+        "name": "home",
+        "router_link": "/dashboard",
+        "type_of_user": [
+            "officer",
+            "organization",
+            "miner"
+        ],
+        "type_of_region": [
+            "country",
+            "state",
+            "district"
+        ]
+    },
+    {
+        "name": "officer registration",
+        "router_link": "/dashboard/officer_registration",
+        "type_of_user": [
+            "officer"
+        ],
+        "type_of_region": [
+            "country",
+            "state"
+        ]
+    },
+    {
+        "name": "organization registration",
+        "router_link": "/dashboard/organization_registration",
+        "type_of_user": [
+            "officer"
+        ],
+        "type_of_region": [
+            "country",
+            "state",
+            "district"
+        ]
+    },
+    {
+        "name": "mine registration",
+        "router_link": "/dashboard/mine_registration",
+        "type_of_user": [
+            "officer"
+        ],
+        "type_of_region": [
+            "district"
+        ]
+    },
+    {
+        "name": "approve mined batch",
+        "router_link": "/dashboard/approve_mined_batch",
+        "type_of_user": [
+            "officer"
+        ],
+        "type_of_region": [
+            "district"
+        ]
+    },
+    {
+        "name": "approve transaction",
+        "router_link": "/dashboard/approve_transaction",
+        "type_of_user": [
+            "officer"
+        ],
+        "type_of_region": [
+            "district"
+        ]
+    },
+    {
+        "name": "add mined batch",
+        "router_link": "/dashboard/add_mined_batch",
+        "type_of_user": [
+            "miner"
+        ]
+    },
+    {
+        "name": "add transaction",
+        "router_link": "/dashboard/add_transaction",
+        "type_of_user": [
+            "miner"
+        ]
+    }
+]
