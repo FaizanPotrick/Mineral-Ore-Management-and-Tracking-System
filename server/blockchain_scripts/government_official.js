@@ -22,6 +22,34 @@ class GovernmentOfficial extends BlockchainConnection{
     
         }
       }
+      async createUserDetails(user_id, user_hash) {
+
+        try {
+          const contract = await this.contract;
+          await contract.methods.createUser(user_id, user_hash).send({
+            from: this.accounts[0]
+          }).then(() => {
+            console.log("User created successfully");
+          });
+        } catch (e) {
+          console.log("Error in creating User to contract: ", e);
+    
+        }
+      }
+      async createRegionDetails(region_id, region_hash) {
+
+        try {
+          const contract = await this.contract;
+          await contract.methods.createRegion(region_id, region_hash).send({
+            from: this.accounts[0]
+          }).then(() => {
+            console.log("Region created successfully");
+          });
+        } catch (e) {
+          console.log("Error in creating Region to contract: ", e);
+    
+        }
+      }
 
   async createMine(mine_id,org_id,mine_hash) {
 
@@ -37,11 +65,11 @@ class GovernmentOfficial extends BlockchainConnection{
 
     }
   }
-  async createMinedBatch(mine_id,batch_id,batch={batch_id,mine_id,organisation_id,manager_id,amount,ore_type,grade,Fe_amount,sample_img,lab_doc,officer_id,gov_doc},state) {
+  async createMinedBatch(mine_id,batch={batch_id,mine_id,organisation_id,manager_id,amount,ore_type,grade,Fe_amount,sample_img,lab_doc,officer_id,state}) {
 
     try {
       const contract = await this.contract;s
-      await contract.methods.createMinedBatch(mine_id,batch_id,batch={batch_id,mine_id,organisation_id,manager_id,amount,ore_type,grade,Fe_amount,sample_img,lab_doc,officer_id,gov_doc},state).send({
+      await contract.methods.createMinedBatch(mine_id,batch={batch_id,mine_id,organisation_id,manager_id,amount,ore_type,grade,Fe_amount,sample_img,lab_doc,officer_id,state}).send({
         from: this.accounts[0]
       }).then(() => {
         console.log("Mined batch created successfully");
