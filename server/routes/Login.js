@@ -45,8 +45,7 @@ router.post("/api/login", async (req, res) => {
       .status(200)
       .json({
         message: "Successfully Logged In",
-        type: "success",
-        path: `${user_response.type_of_user}_dashboard`,
+        type: "success"
       });
   } catch (error) {
     console.log(error);

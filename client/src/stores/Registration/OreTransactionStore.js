@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import useAlertStore from "./Alert";
-import useValidationStore from "./Validation";
+import useAlertStore from "../Alert";
+import useValidationStore from "../Validation";
 const { open_alert_box, open_alert_text } = useAlertStore();
 
 export default defineStore({

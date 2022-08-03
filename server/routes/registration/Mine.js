@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const Miner = require("../../models/MinerSchema");
+const Mine = require("../../models/MineSchema");
 const User = require("../../models/UserSchema");
 const Organization = require("../../models/OrganizationSchema");
 const jwt = require("jsonwebtoken");
@@ -11,7 +11,7 @@ const id_genarate = new ShortUniqueId({
   length: 8,
 });
 router.post(
-  "/api/registration/miner",
+  "/api/registration/mine",
   async (req, res, next) => {
     const { region_id } = req.cookies;
     const {
@@ -27,11 +27,7 @@ router.post(
       coordinates,
     } = req.body;
     try {
-      const organization_check = await Organization.findOne({
-        _id: organization_id,
-        type_of_user: "organization",
-      });
-      console.log(organization_check);
+      const organization_check = await Organization.findById(organization_id);
       if (organization_check === null) {
         return res.status(201).json({
           message: "No Organization Found",
@@ -44,15 +40,6 @@ router.post(
       if (aadhar_card_check !== null) {
         return res.status(201).json({
           message: "Aadhar Card already exist",
-          type: "warning",
-        });
-      }
-      const email_address_check = await User.findOne({
-        email_address: email_address,
-      });
-      if (email_address_check !== null) {
-        return res.status(201).json({
-          message: "Email Address already exist",
           type: "warning",
         });
       }
@@ -76,7 +63,7 @@ router.post(
         password: bcrypt.hashSync(password, 10),
         c_password: bcrypt.hashSync(password, 10),
       });
-      await Miner.create({
+      await Mine.create({
         organization_id: organization_id,
         manager_id: manager_id,
         region_id: region_id,

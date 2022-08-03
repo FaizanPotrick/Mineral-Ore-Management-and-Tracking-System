@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Miner = new mongoose.Schema({
+const Mine = new mongoose.Schema({
   organization_id: {
     type: String,
     required: true,
@@ -53,4 +53,4 @@ const Miner = new mongoose.Schema({
 });
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
-  .model("Miner", Miner);
+  .model("Miner", Mine);

@@ -30,15 +30,6 @@ router.post(
           type: "warning",
         });
       }
-      const email_address_check = await User.findOne({
-        email_address: email_address,
-      });
-      if (email_address_check !== null) {
-        return res.status(201).json({
-          message: "Email Address already exist",
-          type: "warning",
-        });
-      }
       const officer_id = id_generate();
       const auth = jwt.sign(
         {

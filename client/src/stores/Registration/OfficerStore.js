@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axios from "axios";
 import useAlertStore from "../Alert";
 import useValidationStore from "../Validation";
 const { open_alert_box, isAlert_text } = useAlertStore();
@@ -46,12 +47,10 @@ export default defineStore({
       }
       isAlert_text(false);
       useValidationStore().isButtonLoading = true;
-      const res = await fetch("/api/registration/officer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      await axios({
+        method: 'post',
+        url: '/api/registration/officer',
+        data: {
           officer_name: this.officer_name.value,
           email_address: this.officer_email_address.value,
           phone_no: this.officer_phone_no.value,
@@ -59,19 +58,21 @@ export default defineStore({
           type_of_region:
             $cookies.get("type_of_region") === "country" ? "state" : "district",
           region_name: this.region_name,
-        }),
+        }
+      }).then(res => {
+        open_alert_box(res.data.message, res.data.type);
+        if (res.status === 200) {
+          this.officer_name.value = "";
+          this.officer_email_address.value = "";
+          this.officer_phone_no.value = "";
+          this.officer_aadhar_card.value = "";
+          this.type_of_region = "";
+          this.region_name = "";
+        }
+      }).catch(err => {
+        open_alert_box(err.response.data.message);
       });
-      const data = await res.json();
       useValidationStore().isButtonLoading = false;
-      open_alert_box(data.message, data.type);
-      if (res.status === 200) {
-        this.officer_name.value = "";
-        this.officer_email_address.value = "";
-        this.officer_phone_no.value = "";
-        this.officer_aadhar_card.value = "";
-        this.type_of_region = "";
-        this.region_name = "";
-      }
     },
   },
 });
