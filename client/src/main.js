@@ -49,6 +49,11 @@ app.use(
         component: () => import("@/views/MDash.vue"),
       },
       {
+        path: "/manager",
+        name: "manager",
+        component: () => import("@/views/Manager.vue"),
+      },
+      {
         path: "/forgot_password",
         name: "forgot",
         component: () => import("@/views/Forgot.vue"),
