@@ -30,11 +30,11 @@ class BlockchainConnection {
   }
 
 
-  async getOrganisations() {
+  async getOrganisations(organisation_id) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.organisation("abc").call().then((results) => {
+      await contract.methods.organisation(organisation_id).call().then((results) => {
         console.log("Organisation fetched successfully");
         console.log(results);
       });
@@ -43,11 +43,11 @@ class BlockchainConnection {
 
     }
   }
-  async getMine() {
+  async getMine(mine_id) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.mine("abc", "123").call().then((results) => {
+      await contract.methods.mine(mine_id).call().then((results) => {
         console.log("Mine fetched successfully");
         console.log(results);
       });
@@ -56,11 +56,11 @@ class BlockchainConnection {
 
     }
   }
-  async getMinedBatch() {
+  async getMinedBatch(mine_id,index) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.batch("123", "0").call().then((results) => {
+      await contract.methods.batch(mine_id,index).call().then((results) => {
         console.log("Mined batch fetched successfully");
         console.log(results);
       });
@@ -69,11 +69,11 @@ class BlockchainConnection {
 
     }
   }
-  async getTransaction() {
+  async getTransaction(mine_id,index) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.transaction("123", "0").call().then((results) => {
+      await contract.methods.transaction(mine_id,index).call().then((results) => {
         console.log("Transaction fetched successfully");
         console.log(results);
       });
@@ -82,11 +82,11 @@ class BlockchainConnection {
 
     }
   }
-  async getMinedBatchNo() {
+  async getMinedBatchNo(mine_id) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.getBatchNo("123").call().then((results) => {
+      await contract.methods.getBatchNo(mine_id).call().then((results) => {
         console.log("Total number of mined batch fetched successfully");
         console.log(results);
       });
@@ -95,11 +95,11 @@ class BlockchainConnection {
 
     }
   }
-  async getTransactionNo() {
+  async getTransactionNo(mine_id) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.getTransactionNo("123").call().then((results) => {
+      await contract.methods.getTransactionNo(mine_id).call().then((results) => {
         console.log("Total number of transaction in a mine fetched successfully");
         console.log(results);
       });
@@ -108,11 +108,11 @@ class BlockchainConnection {
 
     }
   }
-  async getUser() {
+  async getUser(user_id) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.user("123").call().then((results) => {
+      await contract.methods.user(user_id).call().then((results) => {
         console.log("User detail fetched successfully");
         console.log(results);
       });
@@ -121,11 +121,11 @@ class BlockchainConnection {
 
     }
   }
-  async getRegion() {
+  async getRegion(region_id) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.region("123").call().then((results) => {
+      await contract.methods.region(region_id).call().then((results) => {
         console.log("Region detail fetched successfully");
         console.log(results);
       });
@@ -134,11 +134,11 @@ class BlockchainConnection {
 
     }
   }
-  async getMineOreAmt() {
+  async getMineOreAmt(mine_id,type_of_ore,grade_of_ore) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.mineOreAmount("123","Lump","High").call().then((results) => {
+      await contract.methods.mineOreAmount(mine_id,type_of_ore,grade_of_ore).call().then((results) => {
         console.log("Current amount of ore in the mine fetched successfully");
         console.log(results);
       });
@@ -147,11 +147,11 @@ class BlockchainConnection {
 
     }
   }
-  async getOrganisationOreAmt() {
+  async getOrganisationOreAmt(organisation_id,type_of_ore,grade_of_ore) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.organisationOreAmount("123","Lump","High").call().then((results) => {
+      await contract.methods.organisationOreAmount(organisation_id,type_of_ore,grade_of_ore).call().then((results) => {
         console.log("Current amount of ore in the organisation fetched successfully");
         console.log(results);
       });
