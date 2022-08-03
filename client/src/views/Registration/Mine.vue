@@ -43,7 +43,19 @@ const {
             <label class="text-sm font-medium text-gray-700">Organization ID*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Organization ID" v-model="useMineStore().organization_id" required />
+              placeholder="Organization ID" v-model="useMineStore().organization_id" required
+               id="org_id"
+              list="org_id_list />
+              <datalist id="org_id_list">
+              <option value="62e4a9a32aa5cb4cde64c93f"></option>
+              <option value="b78e4a9ajhfvse64c93f"></option>
+              <option value="thn877dmss"></option>
+              <option value="hb78wsnlos"></option>
+              <option value="qhbc34pla"></option>
+              <option value="23ionseithd"></option>
+              <option value="pla279sfccs"></option>
+              <option value="234onseithd"></option>
+            </datalist>
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Manager Name*</label>
