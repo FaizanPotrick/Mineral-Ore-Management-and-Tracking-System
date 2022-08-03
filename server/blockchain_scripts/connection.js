@@ -60,12 +60,103 @@ class BlockchainConnection {
 
     try {
       const contract = await this.contract;
-      await contract.methods.batch("123", "abc").call().then((results) => {
+      await contract.methods.batch("123", "0").call().then((results) => {
         console.log("Mined batch fetched successfully");
         console.log(results);
       });
     } catch (e) {
       console.log("Error in fetching mined batch to contract: ", e);
+
+    }
+  }
+  async getTransaction() {
+
+    try {
+      const contract = await this.contract;
+      await contract.methods.transaction("123", "0").call().then((results) => {
+        console.log("Transaction fetched successfully");
+        console.log(results);
+      });
+    } catch (e) {
+      console.log("Error in fetching transaction to contract: ", e);
+
+    }
+  }
+  async getMinedBatchNo() {
+
+    try {
+      const contract = await this.contract;
+      await contract.methods.getBatchNo("123").call().then((results) => {
+        console.log("Total number of mined batch fetched successfully");
+        console.log(results);
+      });
+    } catch (e) {
+      console.log("Error in fetching total number of mined batch to contract: ", e);
+
+    }
+  }
+  async getTransactionNo() {
+
+    try {
+      const contract = await this.contract;
+      await contract.methods.getTransactionNo("123").call().then((results) => {
+        console.log("Total number of transaction in a mine fetched successfully");
+        console.log(results);
+      });
+    } catch (e) {
+      console.log("Error in fetching total number of transaction in a mine to contract: ", e);
+
+    }
+  }
+  async getUser() {
+
+    try {
+      const contract = await this.contract;
+      await contract.methods.user("123").call().then((results) => {
+        console.log("User detail fetched successfully");
+        console.log(results);
+      });
+    } catch (e) {
+      console.log("Error in fetching User detail to contract: ", e);
+
+    }
+  }
+  async getRegion() {
+
+    try {
+      const contract = await this.contract;
+      await contract.methods.region("123").call().then((results) => {
+        console.log("Region detail fetched successfully");
+        console.log(results);
+      });
+    } catch (e) {
+      console.log("Error in fetching region detail to contract: ", e);
+
+    }
+  }
+  async getMineOreAmt() {
+
+    try {
+      const contract = await this.contract;
+      await contract.methods.mineOreAmount("123","Lump","High").call().then((results) => {
+        console.log("Current amount of ore in the mine fetched successfully");
+        console.log(results);
+      });
+    } catch (e) {
+      console.log("Error in fetching current amount of ore in the mine to contract: ", e);
+
+    }
+  }
+  async getOrganisationOreAmt() {
+
+    try {
+      const contract = await this.contract;
+      await contract.methods.organisationOreAmount("123","Lump","High").call().then((results) => {
+        console.log("Current amount of ore in the organisation fetched successfully");
+        console.log(results);
+      });
+    } catch (e) {
+      console.log("Error in fetching current amount of ore in the organisation to contract: ", e);
 
     }
   }

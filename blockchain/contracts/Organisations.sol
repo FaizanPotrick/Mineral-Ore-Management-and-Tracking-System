@@ -44,7 +44,7 @@ contract Organisations is Mines{
     }
     
     //Get Number of Transaction Done By Mine
-    function getTransaction_no(string calldata mine_id) external view returns(uint transaction_no) {
+    function getTransactionNo(string calldata mine_id) external view returns(uint transaction_no) {
         return transaction[mine_id].length;
     }
 
