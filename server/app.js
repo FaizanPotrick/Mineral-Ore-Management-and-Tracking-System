@@ -39,13 +39,14 @@ app.use(
     },
   })
 );
-app.use(require("./routes/Authorize.js"));
 app.use(require("./routes/Login.js"));
-app.use(require("./routes/registration/Miner.js"));
+app.use(require("./routes/Authorize.js"));
+app.use(require("./routes/GetData.js"));
 app.use(require("./routes/registration/Officer.js"));
-app.use(require("./routes/registration/Organization.js"));
 app.use(require("./routes/registration/Region.js"));
-app.use(require("./routes/miner/ores"));
-app.listen(process.env.PORT || 8000, ()=>{
+app.use(require("./routes/registration/Organization.js"));
+app.use(require("./routes/registration/Mine.js"));
+app.use(require("./routes/registration/AddMinedBatch.js"));
+app.listen(process.env.PORT || 8000, () => {
   console.log("server is running on port 8000");
 });

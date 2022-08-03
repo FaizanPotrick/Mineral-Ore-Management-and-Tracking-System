@@ -7,7 +7,7 @@ const RegistrationEmailSender = (req) => {
   const password = req.password;
   const template = `
      <h2>Hello, ${user_name}</h2>
-     <div>Your ${user_type} has been successfully registered.</div>
+     <div>${user_type} has been successfully registered.</div>
      <div>Here are your Credentials for the Login:</div>
      <div><strong>UserName: ${user_id}<strong/></div>
      <div><strong>Password: ${password}<strong/></div>
