@@ -1,6 +1,8 @@
 <script setup>
 import useDashboardStore from "@/stores/DashboardStore";
-useDashboardStore().button_check()
+import Buttons from "@/assets/json/Buttons.json";
+import Cards from "@/assets/json/Cards.json";
+console.log(useDashboardStore().component_check(Cards))
 </script>
 
 <template>
@@ -15,7 +17,7 @@ useDashboardStore().button_check()
         </div>
         <div class="flex flex-col justify-between items-start h-full p-4">
             <div class="flex flex-col gap-2 w-full">
-                <RouterLink v-for="button of useDashboardStore().button_value" :to="button.router_link"
+                <RouterLink v-for="button of useDashboardStore().component_check(Buttons)" :to="button.router_link"
                     class="flex items-center hover:bg-yellow-100 rounded-xl text-gray-900 py-2.5 px-4 capitalize">
                     {{ button.name }}
                 </RouterLink>
