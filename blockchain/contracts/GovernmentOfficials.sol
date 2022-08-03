@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
-
 import "./Organisations.sol";
- 
+import "./Users.sol"; 
 
-contract GovernmentOfficials is Organisations{
+contract GovernmentOfficials is Organisations,Users{
 
     //Register organisation
     //Input:- 1)organisation ID , 2)organisation Detail(Hash)
@@ -23,11 +22,10 @@ contract GovernmentOfficials is Organisations{
     //Creating Batch 
     //Input:-1)Batch Detail[Batch ID,Mine Id,organisation Id,Manager Id,Quantidy Of Ore,Ore Of Type,Grade,Fe%,OreSample Image(Hash),Lab Document of Miner(Hash),Government Officers Id,Government Lab Document(Hash)],
     //       2)Approve(True) or Disapprove (False)
-    function createMinedBatch(ore_details calldata oredetails,bool state) external{
+    function createMinedBatch(batch_details calldata oredetails) external{
         require(keccak256(abi.encodePacked((mine[oredetails.mine_id].mine_id))) == keccak256(abi.encodePacked((oredetails.mine_id))),"Provided Mine ID Doesn't Exist");
-        require(keccak256(abi.encodePacked((batch[oredetails.mine_id][oredetails.batch_id].batch_id))) != keccak256(abi.encodePacked((oredetails.batch_id))),"Provided Batch ID Exist");        
-        
-        batch[oredetails.mine_id][oredetails.batch_id]=ore_details(oredetails.batch_id,
+        //Storing the Batch Information
+        batch[oredetails.mine_id].push(batch_details(oredetails.batch_id,
                                                                    oredetails.mine_id,
                                                                    oredetails.organisation_id,
                                                                    oredetails.manager_id,
@@ -38,14 +36,19 @@ contract GovernmentOfficials is Organisations{
                                                                    oredetails.sample_img,
                                                                    oredetails.lab_doc,
                                                                    oredetails.officer_id,
-                                                                   oredetails.gov_doc);
-        
-        batchState[oredetails.mine_id][oredetails.batch_id]=state;
+                                                                   oredetails.state
+                                                                   ));
 
         //If Batch Is Approved then only it can be Sell
         //That Batch is Added to Mine Total Batch  
-        if(state == true){
+        if(oredetails.state == true){
             mineOreAmount[oredetails.mine_id][oredetails.ore_type][oredetails.grade] += oredetails.amount;            
         }
     }
+
+    //Get Number of Batch Done By Mine
+    function getBatchNo(string calldata mine_id) external view returns(uint batch_no) {
+        return batch[mine_id].length;
+    }
+
 }

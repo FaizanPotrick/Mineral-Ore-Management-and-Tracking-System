@@ -3,15 +3,13 @@ pragma solidity >=0.4.22 <0.9.0;
 
 contract Mines{
 
-    
     struct mine_detail {
       string mine_id;
       string organisation_id;
       string mine_hash;
    }
 
-
-   struct ore_details{
+   struct batch_details{
        string batch_id;
        string mine_id;
        string organisation_id;
@@ -23,7 +21,7 @@ contract Mines{
        string sample_img;
        string lab_doc;
        string officer_id;
-       string gov_doc;
+       bool state;
    }
    
     struct transaction_details{
@@ -36,12 +34,10 @@ contract Mines{
        string grade;
        string price;
    }
-    
 
-    mapping (string => mine_detail ) public mine;
-    mapping (string => mapping (string => ore_details) ) public batch;
-    mapping( string => mapping (string => bool)) public batchState;
-    mapping (string => mapping (string => mapping(string=> uint))) public mineOreAmount;
-    mapping (string=> transaction_details) transaction;
+    mapping (string => mine_detail ) public mine;//map mine id to mine details
+    mapping (string => batch_details[]) public batch;//map mine id to map batch id to ore detail
+    mapping (string => mapping (string => mapping(string=> uint))) public mineOreAmount;//map mine id to map ore type to map grade to ore amount
+    mapping (string => transaction_details[]) public transaction;//map transaction id to transaction details 
 
 }
