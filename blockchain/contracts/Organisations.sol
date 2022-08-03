@@ -24,7 +24,7 @@ contract Organisations is Mines{
         string storage mine_organisation_id=mine[transactionDetails.mine_id].organisation_id;
         
         //Storing the Transaction Information
-        transaction[transactionDetails.mine_id][transactionDetails.transaction_id]=transaction_details(transactionDetails.transaction_id,
+        transaction[transactionDetails.mine_id].push(transaction_details(transactionDetails.transaction_id,
                                                                                                          transactionDetails.mine_id,
                                                                                                          mine_organisation_id,
                                                                                                          transactionDetails.buyer_organisation_id,
@@ -32,10 +32,9 @@ contract Organisations is Mines{
                                                                                                          transactionDetails.ore_type,
                                                                                                          transactionDetails.grade,
                                                                                                          transactionDetails.price
-                                                                                                        );
+                                                                                                        ));
         
-        //Storing All Transaction_id in Mine_id 
-        minesTransaction[transactionDetails.mine_id].push(Transaction_id(transactionDetails.transaction_id));
+
         
         //Quantity Of Ore Sell is Deduction from Mine
         mineOreAmount[transactionDetails.mine_id][transactionDetails.ore_type][transactionDetails.grade] -= transactionDetails.amount;
@@ -46,11 +45,7 @@ contract Organisations is Mines{
     
     //Get Number of Transaction Done By Mine
     function getTransaction_no(string calldata mine_id) external view returns(uint transaction_no) {
-        return minesTransaction[mine_id].length;
+        return transaction[mine_id].length;
     }
 
-    //Get Transaction Id from Array of Batch Ids of mine
-    function getTransactionId(string calldata mine_id, uint index) external view returns(string memory){
-        return minesTransaction[mine_id][index].transaction_id;
-    }
 }
