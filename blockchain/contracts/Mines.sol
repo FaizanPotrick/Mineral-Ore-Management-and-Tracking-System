@@ -12,7 +12,6 @@ contract Mines{
    struct batch_details{
        string batch_id;
        string mine_id;
-       string organisation_id;
        string manager_id;
        uint amount;
        string ore_type;
