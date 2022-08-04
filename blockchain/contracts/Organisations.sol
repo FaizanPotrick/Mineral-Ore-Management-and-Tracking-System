@@ -43,9 +43,13 @@ contract Organisations is Mines{
         organisationOreAmount[transactionDetails.buyer_organisation_id][transactionDetails.ore_type][transactionDetails.grade] += transactionDetails.amount;
     }
     
-    //Get Number of Transaction Done By Mine
-    function getTransaction_no(string calldata mine_id) external view returns(uint transaction_no) {
-        return transaction[mine_id].length;
+    //Get All Transaction Done By Mine
+    function getAllTransaction(string calldata mine_id) external view returns(transaction_details[] memory){
+        transaction_details[]    memory mine_transactions = new transaction_details[](transaction[mine_id].length);
+        for(uint i = 0; i < transaction[mine_id].length; i++){
+          mine_transactions[i]  = transaction[mine_id][i];
+        }
+        return mine_transactions;
     }
 
 }

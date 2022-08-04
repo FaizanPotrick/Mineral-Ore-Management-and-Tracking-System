@@ -20,24 +20,24 @@ contract GovernmentOfficials is Organisations,Users{
     }
 
     //Creating Batch 
-    //Input:-1)Batch Detail[Batch ID,Mine Id,organisation Id,Manager Id,Quantidy Of Ore,Ore Of Type,Grade,Fe%,OreSample Image(Hash),Lab Document of Miner(Hash),Government Officers Id,Government Lab Document(Hash)],
-    //       2)Approve(True) or Disapprove (False)
+    //Input:-1)Batch Detail[Batch ID,Mine Id,Manager Id,Quantity Of Ore,Ore Of Type,Grade,Fe%,OreSample Image(Hash),Lab Document of Miner(Hash),Government Officers Id,Government Lab Document(Hash)],
     function createMinedBatch(batch_details calldata oredetails) external{
         require(keccak256(abi.encodePacked((mine[oredetails.mine_id].mine_id))) == keccak256(abi.encodePacked((oredetails.mine_id))),"Provided Mine ID Doesn't Exist");
         //Storing the Batch Information
         batch[oredetails.mine_id].push(batch_details(oredetails.batch_id,
-                                                                   oredetails.mine_id,
-                                                                   oredetails.organisation_id,
-                                                                   oredetails.manager_id,
-                                                                   oredetails.amount,
-                                                                   oredetails.ore_type,
-                                                                   oredetails.grade,
-                                                                   oredetails.Fe_amount,
-                                                                   oredetails.sample_img,
-                                                                   oredetails.lab_doc,
-                                                                   oredetails.officer_id,
-                                                                   oredetails.state
-                                                                   ));
+                                                     oredetails.mine_id,
+                                                     oredetails.manager_id,
+                                                     oredetails.amount,
+                                                     oredetails.ore_type,
+                                                     oredetails.grade,
+                                                     oredetails.Fe_amount,
+                                                     oredetails.sample_img,
+                                                     oredetails.lab_doc,
+                                                     oredetails.officer_id,
+                                                     oredetails.state
+                                                    ));
+                                                     
+                                                                   
 
         //If Batch Is Approved then only it can be Sell
         //That Batch is Added to Mine Total Batch  
@@ -45,10 +45,14 @@ contract GovernmentOfficials is Organisations,Users{
             mineOreAmount[oredetails.mine_id][oredetails.ore_type][oredetails.grade] += oredetails.amount;            
         }
     }
-
-    //Get Number of Batch Done By Mine
-    function getBatchNo(string calldata mine_id) external view returns(uint batch_no) {
-        return batch[mine_id].length;
+  
+    //Get all Batches of A mine
+    function getAllBatches(string calldata mine_id) external view returns(batch_details[] memory){
+        batch_details[]    memory mine_batches = new batch_details[](batch[mine_id].length);
+        for(uint i = 0; i < batch[mine_id].length; i++){
+            mine_batches[i]=batch[mine_id][i];
+        }
+        return mine_batches;
     }
 
 }

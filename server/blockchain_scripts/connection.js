@@ -43,6 +43,7 @@ class BlockchainConnection {
 
     }
   }
+
   async getMine(mine_id) {
 
     try {
@@ -56,11 +57,12 @@ class BlockchainConnection {
 
     }
   }
-  async getMinedBatch(mine_id,index) {
+
+  async getMinedBatches(mine_id) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.batch(mine_id,index).call().then((results) => {
+      await contract.methods.getAllBatches(mine_id).call().then((results) => {
         console.log("Mined batch fetched successfully");
         console.log(results);
       });
@@ -69,11 +71,12 @@ class BlockchainConnection {
 
     }
   }
-  async getTransaction(mine_id,index) {
+
+  async getTransactions(mine_id) {
 
     try {
       const contract = await this.contract;
-      await contract.methods.transaction(mine_id,index).call().then((results) => {
+      await contract.methods.getAllTransaction(mine_id).call().then((results) => {
         console.log("Transaction fetched successfully");
         console.log(results);
       });
@@ -82,32 +85,7 @@ class BlockchainConnection {
 
     }
   }
-  async getMinedBatchNo(mine_id) {
-
-    try {
-      const contract = await this.contract;
-      await contract.methods.getBatchNo(mine_id).call().then((results) => {
-        console.log("Total number of mined batch fetched successfully");
-        console.log(results);
-      });
-    } catch (e) {
-      console.log("Error in fetching total number of mined batch to contract: ", e);
-
-    }
-  }
-  async getTransactionNo(mine_id) {
-
-    try {
-      const contract = await this.contract;
-      await contract.methods.getTransactionNo(mine_id).call().then((results) => {
-        console.log("Total number of transaction in a mine fetched successfully");
-        console.log(results);
-      });
-    } catch (e) {
-      console.log("Error in fetching total number of transaction in a mine to contract: ", e);
-
-    }
-  }
+  
   async getUser(user_id) {
 
     try {
@@ -121,6 +99,7 @@ class BlockchainConnection {
 
     }
   }
+
   async getRegion(region_id) {
 
     try {
@@ -134,6 +113,7 @@ class BlockchainConnection {
 
     }
   }
+
   async getMineOreAmt(mine_id,type_of_ore,grade_of_ore) {
 
     try {
@@ -147,6 +127,7 @@ class BlockchainConnection {
 
     }
   }
+
   async getOrganisationOreAmt(organisation_id,type_of_ore,grade_of_ore) {
 
     try {
@@ -160,6 +141,7 @@ class BlockchainConnection {
 
     }
   }
+
 }
 
 
