@@ -1,31 +1,21 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import Buttons from "@/assets/json/Buttons.json";
 
 export default defineStore({
     id: "dashboard",
-    state: () => ({
-        auth_value: false,
-        button_value: [],
-        card_value: [],
-    }),
+    state: () => ({}),
     actions: {
-        button_check() {
-            Buttons.map((button) => {
+        component_check(component) {
+            return component.filter((button) => {
                 for (const user_type of button.type_of_user) {
                     if (user_type === $cookies.get('type_of_user')) {
                         if ($cookies.get('type_of_user') === "officer") {
                             for (const region_type of button.type_of_region) {
-                                if (region_type === $cookies.get('type_of_region')) {
-                                    return this.button_value.push(button);
-                                }
+                                return region_type === $cookies.get('type_of_region');
                             }
                         }
-                        else if ($cookies.get('type_of_user') === "organization") {
-                            return this.button_value.push(button);
-                        }
-                        else if ($cookies.get('type_of_user') === "miner") {
-                            return this.button_value.push(button);
+                        else {
+                            return $cookies.get('type_of_user') === user_type;
                         }
                     }
                 }
