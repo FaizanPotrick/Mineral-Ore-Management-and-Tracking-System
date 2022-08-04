@@ -32,5 +32,11 @@ export default defineStore({
       });
       useValidationStore().isButtonLoading = false;
     },
+    async logout_fn(router) {
+      await axios.get('/api/logout').then(res => {
+        router.push('/login')
+        open_alert_box(res.data.message, res.data.type);
+      })
+    }
   },
 });

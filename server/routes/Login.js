@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/UserSchema");
 const Region = require("../models/RegionSchema");
+const Organization = require("../models/OrganizationSchema");
+const Mine = require("../models/MineSchema");
 const bcrypt = require("bcrypt");
 
 router.post("/api/login", async (req, res) => {
@@ -24,17 +26,31 @@ router.post("/api/login", async (req, res) => {
         type: "error",
       });
     }
+    req.session.type_of_user = user_response.type_of_user;
     if (user_response.type_of_user === "officer") {
       const region_response = await Region.findOne({
         officer_id: user_response.user_id,
       });
       req.session.type_of_region = region_response.type_of_region;
-      req.session.region_id = region_response._id;
+      req.session._id = region_response._id;
       res
         .cookie("type_of_region", region_response.type_of_region)
-        .cookie("region_id", region_response._id);
+        .cookie("_id", region_response._id);
     }
-    req.session.type_of_user = user_response.type_of_user;
+    if (user_response.type_of_user === "organization") {
+      const organization_response = await Organization.findOne({
+        ceo_id: user_response.user_id,
+      });
+      req.session._id = organization_response._id;
+      res.cookie("_id", organization_response._id);
+    }
+    if (user_response.type_of_user === "miner") {
+      const mine_response = await Mine.findOne({
+        manager_id: user_response.user_id,
+      });
+      req.session._id = mine_response._id;
+      res.cookie("_id", mine_response._id);
+    }
     res
       .cookie("auth", user_response.auth, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -55,4 +71,12 @@ router.post("/api/login", async (req, res) => {
     });
   }
 });
+router.get("/api/logout", async (req, res) => {
+  req.session.destroy()
+  res.clearCookie('auth').clearCookie('connect.sid').clearCookie('type_of_user').clearCookie('type_of_region').clearCookie('region_id').status(200).json({
+    message: "Successfully Logged Out",
+    type: "success"
+  })
+}
+);
 module.exports = router;

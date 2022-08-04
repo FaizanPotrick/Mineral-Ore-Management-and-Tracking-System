@@ -1,8 +1,11 @@
 <script setup>
 import useDashboardStore from "@/stores/DashboardStore";
+import { useRouter } from 'vue-router';
+import useLoginStore from "@/stores/LoginStore";
 import Buttons from "@/assets/json/Buttons.json";
 import Cards from "@/assets/json/Cards.json";
 console.log(useDashboardStore().component_check(Cards))
+const router = useRouter();
 </script>
 
 <template>
@@ -22,7 +25,7 @@ console.log(useDashboardStore().component_check(Cards))
                     {{ button.name }}
                 </RouterLink>
             </div>
-            <button
+            <button @click="useLoginStore().logout_fn(router)"
                 class="w-full flex flex-shrink-0 justify-start items-center rounded-xl py-2.5 px-4  hover:text-yellow-900 hover:bg-yellow-200">
                 <img alt="" class="w-5 h-5 mr-4" src="@/assets/icons/logout.svg" />
                 Logout

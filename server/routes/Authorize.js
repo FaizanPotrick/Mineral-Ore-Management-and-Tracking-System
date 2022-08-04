@@ -1,11 +1,15 @@
 const express = require("express");
 const router = express.Router();
-
 router.get("/api/type_of_user", async (req, res) => {
   if (req.session.type_of_user === req.cookies.type_of_user) {
-    return res.status(200).json({
-      message: "User confirmed",
-    });
+    // console.log(req.session.id);
+    // console.log(req.cookies.id);
+    // console.log(req.session._id === req.cookies._id)
+    if (req.session._id === req.cookies._id) {
+      return res.status(200).json({
+        message: "User confirmed",
+      });
+    }
   }
   return res.status(403).json({
     message: "Invalid Credential",
