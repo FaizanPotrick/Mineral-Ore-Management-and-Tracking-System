@@ -114,7 +114,8 @@ app.use(
             meta: {
               type_of_user: ["organization"],
             },
-            component: () => import("@/views/Organization/ApproveTransaction.vue"),
+            component: () =>
+              import("@/views/Organization/ApproveTransaction.vue"),
           },
           {
             path: "add_mined_batch",
@@ -132,7 +133,7 @@ app.use(
             },
             component: () => import("@/views/Registration/AddTransaction.vue"),
           },
-        ]
+        ],
       },
       {
         path: "/minebatch",
