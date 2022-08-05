@@ -73,7 +73,7 @@ router.post("/api/login", async (req, res) => {
 });
 router.get("/api/logout", async (req, res) => {
   req.session.destroy()
-  res.clearCookie('auth').clearCookie('connect.sid').clearCookie('type_of_user').clearCookie('type_of_region').clearCookie('region_id').status(200).json({
+  res.clearCookie('auth').clearCookie('connect.sid').clearCookie('type_of_user').clearCookie('type_of_region').clearCookie('_id').status(200).json({
     message: "Successfully Logged Out",
     type: "success"
   })

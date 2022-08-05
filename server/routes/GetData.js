@@ -15,10 +15,10 @@ router.get("/api/organization_list", async (req, res) => {
     }
 });
 router.get("/api/region_coordinates", async (req, res) => {
-    const { type_of_region, region_id } = req.cookies;
+    const { type_of_region, _id } = req.cookies;
     try {
         const coordinates = await Region.findOne({
-            _id: region_id,
+            _id: _id,
             type_of_region: type_of_region,
         }).select("coordinates");
         res.status(200).json(coordinates);
@@ -30,11 +30,11 @@ router.get("/api/region_coordinates", async (req, res) => {
     }
 });
 router.get("/api/region_list", async (req, res) => {
-    const { type_of_region, region_id } = req.cookies;
+    const { type_of_region, _id } = req.cookies;
     let region_list;
     try {
         const region_user = await Region.findOne({
-            _id: region_id,
+            _id: _id,
             type_of_region: type_of_region,
         });
         if (type_of_region === "country") {
