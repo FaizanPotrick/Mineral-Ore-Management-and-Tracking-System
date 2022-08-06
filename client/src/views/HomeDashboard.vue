@@ -12,6 +12,14 @@ import {
     CategoryScale,
     LinearScale,
 } from "chart.js";
+import { ref } from 'vue'
+
+const center = ref([78.9629, 20.5937])
+const projection = ref('EPSG:4326')
+const zoom = ref(5)
+const rotation = ref(0)
+const zoomcontrol = ref(true)
+
 ChartJS.register(
     Title,
     Tooltip,
@@ -54,12 +62,34 @@ const doughnut = {
     ],
 };
 </script>
+<style>
+.marker {
+    border-radius: 50%;
+    border: 5px solid rgb(247, 2, 2);
+    width: 5px;
+    height: 5px;
+}
+</style>
 <template>
     <div class="flex flex-col gap-4 min-h-screen">
-        <GMapMap v-if="$cookies.get('type_of_user') === 'organization' || $cookies.get('type_of_user') === 'officer'"
+        <!-- <GMapMap v-if="$cookies.get('type_of_user') === 'organization' || $cookies.get('type_of_user') === 'officer'"
             :center="{ lat: 20.5937, lng: 78.9629 }" :zoom="5" map-type-id="terrain" style="width: 100%; height: 30vh">
             <GMapMarker v-for="marker of useDashboardStore().coordinates" :position="marker" />
-        </GMapMap>
+        </GMapMap> -->
+        <!-- ol-map -->
+        <ol-map style="height:40vh">
+            <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection" />
+            <ol-tile-layer>
+                <ol-source-osm />
+            </ol-tile-layer>
+            <ol-zoom-control v-if="zoomcontrol" />
+            <ol-overlay v-for="marker in [[72.8777, 19.0760], [73.8567, 18.5204]]" :position="marker">
+                <template v-slot="slotProps">
+                    <div class="marker"></div>
+                </template>
+            </ol-overlay>
+        </ol-map>
+        <!-- end-ol-map -->
         <div class="flex gap-4 flex-wrap w-full font-semibold">
             <div v-for="card of useDashboardStore().component_check(Cards)"
                 class="flex flex-col gap-2 max-w-[18rem] w-full border-l-4 border-yellow-300 p-5 bg-white rounded-md drop-shadow-md">
