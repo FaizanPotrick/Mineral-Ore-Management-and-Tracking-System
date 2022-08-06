@@ -11,6 +11,14 @@ import {
     CategoryScale,
     LinearScale,
 } from "chart.js";
+import { ref } from 'vue'
+
+const center = ref([78.9629, 20.5937])
+const projection = ref('EPSG:4326')
+const zoom = ref(5)
+const rotation = ref(0)
+const zoomcontrol = ref(true)
+
 ChartJS.register(
     Title,
     Tooltip,
@@ -54,15 +62,32 @@ const doughnut = {
     ],
 };
 </script>
+<style>
+.marker {
+    border-radius: 50%;
+    border: 5px solid rgb(247, 2, 2);
+    width: 5px;
+    height: 5px;
+}
+</style>
 <template>
-    <div class="flex flex-col gap-4">
-        <GMapMap v-if="$cookies.get('type_of_user') === 'organization' || $cookies.get('type_of_user') === 'officer'"
-            :center="{ lat: 20.5937, lng: 78.9629 }" :zoom="5" map-type-id="terrain" style="height: 30vh">
-            <GMapMarker v-for="marker of useDashboardStore().coordinates" :position="marker" />
-        </GMapMap>
-        <div class="flex gap-4 flex-wrap font-semibold">
-            <div v-for="card of useDashboardStore().card_data"
-                class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-8 bg-white rounded-md drop-shadow-md">
+    <div class="flex flex-col gap-4 min-h-screen">
+        <ol-map v-if="$cookies.get('type_of_user') === 'organization' || $cookies.get('type_of_user') === 'officer'"
+            style="height:40vh">
+            <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection" />
+            <ol-tile-layer>
+                <ol-source-osm />
+            </ol-tile-layer>
+            <ol-zoom-control v-if="zoomcontrol" />
+            <ol-overlay v-for="marker of useDashboardStore().coordinates" :position="marker">
+                <template>
+                    <div class="marker"></div>
+                </template>
+            </ol-overlay>
+        </ol-map>
+        <div class="flex gap-4 flex-wrap w-full font-semibold">
+            <div v-for="card of useDashboardStore().component_check(Cards)"
+                class="flex flex-col gap-2 max-w-[18rem] w-full border-l-4 border-yellow-300 p-5 bg-white rounded-md drop-shadow-md">
                 <div class="text-xl">{{ card.title }}</div>
                 <div class="flex gap-4 capitalize">
                     <div v-if="typeof (card.value) === 'object'" v-for="(value, name) of card.value">
