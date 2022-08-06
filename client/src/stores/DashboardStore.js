@@ -5,6 +5,7 @@ export default defineStore({
   id: "dashboard",
   state: () => ({
     coordinates: [],
+    card_data: [],
   }),
   actions: {
     async auth_fetch(router) {
@@ -41,6 +42,12 @@ export default defineStore({
         `/api/maps/${$cookies.get("type_of_user")}`
       );
       this.coordinates = data;
+    },
+    async card_fetch() {
+      const { data } = await axios.get(
+        `/api/cards/${$cookies.get("type_of_user")}`
+      );
+      this.card_data = data;
     },
     component_check(component) {
       return component.filter((button) => {

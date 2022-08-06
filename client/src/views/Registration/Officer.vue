@@ -68,7 +68,7 @@ onMounted(async () => {
             <label class="text-sm font-medium text-gray-700">Officer Aadhar Card*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Aadhar Card Details" @change="useValidationStore().validation(officer_aadhar_card)"
+              placeholder="Aadhar Card" @change="useValidationStore().validation(officer_aadhar_card)"
               v-model="officer_aadhar_card.value" minlength="12" maxlength="12" required />
             <span class="text-center text-sm text-red-500" v-if="!officer_aadhar_card.valid">{{
                 officer_aadhar_card.message

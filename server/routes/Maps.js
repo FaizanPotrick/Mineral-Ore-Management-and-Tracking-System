@@ -7,14 +7,14 @@ router.get("/api/maps/officer", async (req, res) => {
   const { _id, type_of_region } = req.cookies;
   try {
     let mine_list;
-    const region_response = await Region.findOne({
-      _id: _id,
-      type_of_region: type_of_region,
-    }).select("state");
     if (type_of_region === "country") {
       mine_list = await Mine.find().distinct("location.coordinates");
     }
     if (type_of_region === "state") {
+      const region_response = await Region.findOne({
+        _id: _id,
+        type_of_region: type_of_region,
+      }).select("state");
       const region_user = await Region.find({
         officer_id: { $exists: true },
         district: { $exists: true },

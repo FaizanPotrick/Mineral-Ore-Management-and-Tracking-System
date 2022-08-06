@@ -4,8 +4,11 @@ import App from "./App.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
 import VueCookies from "vue-cookies";
+import OpenLayersMap from "vue3-openlayers";
+import "vue3-openlayers/dist/vue3-openlayers.css";
 
 const app = createApp(App);
+app.use(OpenLayersMap);
 app.use(createPinia());
 app.use(VueCookies);
 app.use(VueGoogleMaps, {
@@ -27,11 +30,6 @@ app.use(
         path: "/login",
         name: "login",
         component: () => import("@/views/Login.vue"),
-      },
-      {
-        path: "/manager",
-        name: "manager",
-        component: () => import("@/views/Manager.vue"),
       },
       {
         path: "/forgot_password",
@@ -89,6 +87,22 @@ app.use(
             component: () => import("@/views/Officer/ApproveMinedBatch.vue"),
           },
           {
+            path: "ceo_registration",
+            name: "ceo registration",
+            meta: {
+              type_of_user: ["organization"],
+            },
+            component: () => import("@/views/Registration/CEO.vue"),
+          },
+          {
+            path: "mine/manager_registration",
+            name: "manager registration",
+            meta: {
+              type_of_user: ["organization"],
+            },
+            component: () => import("@/views/Registration/Manager.vue"),
+          },
+          {
             path: "approve_transaction",
             name: "approve transaction",
             meta: {
@@ -117,8 +131,13 @@ app.use(
       },
       {
         path: "/minebatch",
-        name: "MineBatch",
+        name: "Batch",
         component: () => import("@/views/MineBatch.vue"),
+      },
+      {
+        path: "/map",
+        name: "map",
+        component: () => import("@/views/Maps.vue"),
       },
       {
         path: "/:catchAll(.*)",

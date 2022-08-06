@@ -1,5 +1,5 @@
 <script setup>
-import Miner from "./Miner/Json files/miner.json";
+import Miner from "@/assets/json/Miner.json";
 
 import {
   Chart as ChartJS,

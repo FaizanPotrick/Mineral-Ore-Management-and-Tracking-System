@@ -67,6 +67,13 @@
         ]
     },
     {
+        "name": "CEO registration",
+        "router_link": "/dashboard/ceo_registration",
+        "type_of_user": [
+            "organization"
+        ]
+    },
+    {
         "name": "add mined batch",
         "router_link": "/dashboard/add_mined_batch",
         "type_of_user": [
