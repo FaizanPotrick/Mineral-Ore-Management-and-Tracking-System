@@ -36,6 +36,59 @@ const Mine = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  ores_available: {
+    fine: {
+      high: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      medium: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      low: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+    },
+    lump: {
+      high: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      medium: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      low: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+    },
+    iron_pellet: {
+      high: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      medium: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+      low: {
+        type: Number,
+        default: 0,
+        required: true,
+      },
+    },
+  },
   lease_period: {
     from: {
       type: String,

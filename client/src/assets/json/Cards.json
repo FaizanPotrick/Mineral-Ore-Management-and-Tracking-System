@@ -53,39 +53,15 @@
         "title": "500 Metric Tons",
         "subtitle": "Iron Ore Available",
         "type_of_user": [
-            "organisation"
+            "organization"
         ]
     },
     {
         "svg": "@/assets/icons/visitor.svg",
         "title": "40 Metric Tons",
-        "subtitle": "Average Per iron ore mine per day",
+        "subtitle": "Average iron ore mine per day",
         "type_of_user": [
-            "organisation"
-        ]
-    },
-    {
-        "svg": "@/assets/icons/metric.svg",
-        "title": "45%",
-        "subtitle": "Warehouse Capacity",
-        "type_of_user": [
-            "organisation"
-        ]
-    },
-    {
-        "svg": "@/assets/icons/arrows.svg",
-        "title": "950000",
-        "subtitle": "Number Of Visitors",
-        "type_of_user": [
-            "organisation"
-        ]
-    },
-    {
-        "svg": "@/assets/icons/dollar.svg",
-        "title": "950000",
-        "subtitle": "Number Of Visitors",
-        "type_of_user": [
-            "organisation"
+            "organization"
         ]
     },
     {
@@ -93,16 +69,16 @@
         "title": "500 Metric Tons",
         "subtitle": "Iron Ore Available",
         "type_of_user": [
-            "organisation",
+            "organization",
             "miner"
         ]
     },
     {
         "svg": "@/assets/icons/metric.svg",
         "title": "40 Metric Tons",
-        "subtitle": "Average Per iron ore mine per day",
+        "subtitle": "Average iron ore mine per day",
         "type_of_user": [
-            "organisation",
+            "organization",
             "miner"
         ]
     },
@@ -111,16 +87,6 @@
         "title": "45%",
         "subtitle": "Warehouse Capacity",
         "type_of_user": [
-            "organisation",
-            "miner"
-        ]
-    },
-    {
-        "svg": "@/assets/icons/arrows.svg",
-        "title": "950000",
-        "subtitle": "Number Of Visitors",
-        "type_of_user": [
-            "organisation",
             "miner"
         ]
     }

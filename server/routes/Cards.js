@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const Mine = require("../models/MineSchema");
+const Organization = require("../models/OrganizationSchema");
 const Region = require("../models/RegionSchema");
 
 router.get("/api/maps/officer", async (req, res) => {
-  const { _id, type_of_region } = req.cookies;
+  const { _id } = req.cookies;
   try {
     let mine_list;
     const region_response = await Region.findOne({
@@ -45,19 +46,19 @@ router.get("/api/maps/officer", async (req, res) => {
     });
   }
 });
-router.get("/api/maps/organization", async (req, res) => {
+router.get("/api/cards/organization", async (req, res) => {
   const { _id } = req.cookies;
   try {
-    const organization_response = await Mine.find({
-      organization_id: _id,
-    }).distinct("location.coordinates");
-    const mine_list_response = organization_response.map((mine) => {
-      return {
-        lat: mine.latitude,
-        lng: mine.longitude,
-      };
-    });
-    res.status(200).json(mine_list_response);
+    const organization_response = await Organization.find().select(
+      "ores_bought"
+    );
+    console.log(organization_response);
+    res.status(200).json([
+      {
+        value: organization_response.length,
+        title: "Total Number of Mines",
+      },
+    ]);
   } catch (error) {
     console.log(error);
     res.status(400).json({

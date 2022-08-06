@@ -1,5 +1,0 @@
- <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                    class="-z-10 absolute right-0 bottom-0 h-32 w-32 -mr-8 -mb-8 text-red-700 opacity-50">
-                    <path stroke-width="2"
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>

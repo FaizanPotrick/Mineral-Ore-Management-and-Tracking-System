@@ -29,26 +29,6 @@ app.use(
         component: () => import("@/views/Login.vue"),
       },
       {
-        path: "/godash",
-        name: "go dash",
-        component: () => import("@/views/GovOffDistDashboard.vue"),
-      },
-      {
-        path: "/statedash",
-        name: "state dash",
-        component: () => import("@/views/GovOffStateDashboard.vue"),
-      },
-      {
-        path: "/centraldash",
-        name: "central dash",
-        component: () => import("@/views/GovOffCentralDashboard.vue"),
-      },
-      {
-        path: "/mdash",
-        name: "new miner dash",
-        component: () => import("@/views/MDash.vue"),
-      },
-      {
         path: "/manager",
         name: "manager",
         component: () => import("@/views/Manager.vue"),

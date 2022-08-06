@@ -3,14 +3,12 @@ import useDashboardStore from "@/stores/DashboardStore";
 import { useRouter } from 'vue-router';
 import useLoginStore from "@/stores/LoginStore";
 import Buttons from "@/assets/json/Buttons.json";
-import Cards from "@/assets/json/Cards.json";
-console.log(useDashboardStore().component_check(Cards))
 const router = useRouter();
 </script>
 
 <template>
     <div
-        class="border-r border-gray-400/20 bg-white min-w-[18rem] flex flex-col justify-start drop-shadow-md font-bold h-screen sticky top-0 bottom-0">
+        class="border-r border-gray-400/20 bg-white min-w-[16rem] flex flex-col justify-start drop-shadow-md font-bold h-screen sticky top-0 bottom-0">
         <div class="flex items-center justify-center px-4 py-6 border-b">
             <img class="w-10 h-10 rounded-full" src="../assets/ministry_of_mine.png" alt="">
             <div>

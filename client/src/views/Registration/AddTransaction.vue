@@ -1,5 +1,5 @@
 <script setup>
-import useOreTansactionStore from "@/stores/OreTransactionStore.js";
+import useOreTansactionStore from "@/stores/Registration/OreTransactionStore.js";
 import useAlertStore from "@/stores/Alert";
 import useValidationStore from "@/stores/Validation";
 
