@@ -5,10 +5,11 @@ const Organization = require("../models/OrganizationSchema");
 const Region = require("../models/RegionSchema");
 const moment = require("moment");
 
-router.get("/api/maps/officer", async (req, res) => {
+router.get("/api/cards/officer", async (req, res) => {
   const { _id, type_of_region } = req.cookies;
   if (type_of_region === "country") {
     const region_response = await Region.find({
+      state: { $exists: true },
       officer_id: { $exists: true },
     }).distinct("_id");
     const organization_response = await Organization.find().distinct("_id");
@@ -29,11 +30,11 @@ router.get("/api/maps/officer", async (req, res) => {
     ]);
   }
   if (type_of_region === "state") {
-    const region_response = await Region.findById(_id).select("state");
+    const region_response = await Region.findById(_id).distinct("state");
     const region_officers = await Region.find({
       officer_id: { $exists: true },
       district: { $exists: true },
-      state: region_response.state,
+      state: region_response,
     }).distinct("_id");
     const organization_response = await Organization.find().distinct("_id");
     const mine_response = await Mine.find({
@@ -56,7 +57,7 @@ router.get("/api/maps/officer", async (req, res) => {
   }
   if (type_of_region === "district") {
     const mine_response = await Mine.find({ region_id: _id }).distinct("_id");
-    return res.status(200).json([
+    return res.json([
       {
         title: "Total Number of Mines",
         value: mine_response.length,
@@ -72,26 +73,26 @@ router.get("/api/cards/organization", async (req, res) => {
   const organization_response = await Organization.findById(_id).select(
     "ores_bought"
   );
-  res.status(200).json([
+  res.json([
     {
       title: "Total Number of Mines",
       value: mine_response.length,
     },
     {
-      title: "Total Fine Ores Bought",
+      title: "Total Fine Ores Bought(in mt)",
       value: organization_response.ores_bought.fine,
     },
     {
-      title: "Total Lump Ores Bought",
+      title: "Total Lump Ores Bought(in mt)",
       value: organization_response.ores_bought.lump,
     },
     {
-      title: "Total Iron Pellet Ores Bought",
+      title: "Total Iron Pellet Ores Bought(in mt)",
       value: organization_response.ores_bought.iron_pellet,
     },
   ]);
 });
-router.get("/api/cards/mine", async (req, res) => {
+router.get("/api/cards/miner", async (req, res) => {
   const { _id } = req.cookies;
   const mine_response = await Mine.findById(_id).select([
     "area",
@@ -99,7 +100,7 @@ router.get("/api/cards/mine", async (req, res) => {
     "ores_available",
     "lease_period",
   ]);
-  res.status(200).json([
+  res.json([
     {
       title: "Mine Area(in sq.)",
       value: mine_response.area,
@@ -122,7 +123,9 @@ router.get("/api/cards/mine", async (req, res) => {
     },
     {
       title: "Lease Period",
-      value: moment(mine_response.lease_period.to).format("DD MMM YYYY"),
+      value: moment(new Date(mine_response.lease_period.to)).format(
+        "DD MMM YYYY"
+      ),
     },
   ]);
 });

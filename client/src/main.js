@@ -45,6 +45,7 @@ app.use(
             path: "",
             name: "home dashboard",
             meta: {
+              active: "home",
               type_of_user: ["officer", "organization", "miner"],
               type_of_region: ["country", "state", "district"],
             },
@@ -90,6 +91,7 @@ app.use(
             path: "ceo_registration",
             name: "ceo registration",
             meta: {
+              active: "CEO registration",
               type_of_user: ["organization"],
             },
             component: () => import("@/views/Registration/CEO.vue"),
@@ -136,13 +138,8 @@ app.use(
       },
       {
         path: "/minelogs",
-        name: "Logs",
+        name: "Mine Logs",
         component: () => import("@/views/MineLogs.vue"),
-      },
-      {
-        path: "/map",
-        name: "map",
-        component: () => import("@/views/Maps.vue"),
       },
       {
         path: "/:catchAll(.*)",

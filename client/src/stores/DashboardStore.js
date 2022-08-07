@@ -1,10 +1,14 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import Buttons from "@/assets/json/Buttons.json";
 
 export default defineStore({
   id: "dashboard",
   state: () => ({
-    coordinates: [],
+    user_name: "",
+    user_email_address: "",
+    company_name: "",
+    marker: [],
     card_data: [],
   }),
   actions: {
@@ -37,11 +41,20 @@ export default defineStore({
       }
       return false;
     },
+    async user_fetch() {
+      const { data } = await axios.get("/api/user_details");
+      this.user_name = data.user_name;
+      this.user_email_address = data.email_address;
+    },
+    async name_fetch() {
+      const { data } = await axios.get("/api/name");
+      this.company_name = data;
+    },
     async map_fetch() {
       const { data } = await axios.get(
         `/api/maps/${$cookies.get("type_of_user")}`
       );
-      this.coordinates = data;
+      this.marker = data;
     },
     async card_fetch() {
       const { data } = await axios.get(
@@ -49,8 +62,8 @@ export default defineStore({
       );
       this.card_data = data;
     },
-    component_check(component) {
-      return component.filter((button) => {
+    buttons_fetch() {
+      return Buttons.filter((button) => {
         for (const user_type of button.type_of_user) {
           if (user_type === $cookies.get("type_of_user")) {
             if ($cookies.get("type_of_user") === "officer") {

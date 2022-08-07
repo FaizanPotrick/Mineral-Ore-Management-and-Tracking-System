@@ -58,4 +58,4 @@ const MinedBatch = new mongoose.Schema(
 );
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
-  .model("MinedBatch", MinedBatch);
+  .model("Mined Batch", MinedBatch);
