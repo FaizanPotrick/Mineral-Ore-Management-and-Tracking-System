@@ -74,6 +74,13 @@
         ]
     },
     {
+        "name": "Mines",
+        "router_link": "/dashboard/mines",
+        "type_of_user": [
+            "organization"
+        ]
+    },
+    {
         "name": "add mined batch",
         "router_link": "/dashboard/add_mined_batch",
         "type_of_user": [

@@ -16,7 +16,7 @@ const {
     <div class="max-w-2xl w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl text-gray-800">
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
-          Organization CEO Registration
+          CEO Registration
         </div>
         <div class="text-gray-500 text-sm">Register a CEO.</div>
         <span class="text-red-500 text-center text-sm" v-if="useAlertStore().alert_text.isAlert">{{

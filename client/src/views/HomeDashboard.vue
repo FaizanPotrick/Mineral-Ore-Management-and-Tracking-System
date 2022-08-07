@@ -1,6 +1,7 @@
 <script setup>
 import useDashboardStore from '@/stores/DashboardStore.js';
 import { Bar, Doughnut } from "vue-chartjs";
+import { useRouter } from 'vue-router';
 import {
     Chart as ChartJS,
     Title,
@@ -11,14 +12,6 @@ import {
     CategoryScale,
     LinearScale,
 } from "chart.js";
-import { ref } from 'vue'
-
-const center = ref([78.9629, 20.5937])
-const projection = ref('EPSG:4326')
-const zoom = ref(5)
-const rotation = ref(0)
-const zoomcontrol = ref(true)
-
 ChartJS.register(
     Title,
     Tooltip,
@@ -28,9 +21,13 @@ ChartJS.register(
     CategoryScale,
     LinearScale
 );
+const router = useRouter();
 useDashboardStore().card_fetch();
 if ($cookies.get('type_of_user') === "organization" || $cookies.get('type_of_user') === "officer") {
     useDashboardStore().map_fetch();
+}
+if ($cookies.get('type_of_user') === "organization" || $cookies.get('type_of_user') === "miner") {
+    useDashboardStore().name_fetch();
 }
 const data = {
     labels: ["January", "February", "March"],
@@ -61,54 +58,51 @@ const doughnut = {
         },
     ],
 };
-</script>
-<style>
-.marker {
-    border-radius: 50%;
-    border: 5px solid rgb(247, 2, 2);
-    width: 5px;
-    height: 5px;
+const redirect = (id) => {
+    router.push('/dashboard/mines/' + id);
 }
-</style>
+</script>
 <template>
-    <div class="flex flex-col gap-4 min-h-screen">
+    <div class="flex flex-col gap-4">
+        <div class="text-xl font-semibold capitalize">
+            {{ useDashboardStore().company_name }}
+        </div>
         <ol-map v-if="$cookies.get('type_of_user') === 'organization' || $cookies.get('type_of_user') === 'officer'"
             style="height:40vh">
-            <ol-view ref="view" :center="center" :rotation="rotation" :zoom="zoom" :projection="projection" />
+            <ol-view ref="view" :center="[78.9629, 20.5937]" :rotation="0" :zoom="5" projection="EPSG:4326" />
             <ol-tile-layer>
                 <ol-source-osm />
             </ol-tile-layer>
-            <ol-zoom-control v-if="zoomcontrol" />
-            <ol-overlay v-for="marker of useDashboardStore().coordinates" :position="marker">
-                <template>
-                    <div class="marker"></div>
-                </template>
+            <ol-zoom-control v-if="true" />
+            <ol-overlay :key="marker._id" v-for="marker of useDashboardStore().marker" :position="marker.coordinates"
+                @click="redirect(marker._id)">
+                <img src="@/assets/marker.png" class="h-8 w-8 cursor-pointer" alt="">
             </ol-overlay>
         </ol-map>
         <div class="flex gap-4 flex-wrap w-full font-semibold">
-            <div v-for="card of useDashboardStore().component_check(Cards)"
-                class="flex flex-col gap-2 max-w-[18rem] w-full border-l-4 border-yellow-300 p-5 bg-white rounded-md drop-shadow-md">
+            <div :key="card" v-for="card of useDashboardStore().card_data"
+                class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-8 bg-white rounded-lg drop-shadow-md">
                 <div class="text-xl">{{ card.title }}</div>
                 <div class="flex gap-4 capitalize">
-                    <div v-if="typeof (card.value) === 'object'" v-for="(value, name) of card.value">
+                    <div v-if="typeof (card.value) === 'object'" v-for="(value, name) of     card.value">
                         {{ name }} : {{ value }}
                     </div>
                     <div v-else>{{ card.value }}</div>
                 </div>
             </div>
         </div>
-        <div class="flex justify-around items-start gap-4 w-full drop-shadow-md">
-            <div class="text-xl bg-white p-3 w-full font-medium text-center">Mining Overview
+        <div class="flex justify-start gap-4 w-full drop-shadow-md text-xl font-medium">
+            <div class="bg-white p-4 text-center rounded-xl">Mining Overview
                 <Bar :chart-options="{
                     responsive: true,
                     maintainAspectRatio: false,
-                }" :chart-data="data" class="bg-white p-4 w-full rounded-lg" />
+                }" :chart-data="data" />
             </div>
-            <div class="text-xl bg-white p-3 font-medium text-center"> Grades Of Iron Ore
+            <div class="bg-white p-4 text-center rounded-xl"> Grades Of Iron Ore
                 <Doughnut :chart-options="{
                     responsive: true,
                     maintainAspectRatio: false,
-                }" :chart-data="doughnut" class="bg-white p-4 rounded-lg" />
+                }" :chart-data="doughnut" />
             </div>
         </div>
         <div class="flex flex-col">

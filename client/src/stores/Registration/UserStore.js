@@ -35,10 +35,10 @@ export default defineStore({
   actions: {
     async ceo_register_fn() {
       if (
-        this.name.valid ||
-        this.email_address.valid ||
-        this.phone_no.valid ||
-        this.aadhar_card.valid
+        !this.name.valid ||
+        !this.email_address.valid ||
+        !this.phone_no.valid ||
+        !this.aadhar_card.valid
       ) {
         isAlert_text(true);
         return;
@@ -65,16 +65,16 @@ export default defineStore({
           }
         })
         .catch((err) => {
-          open_alert_box(err.response.data.message);
+          open_alert_box(err.response.data.message, err.response.data.type);
         });
       useValidationStore().isButtonLoading = false;
     },
     async manager_register_fn() {
       if (
-        this.name.valid ||
-        this.email_address.valid ||
-        this.phone_no.valid ||
-        this.aadhar_card.valid
+        !this.name.valid ||
+        !this.email_address.valid ||
+        !this.phone_no.valid ||
+        !this.aadhar_card.valid
       ) {
         isAlert_text(true);
         return;
@@ -101,7 +101,7 @@ export default defineStore({
           }
         })
         .catch((err) => {
-          open_alert_box(err.response.data.message);
+          open_alert_box(err.response.data.message, err.response.data.type);
         });
       useValidationStore().isButtonLoading = false;
     },

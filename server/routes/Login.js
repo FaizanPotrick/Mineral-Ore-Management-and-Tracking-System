@@ -12,14 +12,17 @@ router.post("/api/login", async (req, res) => {
     const user_response = await User.findOne({
       user_id: user_name,
       is_valid: true,
-    });
+    }).select(["auth", "user_id", "type_of_user", "password"]);
     if (user_response === null) {
       return res.status(201).json({
         message: "Invalid Credential",
         type: "error",
       });
     }
-    const passwordMatch = await bcrypt.compare(password, user_response.password);
+    const passwordMatch = await bcrypt.compare(
+      password,
+      user_response.password
+    );
     if (!passwordMatch) {
       return res.status(201).json({
         message: "Invalid Credential",
@@ -30,7 +33,7 @@ router.post("/api/login", async (req, res) => {
     if (user_response.type_of_user === "officer") {
       const region_response = await Region.findOne({
         officer_id: user_response.user_id,
-      });
+      }).select("type_of_region");
       req.session.type_of_region = region_response.type_of_region;
       req.session._id = region_response._id;
       res
@@ -40,14 +43,14 @@ router.post("/api/login", async (req, res) => {
     if (user_response.type_of_user === "organization") {
       const organization_response = await Organization.findOne({
         ceo_id: user_response.user_id,
-      });
+      }).select("_id");
       req.session._id = organization_response._id;
       res.cookie("_id", organization_response._id);
     }
     if (user_response.type_of_user === "miner") {
       const mine_response = await Mine.findOne({
         manager_id: user_response.user_id,
-      });
+      }).select("_id");
       req.session._id = mine_response._id;
       res.cookie("_id", mine_response._id);
     }
@@ -61,7 +64,7 @@ router.post("/api/login", async (req, res) => {
       .status(200)
       .json({
         message: "Successfully Logged In",
-        type: "success"
+        type: "success",
       });
   } catch (error) {
     console.log(error);
@@ -72,11 +75,17 @@ router.post("/api/login", async (req, res) => {
   }
 });
 router.get("/api/logout", async (req, res) => {
-  req.session.destroy()
-  res.clearCookie('auth').clearCookie('connect.sid').clearCookie('type_of_user').clearCookie('type_of_region').clearCookie('_id').status(200).json({
-    message: "Successfully Logged Out",
-    type: "success"
-  })
-}
-);
+  req.session.destroy();
+  res
+    .clearCookie("auth")
+    .clearCookie("connect.sid")
+    .clearCookie("type_of_user")
+    .clearCookie("type_of_region")
+    .clearCookie("_id")
+    .status(200)
+    .json({
+      message: "Successfully Logged Out",
+      type: "success",
+    });
+});
 module.exports = router;
