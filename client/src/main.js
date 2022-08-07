@@ -4,12 +4,13 @@ import App from "./App.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
 import VueCookies from "vue-cookies";
+import OpenLayersMap from 'vue3-openlayers'
+import 'vue3-openlayers/dist/vue3-openlayers.css'
 
 const app = createApp(App);
 app.use(OpenLayersMap);
 app.use(createPinia());
 app.use(VueCookies);
-app.use(OpenLayersMap);
 app.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyBnpAKWxu7ciOW1OnMqYXkaHeuXOhrb6Es",
@@ -132,6 +133,11 @@ app.use(
         path: "/minebatch",
         name: "Batch",
         component: () => import("@/views/MineBatch.vue"),
+      },
+      {
+        path: "/minelogs",
+        name: "Logs",
+        component: () => import("@/views/MineLogs.vue"),
       },
       {
         path: "/map",
