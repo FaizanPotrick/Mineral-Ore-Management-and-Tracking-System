@@ -114,6 +114,16 @@ app.use(
               import("@/views/Organization/ApproveTransaction.vue"),
           },
           {
+            path: "mines",
+            name: "mines",
+            meta: {
+              active: "mines",
+              type_of_user: ["officer", "organization"],
+              type_of_region: ["country", "state", "district"],
+            },
+            component: () => import("@/views/Mines.vue"),
+          },
+          {
             path: "add_mined_batch",
             name: "add mined batch",
             meta: {
@@ -135,11 +145,6 @@ app.use(
         path: "/minebatch",
         name: "Batch",
         component: () => import("@/views/MineBatch.vue"),
-      },
-      {
-        path: "/minelogs",
-        name: "Mine Logs",
-        component: () => import("@/views/MineLogs.vue"),
       },
       {
         path: "/:catchAll(.*)",
