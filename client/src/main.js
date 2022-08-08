@@ -4,8 +4,8 @@ import App from "./App.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import VueGoogleMaps from "@fawmi/vue-google-maps";
 import VueCookies from "vue-cookies";
-import OpenLayersMap from 'vue3-openlayers'
-import 'vue3-openlayers/dist/vue3-openlayers.css'
+import OpenLayersMap from "vue3-openlayers";
+import "vue3-openlayers/dist/vue3-openlayers.css";
 
 const app = createApp(App);
 app.use(OpenLayersMap);
@@ -35,6 +35,11 @@ app.use(
         path: "/forgot_password",
         name: "forgot password",
         component: () => import("@/views/ForgotPassword.vue"),
+      },
+      {
+        path: "/test",
+        name: "test",
+        component: () => import("@/views/Test.vue"),
       },
       {
         path: "/dashboard",
