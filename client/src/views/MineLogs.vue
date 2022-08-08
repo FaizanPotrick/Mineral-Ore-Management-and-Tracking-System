@@ -6,7 +6,27 @@ const miner_list = Miner;
 const search = ref("");
 function filterList() {
     return miner_list.filter(item => {
-        return item.Name.toLowerCase().includes(search.value.toLowerCase());
+        if (item.Name.toLowerCase().includes(search.value.toLowerCase())) {
+            return item.Name;
+        }
+        else if (item.Type.toLowerCase().includes(search.value.toLowerCase())) {
+            return item.Type
+        }
+        else if (item.Grade.toLowerCase().includes(search.value.toLowerCase())) {
+            return item.Grade
+        }
+        else if (item.batch_id.toLowerCase().includes(search.value.toLowerCase())) {
+            return item.batch_id
+        }
+        else if (item.quantity.toLowerCase().includes(search.value.toLowerCase())) {
+            return item.quantity
+        }
+        else if (item.Price.toLowerCase().includes(search.value.toLowerCase())) {
+            return item.Price
+        }
+        else if (item.Time_Stamp.toLowerCase().includes(search.value.toLowerCase())) {
+            return item.Time_Stamp
+        }
     });
 }
 </script>
