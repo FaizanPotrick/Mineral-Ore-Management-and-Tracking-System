@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const Mine = require("../../models/MineSchema");
 const User = require("../../models/UserSchema");
-const Organization = require("../../models/OrganizationSchema");
+const Organisation = require("../../models/OrganisationSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
@@ -15,7 +15,7 @@ router.post(
   async (req, res, next) => {
     const { region_id } = req.cookies;
     const {
-      organization_id,
+      organisation_id,
       manager_name,
       email_address,
       phone_no,
@@ -27,10 +27,10 @@ router.post(
       coordinates,
     } = req.body;
     try {
-      const organization_check = await Organization.findById(organization_id);
-      if (organization_check === null) {
+      const organisation_check = await Organisation.findById(organisation_id);
+      if (organisation_check === null) {
         return res.status(201).json({
-          message: "No Organization Found",
+          message: "No Organisation Found",
           type: "warning",
         });
       }
@@ -64,7 +64,7 @@ router.post(
         c_password: bcrypt.hashSync(password, 10),
       });
       await Mine.create({
-        organization_id: organization_id,
+        organization_id: organisation_id,
         manager_id: manager_id,
         region_id: region_id,
         location: {

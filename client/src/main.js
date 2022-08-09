@@ -48,35 +48,57 @@ app.use(
         children: [
           {
             path: "",
-            name: "home dashboard",
+            name: "home_dashboard",
             meta: {
               active: "home",
-              type_of_user: ["officer", "organization", "miner"],
+              type_of_user: ["officer", "organisation", "miner"],
               type_of_region: ["country", "state", "district"],
             },
-            component: () => import("@/views/HomeDashboard.vue"),
+            component: () => import("@/views/Dashboard/Home.vue"),
+          },
+          {
+            path: "organisations/:organisation_id",
+            name: "organisation_dashboard",
+            meta: {
+              active: "organisations",
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state"],
+            },
+            component: () => import("@/views/Dashboard/Organisation.vue"),
+          },
+          {
+            path: "mines/:mine_id",
+            name: "mine_dashboard",
+            meta: {
+              active: "mines",
+              type_of_user: ["officer", "organisation"],
+              type_of_region: ["country", "state", "district"],
+            },
+            component: () => import("@/views/Dashboard/Mine.vue"),
           },
           {
             path: "officer_registration",
-            name: "officer registration",
+            name: "officer_registration",
             meta: {
+              active: "officer registration",
               type_of_user: ["officer"],
               type_of_region: ["country", "state"],
             },
             component: () => import("@/views/Registration/Officer.vue"),
           },
           {
-            path: "organization_registration",
-            name: "organization registration",
+            path: "organisation_registration",
+            name: "organisation_registration",
             meta: {
+              active: "organisation registration",
               type_of_user: ["officer"],
-              type_of_region: ["country", "state", "district"],
+              type_of_region: ["country", "state"],
             },
-            component: () => import("@/views/Registration/Organization.vue"),
+            component: () => import("@/views/Registration/Organisation.vue"),
           },
           {
             path: "mine_registration",
-            name: "mine registration",
+            name: "mine_registration",
             meta: {
               type_of_user: ["officer"],
               type_of_region: ["district"],
@@ -85,7 +107,7 @@ app.use(
           },
           {
             path: "approve_mined_batch",
-            name: "approve mined batch",
+            name: "approve_mined_batch",
             meta: {
               type_of_user: ["officer"],
               type_of_region: ["district"],
@@ -93,8 +115,28 @@ app.use(
             component: () => import("@/views/Officer/ApproveMinedBatch.vue"),
           },
           {
+            path: "organisations",
+            name: "organisations",
+            meta: {
+              active: "organisations",
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state"],
+            },
+            component: () => import("@/views/List/Organisations.vue"),
+          },
+          {
+            path: "mines",
+            name: "mines",
+            meta: {
+              active: "mines",
+              type_of_user: ["officer", "organisation"],
+              type_of_region: ["country", "state", "district"],
+            },
+            component: () => import("@/views/List/Mines.vue"),
+          },
+          {
             path: "ceo_registration",
-            name: "ceo registration",
+            name: "ceo_registration",
             meta: {
               active: "CEO registration",
               type_of_user: ["organization"],
@@ -102,8 +144,8 @@ app.use(
             component: () => import("@/views/Registration/CEO.vue"),
           },
           {
-            path: "mine/manager_registration",
-            name: "manager registration",
+            path: "mines/:mine_id/manager_registration",
+            name: "manager_registration",
             meta: {
               type_of_user: ["organization"],
             },
@@ -111,7 +153,7 @@ app.use(
           },
           {
             path: "approve_transaction",
-            name: "approve transaction",
+            name: "approve_transaction",
             meta: {
               type_of_user: ["organization"],
             },
@@ -119,18 +161,8 @@ app.use(
               import("@/views/Organization/ApproveTransaction.vue"),
           },
           {
-            path: "mines",
-            name: "mines",
-            meta: {
-              active: "mines",
-              type_of_user: ["officer", "organization"],
-              type_of_region: ["country", "state", "district"],
-            },
-            component: () => import("@/views/Mines.vue"),
-          },
-          {
             path: "add_mined_batch",
-            name: "add mined batch",
+            name: "add_mined_batch",
             meta: {
               type_of_user: ["miner"],
             },
@@ -138,18 +170,13 @@ app.use(
           },
           {
             path: "add_transaction",
-            name: "add transaction",
+            name: "add_transaction",
             meta: {
               type_of_user: ["miner"],
             },
             component: () => import("@/views/Registration/AddTransaction.vue"),
           },
         ],
-      },
-      {
-        path: "/minebatch",
-        name: "Batch",
-        component: () => import("@/views/MineBatch.vue"),
       },
       {
         path: "/:catchAll(.*)",

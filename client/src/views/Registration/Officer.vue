@@ -2,6 +2,7 @@
 import useOfficerStore from "@/stores/Registration/OfficerStore";
 import useAlertStore from "@/stores/Alert";
 import useValidationStore from "@/stores/Validation";
+import axios from "axios";
 import { onMounted } from "vue";
 const {
   officer_name,
@@ -11,14 +12,13 @@ const {
   register_fn,
 } = useOfficerStore();
 onMounted(async () => {
-  const res = await fetch("/api/region_list");
-  const data = await res.json();
+  const { data } = await axios.get('/api/region_list');
   useOfficerStore().region_list = data;
 });
 </script>
 <template>
   <div class="flex justify-center items-center">
-    <div class="max-w-4xl w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl text-gray-800">
+    <div class="max-w-2xl w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl text-gray-800">
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
           Officer Registration
@@ -91,16 +91,8 @@ onMounted(async () => {
                       : "District"
                 }}
               </option>
-              <option class="capitalize" v-for="region of useOfficerStore().region_list" :value="
-                $cookies.get('type_of_region') === 'country'
-                  ? region.state
-                  : region.district
-              ">
-                {{
-                    $cookies.get("type_of_region") === "country"
-                      ? region.state
-                      : region.district
-                }}
+              <option class="capitalize text-slate-900" v-for="region of useOfficerStore().region_list" :value="region">
+                {{ region }}
               </option>
             </select>
           </div>

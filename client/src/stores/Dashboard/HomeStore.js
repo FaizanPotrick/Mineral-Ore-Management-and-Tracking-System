@@ -1,17 +1,51 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import Buttons from "@/assets/json/Buttons.json";
+import Buttons from "@/assets/Buttons.json";
 
 export default defineStore({
-  id: "dashboard",
+  id: "home_dashboard",
   state: () => ({
     user_name: "",
     user_email_address: "",
     company_name: "",
-    marker: [],
-    card_data: [],
+    markers: [],
+    cards: [],
+    doughnut: {},
+    mines: [],
+    organisations: [],
   }),
   actions: {
+    async user_fetch() {
+      const {
+        data: { name, email_address },
+      } = await axios.get(`/api/user/${$cookies.get("type_of_user")}`);
+      this.user_name = name;
+      this.user_email_address = email_address;
+    },
+    async dashboard_fetch() {
+      const {
+        data: { company_name, maps, cards, doughnut },
+      } = await axios.get(
+        `/api/dashboard/${$cookies.get("type_of_user")}${
+          $cookies.get("type_of_user") === "officer"
+            ? "/" + $cookies.get("type_of_region")
+            : ""
+        }`
+      );
+      if ($cookies.get("type_of_user") !== "miner") {
+        this.markers = maps;
+      }
+      if ($cookies.get("type_of_user") !== "officer") {
+        this.company_name = company_name;
+      } else {
+        this.company_name = $cookies.get("type_of_region");
+        console.log(this.company_name);
+      }
+      this.cards = cards;
+      if ($cookies.get("type_of_user") === "miner") {
+        this.doughnut = doughnut;
+      }
+    },
     async auth_fetch(router) {
       await axios.get("/api/type_of_user").catch(() => router.push("/login"));
       if ($cookies.get("type_of_user") === "officer") {
@@ -30,7 +64,7 @@ export default defineStore({
               }
             }
             return false;
-          } else if ($cookies.get("type_of_user") === "organization") {
+          } else if ($cookies.get("type_of_user") === "organisation") {
             return true;
           } else if ($cookies.get("type_of_user") === "miner") {
             return true;
@@ -41,26 +75,19 @@ export default defineStore({
       }
       return false;
     },
-    async user_fetch() {
-      const { data } = await axios.get("/api/user_details");
-      this.user_name = data.user_name;
-      this.user_email_address = data.email_address;
-    },
-    async name_fetch() {
-      const { data } = await axios.get("/api/name");
-      this.company_name = data;
-    },
-    async map_fetch() {
+    async mines_fetch() {
       const { data } = await axios.get(
-        `/api/maps/${$cookies.get("type_of_user")}`
+        `/api/mines/${$cookies.get("type_of_user")}${
+          $cookies.get("type_of_user") === "officer"
+            ? "/" + $cookies.get("type_of_region")
+            : ""
+        }`
       );
-      this.marker = data;
+      this.mines = data;
     },
-    async card_fetch() {
-      const { data } = await axios.get(
-        `/api/cards/${$cookies.get("type_of_user")}`
-      );
-      this.card_data = data;
+    async organisations_fetch() {
+      const { data } = await axios.get("/api/organisations/officer");
+      this.organisations = data;
     },
     buttons_fetch() {
       return Buttons.filter((button) => {

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/UserSchema");
 const Region = require("../models/RegionSchema");
-const Organization = require("../models/OrganizationSchema");
+const Organisation = require("../models/OrganisationSchema");
 const Mine = require("../models/MineSchema");
 const bcrypt = require("bcrypt");
 
@@ -41,11 +41,11 @@ router.post("/api/login", async (req, res) => {
         .cookie("_id", region_response._id);
     }
     if (user_response.type_of_user === "organization") {
-      const organization_response = await Organization.findOne({
+      const organisation_response = await Organisation.findOne({
         ceo_id: user_response.user_id,
       }).select("_id");
-      req.session._id = organization_response._id;
-      res.cookie("_id", organization_response._id);
+      req.session._id = organisation_response._id;
+      res.cookie("_id", organisation_response._id);
     }
     if (user_response.type_of_user === "miner") {
       const mine_response = await Mine.findOne({

@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const Organization = new mongoose.Schema({
+const Organisation = new mongoose.Schema({
   ceo_id: {
     type: String,
     required: true,
   },
-  organization_name: {
+  organisation_name: {
     type: String,
     trim: true,
     maxlength: 300,
@@ -81,4 +81,4 @@ const Organization = new mongoose.Schema({
 });
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
-  .model("Organization", Organization);
+  .model("Organisation", Organisation);

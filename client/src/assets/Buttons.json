@@ -4,7 +4,7 @@
         "router_link": "/dashboard",
         "type_of_user": [
             "officer",
-            "organization",
+            "organisation",
             "miner"
         ],
         "type_of_region": [
@@ -25,15 +25,14 @@
         ]
     },
     {
-        "name": "organization registration",
-        "router_link": "/dashboard/organization_registration",
+        "name": "organisation registration",
+        "router_link": "/dashboard/organisation_registration",
         "type_of_user": [
             "officer"
         ],
         "type_of_region": [
             "country",
-            "state",
-            "district"
+            "state"
         ]
     },
     {
@@ -67,17 +66,33 @@
         ]
     },
     {
-        "name": "CEO registration",
-        "router_link": "/dashboard/ceo_registration",
+        "name": "organisations",
+        "router_link": "/dashboard/organisations",
         "type_of_user": [
-            "organization"
+            "officer"
+        ],
+        "type_of_region": [
+            "country",
+            "state"
         ]
     },
     {
-        "name": "Mines",
+        "name": "mines",
         "router_link": "/dashboard/mines",
         "type_of_user": [
-            "organization"
+            "officer",
+            "organisation"
+        ],
+        "type_of_region": [
+            "country",
+            "state"
+        ]
+    },
+    {
+        "name": "CEO registration",
+        "router_link": "/dashboard/ceo_registration",
+        "type_of_user": [
+            "organisation"
         ]
     },
     {

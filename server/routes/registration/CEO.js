@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../../models/UserSchema");
-const Organization = require("../../models/OrganizationSchema");
+const Organisation = require("../../models/OrganisationSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
@@ -49,12 +49,12 @@ router.post(
           is_valid: false,
         }
       );
-      await Organization.findByIdAndUpdate(_id, {
+      await Organisation.findByIdAndUpdate(_id, {
         ceo_id: user_id,
       });
       req.user_id = user_id;
       req.user_name = name;
-      req.user_type = "Organization";
+      req.user_type = "Organisation";
       req.email_address = email_address;
       req.password = password;
       res.status(200).json({

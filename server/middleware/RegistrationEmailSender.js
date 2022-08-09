@@ -34,7 +34,7 @@ const RegistrationEmailSender = (req) => {
       {
         from: process.env.EMAIL_ID,
         to: email_address,
-        subject: `Your ${user_type} is Successfully Registered ✔`,
+        subject: `${user_type} is Successfully Registered ✔`,
         html: template,
       },
       function (error, info) {

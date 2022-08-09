@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const Organization = require("../../models/OrganizationSchema");
+const Organisation = require("../../models/OrganisationSchema");
 const User = require("../../models/UserSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
@@ -10,10 +10,10 @@ const id_genarate = new ShortUniqueId({
   length: 8,
 });
 router.post(
-  "/api/registration/organization",
+  "/api/registration/organisation",
   async (req, res, next) => {
     const {
-      organization_name,
+      organisation_name,
       address,
       ceo_name,
       email_address,
@@ -22,10 +22,10 @@ router.post(
       gst_no,
     } = req.body;
     try {
-      const organization_check = await Organization.findOne({
+      const organisation_check = await Organisation.findOne({
         gst_no: gst_no,
       });
-      if (organization_check !== null) {
+      if (organisation_check !== null) {
         return res.status(201).json({
           message: "GST Number already exist",
           type: "warning",
@@ -51,7 +51,7 @@ router.post(
       await User.create({
         auth: auth,
         user_id: ceo_id,
-        type_of_user: "organization",
+        type_of_user: "organisation",
         user_name: ceo_name,
         aadhar_card: aadhar_card,
         email_address: email_address,
@@ -59,15 +59,15 @@ router.post(
         password: bcrypt.hashSync(password, 10),
         c_password: bcrypt.hashSync(password, 10),
       });
-      await Organization.create({
+      await Organisation.create({
         ceo_id: ceo_id,
-        organization_name: organization_name,
+        organisation_name: organisation_name,
         gst_no: gst_no,
         address: address,
       });
       req.user_id = ceo_id;
       req.user_name = ceo_name;
-      req.user_type = "Organization";
+      req.user_type = "Organisation";
       req.email_address = email_address;
       req.password = password;
       res.status(200).json({

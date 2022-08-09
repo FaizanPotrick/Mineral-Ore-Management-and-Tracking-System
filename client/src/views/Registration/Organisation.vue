@@ -1,26 +1,26 @@
 <script setup>
-import useOrganizationStore from "@/stores/Registration/OrganizationStore";
+import useOrganisationStore from "@/stores/Registration/OrganisationStore";
 import useAlertStore from "@/stores/Alert";
 import useValidationStore from "@/stores/Validation";
 
 const {
-  organization_name,
+  organisation_name,
   ceo_name,
   ceo_email_address,
   ceo_phone_no,
   ceo_aadhar_card,
   gst_no,
   register_fn,
-} = useOrganizationStore();
+} = useOrganisationStore();
 </script>
 <template>
   <div class="flex justify-center items-center min-h-[86vh]">
     <div class="max-w-4xl w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl m-5 sm:10 text-gray-800">
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
-          Organization Registration
+          Organisation Registration
         </div>
-        <div class="text-gray-500 text-sm">Register a organization.</div>
+        <div class="text-gray-500 text-sm">Register a organisation.</div>
         <span class="text-red-500 text-center text-sm" v-if="
           useAlertStore().alert_text.isAlert
         ">{{ useAlertStore().alert_text.message }}</span>
@@ -31,16 +31,16 @@ const {
             <label class="text-sm font-medium text-gray-700">Organisation Name*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Organization Name" @change="useValidationStore().validation(organization_name)"
-              v-model="organization_name.value" maxlength="300" required />
-            <span class="text-center text-sm text-red-500" v-if="!organization_name.valid">{{ organization_name.message
+              placeholder="Organization Name" @change="useValidationStore().validation(organisation_name)"
+              v-model="organisation_name.value" maxlength="300" required />
+            <span class="text-center text-sm text-red-500" v-if="!organisation_name.valid">{{ organisation_name.message
             }}</span>
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Address*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Address" v-model="useOrganizationStore().address" maxlength="300" required />
+              placeholder="Address" v-model="useOrganisationStore().address" maxlength="300" required />
 
           </div>
           <div class="space-y-2">
