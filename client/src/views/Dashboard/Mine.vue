@@ -1,5 +1,5 @@
 <script setup>
-import useDashboardStore from '@/stores/Dashboard/MineStore';
+import useMineStore from '@/stores/Dashboard/MineStore';
 import { Bar, Doughnut } from "vue-chartjs";
 import { useRouter, useRoute } from 'vue-router';
 import {
@@ -24,7 +24,7 @@ ChartJS.register(
 const router = useRouter();
 const route = useRoute();
 console.log(route);
-useDashboardStore().mine_card_fetch(route);
+useMineStore().mine_card_fetch(route);
 const data = {
     labels: ["January", "February", "March"],
     datasets: [
@@ -61,10 +61,10 @@ const redirect = (id) => {
 <template>
     <div class="flex flex-col gap-4">
         <div class="text-xl font-semibold capitalize">
-            <!-- {{ useDashboardStore().company_name }} -->
+            <!-- {{ useMineStore().company_name }} -->
         </div>
         <div class="flex gap-4 flex-wrap w-full font-semibold">
-            <div :key="card" v-for="card of useDashboardStore().mine_card_data"
+            <div :key="card" v-for="card of useMineStore().mine_card_data"
                 class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-8 bg-white rounded-lg drop-shadow-md">
                 <div class="text-xl">{{ card.title }}</div>
                 <div class="flex gap-4 capitalize">

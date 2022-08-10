@@ -74,7 +74,8 @@ const redirect = (id) => {
                 </div>
             </div>
         </div>
-        <div class="flex justify-start gap-4 w-full drop-shadow-md text-xl font-medium">
+        <div v-if="$cookies.get('type_of_user') === 'miner'"
+            class="flex justify-start gap-4 w-full drop-shadow-md text-xl font-medium">
             <div class="bg-white p-4 text-center rounded-xl">Mining Overview
                 <Bar :chart-options="{
                     responsive: true,

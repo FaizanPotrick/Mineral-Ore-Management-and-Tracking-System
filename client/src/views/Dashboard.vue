@@ -10,6 +10,7 @@ onBeforeRouteUpdate(() => {
   useHomeStore().auth_fetch(router)
 })
 useHomeStore().user_fetch()
+// console.log(useHomeStore().buttons_fetch())
 </script>
 <template>
   <div class="bg-yellow-50" v-if="useHomeStore().auth_check(route)">

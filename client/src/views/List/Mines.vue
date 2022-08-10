@@ -1,11 +1,11 @@
 <script setup>
-import useDashboardStore from "@/stores/DashboardStore";
+import useHomeStore from "@/stores/Dashboard/HomeStore";
 import { ref } from "vue";
 const search = ref("");
-useDashboardStore().mines_fetch()
+useHomeStore().mines_fetch()
 
 function filterList() {
-    return useDashboardStore().mines.filter(mine => {
+    return useHomeStore().mines.filter(mine => {
         if (mine._id.toLowerCase().includes(search.value.toLowerCase())) {
             return mine._id;
         }
@@ -38,14 +38,14 @@ function filterList() {
 <template>
     <div class="flex flex-col gap-4 items-center">
         <div
-            class="flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md">
+            class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md">
             <div class="flex justify-between items-center w-full">
                 <div class="text-3xl font-semibold">Mines</div>
                 <input type="search" v-model="search"
                     class="max-w-sm w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Search">
             </div>
-            <div class="border rounded-xl overflow-hidden drop-shadow-md">
-                <table>
+            <div class="w-full border rounded-xl overflow-hidden drop-shadow-md">
+                <table class="w-full">
                     <thead class="border-b whitespace-nowrap bg-yellow-400">
                         <tr class="text-center">
                             <th class="px-6 py-4">
@@ -75,7 +75,7 @@ function filterList() {
                         </tr>
                     </thead>
                     <tbody class="font-normal text-gray-600 whitespace-nowrap">
-                        <tr :key="mine._id" v-for="mine in useDashboardStore().mines" class="text-center">
+                        <tr :key="mine._id" v-for="mine in useHomeStore().mines" class="text-center">
                             <td class="px-6 py-4">
                                 {{ mine._id }}
                             </td>
