@@ -1,19 +1,20 @@
 <script setup>
-import useOfficerStore from "@/stores/Registration/OfficerStore";
+import useOfficerStore from "@/stores/OfficerStore";
 import useAlertStore from "@/stores/Alert";
 import useValidationStore from "@/stores/Validation";
 import axios from "axios";
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 const {
-  officer_name,
-  officer_email_address,
-  officer_phone_no,
-  officer_aadhar_card,
-  register_fn,
+  name,
+  email_address,
+  phone_no,
+  aadhar_card,
+  officer_register_fn,
 } = useOfficerStore();
+const regions = ref([]);
 onMounted(async () => {
-  const { data } = await axios.get('/api/region_list');
-  useOfficerStore().region_list = data;
+  const { data } = await axios.get(`/api/region_list${cookies.get('type_of_region')}`);
+  regions.value = data;
 });
 </script>
 <template>
@@ -34,45 +35,41 @@ onMounted(async () => {
             useAlertStore().alert_text.message
         }}</span>
       </div>
-      <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
+      <form class="space-y-5 drop-shadow-md" @submit.prevent="officer_register_fn()">
         <div class="grid gap-6 mb-6 grid-cols-1">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Officer Name*</label>
+            <label class="text-sm font-medium text-gray-700">Name*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Officer Name" v-model="officer_name.value" required />
-            <span class="text-center text-sm text-red-500" v-if="!officer_name.valid">{{ officer_name.message }}</span>
+              placeholder="Officer Name" v-model="name.value" required />
+            <span class="text-center text-sm text-red-500" v-if="!name.valid">Name must be alphabetic</span>
           </div>
         </div>
         <div class="grid gap-6 sm:grid-cols-2">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Officer Email Address*</label>
+            <label class="text-sm font-medium text-gray-700">Email Address*</label>
             <input type="email"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Email Address" @change="useValidationStore().validation(officer_email_address)"
-              v-model="officer_email_address.value" maxlength="150" required />
-            <span class="text-center text-sm text-red-500" v-if="!officer_email_address.valid">{{
-                officer_email_address.message
-            }}</span>
+              placeholder="Email Address" @change="useValidationStore().validation(email_address)"
+              v-model="email_address.value" maxlength="150" required />
+            <span class="text-center text-sm text-red-500" v-if="!email_address.valid">Enter a valid email
+              address</span>
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Officer Phone No.*</label>
+            <label class="text-sm font-medium text-gray-700">Phone No.*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Phone Number" @change="useValidationStore().validation(officer_phone_no)"
-              v-model="officer_phone_no.value" minlength="10" maxlength="10" required />
-            <span class="text-center text-sm text-red-500" v-if="!officer_phone_no.valid">{{ officer_phone_no.message
-            }}</span>
+              placeholder="Phone Number" @change="useValidationStore().validation(phone_no)" v-model="phone_no.value"
+              minlength="10" maxlength="10" required />
+            <span class="text-center text-sm text-red-500" v-if="!phone_no.valid">Phone number must be numeric</span>
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Officer Aadhar Card*</label>
+            <label class="text-sm font-medium text-gray-700">Aadhar Card*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Aadhar Card" @change="useValidationStore().validation(officer_aadhar_card)"
-              v-model="officer_aadhar_card.value" minlength="12" maxlength="12" required />
-            <span class="text-center text-sm text-red-500" v-if="!officer_aadhar_card.valid">{{
-                officer_aadhar_card.message
-            }}</span>
+              placeholder="Aadhar Card" @change="useValidationStore().validation(aadhar_card)"
+              v-model="aadhar_card.value" minlength="12" maxlength="12" required />
+            <span class="text-center text-sm text-red-500" v-if="!aadhar_card.valid">Aadhar card must be numeric</span>
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">{{
@@ -82,7 +79,7 @@ onMounted(async () => {
             }}*</label>
             <select
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600 capitalize"
-              :disabled="useOfficerStore().region_list.length === 0" v-model="useOfficerStore().region_name" required>
+              :disabled="regions.length === 0" v-model="useOfficerStore().region" required>
               <option disabled selected value="">
                 Choose a
                 {{
@@ -91,7 +88,7 @@ onMounted(async () => {
                       : "District"
                 }}
               </option>
-              <option class="capitalize text-slate-900" v-for="region of useOfficerStore().region_list" :value="region">
+              <option class="capitalize text-slate-900" v-for="region of regions" :value="region">
                 {{ region }}
               </option>
             </select>

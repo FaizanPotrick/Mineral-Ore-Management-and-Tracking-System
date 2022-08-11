@@ -44,7 +44,7 @@ router.get("/api/dashboard/organisation", async (req, res) => {
         value: organisation_response.ores_bought.iron_pellet,
       },
     ],
-    marker: mine_list_response,
+    markers: mine_list_response,
   });
 });
 module.exports = router;

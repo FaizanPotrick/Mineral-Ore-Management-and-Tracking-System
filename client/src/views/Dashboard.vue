@@ -1,19 +1,14 @@
 <script setup>
-import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
-import useHomeStore from "@/stores/Dashboard/HomeStore";
+import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
+import useHomeStore from "@/stores/HomeStore";
 import useLoginStore from "@/stores/LoginStore";
 
 const router = useRouter();
 const route = useRoute();
-useHomeStore().auth_fetch(router)
-onBeforeRouteUpdate(() => {
-  useHomeStore().auth_fetch(router)
-})
 useHomeStore().user_fetch()
-// console.log(useHomeStore().buttons_fetch())
 </script>
 <template>
-  <div class="bg-yellow-50" v-if="useHomeStore().auth_check(route)">
+  <div class="bg-yellow-50" v-if="route.meta.access">
     <div
       class="flex gap-4 justify-between items-center bg-white border-gray-400/20 font-medium drop-shadow text-gray-900 px-5 py-3 md:px-10">
       <div class="flex flex-col items-start flex-shrink-0">

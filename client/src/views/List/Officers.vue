@@ -1,13 +1,13 @@
 <script setup>
-import useOrganisationStore from "@/stores/OrganisationStore";
-useOrganisationStore().get_organisations()
+import useOfficerStore from "@/stores/OfficerStore";
+useOfficerStore().get_officers()
 </script>
 <template>
     <div class="flex flex-col gap-4 items-center">
         <div
             class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md">
             <div class="flex justify-between items-center w-full">
-                <div class="text-3xl font-semibold">Organisations</div>
+                <div class="text-3xl font-semibold">Officers</div>
                 <input type="search" class="max-w-sm w-full px-4 py-2 border border-gray-300 rounded-lg"
                     placeholder="Search">
             </div>
@@ -16,16 +16,19 @@ useOrganisationStore().get_organisations()
                     <thead class="border-b whitespace-nowrap bg-yellow-400">
                         <tr class="text-center">
                             <th class="px-6 py-4">
-                                Organisation Id
+                                Region Id
                             </th>
                             <th class="px-6 py-4">
-                                Organisation Name
+                                Region Type
                             </th>
                             <th class="px-6 py-4">
-                                CEO Id
+                                State
                             </th>
                             <th class="px-6 py-4">
-                                Gst no
+                                District
+                            </th>
+                            <th class="px-6 py-4">
+                                Officer Id
                             </th>
                             <th class="px-6 py-4">
                                 View
@@ -33,22 +36,24 @@ useOrganisationStore().get_organisations()
                         </tr>
                     </thead>
                     <tbody class="font-normal text-gray-600 whitespace-nowrap">
-                        <tr :key="organisation._id" v-for="organisation in useOrganisationStore().organisations"
-                            class="text-center">
+                        <tr :key="officer._id" v-for="officer in useOfficerStore().officers" class="text-center">
                             <td class="px-6 py-4">
-                                {{ organisation._id }}
+                                {{ officer._id }}
                             </td>
                             <td class="px-6 py-4 capitalize">
-                                {{ organisation.organisation_name }}
+                                {{ officer.type_of_region }}
+                            </td>
+                            <td class="px-6 py-4 capitalize">
+                                {{ officer.state }}
+                            </td>
+                            <td class="px-6 py-4 capitalize">
+                                {{ officer.type_of_region === 'state' ? '-' : officer.district }}
+                            </td>
+                            <td class="px-6 py-4 ">
+                                {{ officer.officer_id }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ organisation.ceo_id }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ organisation.gst_no }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <RouterLink :to="'/dashboard/organisations/' + organisation._id"
+                                <RouterLink :to="'/dashboard/officers/' + officer.type_of_region + '/' + officer._id"
                                     class="hover:text-yellow-700">
                                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                                         <path

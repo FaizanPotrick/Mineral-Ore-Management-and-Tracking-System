@@ -1,39 +1,6 @@
 <script setup>
-import useHomeStore from "@/stores/Dashboard/HomeStore";
-import { ref } from "vue";
-const search = ref("");
-useHomeStore().mines_fetch()
-
-function filterList() {
-    return useHomeStore().mines.filter(mine => {
-        if (mine._id.toLowerCase().includes(search.value.toLowerCase())) {
-            return mine._id;
-        }
-        else if (mine.manager_id.toLowerCase().includes(search.value.toLowerCase())) {
-            return mine.manager_id
-        }
-        else if (mine.organization_id.toLowerCase().includes(search.value.toLowerCase())) {
-            return mine.organization_id
-        }
-        else if (mine.region_id.toLowerCase().includes(search.value.toLowerCase())) {
-            return mine.region_id
-        }
-        else if (mine.batch_id.toLowerCase().includes(search.value.toLowerCase())) {
-            return mine.batch_id
-        }
-        else if (mine.warehouse_capacity.toLowerCase().includes(search.value.toLowerCase())) {
-            return mine.warehouse_capacity
-        }
-        else if (mine.location.pin_code.toLowerCase().includes(search.value.toLowerCase())) {
-            return mine.location.pin_code
-        }
-        else if (mine.lease_period.to.toLowerCase().includes(search.value.toLowerCase())) {
-            return mine.lease_period.to
-        } else {
-            return mine
-        }
-    });
-}
+import useHomeStore from "@/stores/MineStore";
+useHomeStore().get_mines()
 </script>
 <template>
     <div class="flex flex-col gap-4 items-center">
@@ -41,8 +8,8 @@ function filterList() {
             class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md">
             <div class="flex justify-between items-center w-full">
                 <div class="text-3xl font-semibold">Mines</div>
-                <input type="search" v-model="search"
-                    class="max-w-sm w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Search">
+                <input type="search" class="max-w-sm w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    placeholder="Search">
             </div>
             <div class="w-full border rounded-xl overflow-hidden drop-shadow-md">
                 <table class="w-full">
@@ -55,7 +22,7 @@ function filterList() {
                                 Manager Id
                             </th>
                             <th v-if="$cookies.get('type_of_user') === 'officer'" class="px-6 py-4">
-                                Organization Id
+                                Organisation Id
                             </th>
                             <th class="px-6 py-4">
                                 Region Id
@@ -83,7 +50,7 @@ function filterList() {
                                 {{ mine.manager_id }}
                             </td>
                             <td class="px-6 py-4" v-if="$cookies.get('type_of_user') === 'officer'">
-                                {{ mine.organization_id }}
+                                {{ mine.organisation_id }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ mine.region_id }}

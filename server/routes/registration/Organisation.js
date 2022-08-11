@@ -15,7 +15,7 @@ router.post(
     const {
       organisation_name,
       address,
-      ceo_name,
+      name,
       email_address,
       phone_no,
       aadhar_card,
@@ -52,7 +52,7 @@ router.post(
         auth: auth,
         user_id: ceo_id,
         type_of_user: "organisation",
-        user_name: ceo_name,
+        user_name: name,
         aadhar_card: aadhar_card,
         email_address: email_address,
         phone_no: phone_no,
@@ -66,7 +66,7 @@ router.post(
         address: address,
       });
       req.user_id = ceo_id;
-      req.user_name = ceo_name;
+      req.user_name = name;
       req.user_type = "Organisation";
       req.email_address = email_address;
       req.password = password;

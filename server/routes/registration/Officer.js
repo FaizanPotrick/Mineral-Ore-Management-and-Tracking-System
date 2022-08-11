@@ -13,12 +13,12 @@ router.post(
   "/api/registration/officer",
   async (req, res, next) => {
     const {
-      officer_name,
+      name,
       email_address,
       phone_no,
       aadhar_card,
       type_of_region,
-      region_name,
+      region,
     } = req.body;
     try {
       const aadhar_card_check = await User.findOne({
@@ -40,7 +40,7 @@ router.post(
       const password = id_generate();
       const region_check = await Region.findOne({
         type_of_region: type_of_region,
-        [type_of_region]: region_name,
+        [type_of_region]: region,
       });
       if (region_check === null) {
         return res.status(201).json({
@@ -62,7 +62,7 @@ router.post(
         auth: auth,
         user_id: officer_id,
         type_of_user: "officer",
-        user_name: officer_name,
+        user_name: name,
         aadhar_card: aadhar_card,
         email_address: email_address,
         phone_no: phone_no,
@@ -78,7 +78,7 @@ router.post(
         }
       );
       req.user_id = officer_id;
-      req.user_name = officer_name;
+      req.user_name = name;
       req.user_type = "Officer";
       req.email_address = email_address;
       req.password = password;

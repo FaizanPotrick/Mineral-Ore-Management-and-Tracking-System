@@ -1,16 +1,16 @@
 <script setup>
-import useOrganisationStore from "@/stores/Registration/OrganisationStore";
+import useOrganisationStore from "@/stores/OrganisationStore";
 import useAlertStore from "@/stores/Alert";
 import useValidationStore from "@/stores/Validation";
 
 const {
   organisation_name,
-  ceo_name,
-  ceo_email_address,
-  ceo_phone_no,
-  ceo_aadhar_card,
+  name,
+  email_address,
+  phone_no,
+  aadhar_card,
   gst_no,
-  register_fn,
+  organisation_register_fn,
 } = useOrganisationStore();
 </script>
 <template>
@@ -20,12 +20,12 @@ const {
         <div class="font-semibold text-2xl text-yellow-700">
           Organisation Registration
         </div>
-        <div class="text-gray-500 text-sm">Register a organisation.</div>
+        <div class="text-gray-500 text-sm">Register an organisation.</div>
         <span class="text-red-500 text-center text-sm" v-if="
           useAlertStore().alert_text.isAlert
         ">{{ useAlertStore().alert_text.message }}</span>
       </div>
-      <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
+      <form class="space-y-5 drop-shadow-md" @submit.prevent="organisation_register_fn()">
         <div class="grid gap-6 mb-6 grid-cols-1">
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Organisation Name*</label>
@@ -33,8 +33,8 @@ const {
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Organization Name" @change="useValidationStore().validation(organisation_name)"
               v-model="organisation_name.value" maxlength="300" required />
-            <span class="text-center text-sm text-red-500" v-if="!organisation_name.valid">{{ organisation_name.message
-            }}</span>
+            <span class="text-center text-sm text-red-500" v-if="!organisation_name.valid">Name must be
+              alphabetic</span>
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Address*</label>
@@ -47,9 +47,9 @@ const {
             <label class="text-sm font-medium text-gray-700">CEO Name*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Name" @change="useValidationStore().validation(ceo_name)" v-model="ceo_name.value"
-              maxlength="150" required />
-            <span class="text-center text-sm text-red-500" v-if="!ceo_name.valid">{{ ceo_name.message }}</span>
+              placeholder="Name" @change="useValidationStore().validation(name)" v-model="name.value" maxlength="150"
+              required />
+            <span class="text-center text-sm text-red-500" v-if="!name.valid">Name must be alphabetic</span>
           </div>
         </div>
         <div class="grid gap-6 sm:grid-cols-2">
@@ -57,27 +57,26 @@ const {
             <label class="text-sm font-medium text-gray-700">CEO Email Address*</label>
             <input type="email"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Email Address" @change="useValidationStore().validation(ceo_email_address)"
-              v-model="ceo_email_address.value" maxlength="150" required />
-            <span class="text-center text-sm text-red-500" v-if="!ceo_email_address.valid">{{ ceo_email_address.message
-            }}</span>
+              placeholder="Email Address" @change="useValidationStore().validation(email_address)"
+              v-model="email_address.value" maxlength="150" required />
+            <span class="text-center text-sm text-red-500" v-if="!email_address.valid">Please enter a valid email
+              address</span>
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">CEO Phone No.*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Phone Number" @change="useValidationStore().validation(ceo_phone_no)"
-              v-model="ceo_phone_no.value" minlength="10" maxlength="10" required />
-            <span class="text-center text-sm text-red-500" v-if="!ceo_phone_no.valid">{{ ceo_phone_no.message }}</span>
+              placeholder="Phone Number" @change="useValidationStore().validation(phone_no)" v-model="phone_no.value"
+              minlength="10" maxlength="10" required />
+            <span class="text-center text-sm text-red-500" v-if="!phone_no.valid">Phone number must be numeric</span>
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">CEO Aadhar Card*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Aadhar Card" @change="useValidationStore().validation(ceo_aadhar_card)"
-              v-model="ceo_aadhar_card.value" minlength="12" maxlength="12" required />
-            <span class="text-center text-sm text-red-500" v-if="!ceo_aadhar_card.valid">{{ ceo_aadhar_card.message
-            }}</span>
+              placeholder="Aadhar Card" @change="useValidationStore().validation(aadhar_card)"
+              v-model="aadhar_card.value" minlength="12" maxlength="12" required />
+            <span class="text-center text-sm text-red-500" v-if="!aadhar_card.valid">Aadhar card must be numeric</span>
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">GST No.*</label>
@@ -85,7 +84,7 @@ const {
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="GST Number" @change="useValidationStore().validation(gst_no)" v-model="gst_no.value"
               minlength="15" maxlength="15" required />
-            <span class="text-center text-sm text-red-500" v-if="!gst_no.valid">{{ gst_no.message }}</span>
+            <span class="text-center text-sm text-red-500" v-if="!gst_no.valid">Enter a proper GST number</span>
           </div>
         </div>
         <div class="space-y-3 py-5">

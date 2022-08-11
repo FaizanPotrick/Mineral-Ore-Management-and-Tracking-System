@@ -59,10 +59,18 @@
         "name": "approve transaction",
         "router_link": "/dashboard/approve_transaction",
         "type_of_user": [
+            "organisation"
+        ]
+    },
+    {
+        "name": "officers",
+        "router_link": "/dashboard/officers",
+        "type_of_user": [
             "officer"
         ],
         "type_of_region": [
-            "district"
+            "country",
+            "state"
         ]
     },
     {
@@ -85,7 +93,8 @@
         ],
         "type_of_region": [
             "country",
-            "state"
+            "state",
+            "district"
         ]
     },
     {

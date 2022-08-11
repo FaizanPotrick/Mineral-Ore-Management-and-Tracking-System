@@ -5,10 +5,6 @@ const Organisation = require("../../models/OrganisationSchema");
 const Mine = require("../../models/MineSchema");
 
 router.get("/api/dashboard/officer/country", async (req, res) => {
-  let _id = req.cookies._id;
-  if (req.query.region_id) {
-    _id = req.query.region_id;
-  }
   const region_response = await Region.find({
     state: { $exists: true },
     officer_id: { $exists: true },
@@ -25,6 +21,7 @@ router.get("/api/dashboard/officer/country", async (req, res) => {
     };
   });
   res.json({
+    position: "central officer",
     cards: [
       {
         title: "Total Officers",
@@ -39,7 +36,7 @@ router.get("/api/dashboard/officer/country", async (req, res) => {
         value: mine_response.length,
       },
     ],
-    marker: mine_list_response,
+    markers: mine_list_response,
   });
 });
 router.get("/api/dashboard/officer/state", async (req, res) => {
@@ -68,6 +65,7 @@ router.get("/api/dashboard/officer/state", async (req, res) => {
     };
   });
   res.json({
+    position: "state officer",
     cards: [
       {
         title: "Total Officers",
@@ -110,6 +108,7 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
     };
   });
   res.json({
+    position: "district officer",
     cards: [
       {
         title: "Total Mines",
