@@ -13,7 +13,7 @@ router.post(
   "/api/registration/manager",
   async (req, res, next) => {
     const { name, email_address, phone_no, aadhar_card } = req.body;
-    const { auth, _id } = req.cookies;
+    const { mine_id } = req.query;
     try {
       const aadhar_card_check = await User.findOne({
         aadhar_card: aadhar_card,
@@ -43,18 +43,19 @@ router.post(
         password: bcrypt.hashSync(password, 10),
         c_password: bcrypt.hashSync(password, 10),
       });
+      const mine_response = await Mine.findById(mine_id).distinct("manager_id");
       await User.findOneAndUpdate(
-        { auth: auth },
+        { user_id: mine_response[0] },
         {
           is_valid: false,
         }
       );
-      await Mine.findByIdAndUpdate(_id, {
+      await Mine.findByIdAndUpdate(mine_id, {
         manager_id: user_id,
       });
       req.user_id = user_id;
       req.user_name = name;
-      req.user_type = "Mine";
+      req.user_type = "Manager";
       req.email_address = email_address;
       req.password = password;
       res.status(200).json({
