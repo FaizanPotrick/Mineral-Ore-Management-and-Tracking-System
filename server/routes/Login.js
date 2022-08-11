@@ -40,7 +40,7 @@ router.post("/api/login", async (req, res) => {
         .cookie("type_of_region", region_response.type_of_region)
         .cookie("_id", region_response._id);
     }
-    if (user_response.type_of_user === "organization") {
+    if (user_response.type_of_user === "organisation") {
       const organisation_response = await Organisation.findOne({
         ceo_id: user_response.user_id,
       }).select("_id");
