@@ -47,8 +47,13 @@ const data = {
 </script>
 <template>
     <div class="flex flex-col gap-4">
-        <div class="text-xl font-semibold capitalize">
-            {{ useMineStore().company_name }}
+        <div class="flex justify-between">
+            <div class="text-xl font-semibold capitalize">
+                {{ useMineStore().company_name }}
+            </div>
+            <RouterLink v-if="$cookies.get('type_of_user') === 'organisation'"
+                :to="'/dashboard/mines/' + route.params.mine_id + '/manager_registration'"
+                class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Manager Registration</RouterLink>
         </div>
         <div class="flex gap-4 flex-wrap w-full font-semibold">
             <div :key="card" v-for="card of useMineStore().cards"
@@ -69,7 +74,7 @@ const data = {
                     maintainAspectRatio: false,
                 }" :chart-data="data" />
             </div> -->
-            <div class="bg-white p-4 text-center rounded-xl"> Grades Of Iron Ore
+            <div class="bg-white p-4 text-center rounded-xl"> Warehouse Overview
                 <Doughnut :chart-options="{
                     responsive: true,
                     maintainAspectRatio: false,

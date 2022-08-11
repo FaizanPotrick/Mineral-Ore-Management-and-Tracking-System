@@ -1,95 +1,73 @@
 <script setup>
 import useAlertStore from '@/stores/Alert';
-import { useOresStore } from '@/stores/Miner/Ores';
+import useMineStore from '@/stores/MineStore';
 import useValidationStore from '@/stores/Validation';
-const oresStore = useOresStore();
-const alertStore = useAlertStore();
-const validationStore = useValidationStore();
-const myFile = async () => {
-  const response = await fetch("/api/miner/file", {
-    method: "Get",
-  });
-  const file = await response.blob();
-  // const reader = new FileReader();
-  // reader.readAsDataURL(file);
-  // reader.onload = () => {
-  //   const data = reader.result;
-  //   console.log(data);
-  // };
+const {
+  store_image, store_document, ores_register_fn } = useMineStore()
 
-  var files = new Blob([file], { type: "application/pdf" });
-  const fileURL = URL.createObjectURL(files);
-  //Open the URL on new Window
-  window.open(fileURL);
-  // const data = await response.json();
-  console.log(fileURL);
-}
 </script>
 <template>
   <div class="flex justify-center items-center">
     <div class="max-w-lg p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl m-5 sm:10 text-gray-800">
       <div class="mb-4">
-        <div class="font-semibold text-2xl text-yellow-700" @click="myFile">Ores
+        <div class="font-semibold text-2xl text-yellow-700">Ores
           Registration</div>
-        <div class="text-gray-500 text-sm">Please fill ores details</div>
-        <span
-          :class="{ 'text-red-500': alertStore.alert_text.type === 'error', 'text-green-500': alertStore.alert_text.type === 'success', 'text-blue-500': alertStore.alert_text.type === 'info', 'text-yellow-500': alertStore.alert_text.type === 'warning' }"
-          class="text-center text-sm" v-if="alertStore.alert_text.message && !alertStore.alert_text.alertbox">{{
-              alertStore.alert_text.message
-          }}</span>
+        <div class="text-gray-500 text-sm">Register a Batch</div>
+        <span class="text-red-500 text-center text-sm" v-if="useAlertStore().alert_text.isAlert">{{
+            useAlertStore().alert_text.message
+        }}</span>
       </div>
-      <form class="space-y-5 drop-shadow-md" @submit.prevent="oresStore.oresRegistration()"
-        enctype="multipart/form-data">
+      <form class="space-y-5 drop-shadow-md" @submit.prevent="ores_register_fn()" enctype="multipart/form-data">
         <div class="grid gap-6 mb-6 sm:grid-cols-2">
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Type*</label>
-            <select id="countries"
+            <select
               class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="oresStore.ores_registration.type" required>
+              v-model="useMineStore().type_of_ore" required>
               <option disabled value="" selected>Select the Type</option>
-              <option value="lumps">Lumps</option>
-              <option value="fines">Fines</option>
-              <option value="iron pellets">Iron Pellets</option>
+              <option value="lump">Lump</option>
+              <option value="fine">Fine</option>
+              <option value="iron_pellet">Iron Pellet</option>
             </select>
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Grade(Fe%)*</label>
             <input
               class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              @change="validationStore.validation(oresStore.ores_registration.grade)"
-              v-model="oresStore.ores_registration.grade.value" minlength="3" maxlength="30" type="text"
-              placeholder="Enter the Fe percentage" required>
-            <span class="text-center text-sm text-red-500" v-if="!oresStore.ores_registration.grade.valid">{{
-                oresStore.ores_registration.grade.message
-            }}</span>
+              v-model="useMineStore().fe_percentage" type="number" required>
           </div>
         </div>
         <div class="grid gap-6 mb-6 grid-cols-1">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Quantity*</label>
+            <label class="text-sm font-medium text-gray-700">Quantity(in mt)*</label>
             <input
               class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              @change="validationStore.validation(oresStore.ores_registration.quantity)"
-              v-model="oresStore.ores_registration.quantity.value" minlength="3" maxlength="30" type="number" required>
-            <span class="text-center text-sm text-red-500" v-if="!oresStore.ores_registration.quantity.valid">{{
-                oresStore.ores_registration.quantity.message
-            }}</span>
+              v-model="useMineStore().quantity" type="number" required>
+
           </div>
         </div>
-        <div class="grid gap-6 mb-6 grid-cols-1">
+        <div class="grid gap-6 mb-6 grid-cols-2">
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Sample Image*</label>
+            <input
+              class="w-full content-center text-base border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              @change="store_image" type="file" accept="image/*" required>
+          </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Upload
               Pdf*</label>
             <input
               class="w-full content-center text-base border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              @change="oresStore.preview_document" type="file" accept="application/pdf" required>
+              @change="store_document" type="file" accept="application/pdf" required>
           </div>
         </div>
         <div class="space-y-3 py-5">
-          <button type="submit" :class="{ 'hover:bg-yellow-600/80': !oresStore.isLoading }"
-            class="w-full flex text-lg justify-center items-center bg-yellow-600  text-gray-100 p-2.5 rounded-full font-semibold shadow-md"
-            :disabled="oresStore.isLoading">
-            <span v-if="!oresStore.isLoading" class="h-6">
+          <button type="submit" :class="{
+            'hover:bg-yellow-600/80': !useValidationStore().isButtonLoading,
+          }"
+            class="w-full flex text-lg justify-center items-center bg-yellow-600 text-gray-100 p-2.5 rounded-full font-semibold shadow-md"
+            :disabled="useValidationStore().isButtonLoading">
+            <span v-if="!useValidationStore().isButtonLoading" class="h-6">
               Create Batch
             </span>
             <span v-else>

@@ -27,7 +27,7 @@ const MinedBatch = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    quantity_of_ore: {
+    quantity: {
       type: Number,
       required: true,
     },
@@ -37,19 +37,16 @@ const MinedBatch = new mongoose.Schema(
       default: "pending",
       required: true,
     },
-    sample_image_id: {
+    sample_image_path: {
       type: String,
-      unique: true,
       required: true,
     },
-    mine_lab_report_id: {
+    mine_lab_report_path: {
       type: String,
-      unique: true,
       required: true,
     },
-    gov_lab_report_id: {
+    gov_lab_report_path: {
       type: String,
-      unique: true,
     },
   },
   {

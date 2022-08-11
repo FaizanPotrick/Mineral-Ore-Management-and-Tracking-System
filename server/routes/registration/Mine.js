@@ -7,38 +7,10 @@ const Organisation = require("../../models/OrganisationSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
-const { initializeApp } = require("firebase/app");
-const {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} = require("firebase/storage");
 const id_genarate = new ShortUniqueId({
   length: 8,
 });
-const app = initializeApp({
-  storageBucket: process.env.BUCKET_URL,
-});
-// 1660136135894250
-router.post("/api/upload", async (req, res) => {
-  const storage = getStorage(app);
-  const file = req.files.file.data;
-  const storageRef = ref(storage, "/eway_bill/" + req.files.file.name);
-  uploadBytes(storageRef, file).then((snapshot) => {
-    console.log(snapshot);
-  });
-});
-router.get("/api/getfile", async (req, res) => {
-  const storage = getStorage(app);
-  getDownloadURL(ref(storage, "eway_bill/Screenshot 2022-06-13 100620.png"))
-    .then((url) => {
-      console.log(url);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-});
+
 router.post(
   "/api/registration/mine",
   async (req, res, next) => {
