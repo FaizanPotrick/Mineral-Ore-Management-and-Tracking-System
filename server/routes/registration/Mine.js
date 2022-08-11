@@ -7,16 +7,45 @@ const Organisation = require("../../models/OrganisationSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
+const { initializeApp } = require("firebase/app");
+const {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} = require("firebase/storage");
 const id_genarate = new ShortUniqueId({
   length: 8,
+});
+const app = initializeApp({
+  storageBucket: process.env.BUCKET_URL,
+});
+// 1660136135894250
+router.post("/api/upload", async (req, res) => {
+  const storage = getStorage(app);
+  const file = req.files.file.data;
+  const storageRef = ref(storage, "/eway_bill/" + req.files.file.name);
+  uploadBytes(storageRef, file).then((snapshot) => {
+    console.log(snapshot);
+  });
+});
+router.get("/api/getfile", async (req, res) => {
+  const storage = getStorage(app);
+  getDownloadURL(ref(storage, "eway_bill/Screenshot 2022-06-13 100620.png"))
+    .then((url) => {
+      console.log(url);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 router.post(
   "/api/registration/mine",
   async (req, res, next) => {
-    const { region_id } = req.cookies;
+    const { _id } = req.cookies;
     const {
       organisation_id,
-      manager_name,
+      name,
       email_address,
       phone_no,
       aadhar_card,
@@ -56,7 +85,7 @@ router.post(
         auth: auth,
         user_id: manager_id,
         type_of_user: "miner",
-        user_name: manager_name,
+        user_name: name,
         aadhar_card: aadhar_card,
         email_address: email_address,
         phone_no: phone_no,
@@ -64,15 +93,12 @@ router.post(
         c_password: bcrypt.hashSync(password, 10),
       });
       await Mine.create({
-        organization_id: organisation_id,
+        organisation_id: organisation_id,
         manager_id: manager_id,
-        region_id: region_id,
+        region_id: _id,
         location: {
           pin_code: pin_code,
-          coordinates: {
-            latitude: coordinates.lat,
-            longitude: coordinates.lng,
-          },
+          coordinates: coordinates,
         },
         warehouse_capacity: warehouse_capacity,
         area: area,
@@ -91,8 +117,8 @@ router.post(
         },
       });
       req.user_id = manager_id;
-      req.user_name = manager_name;
-      req.user_type = "Miner";
+      req.user_name = name;
+      req.user_type = "Mine";
       req.email_address = email_address;
       req.password = password;
       res.status(200).json({
