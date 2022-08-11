@@ -215,7 +215,7 @@ app.use(
             meta: {
               active: "CEO registration",
               access: false,
-              type_of_user: ["organization"],
+              type_of_user: ["organisation"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Registration/CEO.vue"),
@@ -224,8 +224,9 @@ app.use(
             path: "mines/:mine_id/manager_registration",
             name: "manager_registration",
             meta: {
+              active: "mines",
               access: false,
-              type_of_user: ["organization"],
+              type_of_user: ["organisation"],
             },
             component: () => import("@/views/Registration/Manager.vue"),
           },
@@ -234,7 +235,7 @@ app.use(
             name: "approve_transaction",
             meta: {
               access: false,
-              type_of_user: ["organization"],
+              type_of_user: ["organisation"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () =>
@@ -244,16 +245,18 @@ app.use(
             path: "add_mined_batch",
             name: "add_mined_batch",
             meta: {
+              active: "add mined batch",
               access: false,
               type_of_user: ["miner"],
             },
             beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Registration/AddMinedBatch.vue"),
+            component: () => import("@/views/Registration/MinedBatch.vue"),
           },
           {
             path: "add_transaction",
             name: "add_transaction",
             meta: {
+              active: "add transaction",
               access: false,
               type_of_user: ["miner"],
             },

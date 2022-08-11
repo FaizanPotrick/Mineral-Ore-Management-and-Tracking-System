@@ -35,7 +35,7 @@ router.post(
       await User.create({
         auth: generate_auth,
         user_id: user_id,
-        type_of_user: "organization",
+        type_of_user: "organisation",
         user_name: name,
         aadhar_card: aadhar_card,
         email_address: email_address,
@@ -54,13 +54,21 @@ router.post(
       });
       req.user_id = user_id;
       req.user_name = name;
-      req.user_type = "Organisation";
+      req.user_type = "CEO";
       req.email_address = email_address;
       req.password = password;
-      res.status(200).json({
-        message: "Successfully Registered",
-        type: "success",
-      });
+      req.session.destroy();
+      res
+        .clearCookie("auth")
+        .clearCookie("connect.sid")
+        .clearCookie("type_of_user")
+        .clearCookie("type_of_region")
+        .clearCookie("_id")
+        .status(200)
+        .json({
+          message: "Successfully Registered",
+          type: "success",
+        });
       next();
     } catch (error) {
       console.log(error);

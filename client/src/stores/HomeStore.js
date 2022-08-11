@@ -7,11 +7,6 @@ export default defineStore({
   state: () => ({
     user_name: "",
     user_email_address: "",
-    company_name: "",
-    markers: [],
-    cards: [],
-    doughnut: {},
-    mines: [],
   }),
   actions: {
     async user_fetch() {

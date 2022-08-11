@@ -1,8 +1,8 @@
 <script setup>
-import useUserStore from "@/stores/Registration/UserStore";
+import useUserStore from "@/stores/UserStore";
 import useAlertStore from "@/stores/Alert";
 import useValidationStore from "@/stores/Validation";
-
+import { useRouter } from "vue-router";
 const {
   name,
   email_address,
@@ -10,6 +10,7 @@ const {
   aadhar_card,
   ceo_register_fn,
 } = useUserStore();
+const router = useRouter();
 </script>
 <template>
   <div class="flex justify-center items-center">
@@ -23,7 +24,7 @@ const {
             useAlertStore().alert_text.message
         }}</span>
       </div>
-      <form class="space-y-5 drop-shadow-md" @submit.prevent="ceo_register_fn()">
+      <form class="space-y-5 drop-shadow-md" @submit.prevent="ceo_register_fn(router)">
         <div class="grid gap-6 mb-6 grid-cols-1">
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Name*</label>
@@ -31,7 +32,7 @@ const {
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Name" @change="useValidationStore().validation(name)" v-model="name.value" maxlength="150"
               required />
-            <span class="text-center text-sm text-red-500" v-if="!name.valid">{{ name.message }}</span>
+            <span class="text-center text-sm text-red-500" v-if="!name.valid">Name must be alphabetic</span>
           </div>
         </div>
         <div class="grid gap-6 sm:grid-cols-2">
@@ -41,9 +42,8 @@ const {
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Email Address" @change="useValidationStore().validation(email_address)"
               v-model="email_address.value" maxlength="150" required />
-            <span class="text-center text-sm text-red-500" v-if="!email_address.valid">{{
-                email_address.message
-            }}</span>
+            <span class="text-center text-sm text-red-500" v-if="!email_address.valid">Enter a valid email
+              address</span>
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Phone No.*</label>
@@ -51,8 +51,7 @@ const {
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Phone Number" @change="useValidationStore().validation(phone_no)" v-model="phone_no.value"
               minlength="10" maxlength="10" required />
-            <span class="text-center text-sm text-red-500" v-if="!phone_no.valid">{{ phone_no.message
-            }}</span>
+            <span class="text-center text-sm text-red-500" v-if="!phone_no.valid">Phone number must be numeric</span>
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Aadhar Card*</label>
@@ -60,9 +59,7 @@ const {
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Aadhar Card" @change="useValidationStore().validation(aadhar_card)"
               v-model="aadhar_card.value" minlength="12" maxlength="12" required />
-            <span class="text-center text-sm text-red-500" v-if="!aadhar_card.valid">{{
-                aadhar_card.message
-            }}</span>
+            <span class="text-center text-sm text-red-500" v-if="!aadhar_card.valid">Aadhar card must be numeric</span>
           </div>
         </div>
         <div class="space-y-3 py-5">
