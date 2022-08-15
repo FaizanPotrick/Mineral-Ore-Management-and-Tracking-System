@@ -2,7 +2,7 @@
 import useMineStore from "@/stores/MineStore";
 import useAlertStore from "@/stores/Alert";
 import useValidationStore from "@/stores/Validation";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import axios from "axios";
 onMounted(async () => {
   const { data } = await axios.get('/api/region_coordinates_and_organisation_list')
@@ -25,16 +25,6 @@ const {
   marker_selector,
   mine_register_fn,
 } = useMineStore();
-
-const drawType = ref("Point")
-const drawedMarker = ref()
-const vectors = ref(null);
-
-const drawstart = (event) => {
-  vectors.value.source.removeFeature(drawedMarker.value);
-  drawedMarker.value = event.feature;
-  console.log(vectors.value.source);
-}
 </script>
 <template>
   <div class="flex justify-center items-center">
@@ -137,17 +127,10 @@ const drawstart = (event) => {
           <ol-zoom-control />
           <ol-vector-layer>
             <ol-mouseposition-control />
-            <ol-source-vector ref="vectors">
-              <ol-interaction-draw @drawstart="drawstart" :type="drawType">
-              </ol-interaction-draw>
+            <ol-source-vector>
+              <ol-interaction-draw @drawstart="marker_selector" type="Point" />
             </ol-source-vector>
-
           </ol-vector-layer>
-          <!-- <ol-overlay v-if="
-          useMineStore().coordinates.latitude !== 0 && useMineStore().coordinates.longitude !== 0"
-            :position="[useMineStore().coordinates.longitude, useMineStore().coordinates.latitude]">
-            <img src="@/assets/marker.png" class="h-8 w-8 cursor-pointer" alt="marker">
-          </ol-overlay> -->
         </ol-map>
         <div class="space-y-3 py-5">
           <button type="submit" :class="{

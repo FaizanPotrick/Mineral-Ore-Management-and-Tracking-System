@@ -2,7 +2,56 @@ const express = require("express");
 const router = express.Router();
 const Region = require("../models/RegionSchema");
 const Organisation = require("../models/OrganisationSchema");
-
+const MinedBatch = require("../models/MinedBatchSchema");
+router.get("/api/test", async (req, res) => {
+  try {
+    const email_address_check = await Organisation.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "ceo_id",
+          foreignField: "user_id",
+          as: "ceo_list",
+        },
+      },
+      { $addFields: { _id: { $toString: "$_id" } } },
+      {
+        $lookup: {
+          from: "mines",
+          localField: "_id",
+          foreignField: "organisation_id",
+          as: "mine_role",
+        },
+      },
+      // {
+      //   $unwind: "$mine_role",
+      // },
+      // {
+      //   $match: {
+      //     organisation_name: "new faizan company",
+      //   },
+      // },
+      // {
+      //   $project: {
+      //     organisation_name: 1,
+      //     user_list: {
+      //       email_address: 1,
+      //       user_name: 1,
+      //     },
+      //   },
+      // },
+      // {
+      //   $sort: {
+      //     organisation_name: -1,
+      //   },
+      // },
+    ]);
+    res.json(email_address_check);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json("Invalid Request");
+  }
+});
 router.get(
   "/api/region_coordinates_and_organisation_list",
   async (req, res) => {

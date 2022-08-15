@@ -15,7 +15,7 @@ const MinedBatch = new mongoose.Schema(
     },
     type_of_ore: {
       type: String,
-      enum: ["fine", "lump", "iron pellet"],
+      enum: ["fine", "lump", "iron_pellet"],
       required: true,
     },
     grade: {

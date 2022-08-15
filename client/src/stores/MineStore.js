@@ -72,9 +72,10 @@ export default defineStore({
       const {
         data: { company_name, cards, doughnut },
       } = await axios.get(
-        `/api/dashboard/miner${route.params.mine_id === undefined
-          ? ""
-          : `?mine_id=${route.params.mine_id}`
+        `/api/dashboard/miner${
+          route.params.mine_id === undefined
+            ? ""
+            : `?mine_id=${route.params.mine_id}`
         }`
       );
       this.company_name = company_name;
@@ -83,9 +84,10 @@ export default defineStore({
     },
     async get_mines() {
       const { data } = await axios.get(
-        `/api/mines/${$cookies.get("type_of_user") === "officer"
-          ? `officer/${$cookies.get("type_of_region")}`
-          : "organisation"
+        `/api/mines/${
+          $cookies.get("type_of_user") === "officer"
+            ? `officer/${$cookies.get("type_of_region")}`
+            : "organisation"
         }`
       );
       this.mines = data;
@@ -93,8 +95,8 @@ export default defineStore({
 
     marker_selector(e) {
       this.coordinates = {
-        latitude: e.coordinate[1],
-        longitude: e.coordinate[0],
+        latitude: e.feature.values_.geometry.flatCoordinates[1],
+        longitude: e.feature.values_.geometry.flatCoordinates[0],
       };
     },
     async mine_register_fn() {
@@ -180,8 +182,8 @@ export default defineStore({
         this.fe_percentage >= 65
           ? "high"
           : this.fe_percentage >= 62 && this.fe_percentage < 65
-            ? "medium"
-            : "low"
+          ? "medium"
+          : "low"
       );
       formData.append("quantity", this.quantity);
       formData.append("sample_image", this.sample_image);

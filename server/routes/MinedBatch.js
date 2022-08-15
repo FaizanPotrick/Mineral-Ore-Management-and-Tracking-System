@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Region = require("../../models/RegionSchema");
-const Mine = require("../../models/MineSchema");
-const MinedBatch = require("../../models/MinedBatchSchema");
+const Region = require("../models/RegionSchema");
+const Mine = require("../models/MineSchema");
+const MinedBatch = require("../models/MinedBatchSchema");
 const { initializeApp } = require("firebase/app");
 const {
   getStorage,
@@ -13,17 +13,49 @@ const {
 const app = initializeApp({
   storageBucket: process.env.BUCKET_URL,
 });
-
-router.get("/api/getfile", async (req, res) => {
-  const storage = getStorage(app);
-  getDownloadURL(ref(storage, "eway_bill/Screenshot 2022-06-13 100620.png"))
-    .then((url) => {
-      console.log(url);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+// list start
+router.get("/api/mined_batches/officer/district", async (req, res) => {
+  const { auth } = req.cookies;
+  const region_response = await Region.findOne({
+    auth: auth,
+  }).distinct("user_id");
+  const mined_batch_response = await MinedBatch.find({
+    officer_id: region_response,
+    status: "pendding",
+  });
+  res.json(mined_batch_response);
 });
+router.get("/api/mined_batches/miner", async (req, res) => {
+  const { _id } = req.cookies;
+  const mined_batch_response = await MinedBatch.find({
+    mine_id: _id,
+  });
+  res.json(mined_batch_response);
+});
+// list end
+// get mined batch data start
+router.get("/api/mined_batch", async (req, res) => {
+  const { batch_id } = req.query;
+  const storage = getStorage(app);
+  const mined_batch_response = await MinedBatch.findById(batch_id);
+  const sample_image_url = await getDownloadURL(
+    ref(storage, mined_batch_response.sample_image_path)
+  );
+  const mine_lab_report_url = await getDownloadURL(
+    ref(storage, mined_batch_response.mine_lab_report_path)
+  );
+  res.status(200).json({
+    manager_id: mined_batch_response.manager_id,
+    type_of_ore: mined_batch_response.type_of_ore,
+    grade: mined_batch_response.grade,
+    fe_percentage: mined_batch_response.fe_percentage,
+    quantity: mined_batch_response.quantity,
+    sample_image_url: sample_image_url,
+    mine_lab_report_url: mine_lab_report_url,
+  });
+});
+// get mined batch data end
+// mined batch register start
 router.post("/api/registration/mined_batch", async (req, res) => {
   const { _id } = req.cookies;
   const { type_of_ore, fe_percentage, grade, quantity } = req.body;
@@ -60,7 +92,7 @@ router.post("/api/registration/mined_batch", async (req, res) => {
     }
     if (
       mine_response.warehouse_capacity <
-      total_fine + total_lump + total_iron_pellet + quantity
+      total_fine + total_lump + total_iron_pellet + parseInt(quantity)
     ) {
       return res.status(201).json({
         message: "Warehouse capacity is less than the quantity",
@@ -88,14 +120,14 @@ router.post("/api/registration/mined_batch", async (req, res) => {
       officer_id: region_response[0],
       type_of_ore: type_of_ore,
       grade: grade,
-      fe_percentage: fe_percentage,
-      quantity: quantity,
+      fe_percentage: parseInt(fe_percentage),
+      quantity: parseInt(quantity),
       sample_image_path: sample_image_path,
       mine_lab_report_path: mine_lap_report_path,
     });
     await Mine.findByIdAndUpdate(_id, {
       $inc: {
-        [`ores_available.${type_of_ore}.${grade}`]: quantity,
+        [`ores_available.${type_of_ore}.${grade}`]: parseInt(quantity),
       },
     });
 
@@ -111,4 +143,5 @@ router.post("/api/registration/mined_batch", async (req, res) => {
     });
   }
 });
+// mined batch register end
 module.exports = router;
