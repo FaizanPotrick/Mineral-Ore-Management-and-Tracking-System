@@ -55,6 +55,7 @@ app.use(require("./routes/Registration/Organisation.js"));
 app.use(require("./routes/Registration/CEO.js"));
 app.use(require("./routes/Registration/Mine.js"));
 app.use(require("./routes/Registration/Manager.js"));
+app.use(require("./routes/Registration/Transaction.js"));
 app.use(require("./routes/MinedBatch.js"));
 app.get("/api/authentication", async (req, res) => {
   if (req.session.type_of_user === req.cookies.type_of_user) {
