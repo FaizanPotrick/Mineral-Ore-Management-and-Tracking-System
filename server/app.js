@@ -49,6 +49,7 @@ app.use(require("./routes/GetData.js"));
 app.use(require("./routes/List/Officers.js"));
 app.use(require("./routes/List/Organisations.js"));
 app.use(require("./routes/List/Mines.js"));
+app.use(require("./routes/List/MinedBatches.js"));
 app.use(require("./routes/Registration/Officer.js"));
 app.use(require("./routes/Registration/Region.js"));
 app.use(require("./routes/Registration/Organisation.js"));
@@ -56,7 +57,7 @@ app.use(require("./routes/Registration/CEO.js"));
 app.use(require("./routes/Registration/Mine.js"));
 app.use(require("./routes/Registration/Manager.js"));
 app.use(require("./routes/Registration/Transaction.js"));
-app.use(require("./routes/MinedBatch.js"));
+app.use(require("./routes/registration/MinedBatch.js"));
 app.get("/api/authentication", async (req, res) => {
   if (req.session.type_of_user === req.cookies.type_of_user) {
     if (req.session._id === req.cookies._id) {
