@@ -117,5 +117,27 @@
         "type_of_user": [
             "miner"
         ]
+    },
+    {
+        "name": "mined batches",
+        "router_link": "/dashboard/mined_batches",
+        "type_of_user": [
+            "officer",
+            "miner"
+        ],
+        "type_of_region": [
+            "district"
+        ]
+    },
+    {
+        "name": "transactions",
+        "router_link": "/dashboard/transactions",
+        "type_of_user": [
+            "officer",
+            "miner"
+        ],
+        "type_of_region": [
+            "district"
+        ]
     }
 ]
