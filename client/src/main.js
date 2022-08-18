@@ -261,7 +261,7 @@ app.use(
               type_of_user: ["miner"],
             },
             beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Registration/AddTransaction.vue"),
+            component: () => import("@/views/Registration/Transaction.vue"),
           },
           {
             path: "mined_batches",

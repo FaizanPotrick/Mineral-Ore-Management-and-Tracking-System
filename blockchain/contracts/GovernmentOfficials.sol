@@ -14,8 +14,7 @@ contract GovernmentOfficials is Organisations,Users{
     
     //Register Mine
     //Input:- 1)Mine ID , 2)Mine Detail(Hash)
-    function createMine(string calldata mine_id,string calldata organisation_id,string calldata mine_hash) external{
-        
+    function createMine(string calldata mine_id,string calldata organisation_id,string calldata mine_hash) external{        
         mine[mine_id]=mine_detail(mine_id,organisation_id,mine_hash);
     }
 

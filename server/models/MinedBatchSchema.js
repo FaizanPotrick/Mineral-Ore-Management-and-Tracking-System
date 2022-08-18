@@ -37,15 +37,15 @@ const MinedBatch = new mongoose.Schema(
       default: "pending",
       required: true,
     },
-    sample_image_path: {
+    sample_image_url: {
       type: String,
       required: true,
     },
-    mine_lab_report_path: {
+    mine_lab_report_url: {
       type: String,
       required: true,
     },
-    gov_lab_report_path: {
+    gov_lab_report_url: {
       type: String,
     },
   },
