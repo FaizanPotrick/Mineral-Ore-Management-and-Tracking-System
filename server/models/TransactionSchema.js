@@ -22,7 +22,11 @@ const Transaction = new mongoose.Schema(
       enum: ["fine", "lump", "iron pellet"],
       required: true,
     },
-    quantity_of_ore: {
+    fe_percentage: {
+      type: Number,
+      required: true,
+    },
+    quantity: {
       type: Number,
       required: true,
     },
@@ -35,6 +39,10 @@ const Transaction = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    invoice_url: {
+      type: String,
+      required: true,
+    }
   },
   {
     timestamps: true,

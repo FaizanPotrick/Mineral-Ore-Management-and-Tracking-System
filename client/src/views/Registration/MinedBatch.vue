@@ -1,9 +1,9 @@
 <script setup>
 import useAlertStore from '@/stores/Alert';
-import useMineStore from '@/stores/MineStore';
+import useMinedBatchStore from '@/stores/MinedBatchStore';
 import useValidationStore from '@/stores/Validation';
 const {
-  store_image, store_document, ores_register_fn } = useMineStore()
+  store_image, store_document, ores_register_fn } = useMinedBatchStore()
 
 </script>
 <template>
@@ -23,7 +23,7 @@ const {
             <label class="text-sm font-medium text-gray-700">Type*</label>
             <select
               class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="useMineStore().type_of_ore" required>
+              v-model="useMinedBatchStore().type_of_ore" required>
               <option disabled value="" selected>Select the Type</option>
               <option value="lump">Lump</option>
               <option value="fine">Fine</option>
@@ -34,7 +34,7 @@ const {
             <label class="text-sm font-medium text-gray-700">Grade(Fe%)*</label>
             <input
               class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="useMineStore().fe_percentage" type="number" required>
+              v-model="useMinedBatchStore().fe_percentage" type="number" required>
           </div>
         </div>
         <div class="grid gap-6 mb-6 grid-cols-1">
@@ -42,7 +42,7 @@ const {
             <label class="text-sm font-medium text-gray-700">Quantity(in mt)*</label>
             <input
               class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="useMineStore().quantity" type="number" required>
+              v-model="useMinedBatchStore().quantity" type="number" required>
 
           </div>
         </div>

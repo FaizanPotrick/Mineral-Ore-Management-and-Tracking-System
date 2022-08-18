@@ -1,6 +1,6 @@
 <script setup>
 import useMinedBatchStore from "@/stores/MinedBatchStore";
-useMinedBatchStore().get_mines()
+useMinedBatchStore().get_mined_batches()
 
 </script>
 <template>
@@ -46,7 +46,7 @@ useMinedBatchStore().get_mines()
                         </tr>
                     </thead>
                     <tbody class="font-normal text-gray-600 whitespace-nowrap">
-                        <tr :key="mine._id" v-for="mine in useMinedBatchStore().mines" class="text-center">
+                        <tr :key="mine._id" v-for="mine in useMinedBatchStore().minded_batches" class="text-center">
                             <td class="px-6 py-4">
                                 {{ mine._id }}
                             </td>

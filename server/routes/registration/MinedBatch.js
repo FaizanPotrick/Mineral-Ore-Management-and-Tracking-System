@@ -18,8 +18,6 @@ router.post("/api/registration/mined_batch", async (req, res) => {
   const { type_of_ore, fe_percentage, grade, quantity } = req.body;
   const { sample_image, mine_lap_report } = req.files;
   try {
-    let sample_image_path;
-    let mine_lap_report_path;
     const mine_response = await Mine.findById(_id).select([
       "manager_id",
       "region_id",
@@ -42,19 +40,7 @@ router.post("/api/registration/mined_batch", async (req, res) => {
       mine_response.warehouse_capacity <
       total_fine + total_lump + total_iron_pellet
     ) {
-      return res.status(201).json({
-        message: "Warehouse capacity is less than the total ores available",
-        type: "error",
-      });
-    }
-    if (
-      mine_response.warehouse_capacity <
-      total_fine + total_lump + total_iron_pellet + parseInt(quantity)
-    ) {
-      return res.status(201).json({
-        message: "Warehouse capacity is less than the quantity",
-        type: "error",
-      });
+      console.log("get")
     }
     const region_response = await Region.findById(
       mine_response.region_id
@@ -65,12 +51,10 @@ router.post("/api/registration/mined_batch", async (req, res) => {
       storage,
       "/mine_lab_report/" + mine_lap_report.name
     );
-    await uploadBytes(imageRef, sample_image.data).then((snapshot) => {
-      sample_image_path = snapshot.metadata.fullPath;
-    });
-    await uploadBytes(documentRef, mine_lap_report.data).then((snapshot) => {
-      mine_lap_report_path = snapshot.metadata.fullPath;
-    });
+    const sample_image_path = await uploadBytes(imageRef, sample_image.data)
+    const mine_lap_report_path = await uploadBytes(documentRef, mine_lap_report.data)
+    const sample_image_url = await getDownloadURL(ref(storage, sample_image_path.metadata.fullPath))
+    const mine_lap_report_url = await getDownloadURL(ref(storage, mine_lap_report_path.metadata.fullPath))
     await MinedBatch.create({
       mine_id: _id,
       manager_id: mine_response.manager_id,
@@ -79,15 +63,14 @@ router.post("/api/registration/mined_batch", async (req, res) => {
       grade: grade,
       fe_percentage: parseInt(fe_percentage),
       quantity: parseInt(quantity),
-      sample_image_path: sample_image_path,
-      mine_lab_report_path: mine_lap_report_path,
+      sample_image_url: sample_image_url,
+      mine_lab_report_url: mine_lap_report_url,
     });
-    await Mine.findByIdAndUpdate(_id, {
-      $inc: {
-        [`ores_available.${type_of_ore}.${grade}`]: parseInt(quantity),
-      },
-    });
-
+    // await Mine.findByIdAndUpdate(_id, {
+    //   $inc: {
+    //     [`ores_available.${type_of_ore}.${grade}`]: parseInt(quantity),
+    //   },
+    // });
     res.status(200).json({
       message: "Successfully Registered",
       type: "success",
