@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/UserSchema");
 const bcrypt = require("bcrypt");
+const Transaction = require("../models/TransationSchema");
 
 router.post("/api/forget_password", async (req, res) => {
   const { user_name, password } = req.body;
@@ -36,6 +37,26 @@ router.post("/api/forget_password", async (req, res) => {
         message: "Successfully Logged In",
         type: "success",
         path: `${response.type_of_user}_dashboard`,
+      });
+  } catch (error) {
+    res.status(400).json({
+      message: "Invalid Request",
+      type: "error",
+    });
+  }
+});
+
+router.post("/api/test", async (req, res) => {
+  try {
+    const transaction_response = await Transaction.aggregate([
+      {
+
+      }
+    ]);
+    res
+      .json({
+        message: "Successfully Logged In",
+        type: "success",
       });
   } catch (error) {
     res.status(400).json({
