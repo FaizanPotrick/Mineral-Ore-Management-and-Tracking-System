@@ -281,6 +281,11 @@ app.use(
         name: "404",
         component: () => import("@/components/PageNotFound.vue"),
       },
+      {
+        path: "/view",
+        name: "Views",
+        component: () => import("@/views/Views_page.vue"),
+      }
     ],
   })
 );

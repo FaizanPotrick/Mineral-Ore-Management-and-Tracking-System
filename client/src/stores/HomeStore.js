@@ -35,5 +35,20 @@ export default defineStore({
         }
       });
     },
+    buttons_test() {
+      return Buttons.filter((button) => {
+        if (button.type_of_user.includes($cookies.get("type_of_user"))) {
+          if (button.type_of_user.includes("officer")) {
+            if (
+              button.type_of_region.includes($cookies.get("type_of_region"))
+            ) {
+              return true;
+            }
+          }
+          return true;
+        }
+        return false;
+      });
+    },
   },
 });
