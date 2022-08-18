@@ -3,35 +3,14 @@ const router = express.Router();
 const Mine = require("../../models/MineSchema");
 const Organisation = require("../../models/OrganisationSchema");
 const Transaction = require("../../models/TransactionSchema");
-const Region = require("../../models/RegionSchema");
-const { initializeApp } = require("firebase/app");
-const {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} = require("firebase/storage");
-const app = initializeApp({
-  storageBucket: process.env.BUCKET_URL,
-});
 
-router.post("/api/registration/transaction", async (req, res) => {
+router.post("/api/registration/mine", async (req, res) => {
   const { _id } = req.cookies;
   const { organisation_id, type_of_ore, fe_percentage, grade, quantity, price } = req.body;
   const { invoice } = req.files;
   try {
-    const mine_response = await Mine.findById(_id).select([
-      "manager_id",
-      "region_id"
-    ]);
-    const organisation_response = await Organisation.findById(organisation_id).select([
-      "ceo_id",
-    ]);
-    const region_response = await Region.findById(mine_response.region_id)
-    const storage = getStorage(app);
-    const invoiceRef = ref(storage, "/invoice_report/" + invoice.name);
-    const invoice_path = await uploadBytes(invoiceRef, invoice.data)
-    const invoice_url = await getDownloadURL(ref(storage, invoice_path.metadata.fullPath))
+    const mine_response = await Mine.findById(_id);
+    const organisation_response = await Organisation.findById(organisation_id);
     await Transaction.create({
       mine_id: _id,
       manager_id: mine_response.manager_id,
