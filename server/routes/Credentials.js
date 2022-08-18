@@ -12,7 +12,9 @@ router.post("/api/login", async (req, res) => {
     const user_response = await User.findOne({
       user_id: user_name,
       is_valid: true,
-    }).select(["auth", "user_id", "type_of_user", "password"]);
+    })
+      .select(["auth", "user_id", "type_of_user", "password"])
+      .lean();
     if (user_response === null) {
       return res.status(201).json({
         message: "Invalid Credential",
@@ -33,7 +35,9 @@ router.post("/api/login", async (req, res) => {
     if (user_response.type_of_user === "officer") {
       const region_response = await Region.findOne({
         officer_id: user_response.user_id,
-      }).select("type_of_region");
+      })
+        .select("type_of_region")
+        .lean();
       req.session.type_of_region = region_response.type_of_region;
       req.session._id = region_response._id;
       res
@@ -43,14 +47,18 @@ router.post("/api/login", async (req, res) => {
     if (user_response.type_of_user === "organisation") {
       const organisation_response = await Organisation.findOne({
         ceo_id: user_response.user_id,
-      }).select("_id");
+      })
+        .select("_id")
+        .lean();
       req.session._id = organisation_response._id;
       res.cookie("_id", organisation_response._id);
     }
     if (user_response.type_of_user === "miner") {
       const mine_response = await Mine.findOne({
         manager_id: user_response.user_id,
-      }).select("_id");
+      })
+        .select("_id")
+        .lean();
       req.session._id = mine_response._id;
       res.cookie("_id", mine_response._id);
     }
@@ -74,6 +82,7 @@ router.post("/api/login", async (req, res) => {
     });
   }
 });
+
 router.get("/api/logout", async (req, res) => {
   req.session.destroy();
   res
@@ -87,5 +96,19 @@ router.get("/api/logout", async (req, res) => {
       message: "Successfully Logged Out",
       type: "success",
     });
+});
+
+router.get("/api/authentication", async (req, res) => {
+  if (req.session.type_of_user === req.cookies.type_of_user) {
+    if (req.session._id === req.cookies._id) {
+      return res.send(true);
+    }
+    if (req.session.type_of_user === "officer") {
+      if (req.session.type_of_region === req.cookies.type_of_region) {
+        return res.send(true);
+      }
+    }
+  }
+  res.send(false);
 });
 module.exports = router;

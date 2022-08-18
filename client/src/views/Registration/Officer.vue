@@ -13,7 +13,7 @@ const {
 } = useOfficerStore();
 const regions = ref([]);
 onMounted(async () => {
-  const { data } = await axios.get(`/api/region_list${cookies.get('type_of_region')}`);
+  const { data } = await axios.get(`/api/officers/list/${cookies.get('type_of_region')}`);
   regions.value = data;
 });
 </script>
