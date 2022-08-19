@@ -27,7 +27,7 @@ router.post(
       const user_id = id_generate();
       const password = id_generate();
       await Promise.all([
-        await User.create({
+        User.create({
           auth: jwt.sign(
             {
               auth_id: user_id,
@@ -43,13 +43,13 @@ router.post(
           password: bcrypt.hashSync(password, 10),
           c_password: bcrypt.hashSync(password, 10),
         }),
-        await User.findOneAndUpdate(
+        User.findOneAndUpdate(
           { auth: auth },
           {
             is_valid: false,
           }
         ),
-        await Organisation.findByIdAndUpdate(_id, {
+        Organisation.findByIdAndUpdate(_id, {
           ceo_id: user_id,
         }),
       ]);
