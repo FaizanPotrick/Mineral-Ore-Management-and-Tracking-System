@@ -13,7 +13,9 @@ router.get("/api/user/officer", async (req, res) => {
   const region_user = await Region.findById(_id).distinct("officer_id");
   const user_response = await User.findOne({
     user_id: region_user[0],
-  }).select(["user_name", "email_address"]);
+  })
+    .select(["user_name", "email_address"])
+    .lean();
   res.json({
     name: user_response.user_name,
     email_address: user_response.email_address,
@@ -29,7 +31,9 @@ router.get("/api/user/organisation", async (req, res) => {
   );
   const user_response = await User.findOne({
     user_id: organisation_response[0],
-  }).select(["user_name", "email_address"]);
+  })
+    .select(["user_name", "email_address"])
+    .lean();
   res.json({
     name: user_response.user_name,
     email_address: user_response.email_address,
@@ -43,7 +47,9 @@ router.get("/api/user/miner", async (req, res) => {
   const mine_response = await Mine.findById(_id).distinct("manager_id");
   const user_response = await User.findOne({
     user_id: mine_response[0],
-  }).select(["user_name", "email_address"]);
+  })
+    .select(["user_name", "email_address"])
+    .lean();
   res.json({
     name: user_response.user_name,
     email_address: user_response.email_address,

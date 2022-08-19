@@ -1,8 +1,9 @@
 <script setup>
-import useMineStore from "@/stores/MineStore";
 import useHomeStore from "@/stores/HomeStore";
 import { Bar, Doughnut } from "vue-chartjs";
-import { useRouter, useRoute } from "vue-router";
+import { useRoute } from "vue-router";
+import { ref } from "vue";
+import axios from "axios";
 import {
   Chart as ChartJS,
   Title,
@@ -22,9 +23,27 @@ ChartJS.register(
   CategoryScale,
   LinearScale
 );
-const router = useRouter();
+
 const route = useRoute();
-useMineStore().mine_dashboard(route);
+const title = ref("");
+const cards = ref([]);
+const doughnut = ref([]);
+
+const dashboard = async () => {
+  const { data } = await axios.get(
+    `/api/dashboard/miner${
+      route.params.mine_id === undefined
+        ? ""
+        : `?mine_id=${route.params.mine_id}`
+    }`
+  );
+  title.value = data.title;
+  cards.value = data.cards;
+  doughnut.value = data.doughnut;
+};
+
+dashboard();
+
 const data = {
   labels: ["January", "February", "March"],
   datasets: [
@@ -45,13 +64,13 @@ const data = {
     },
   ],
 };
-console.log(useHomeStore().buttons_test());
+// console.log(useHomeStore().buttons_test());
 </script>
 <template>
   <div class="flex flex-col gap-4">
     <div class="flex justify-between">
       <div class="text-xl font-semibold capitalize">
-        {{ useMineStore().company_name }}
+        {{ title }}
       </div>
       <RouterLink
         v-if="$cookies.get('type_of_user') === 'organisation'"
@@ -65,7 +84,7 @@ console.log(useHomeStore().buttons_test());
     <div class="flex gap-4 flex-wrap w-full font-semibold">
       <div
         :key="card"
-        v-for="card of useMineStore().cards"
+        v-for="card of cards"
         class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-8 bg-white rounded-lg drop-shadow-md"
       >
         <div class="text-xl">{{ card.title }}</div>
@@ -96,7 +115,7 @@ console.log(useHomeStore().buttons_test());
             responsive: true,
             maintainAspectRatio: false,
           }"
-          :chart-data="useMineStore().doughnut"
+          :chart-data="doughnut"
         />
       </div>
     </div>

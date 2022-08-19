@@ -23,23 +23,29 @@ router.get("/api/officers/officer/state", async (req, res) => {
   res.json(region_response);
 });
 
-router.get("/api/officers/list/country", async (req, res) => {
+router.get("/api/list/region/country", async (req, res) => {
   const region_response = await Region.find({
     type_of_region: "state",
-  }).distinct("state");
+  })
+    .distinct("state")
+    .lean();
   res.status(200).json(region_response);
 });
 
-router.get("/api/officers/list/state", async (req, res) => {
+router.get("/api/list/region/state", async (req, res) => {
   const { type_of_region, _id } = req.cookies;
   const region_user = await Region.findOne({
     _id: _id,
     type_of_region: type_of_region,
-  }).select("state");
+  })
+    .select("state")
+    .lean();
   const region_response = await Region.find({
     type_of_region: "district",
     state: region_user.state,
-  }).distinct("district");
+  })
+    .distinct("district")
+    .lean();
   res.status(200).json(region_response);
 });
 

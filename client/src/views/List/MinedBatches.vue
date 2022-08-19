@@ -1,6 +1,17 @@
 <script setup>
-import useMinedBatchStore from "@/stores/MinedBatchStore";
-useMinedBatchStore().get_mines();
+import axios from "axios";
+import { ref } from "vue";
+
+const minded_batches = ref([]);
+const get_mined_batches = async () => {
+  const { data } = await axios.get(
+    `/api/mined_batches/${
+      $cookies.get("type_of_user") === "officer" ? `officer/district` : "miner"
+    }`
+  );
+  minded_batches.value = data;
+};
+get_mined_batches();
 </script>
 <template>
   <div class="flex flex-col gap-4 items-center">
@@ -38,7 +49,7 @@ useMinedBatchStore().get_mines();
           <tbody class="font-normal text-gray-600 whitespace-nowrap">
             <tr
               :key="mine._id"
-              v-for="mine in useMinedBatchStore().mines"
+              v-for="mine in minded_batches"
               class="text-center"
             >
               <td class="px-6 py-4">

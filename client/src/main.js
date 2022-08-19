@@ -229,6 +229,7 @@ app.use(
               access: false,
               type_of_user: ["organisation"],
             },
+            beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Registration/Manager.vue"),
           },
           {
