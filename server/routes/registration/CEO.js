@@ -17,7 +17,7 @@ router.post(
     try {
       const aadhar_card_check = await User.findOne({
         aadhar_card: aadhar_card,
-      });
+      }).lean();
       if (aadhar_card_check !== null) {
         return res.status(201).json({
           message: "Aadhar Card already exist",
@@ -25,33 +25,34 @@ router.post(
         });
       }
       const user_id = id_generate();
-      const generate_auth = jwt.sign(
-        {
-          auth_id: user_id,
-        },
-        aadhar_card
-      );
       const password = id_generate();
-      await User.create({
-        auth: generate_auth,
-        user_id: user_id,
-        type_of_user: "organisation",
-        user_name: name,
-        aadhar_card: aadhar_card,
-        email_address: email_address,
-        phone_no: phone_no,
-        password: bcrypt.hashSync(password, 10),
-        c_password: bcrypt.hashSync(password, 10),
-      });
-      await User.findOneAndUpdate(
-        { auth: auth },
-        {
-          is_valid: false,
-        }
-      );
-      await Organisation.findByIdAndUpdate(_id, {
-        ceo_id: user_id,
-      });
+      await Promise.all([
+        await User.create({
+          auth: jwt.sign(
+            {
+              auth_id: user_id,
+            },
+            aadhar_card
+          ),
+          user_id: user_id,
+          type_of_user: "organisation",
+          user_name: name,
+          aadhar_card: aadhar_card,
+          email_address: email_address,
+          phone_no: phone_no,
+          password: bcrypt.hashSync(password, 10),
+          c_password: bcrypt.hashSync(password, 10),
+        }),
+        await User.findOneAndUpdate(
+          { auth: auth },
+          {
+            is_valid: false,
+          }
+        ),
+        await Organisation.findByIdAndUpdate(_id, {
+          ceo_id: user_id,
+        }),
+      ]);
       req.user_id = user_id;
       req.user_name = name;
       req.user_type = "CEO";
