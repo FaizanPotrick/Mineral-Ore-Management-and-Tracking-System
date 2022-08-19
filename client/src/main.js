@@ -278,15 +278,15 @@ app.use(
         ],
       },
       {
+        path: "/view",
+        name: "Views",
+        component: () => import("@/views/Views_page.vue"),
+      },
+      {
         path: "/:catchAll(.*)",
         name: "404",
         component: () => import("@/components/PageNotFound.vue"),
       },
-      {
-        path: "/view",
-        name: "Views",
-        component: () => import("@/views/Views_page.vue"),
-      }
     ],
   })
 );
