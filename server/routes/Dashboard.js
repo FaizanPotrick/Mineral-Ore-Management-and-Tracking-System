@@ -59,7 +59,7 @@ router.get("/api/dashboard/officer/country", async (req, res) => {
     {
       $project: {
         _id: 0,
-        position: "central officer",
+        title: "central",
         cards: [
           {
             title: "Total Officers",
@@ -157,7 +157,7 @@ router.get("/api/dashboard/officer/state", async (req, res) => {
     {
       $project: {
         _id: 0,
-        position: "state officer",
+        title: "state",
         cards: [
           {
             title: "Total Officers",
@@ -219,7 +219,7 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
     {
       $project: {
         _id: 0,
-        company_name: "$organisation_name",
+        title: "district",
         cards: [
           {
             title: "Total Mines",
@@ -273,7 +273,7 @@ router.get("/api/dashboard/organisation", async (req, res) => {
     {
       $project: {
         _id: 0,
-        company_name: "$organisation_name",
+        title: "$organisation_name",
         cards: [
           {
             title: "Total Mines",
@@ -342,7 +342,7 @@ router.get("/api/dashboard/miner", async (req, res) => {
     {
       $project: {
         _id: 0,
-        company_name: "$organisation.organisation_name",
+        title: "$organisation.organisation_name",
         cards: [
           {
             title: "Mine Area(in sq.)",

@@ -1,21 +1,39 @@
 <script setup>
-import useOfficerStore from '@/stores/OfficerStore.js';
 import { onBeforeUpdate } from 'vue';
 import { useRoute } from 'vue-router';
+import { ref } from 'vue';
+import axios from 'axios';
 
 const route = useRoute();
-useOfficerStore().officer_dashboard(route);
-onBeforeUpdate(async () => {
-    await useOfficerStore().officer_dashboard(route);
+const title = ref('');
+const cards = ref([]);
+const markers = ref([]);
+
+const dashboard = async () => {
+    const { data } = await axios.get(
+        `/api/dashboard/officer/${route.params.region_type === undefined &&
+            route.params.region_id === undefined
+            ? $cookies.get("type_of_region")
+            : `${route.params.region_type}?region_id=${route.params.region_id}`
+        }`
+    );
+    title.value = data.title;
+    cards.value = data.cards;
+    markers.value = data.markers;
+}
+
+dashboard()
+onBeforeUpdate(() => {
+    dashboard();
 });
 </script>
 <template>
     <div class="flex flex-col gap-8">
         <div class="text-2xl font-semibold capitalize">
-            {{ useOfficerStore().position }}
+            {{ title }}
         </div>
         <div class="flex gap-4 flex-wrap font-semibold">
-            <div :key="card" v-for="card of useOfficerStore().officer_cards"
+            <div :key="card" v-for="card of cards"
                 class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-8 bg-white rounded-lg drop-shadow-md min-w-[24rem]">
                 <div class="text-xl">{{ card.title }}</div>
                 <div class="flex gap-4 capitalize">
@@ -32,8 +50,7 @@ onBeforeUpdate(async () => {
                 <ol-source-osm />
             </ol-tile-layer>
             <ol-zoom-control />
-            <ol-overlay :key="marker._id" v-for="marker of useOfficerStore().officer_markers"
-                :position="marker.coordinates">
+            <ol-overlay :key="marker._id" v-for="marker of markers" :position="marker.coordinates">
                 <img src="@/assets/marker.png" class="h-8 w-8 cursor-pointer" alt="marker">
             </ol-overlay>
         </ol-map>

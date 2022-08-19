@@ -7,10 +7,6 @@ const { open_alert_box, isAlert_text } = useAlertStore();
 export default defineStore({
   id: "mine_store",
   state: () => ({
-    mines: [],
-    company_name: "",
-    cards: [],
-    doughnut: [],
     organisations: [],
     organisation_id: "",
     name: {
@@ -61,29 +57,6 @@ export default defineStore({
     },
   }),
   actions: {
-    async mine_dashboard(route) {
-      const {
-        data: { company_name, cards, doughnut },
-      } = await axios.get(
-        `/api/dashboard/miner${route.params.mine_id === undefined
-          ? ""
-          : `?mine_id=${route.params.mine_id}`
-        }`
-      );
-      this.company_name = company_name;
-      this.cards = cards;
-      this.doughnut = doughnut;
-    },
-    async get_mines() {
-      const { data } = await axios.get(
-        `/api/mines/${$cookies.get("type_of_user") === "officer"
-          ? `officer/${$cookies.get("type_of_region")}`
-          : "organisation"
-        }`
-      );
-      this.mines = data;
-    },
-
     marker_selector(e) {
       this.coordinates = {
         latitude: e.feature.values_.geometry.flatCoordinates[1],
