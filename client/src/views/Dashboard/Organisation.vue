@@ -32,8 +32,5 @@ useOrganisationStore().organisation_dashboard(route);
                 <img src="@/assets/marker.png" class="h-8 w-8 cursor-pointer" alt="marker">
             </ol-overlay>
         </ol-map>
-        <div class="text-xl font-semibold capitalize">
-            Transactions Logs
-        </div>
     </div>
 </template>

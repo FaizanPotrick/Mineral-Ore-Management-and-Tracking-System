@@ -47,7 +47,7 @@ export default defineStore({
   actions: {
     async organisation_dashboard(route) {
       const {
-        data: { company_name, cards, markers },
+        data: { cards, company_name, markers },
       } = await axios.get(
         `/api/dashboard/organisation${
           route.params.organisation_id === undefined
@@ -55,6 +55,7 @@ export default defineStore({
             : `?organisation_id=${route.params.organisation_id}`
         }`
       );
+      // console.log(data);
       this.company_name = company_name;
       this.markers = markers;
       this.cards = cards;

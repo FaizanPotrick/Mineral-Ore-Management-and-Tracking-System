@@ -17,6 +17,7 @@ try {
 } catch (error) {
   console.log(error);
 }
+
 app.use(bodyParser.json());
 app.use(fileupload());
 app.use(
@@ -43,9 +44,7 @@ app.use(
 );
 app.use(require("./routes/Credentials.js"));
 app.use(require("./routes/User.js"));
-app.use(require("./routes/Dashboard/Officer.js"));
-app.use(require("./routes/Dashboard/Organisation.js"));
-app.use(require("./routes/Dashboard/Mine.js"));
+app.use(require("./routes/Dashboard.js"));
 app.use(require("./routes/List/Officers.js"));
 app.use(require("./routes/List/Organisations.js"));
 app.use(require("./routes/List/Mines.js"));
@@ -58,19 +57,7 @@ app.use(require("./routes/Registration/Mine.js"));
 app.use(require("./routes/Registration/Manager.js"));
 app.use(require("./routes/Registration/Transaction.js"));
 app.use(require("./routes/Registration/MinedBatch.js"));
-app.get("/api/authentication", async (req, res) => {
-  if (req.session.type_of_user === req.cookies.type_of_user) {
-    if (req.session._id === req.cookies._id) {
-      return res.send(true);
-    }
-    if (req.session.type_of_user === "officer") {
-      if (req.session.type_of_region === req.cookies.type_of_region) {
-        return res.send(true);
-      }
-    }
-  }
-  res.send(false);
-});
+
 app.listen(process.env.PORT || 8000, () => {
   console.log("server is running on port 8000");
 });
