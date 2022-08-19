@@ -30,7 +30,7 @@ router.post(
         .distinct("manager_id")
         .lean();
       await Promise.all([
-        await User.create({
+        User.create({
           auth: jwt.sign(
             {
               auth_id: user_id,
@@ -46,13 +46,13 @@ router.post(
           password: bcrypt.hashSync(password, 10),
           c_password: bcrypt.hashSync(password, 10),
         }),
-        await User.findOneAndUpdate(
+        User.findOneAndUpdate(
           { user_id: mine_response[0] },
           {
             is_valid: false,
           }
         ),
-        await Mine.findByIdAndUpdate(mine_id, {
+        Mine.findByIdAndUpdate(mine_id, {
           manager_id: user_id,
         }),
       ]);
