@@ -3,6 +3,7 @@ const router = express.Router();
 const Mine = require("../../models/MineSchema");
 const Organisation = require("../../models/OrganisationSchema");
 const Transaction = require("../../models/TransactionSchema");
+const Region = require("../../models/RegionSchema");
 const SuspiciousActivity = require("../../models/SuspiciousActivity");
 const { initializeApp } = require("firebase/app");
 const {
