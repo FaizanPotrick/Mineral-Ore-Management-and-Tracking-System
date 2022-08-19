@@ -1,7 +1,7 @@
 <script setup>
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 import useHomeStore from "@/stores/HomeStore";
-import useLoginStore from "@/stores/LoginStore";
+import useUserStore from "@/stores/UserStore";
 
 const router = useRouter();
 const route = useRoute();
@@ -52,7 +52,7 @@ useHomeStore().user_fetch();
           </div>
         </div>
       </div>
-      <button @click="useLoginStore().logout_fn(router)" class="text-yellow-700 hover:text-gray-900">
+      <button @click="useUserStore().logout_fn(router)" class="text-yellow-700 hover:text-gray-900">
         Logout
       </button>
     </div>

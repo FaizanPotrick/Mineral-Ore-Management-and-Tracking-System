@@ -7,6 +7,8 @@ const { open_alert_box, isAlert_text } = useAlertStore();
 export default defineStore({
   id: "user_store",
   state: () => ({
+    user_name: "",
+    password: "",
     name: {
       value: "",
       valid: true,
@@ -29,6 +31,37 @@ export default defineStore({
     },
   }),
   actions: {
+    async login_fn(router) {
+      useValidationStore().isButtonLoading = true;
+      await axios({
+        method: "post",
+        url: "/api/login",
+        data: {
+          user_name: this.user_name,
+          password: this.password,
+        },
+      })
+        .then((res) => {
+          open_alert_box(res.data.message, res.data.type);
+          if (res.status === 200) {
+            this.user_name = "";
+            this.password = "";
+            router.push("/dashboard");
+          }
+        })
+        .catch((err) => {
+          open_alert_box(err.response.data.message);
+        });
+      useValidationStore().isButtonLoading = false;
+    },
+
+    async logout_fn(router) {
+      await axios.get("/api/logout").then((res) => {
+        router.push("/login");
+        open_alert_box(res.data.message, res.data.type);
+      });
+    },
+
     async ceo_register_fn(router) {
       if (
         !this.name.valid ||
@@ -66,6 +99,7 @@ export default defineStore({
         });
       useValidationStore().isButtonLoading = false;
     },
+
     async manager_register_fn(route) {
       if (
         !this.name.valid ||

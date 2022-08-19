@@ -1,5 +1,5 @@
 <script setup>
-import useLoginStore from '@/stores/LoginStore';
+import useUserStore from '@/stores/UserStore';
 import useValidationStore from '@/stores/Validation';
 import { useRouter } from 'vue-router';
 import MinistryOfMine from "@/assets/ministry_of_mine.png";
@@ -20,12 +20,12 @@ const router = useRouter();
                 </div>
                 <div class="text-gray-500 text-sm">Please login to your account.</div>
             </div>
-            <form class="space-y-5 drop-shadow-md" @submit.prevent="useLoginStore().login_fn(router)">
+            <form class="space-y-5 drop-shadow-md" @submit.prevent="useUserStore().login_fn(router)">
                 <div class="space-y-2">
                     <label class="text-sm font-medium">User Name*</label>
                     <input
                         class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                        v-model="useLoginStore().user_name" type="text" placeholder="User Name" required>
+                        v-model="useUserStore().user_name" type="text" placeholder="User Name" required>
                 </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium">
@@ -33,7 +33,7 @@ const router = useRouter();
                     </label>
                     <input
                         class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-                        type="password" placeholder="Password" v-model="useLoginStore().password" autocomplete required>
+                        type="password" placeholder="Password" v-model="useUserStore().password" autocomplete required>
                 </div>
                 <div class="space-y-3">
                     <button class="text-yellow-600 hover:text-yellow-600/80 text-sm">
