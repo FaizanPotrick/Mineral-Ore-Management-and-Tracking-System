@@ -227,15 +227,17 @@ router.post("/api/transaction/checkpoint", async (req, res) => {
   const { transaction_id } = req.query;
   const { status } = req.body;
   try {
+    if (!transaction_response.checkpoints.includes(_id)) {
+      await Transaction.findByIdAndUpdate(transaction_id, {
+        $push: {
+          checkpoints: _id,
+        },
+      });
+    }
     if (status !== "approved") {
-      if (!transaction_response.checkpoints.includes(_id)) {
-        await Transaction.findByIdAndUpdate(transaction_id, {
-          $push: {
-            status: "cancelled",
-            checkpoints: _id,
-          },
-        });
-      }
+      await Transaction.findByIdAndUpdate(transaction_id, {
+        status: "cancelled",
+      });
       await Mine.findByIdAndUpdate(transaction_response.mine_id, {
         $inc: {
           [`ores_available.${transaction_response.type_of_ore}.${transaction_response.grade}`]:

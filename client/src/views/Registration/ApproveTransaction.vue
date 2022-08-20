@@ -28,6 +28,29 @@ const onDecode = async (result) => {
     open_alert_box(data.message, data.type);
   }
 };
+
+const register_fn = async () => {
+  loading.value = true;
+  await axios({
+    method: "post",
+    url: `/api/transaction/${
+      $cookies.get("type_of_user") === "organisation"
+        ? "organisation"
+        : "checkpoint"
+    }?transaction_id=${transaction.value._id}`,
+    data: status.value,
+  })
+    .then((res) => {
+      open_alert_box(res.data.message, res.data.type);
+      if (res.status === 200) {
+        status.value = "";
+      }
+    })
+    .catch((err) => {
+      open_alert_box(err.response.data.message, err.response.data.type);
+    });
+  loading.value = false;
+};
 </script>
 <template>
   <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
@@ -41,11 +64,11 @@ const onDecode = async (result) => {
         <div class="text-gray-500 text-sm">Transactions</div>
       </div>
       <div class="my-6">
-       {{ errors }}
+        {{ errors }}
       </div>
       <QrcodeStream @decode="onDecode" @init="onInit" />
-      
-      <div class="flex flex-col mt-6 ">
+
+      <div class="flex flex-col mt-6">
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
             <div class="overflow-hidden">
@@ -120,7 +143,7 @@ const onDecode = async (result) => {
           </div>
         </div>
       </div>
-      <form class="space-y-5 drop-shadow-md">
+      <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
         <div class="grid gap-6 mb-6 grid-cols-1">
           <div class="space-y-2">
             <label class="text-md font-medium text-gray-700">Status*</label>

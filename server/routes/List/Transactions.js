@@ -31,9 +31,16 @@ router.get("/api/transaction", async (req, res) => {
 });
 router.get("/api/transaction/verify", async (req, res) => {
   const { transaction_id, transaction_hash } = req.query;
-  const transaction_response = await Transaction.findById(
-    transaction_id
-  ).lean();
+  const transaction_response = await Transaction.findOne({
+    _id: transaction_id,
+    status: "dispatched",
+  }).lean();
+  if (transaction_response === null) {
+    res.status(201).json({
+      message: "Transaction not found",
+      type: "error",
+    });
+  }
   const hashMatch = bcrypt.compare(
     JSON.stringify({
       mine_id: transaction_response.mine_id,
