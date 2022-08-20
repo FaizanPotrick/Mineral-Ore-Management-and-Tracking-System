@@ -1,9 +1,11 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import useHomeStore from "@/stores/HomeStore";
+import useAlertStore from "@/stores/Alert";
 import { ref } from "vue";
 import axios from "axios";
 
+const { open_alert_box } = useAlertStore();
 const router = useRouter();
 const route = useRoute();
 const user = ref({

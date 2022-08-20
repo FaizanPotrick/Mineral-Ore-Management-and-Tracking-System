@@ -46,16 +46,6 @@
         ]
     },
     {
-        "name": "approve mined batch",
-        "router_link": "/dashboard/approve_mined_batch",
-        "type_of_user": [
-            "officer"
-        ],
-        "type_of_region": [
-            "district"
-        ]
-    },
-    {
         "name": "approve transaction",
         "router_link": "/dashboard/approve_transaction",
         "type_of_user": [

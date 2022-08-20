@@ -45,8 +45,12 @@ const Transaction = new mongoose.Schema(
       default: "dispatched",
       required: true,
     },
-    check_points: {
+    checkpoints: {
       type: Array,
+    },
+    transaction_hash: {
+      type: String,
+      required: true,
     },
     invoice_url: {
       type: String,
