@@ -24,7 +24,7 @@ router.post(
     try {
       const organisation_check = await Organisation.findOne({
         gst_no: gst_no,
-      });
+      }).lean();
       if (organisation_check !== null) {
         return res.status(201).json({
           message: "GST Number already exist",
@@ -33,7 +33,7 @@ router.post(
       }
       const aadhar_card_check = await User.findOne({
         aadhar_card: aadhar_card,
-      });
+      }).lean();
       if (aadhar_card_check !== null) {
         return res.status(201).json({
           message: "Aadhar Card already exist",
@@ -41,30 +41,31 @@ router.post(
         });
       }
       const ceo_id = id_genarate();
-      const auth = jwt.sign(
-        {
-          auth_id: ceo_id,
-        },
-        aadhar_card
-      );
       const password = id_genarate();
-      await User.create({
-        auth: auth,
-        user_id: ceo_id,
-        type_of_user: "organisation",
-        user_name: name,
-        aadhar_card: aadhar_card,
-        email_address: email_address,
-        phone_no: phone_no,
-        password: bcrypt.hashSync(password, 10),
-        c_password: bcrypt.hashSync(password, 10),
-      });
-      await Organisation.create({
-        ceo_id: ceo_id,
-        organisation_name: organisation_name,
-        gst_no: gst_no,
-        address: address,
-      });
+      await Promise.all([
+        User.create({
+          auth: jwt.sign(
+            {
+              auth_id: ceo_id,
+            },
+            aadhar_card
+          ),
+          user_id: ceo_id,
+          type_of_user: "organisation",
+          user_name: name,
+          aadhar_card: aadhar_card,
+          email_address: email_address,
+          phone_no: phone_no,
+          password: bcrypt.hashSync(password, 10),
+          c_password: bcrypt.hashSync(password, 10),
+        }),
+        Organisation.create({
+          ceo_id: ceo_id,
+          organisation_name: organisation_name,
+          gst_no: gst_no,
+          address: address,
+        }),
+      ]);
       req.user_id = ceo_id;
       req.user_name = name;
       req.user_type = "Organisation";

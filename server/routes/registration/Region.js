@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Region = require("../../models/RegionSchema");
+
 router.post("/api/registration/region/country", async (req, res) => {
   try {
     await Region.create({
@@ -10,17 +11,13 @@ router.post("/api/registration/region/country", async (req, res) => {
         longitude: 78.9629,
       },
     });
-    res.status(200).json({
-      message: "Successfully Added",
-      type: "success",
-    });
+    res.status(200).json("Successfully Added");
   } catch (error) {
-    res.status(400).json({
-      message: "Invalid Request",
-      type: "error",
-    });
+    console.log(error);
+    res.status(400).json("Invalid Request");
   }
 });
+
 router.post("/api/registration/region/state", async (req, res) => {
   try {
     req.body.map(async (region) => {
@@ -33,17 +30,13 @@ router.post("/api/registration/region/state", async (req, res) => {
         },
       });
     });
-    res.status(200).json({
-      message: "Successfully Added",
-      type: "success",
-    });
+    res.status(200).json("Successfully Added");
   } catch (error) {
-    res.status(400).json({
-      message: "Invalid Request",
-      type: "error",
-    });
+    console.log(error);
+    res.status(400).json("Invalid Request");
   }
 });
+
 router.post("/api/registration/region/district", async (req, res) => {
   try {
     req.body.map(async (region) => {
@@ -57,16 +50,11 @@ router.post("/api/registration/region/district", async (req, res) => {
         },
       });
     });
-    res.status(200).json({
-      message: "Successfully Added",
-      type: "success",
-    });
+    res.status(200).json("Successfully Added");
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      message: "Invalid Request",
-      type: "error",
-    });
+    res.status(400).json("Invalid Request");
   }
 });
+
 module.exports = router;

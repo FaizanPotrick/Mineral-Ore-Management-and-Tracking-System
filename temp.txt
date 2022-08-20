@@ -1,3 +1,19 @@
-miner
-eHgwpxNu
-qX9mXREZ
+Central Officer
+username: t3EbpvK5
+password: g4Ns4SCE
+
+State Officer
+username: VhUaQnYj
+password: 4M24fPva
+
+District Officer
+username: iAHUb1sH
+password: hSlaIkXm
+
+Organisation
+username: bs5zYIdw
+password: tQIvwqr6
+
+Mine
+username: 1ahXzGtt
+password: NunMHZMR

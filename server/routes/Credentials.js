@@ -5,6 +5,21 @@ const Region = require("../models/RegionSchema");
 const Organisation = require("../models/OrganisationSchema");
 const Mine = require("../models/MineSchema");
 const bcrypt = require("bcrypt");
+const Transaction = require("../models/TransactionSchema");
+
+router.get("/api/authentication", async (req, res) => {
+  if (req.session.type_of_user === req.cookies.type_of_user) {
+    if (req.session._id === req.cookies._id) {
+      return res.send(true);
+    }
+    if (req.session.type_of_user === "officer") {
+      if (req.session.type_of_region === req.cookies.type_of_region) {
+        return res.send(true);
+      }
+    }
+  }
+  res.send(false);
+});
 
 router.post("/api/login", async (req, res) => {
   const { user_name, password } = req.body;
@@ -83,6 +98,89 @@ router.post("/api/login", async (req, res) => {
   }
 });
 
+router.post("/api/forget_password", async (req, res) => {
+  const { user_name, password } = req.body;
+  try {
+    const response = await User.findOne({
+      user_id: user_name,
+      is_valid: true,
+    });
+    if (response === null) {
+      return res.status(201).json({
+        message: "Invalid Credential",
+        type: "error",
+      });
+    }
+    const passwordMatch = await bcrypt.compare(password, response.password);
+    if (!passwordMatch) {
+      return res.status(201).json({
+        message: "Invalid Credential",
+        type: "error",
+      });
+    }
+    req.session.type_of_user = response.type_of_user;
+    res
+      .cookie("auth", response.auth, {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+      })
+      .cookie("type_of_user", response.type_of_user, {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+      })
+      .status(200)
+      .json({
+        message: "Successfully Logged In",
+        type: "success",
+        path: `${response.type_of_user}_dashboard`,
+      });
+  } catch (error) {
+    res.status(400).json({
+      message: "Invalid Request",
+      type: "error",
+    });
+  }
+});
+
+router.get("/api/test", async (req, res) => {
+  try {
+    const today = new Date();
+    const transaction_response = await Transaction.aggregate([
+      {
+        $match: {
+          mine_id: "62f66b1e066a9c5794af32b7",
+          type_of_ore: "lump",
+          grade: "low",
+          createdAt: {
+            $gte: new Date(new Date(today).setMonth(today.getMonth() - 1)),
+            $lt: new Date(),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: 0,
+          price: {
+            $avg: "$price",
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+        },
+      },
+    ]);
+
+    res.json(transaction_response);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "Invalid Request",
+      type: "error",
+    });
+  }
+});
+
 router.get("/api/logout", async (req, res) => {
   req.session.destroy();
   res
@@ -98,17 +196,4 @@ router.get("/api/logout", async (req, res) => {
     });
 });
 
-router.get("/api/authentication", async (req, res) => {
-  if (req.session.type_of_user === req.cookies.type_of_user) {
-    if (req.session._id === req.cookies._id) {
-      return res.send(true);
-    }
-    if (req.session.type_of_user === "officer") {
-      if (req.session.type_of_region === req.cookies.type_of_region) {
-        return res.send(true);
-      }
-    }
-  }
-  res.send(false);
-});
 module.exports = router;

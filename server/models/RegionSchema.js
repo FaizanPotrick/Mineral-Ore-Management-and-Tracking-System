@@ -19,6 +19,9 @@ const Region = new mongoose.Schema({
   district: {
     type: String,
   },
+  price: {
+    type: Number,
+  },
   coordinates: {
     latitude: {
       type: Number,

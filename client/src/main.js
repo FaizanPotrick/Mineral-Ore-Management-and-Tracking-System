@@ -30,6 +30,7 @@ const PageAccess = (to) => {
   });
 };
 app.use(OpenLayersMap);
+
 app.use(createPinia());
 app.use(VueCookies);
 app.use(VueGoogleMaps, {
@@ -228,6 +229,7 @@ app.use(
               access: false,
               type_of_user: ["organisation"],
             },
+            beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Registration/Manager.vue"),
           },
           {
@@ -277,10 +279,26 @@ app.use(
         ],
       },
       {
+        path: "/qrcodegenerator",
+        name: "QRCode",
+        component: () => import("@/views/QRCodeGenerator.vue"),
+      },
+
+      {
+        path: "/view",
+        name: "Views",
+        component: () => import("@/views/Views_page.vue"),
+      },
+      {
         path: "/:catchAll(.*)",
         name: "404",
         component: () => import("@/components/PageNotFound.vue"),
       },
+      {
+        path: "/view",
+        name: "Views",
+        component: () => import("@/views/Views_page.vue"),
+      }
     ],
   })
 );

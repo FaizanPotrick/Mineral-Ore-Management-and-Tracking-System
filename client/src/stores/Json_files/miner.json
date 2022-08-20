@@ -1,0 +1,67 @@
+[
+    {
+        "batch_id": "0x12ojfdasa",
+        "manager_id": "0x12ojddasa",
+        "officer_id": "0x12wwfdasa",
+        "mine_id": "0x12ojfdasa",
+        "type_of_ore": "lump",
+        "grade": "A",
+        "fe_percent": "80",
+        "quantity": "70",
+        "status": "Accepted",
+        "time_stamp": "2018-12-10T13:45:00.000Z",
+        "amount": "500"
+    },
+    {
+        "batch_id": "0x12ojfdasa",
+        "manager_id": "0x12ojfsasa",
+        "officer_id": "0x12ojfcsasa",
+        "mine_id": "0x12ojfytrsa",
+        "type_of_ore": "fine",
+        "grade": "B",
+        "fe_percent": "50",
+        "quantity": "40",
+        "status": "Rejected",
+        "time_stamp": "2017-11-10T12:45:00.000Z",
+        "amount": "200"
+    },
+    {
+        "batch_id": "0x12ojfdasa",
+        "manager_id": "0x12ojfdasa",
+        "officer_id": "0x12ojfdasa",
+        "mine_id": "0x12ojfdasa",
+        "type_of_ore": "lump",
+        "grade": "A",
+        "fe_percent": "80",
+        "quantity": "70",
+        "status": "Accepted",
+        "time_stamp": "2018-12-10T13:45:00.000Z",
+        "amount": "500"
+    },
+    {
+        "batch_id": "0x12ojfdasa",
+        "manager_id": "0x12ojfdasa",
+        "officer_id": "0x12ojfdasa",
+        "mine_id": "0x12ojfdasa",
+        "type_of_ore": "pellets",
+        "grade": "A",
+        "fe_percent": "80",
+        "quantity": "70",
+        "status": "Accepted",
+        "time_stamp": "2018-12-10T13:45:00.000Z",
+        "amount": "500"
+    },
+    {
+        "batch_id": "0x12ojfdasa",
+        "manager_id": "0x12ojfdasa",
+        "officer_id": "0x12ojfdasa",
+        "mine_id": "0x12ojfdasa",
+        "type_of_ore": "fine",
+        "grade": "A",
+        "fe_percent": "80",
+        "quantity": "70",
+        "status": "Accepted",
+        "time_stamp": "2018-12-10T13:45:00.000Z",
+        "amount": "500"
+    }
+]

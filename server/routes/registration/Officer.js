@@ -9,6 +9,7 @@ const RegistrationEmailSender = require("../../middleware/RegistrationEmailSende
 const id_generate = new ShortUniqueId({
   length: 8,
 });
+
 router.post(
   "/api/registration/officer",
   async (req, res, next) => {
@@ -23,60 +24,61 @@ router.post(
     try {
       const aadhar_card_check = await User.findOne({
         aadhar_card: aadhar_card,
-      });
+      }).lean();
       if (aadhar_card_check !== null) {
         return res.status(201).json({
           message: "Aadhar Card already exist",
           type: "warning",
         });
       }
-      const officer_id = id_generate();
-      const auth = jwt.sign(
-        {
-          auth_id: officer_id,
-        },
-        aadhar_card
-      );
-      const password = id_generate();
-      const region_check = await Region.findOne({
+      const region_response = await Region.findOne({
         type_of_region: type_of_region,
         [type_of_region]: region,
-      });
-      if (region_check === null) {
+      }).lean();
+      if (region_response === null) {
         return res.status(201).json({
           message: "Region not found",
           type: "warning",
         });
       }
-      if (region_check.officer_id !== undefined) {
+      if (region_response.officer_id !== undefined) {
         await User.findOneAndUpdate(
           {
-            user_id: region_check.officer_id,
+            user_id: region_response.officer_id,
           },
           {
             is_valid: false,
           }
         );
       }
-      await User.create({
-        auth: auth,
-        user_id: officer_id,
-        type_of_user: "officer",
-        user_name: name,
-        aadhar_card: aadhar_card,
-        email_address: email_address,
-        phone_no: phone_no,
-        password: bcrypt.hashSync(password, 10),
-        c_password: bcrypt.hashSync(password, 10),
-      });
-      await Region.findOneAndUpdate(
-        {
-          _id: region_check._id,
-        },
-        {
-          officer_id: officer_id,
-        }
-      );
+      const officer_id = id_generate();
+      const password = id_generate();
+      await Promise.all([
+        User.create({
+          auth: jwt.sign(
+            {
+              auth_id: officer_id,
+            },
+            aadhar_card
+          ),
+          user_id: officer_id,
+          type_of_user: "officer",
+          user_name: name,
+          aadhar_card: aadhar_card,
+          email_address: email_address,
+          phone_no: phone_no,
+          password: bcrypt.hashSync(password, 10),
+          c_password: bcrypt.hashSync(password, 10),
+        }),
+        Region.findOneAndUpdate(
+          {
+            _id: region_response._id,
+          },
+          {
+            officer_id: officer_id,
+          }
+        ),
+      ]);
       req.user_id = officer_id;
       req.user_name = name;
       req.user_type = "Officer";

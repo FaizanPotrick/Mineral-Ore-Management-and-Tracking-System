@@ -1,12 +1,12 @@
 <script setup>
 import useLoginStore from "@/stores/Login";
 import useValidationStore from "@/stores/Validation";
-import HeaderVue from "@/components/Header.vue";
-import FooterVue from "@/components/Footer.vue";
+// import HeaderVue from "@/components/Header.vue";
+// import FooterVue from "@/components/Footer.vue";
 </script>
 <template>
   <div>
-    <HeaderVue />
+    <!-- <HeaderVue /> -->
     <div class="flex justify-center items-center bg-yellow-50">
       <div
         class="max-w-md bg-white w-[28rem] p-10 border border-gray-400/20 shadow-md rounded-2xl m-5 sm:m-10 text-gray-800"
@@ -112,6 +112,6 @@ import FooterVue from "@/components/Footer.vue";
         </form>
       </div>
     </div>
-    <FooterVue />
+    <!-- <FooterVue /> -->
   </div>
 </template>
