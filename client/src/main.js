@@ -355,6 +355,16 @@ app.use(
         ],
       },
       {
+        path: "/scanqr",
+        name: "scanqr",
+        component: () => import("@/views/ScanQr.vue"),
+      },
+      {
+        path: "/transaction_details/:transaction_id",
+        name: "TransactionDetails",
+        component: () => import("@/views/TransactionDetails.vue"),
+      },
+      {
         path: "/:catchAll(.*)",
         name: "404",
         component: () => import("@/components/PageNotFound.vue"),
