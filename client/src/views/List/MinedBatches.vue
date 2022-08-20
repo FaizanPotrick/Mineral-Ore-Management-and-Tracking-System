@@ -1,10 +1,13 @@
 <script setup>
 import axios from "axios";
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const mined_batches = ref([]);
 const filter_batches = ref([]);
 const search = ref("");
+
 const get_mined_batches = async () => {
     const { data } = await axios.get(
         `/api/mined_batches/${$cookies.get("type_of_user") === "officer" ? `officer/district` : "miner"
@@ -13,6 +16,7 @@ const get_mined_batches = async () => {
     mined_batches.value = data;
     filter_batches.value = data;
 };
+
 get_mined_batches();
 const searchList = () => {
     const data = filter_batches.value.filter((item) => {

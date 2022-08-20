@@ -1,17 +1,26 @@
 const mongoose = require("mongoose");
 const SuspiciousActivity = new mongoose.Schema({
-type_of_activity:{
-    type:String
-},
-reason:{
-    type:String
-},
-price_difference:{
-    type:Number
-},
-region_id:{
-    type:String
-},
+  region_id: {
+    type: String,
+    required: true,
+  },
+  type_of_activity: {
+    type: String,
+    enum: ["price_difference"],
+    required: true,
+  },
+  reason: {
+    type: String,
+    required: true,
+  },
+  price_difference: {
+    type: Number,
+  },
+  transaction_id: {
+    type: String,
+  },
 });
 
-module.exports= SuspiciousActivity;
+module.exports = mongoose.connection
+  .useDb("Ores_Tracking")
+  .model("Suspicious Activity", SuspiciousActivity);

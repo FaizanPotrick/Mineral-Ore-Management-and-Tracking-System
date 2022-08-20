@@ -140,47 +140,6 @@ router.post("/api/forget_password", async (req, res) => {
   }
 });
 
-router.get("/api/test", async (req, res) => {
-  try {
-    const today = new Date();
-    const transaction_response = await Transaction.aggregate([
-      {
-        $match: {
-          mine_id: "62f66b1e066a9c5794af32b7",
-          type_of_ore: "lump",
-          grade: "low",
-          createdAt: {
-            $gte: new Date(new Date(today).setMonth(today.getMonth() - 1)),
-            $lt: new Date(),
-          },
-        },
-      },
-      {
-        $group: {
-          _id: 0,
-          price: {
-            $avg: "$price",
-          },
-          count: { $sum: 1 },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-        },
-      },
-    ]);
-
-    res.json(transaction_response);
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: "Invalid Request",
-      type: "error",
-    });
-  }
-});
-
 router.get("/api/logout", async (req, res) => {
   req.session.destroy();
   res

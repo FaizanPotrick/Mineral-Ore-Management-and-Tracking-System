@@ -40,7 +40,7 @@ router.post("/api/registration/mined_batch", async (req, res) => {
       mine_response.warehouse_capacity <
       total_fine + total_lump + total_iron_pellet
     ) {
-      console.log("get")
+      console.log("get");
     }
     const region_response = await Region.findById(
       mine_response.region_id
@@ -51,10 +51,17 @@ router.post("/api/registration/mined_batch", async (req, res) => {
       storage,
       "/mine_lab_report/" + mine_lap_report.name
     );
-    const sample_image_path = await uploadBytes(imageRef, sample_image.data)
-    const mine_lap_report_path = await uploadBytes(documentRef, mine_lap_report.data)
-    const sample_image_url = await getDownloadURL(ref(storage, sample_image_path.metadata.fullPath))
-    const mine_lap_report_url = await getDownloadURL(ref(storage, mine_lap_report_path.metadata.fullPath))
+    const sample_image_path = await uploadBytes(imageRef, sample_image.data);
+    const mine_lap_report_path = await uploadBytes(
+      documentRef,
+      mine_lap_report.data
+    );
+    const sample_image_url = await getDownloadURL(
+      ref(storage, sample_image_path.metadata.fullPath)
+    );
+    const mine_lap_report_url = await getDownloadURL(
+      ref(storage, mine_lap_report_path.metadata.fullPath)
+    );
     await MinedBatch.create({
       mine_id: _id,
       manager_id: mine_response.manager_id,
@@ -71,6 +78,35 @@ router.post("/api/registration/mined_batch", async (req, res) => {
     //     [`ores_available.${type_of_ore}.${grade}`]: parseInt(quantity),
     //   },
     // });
+    res.status(200).json({
+      message: "Successfully Registered",
+      type: "success",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "Invalid Request",
+      type: "error",
+    });
+  }
+});
+
+router.post("/api/registration/approve_mined_batch", async (req, res) => {
+  const { batch_id } = req.query;
+  const { status } = req.body;
+  // const { gov_lab_report } = req.files;
+  try {
+    const batch_response = await MinedBatch.findByIdAndUpdate(batch_id, {
+      status: status,
+    });
+    if (status === "approved") {
+      await Mine.findByIdAndUpdate(batch_response.mine_id, {
+        $inc: {
+          [`ores_available.${batch_response.type_of_ore}.${batch_response.grade}`]:
+            parseInt(batch_response.quantity),
+        },
+      });
+    }
     res.status(200).json({
       message: "Successfully Registered",
       type: "success",
