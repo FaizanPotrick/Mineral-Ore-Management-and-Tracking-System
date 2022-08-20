@@ -355,19 +355,9 @@ app.use(
         ],
       },
       {
-        path: "/qrcodegenerator",
-        name: "QRCode",
-        component: () => import("@/views/QRCodeGenerator.vue"),
-      },
-      {
         path: "/:catchAll(.*)",
         name: "404",
         component: () => import("@/components/PageNotFound.vue"),
-      },
-      {
-        path: "/view",
-        name: "Views",
-        component: () => import("@/views/Views_page.vue"),
       },
     ],
   })

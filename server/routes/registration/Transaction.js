@@ -7,6 +7,8 @@ const Region = require("../../models/RegionSchema");
 const SuspiciousActivity = require("../../models/SuspiciousActivity");
 const { initializeApp } = require("firebase/app");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+
 const {
   getStorage,
   ref,
@@ -15,48 +17,6 @@ const {
 } = require("firebase/storage");
 const app = initializeApp({
   storageBucket: process.env.BUCKET_URL,
-});
-// 62ff871dcc646fe63c36134e
-router.get("/api/average", async (req, res) => {
-  const _id = "62ff871dcc646fe63c36134e";
-  const today = new Date();
-  const mine_response = await Mine.findById(_id);
-  const region_response = await Region.findById(mine_response.region_id);
-  const mine_response_ids = await Mine.find({
-    region_id: region_response._id,
-  })
-    .distinct("_id")
-    .lean();
-  const mine_ids = mine_response_ids.map((mine) => mine._id.toString());
-  const mine_average_price_response = await Transaction.aggregate([
-    {
-      $match: {
-        mine_id: {
-          $in: mine_ids,
-        },
-        type_of_ore: "lump",
-        grade: "low",
-        createdAt: {
-          $gte: new Date(new Date(today).setMonth(today.getMonth() - 1)),
-          $lt: new Date(),
-        },
-      },
-    },
-    {
-      $group: {
-        _id: 0,
-        price: {
-          $avg: "$price",
-        },
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-      },
-    },
-  ]);
-  res.json(mine_average_price_response);
 });
 
 router.post("/api/registration/transaction", async (req, res) => {
@@ -110,7 +70,26 @@ router.post("/api/registration/transaction", async (req, res) => {
       grade: grade,
       quantity: quantity,
       price: price,
+      transaction_hash: bcrypt.hashSync(
+        JSON.stringify({
+          mine_id: _id,
+          manager_id: mine_response[0].manager_id,
+          ceo_id: organisation_response.ceo_id,
+          buyer_org_id: organisation_id,
+          type_of_ore: type_of_ore,
+          fe_percentage: fe_percentage,
+          grade: grade,
+          quantity: quantity,
+          price: price,
+        }),
+        10
+      ),
       invoice_url: invoice_url,
+    });
+    await Mine.findByIdAndUpdate(_id, {
+      $inc: {
+        [`ores_available.${type_of_ore}.${grade}`]: parseInt(quantity),
+      },
     });
     const today = new Date();
     const mine_average_price_response = await Transaction.aggregate([

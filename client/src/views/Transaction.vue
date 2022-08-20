@@ -2,6 +2,7 @@
 import axios from "axios";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+import QrcodeVue from "qrcode.vue";
 
 const route = useRoute();
 const transaction = ref([]);
@@ -14,6 +15,20 @@ const transaction_fn = async () => {
 };
 
 transaction_fn();
+
+const downloadQRCode = () => {
+  const qrcode = document.getElementById("qr_code");
+  const pngUrl = qrcode
+    .toDataURL("image/png")
+    .replace("image/png", "image/octet-stream");
+  let downloadLink = document.createElement("a");
+  downloadLink.href = pngUrl;
+  downloadLink.download = "qrcode.png";
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+  //TODO: Addition details for the transaction to be displayed is pending in pdf
+};
 </script>
 <template>
   <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
@@ -24,9 +39,26 @@ transaction_fn();
         <div class="font-semibold text-2xl text-yellow-700">Transaction</div>
       </div>
       <div class="flex flex-col gap-6 justify-center">
-        <div class="max-width-400">
-          <!-- <img :src="transaction.sample_image_url" alt="sample_image" /> -->
+        <div class="flex justify-center" >
+          <QrcodeVue
+            :value="
+              JSON.stringify({
+                transaction_id: transaction._id,
+                transaction_hash: transaction.transaction_hash,
+              })
+            "
+            :size="300"
+            level="H"
+            id="qr_code"
+            class="p-4"
+          />
         </div>
+        <button
+          class="bg-orange-600 font-bold py-2 px-4 rounded text-center"
+          @click="downloadQRCode"
+        >
+          QR Code Link
+        </button>
         <div class="flex flex-col">
           <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
