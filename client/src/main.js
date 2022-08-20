@@ -365,9 +365,9 @@ app.use(
         component: () => import("@/views/ScanQr.vue"),
       },
       {
-        path: "/view",
-        name: "Views",
-        component: () => import("@/views/Views_page.vue"),
+        path: "/transaction_details/:transaction_id",
+        name: "TransactionDetails",
+        component: () => import("@/views/TransactionDetails.vue"),
       },
 
       {
@@ -375,11 +375,11 @@ app.use(
         name: "404",
         component: () => import("@/components/PageNotFound.vue"),
       },
-      {
-        path: "/view",
-        name: "Views",
-        component: () => import("@/views/Views_page.vue"),
-      },
+      // {
+      //   path: "/view",
+      //   name: "Views",
+      //   component: () => import("@/views/Views_page.vue"),
+      // },
     ],
   })
 );

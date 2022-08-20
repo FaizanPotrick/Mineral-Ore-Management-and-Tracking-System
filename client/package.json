@@ -15,7 +15,6 @@
     "vue": "^3.2.37",
     "vue-chartjs": "^4.1.1",
     "vue-cookies": "^1.8.1",
-    "vue-qrcode-reader": "^3.1.0",
     "vue-router": "^4.0.16",
     "vue3-openlayers": "^0.1.68",
     "vue3-qrcode-reader": "^0.0.1"
