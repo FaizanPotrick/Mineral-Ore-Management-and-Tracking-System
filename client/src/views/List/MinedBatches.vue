@@ -7,6 +7,9 @@ const route = useRoute();
 const mined_batches = ref([]);
 const filter_batches = ref([]);
 const search = ref("");
+const status = ['pending', 'approved', 'disapproved'];
+const grade = ['low', 'medium', 'high']
+const checked_list = ref([]);
 
 const get_mined_batches = async () => {
     const { data } = await axios.get(
@@ -16,11 +19,19 @@ const get_mined_batches = async () => {
     mined_batches.value = data;
     filter_batches.value = data;
 };
-
 get_mined_batches();
+
+const filterList = () => {
+    const data = filter_batches.value.filter((item) => {
+        if (!checked_list.value.length) return filter_batches.value;
+        if (item.status.includes(checked_list.value) || item.grade.includes(checked_list.value)) return true;
+    });
+    mined_batches.value = data;
+}
+
 const searchList = () => {
     const data = filter_batches.value.filter((item) => {
-        if (search.value === "") {
+        if (!search.value.length) {
             return filter_batches.value;
         } else if (item.type_of_ore.toLowerCase().includes(search.value.toLowerCase())) return true;
         else if (item._id.toLowerCase().includes(search.value.toLowerCase())) return true;
@@ -31,7 +42,6 @@ const searchList = () => {
         else if (item.quantity.toString().includes(search.value)) return true;
         else if (item.createdAt.toLowerCase().includes(search.value.toLowerCase())) return true;
     });
-
     mined_batches.value = data;
 }
 </script>
@@ -41,67 +51,102 @@ const searchList = () => {
             class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md">
             <div class="flex justify-between items-center w-full">
                 <div class="text-3xl font-semibold">Mines</div>
-                <input type="search" class="max-w-sm w-full px-4 py-2 border border-gray-300 rounded-lg"
-                    placeholder="Search" v-model="search" />
-                <button type="submit" @click="searchList()"
-                    class="text-white absolute right-5  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">Search</button>
+                <div class="flex flex-wrap items-center">
+                    <div>
+                        <h3 class="mb-1 font-semibold text-gray-900">Status</h3>
+                        <ul class="w-32 text-sm font-medium text-gray-900 bg-white ">
+                            <li v-for="status in status">
+                                <input type="checkbox" v-model="checked_list" v-bind:value="status"
+                                    @keyup.enter="filterList()" />
+                                {{ status }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="mb-1 font-semibold text-gray-900">Grade</h3>
+                        <ul class="w-32 text-sm font-medium text-gray-900 bg-white">
+                            <li v-for="grade in grade" class="rounded-lg">
+                                <input type="checkbox" v-model="checked_list" v-bind:value="grade" />
+                                {{ grade }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+
+                        <button type="submit" @click="filterList()"
+                            class="text-white mx-2  bg-yellow-500 hover:bg-orange-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2">Filter</button>
+                    </div>
+                    <div>
+                        <input type="search" class="max-w-sm w-8vw px-4 py-2 border border-gray-300 rounded-lg"
+                            placeholder="Search" v-model="search" @keyup.enter="searchList()" />
+                        <button type="submit"
+                            class="absolute top-18 right-5 p-2.5 text-sm font-medium text-white bg-yellow-500 rounded-r-lg border border-yellow-600 hover:bg-orange-400">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <span class="sr-only">Search</span>
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="w-full border rounded-xl overflow-hidden drop-shadow-md">
-            <table class="w-full">
-                <thead class="border-b whitespace-nowrap bg-yellow-400">
-                    <tr class="text-center">
-                        <th class="px-6 py-4">Batch Id</th>
-                        <th class="px-6 py-4" v-if="$cookies.get('type_of_user') === 'officer'">
-                            Manager Id
-                        </th>
-                        <th class="px-6 py-4">Grade</th>
-                        <th class="px-6 py-4">Fe Percentage</th>
-                        <th class="px-6 py-4">Type of Ore</th>
-                        <th class="px-6 py-4">Quantity</th>
-                        <th class="px-6 py-4">Status</th>
-                        <th class="px-6 py-4">Timestamp</th>
-                        <th class="px-6 py-4">View</th>
-                    </tr>
-                </thead>
-                <tbody class="font-normal text-gray-600 whitespace-nowrap">
-                    <tr :key="mine._id" v-for="mine in mined_batches" class="text-center">
-                        <td class="px-6 py-4">
-                            {{ mine._id }}
-                        </td>
-                        <td class="px-6 py-4" v-if="$cookies.get('type_of_user') === 'officer'">
-                            {{ mine.manager_id }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ mine.grade }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ mine.fe_percentage }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ mine.type_of_ore }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ mine.quantity }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ mine.status }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ mine.createdAt }}
-                        </td>
-                        <td class="px-6 py-4">
-                            <RouterLink :to="'/dashboard/mines/' + mine._id" class="hover:text-yellow-700">
-                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z">
-                                    </path>
-                                </svg>
-                            </RouterLink>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="w-full border rounded-xl overflow-hidden drop-shadow-md">
+                <table class="w-full">
+                    <thead class="border-b whitespace-nowrap bg-yellow-400">
+                        <tr class="text-center">
+                            <th class="px-6 py-4">Batch Id</th>
+                            <th class="px-6 py-4" v-if="$cookies.get('type_of_user') === 'officer'">
+                                Manager Id
+                            </th>
+                            <th class="px-6 py-4">Grade</th>
+                            <th class="px-6 py-4">Fe Percentage</th>
+                            <th class="px-6 py-4">Type of Ore</th>
+                            <th class="px-6 py-4">Quantity</th>
+                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4">Timestamp</th>
+                            <th class="px-6 py-4">View</th>
+                        </tr>
+                    </thead>
+                    <tbody class="font-normal text-gray-600 whitespace-nowrap">
+                        <tr :key="mine._id" v-for="mine in mined_batches" class="text-center">
+                            <td class="px-6 py-4">
+                                {{ mine._id }}
+                            </td>
+                            <td class="px-6 py-4" v-if="$cookies.get('type_of_user') === 'officer'">
+                                {{ mine.manager_id }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ mine.grade }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ mine.fe_percentage }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ mine.type_of_ore }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ mine.quantity }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ mine.status }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ mine.createdAt }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <RouterLink :to="'/dashboard/mines/' + mine._id" class="hover:text-yellow-700">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z">
+                                        </path>
+                                    </svg>
+                                </RouterLink>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
