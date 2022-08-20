@@ -59,11 +59,6 @@ app.use(
         component: () => import("@/views/ForgotPassword.vue"),
       },
       {
-        path: "/test",
-        name: "test",
-        component: () => import("@/views/Test.vue"),
-      },
-      {
         path: "/dashboard",
         name: "dashboard",
         component: () => import("@/views/DashBoard.vue"),
@@ -196,20 +191,6 @@ app.use(
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/List/Mines.vue"),
           },
-
-          {
-            path: "approve_mined_batch",
-            name: "approve_mined_batch",
-            meta: {
-              active: "approve mined batch",
-              access: false,
-              type_of_user: ["officer"],
-              type_of_region: ["district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () =>
-              import("@/views/Registration/ApproveMinedBatch.vue"),
-          },
           {
             path: "ceo_registration",
             name: "ceo_registration",
@@ -271,10 +252,59 @@ app.use(
             meta: {
               active: "mined batches",
               access: false,
-              type_of_user: ["miner"],
+              type_of_user: ["officer", "miner"],
+              type_of_region: ["district"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/List/MinedBatches.vue"),
+          },
+          {
+            path: "mined_batches/:batch_id",
+            name: "mined_batch",
+            meta: {
+              active: "mined batches",
+              access: false,
+              type_of_user: ["miner"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/MinedBatch.vue"),
+          },
+          {
+            path: "mined_batches/:batch_id/approve_mined_batch",
+            name: "approve_mined_batch",
+            meta: {
+              active: "mined batches",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () =>
+              import("@/views/Registration/ApproveMinedBatch.vue"),
+          },
+          {
+            path: "mines/:mine_id/mined_batches",
+            name: "officer_mined_batches",
+            meta: {
+              active: "mines",
+              access: false,
+              type_of_user: ["officer", "organisation"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/MinedBatches.vue"),
+          },
+          {
+            path: "mines/:mine_id/mined_batches/:batch_id",
+            name: "officer_mined_batch",
+            meta: {
+              active: "mines",
+              access: false,
+              type_of_user: ["officer", "organisation"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/MinedBatch.vue"),
           },
         ],
       },
@@ -282,12 +312,6 @@ app.use(
         path: "/qrcodegenerator",
         name: "QRCode",
         component: () => import("@/views/QRCodeGenerator.vue"),
-      },
-
-      {
-        path: "/view",
-        name: "Views",
-        component: () => import("@/views/Views_page.vue"),
       },
       {
         path: "/:catchAll(.*)",
@@ -298,7 +322,7 @@ app.use(
         path: "/view",
         name: "Views",
         component: () => import("@/views/Views_page.vue"),
-      }
+      },
     ],
   })
 );

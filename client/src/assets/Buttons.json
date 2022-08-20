@@ -112,11 +112,7 @@
         "name": "transactions",
         "router_link": "/dashboard/transactions",
         "type_of_user": [
-            "officer",
             "miner"
-        ],
-        "type_of_region": [
-            "district"
         ]
     },
     {
