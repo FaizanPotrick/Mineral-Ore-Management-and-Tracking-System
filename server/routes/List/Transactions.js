@@ -36,7 +36,7 @@ router.get("/api/transaction/verify", async (req, res) => {
   ).lean();
   const hashMatch = bcrypt.compare(
     JSON.stringify({
-      mine_id: _id,
+      mine_id: transaction_response.mine_id,
       manager_id: transaction_response.manager_id,
       ceo_id: transaction_response.ceo_id,
       buyer_org_id: transaction_response.buyer_org_id,

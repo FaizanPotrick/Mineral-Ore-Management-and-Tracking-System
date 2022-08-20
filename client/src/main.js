@@ -310,8 +310,9 @@ app.use(
           },
           {
             path: "approve_transaction",
-            name: "approve_transaction",
+            name: "approve_transaction ",
             meta: {
+              active: "approve transaction",
               access: false,
               type_of_user: ["organisation"],
             },
