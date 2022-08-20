@@ -4,16 +4,16 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const mined_batch = ref([]);
+const transaction = ref([]);
 
-const mined_batch_fn = async () => {
+const transaction_fn = async () => {
   const { data } = await axios.get(
-    `/api/mined_batch?batch_id=${route.params.batch_id}`
+    `/api/transaction?transaction_id=${route.params.transaction_id}`
   );
-  mined_batch.value = data;
+  transaction.value = data;
 };
 
-mined_batch_fn();
+transaction_fn();
 </script>
 <template>
   <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
@@ -21,13 +21,11 @@ mined_batch_fn();
       class="max-w-5xl p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl sm:10 text-gray-800"
     >
       <div class="mb-4 text-center">
-        <div class="font-semibold text-2xl text-yellow-700">
-          Transaction Batch
-        </div>
+        <div class="font-semibold text-2xl text-yellow-700">Transaction</div>
       </div>
       <div class="flex flex-col gap-6 justify-center">
         <div class="max-width-400">
-          <img :src="mined_batch.sample_image_url" alt="sample_image" />
+          <!-- <img :src="transaction.sample_image_url" alt="sample_image" /> -->
         </div>
         <div class="flex flex-col">
           <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -40,62 +38,62 @@ mined_batch_fn();
                         Transcation Id:
                       </td>
                       <td class="px-6 py-4 font-bold">
-                        {{ mined_batch._id }}
+                        {{ transaction._id }}
                       </td>
                     </tr>
                     <tr class="bg-white border-b">
                       <td class="px-6 py-4">Manager Id:</td>
 
                       <td class="px-6 py-4 font-bold">
-                        {{ mined_batch.manager_id }}
+                        {{ transaction.manager_id }}
                       </td>
                     </tr>
                     <tr class="bg-white border-b">
                       <td class="px-6 py-4">CEO Id:</td>
                       <td class="px-6 py-4 font-bold">
-                        {{ mined_batch.officer_id }}
+                        {{ transaction.ceo_id }}
                       </td>
                     </tr>
                     <tr class="bg-white border-b">
                       <td class="px-6 py-4">Buyer_Organization_ID:</td>
                       <td class="px-6 py-4 font-bold">
-                        {{ mined_batch.mine_id }}
+                        {{ transaction.mine_id }}
                       </td>
                     </tr>
                     <tr class="bg-white border-b">
                       <td class="px-6 py-4">Type of Ore:</td>
                       <td class="px-6 py-4 font-bold">
-                        {{ mined_batch.grade }}
+                        {{ transaction.grade }}
                       </td>
                     </tr>
                     <tr class="bg-white border-b">
                       <td class="px-6 py-4">Fe Percentage:</td>
                       <td class="px-6 py-4 font-bold">
-                        {{ mined_batch.fe_percentage }}
+                        {{ transaction.fe_percentage }}
                       </td>
                     </tr>
                     <tr class="bg-white border-b">
                       <td class="px-6 py-4">Quantity:</td>
                       <td class="px-6 py-4 font-bold">
-                        {{ mined_batch.type_of_ore }}
+                        {{ transaction.type_of_ore }}
                       </td>
                     </tr>
                     <tr class="bg-white border-b">
                       <td class="px-6 py-4">Grade:</td>
                       <td class="px-6 py-4 font-bold">
-                        {{ mined_batch.quantity }}
+                        {{ transaction.quantity }}
                       </td>
                     </tr>
                     <tr class="bg-white border-b">
                       <td class="px-6 py-4">Price:</td>
                       <td class="px-6 py-4 font-bold">
-                        {{ mined_batch.status }}
+                        {{ transaction.status }}
                       </td>
                     </tr>
                     <tr class="bg-white border-b">
                       <td class="px-6 py-4">Status:</td>
                       <td class="px-6 py-4 font-bold">
-                        {{ mined_batch.createdAt }}
+                        {{ transaction.createdAt }}
                       </td>
                     </tr>
                   </tbody>
@@ -105,6 +103,19 @@ mined_batch_fn();
           </div>
         </div>
       </div>
+      <a
+        class="bg-orange-600 hover:bg-grey text- font-bold py-2 px-4 rounded inline-flex items-center mx-5"
+        :href="transaction.invoice_url"
+      >
+        <svg
+          class="fill-current w-4 h-4 mr-2"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+        >
+          <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+        </svg>
+        <span>Download</span>
+      </a>
     </div>
   </div>
 </template>

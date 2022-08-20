@@ -49,6 +49,7 @@ app.use(require("./routes/List/Officers.js"));
 app.use(require("./routes/List/Organisations.js"));
 app.use(require("./routes/List/Mines.js"));
 app.use(require("./routes/List/MinedBatches.js"));
+app.use(require("./routes/List/Transactions.js"));
 app.use(require("./routes/Registration/Officer.js"));
 app.use(require("./routes/Registration/Region.js"));
 app.use(require("./routes/Registration/Organisation.js"));
