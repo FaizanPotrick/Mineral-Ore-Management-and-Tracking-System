@@ -40,7 +40,9 @@ const register_fn = async () => {
         ? "organisation"
         : "checkpoint"
     }?transaction_id=${transaction.value._id}`,
-    data: status.value,
+    data: {
+      status: status.value,
+    },
   })
     .then((res) => {
       open_alert_box(res.data.message, res.data.type);
