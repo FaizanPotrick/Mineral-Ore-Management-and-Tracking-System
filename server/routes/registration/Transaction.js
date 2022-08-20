@@ -5,6 +5,7 @@ const Organisation = require("../../models/OrganisationSchema");
 const Transaction = require("../../models/TransactionSchema");
 const SuspiciousActivity = require("../../models/SuspiciousActivitySchema");
 
+
 function priceEvaluation(id,price,transaction_id,region_response){
   const mine_response = await Mine.findById(_id);
   const average_price = mine_response.average_price;
@@ -25,12 +26,16 @@ function priceEvaluation(id,price,transaction_id,region_response){
 
 }
 
+const Region = require("../../models/RegionSchema");
+
+
 router.post("/api/registration/mine", async (req, res) => {
   const { _id } = req.cookies;
   const { organisation_id, type_of_ore, fe_percentage, grade, quantity, price } = req.body;
   const { invoice } = req.files;
   try {
     const mine_response = await Mine.findById(_id);
+    const region_response = await Region.findById(mine_response.region_id);
     const organisation_response = await Organisation.findById(organisation_id);
     const transaction_response = await Transaction.create({
       mine_id: _id,
