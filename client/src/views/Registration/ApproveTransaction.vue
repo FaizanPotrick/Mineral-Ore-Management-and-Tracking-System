@@ -5,7 +5,6 @@ import axios from "axios";
 import { ref } from "vue";
 
 const { open_alert_box } = useAlertStore();
-const results = ref("");
 const errors = ref("");
 const transaction = ref([]);
 const status = ref("");
@@ -19,21 +18,15 @@ const onInit = async (promise) => {
   }
 };
 const onDecode = async (result) => {
-  results.value = result;
-  console.log(result);
   const resultParse = JSON.parse(result);
-
-  loading.value = true;
   const { status, data } = await axios.get(
     `/api/transaction/verify?transaction_id=${resultParse.transaction_id}&transaction_hash=${resultParse.transaction_hash}`
   );
   if (status === 200) {
-    console.log(data);
     transaction.value = data;
   } else {
     open_alert_box(data.message, data.type);
   }
-  loading.value = false;
 };
 </script>
 <template>
@@ -47,12 +40,85 @@ const onDecode = async (result) => {
         </div>
         <div class="text-gray-500 text-sm">Transactions</div>
       </div>
-      <QrcodeStream @decode="onDecode" @init="onInit" />
       <div class="my-6">
-        <p>{{ errors }}</p>
-        <p>
-          Receipt Id: <b>{{ results }}</b>
-        </p>
+       {{ errors }}
+      </div>
+      <QrcodeStream @decode="onDecode" @init="onInit" />
+      
+      <div class="flex flex-col mt-6 ">
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+            <div class="overflow-hidden">
+              <table class="min-w-full text-gray-900 font-base">
+                <tbody>
+                  <tr class="border-b">
+                    <td class="text-gray-900 font-base px-6 py-4">
+                      Transcation Id:
+                    </td>
+                    <td class="px-6 py-4 font-bold">
+                      {{ transaction._id }}
+                    </td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4">Manager Id:</td>
+
+                    <td class="px-6 py-4 font-bold">
+                      {{ transaction.manager_id }}
+                    </td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4">CEO Id:</td>
+                    <td class="px-6 py-4 font-bold">
+                      {{ transaction.ceo_id }}
+                    </td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4">Buyer_Organization_ID:</td>
+                    <td class="px-6 py-4 font-bold">
+                      {{ transaction.mine_id }}
+                    </td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4">Type of Ore:</td>
+                    <td class="px-6 py-4 font-bold">
+                      {{ transaction.grade }}
+                    </td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4">Fe Percentage:</td>
+                    <td class="px-6 py-4 font-bold">
+                      {{ transaction.fe_percentage }}
+                    </td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4">Quantity:</td>
+                    <td class="px-6 py-4 font-bold">
+                      {{ transaction.type_of_ore }}
+                    </td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4">Grade:</td>
+                    <td class="px-6 py-4 font-bold">
+                      {{ transaction.quantity }}
+                    </td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4">Price:</td>
+                    <td class="px-6 py-4 font-bold">
+                      {{ transaction.status }}
+                    </td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4">Status:</td>
+                    <td class="px-6 py-4 font-bold">
+                      {{ transaction.createdAt }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
       <form class="space-y-5 drop-shadow-md">
         <div class="grid gap-6 mb-6 grid-cols-1">
