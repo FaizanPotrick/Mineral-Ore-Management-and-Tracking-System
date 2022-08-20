@@ -39,10 +39,19 @@ const Transaction = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["dispatched", "delivered"],
+      default: "dispatched",
+      required: true,
+    },
+    check_points: {
+      type: Array,
+    },
     invoice_url: {
       type: String,
       required: true,
-    }
+    },
   },
   {
     timestamps: true,

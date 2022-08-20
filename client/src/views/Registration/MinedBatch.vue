@@ -51,8 +51,6 @@ const register_fn = async () => {
           sample_image: "",
           mine_lap_report: "",
         };
-        store_image("");
-        store_document("");
       }
     })
     .catch((err) => {

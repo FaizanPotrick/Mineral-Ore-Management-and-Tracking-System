@@ -30,7 +30,7 @@ async function priceEvaluation(average_price, price, transaction_id, region_resp
     });
   }
 }
-
+// balance before create the transaction
 router.post("/api/registration/transaction", async (req, res) => {
   const { _id } = req.cookies;
   const { organisation_id, type_of_ore, fe_percentage, grade, quantity, price } = req.body;
