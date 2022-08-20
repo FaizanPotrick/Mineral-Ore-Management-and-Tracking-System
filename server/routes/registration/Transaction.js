@@ -191,7 +191,7 @@ router.post("/api/transaction/organisation", async (req, res) => {
     const transaction_response = await Transaction.findByIdAndUpdate(
       transaction_id,
       {
-        status: status === "approved" ? "delivered" : "cancelled",
+        status: status,
       }
     );
     if (status === "approved") {

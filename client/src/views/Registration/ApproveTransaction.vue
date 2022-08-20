@@ -2,9 +2,11 @@
 import { QrcodeStream } from "vue3-qrcode-reader";
 import useAlertStore from "@/stores/Alert";
 import axios from "axios";
+import { useRouter } from "vue-router";
 import { ref } from "vue";
 
 const { open_alert_box } = useAlertStore();
+const router = useRouter();
 const errors = ref("");
 const transaction = ref([]);
 const status = ref("");
@@ -45,6 +47,7 @@ const register_fn = async () => {
       if (res.status === 200) {
         status.value = "";
       }
+      router.push("/dashboard");
     })
     .catch((err) => {
       open_alert_box(err.response.data.message, err.response.data.type);
@@ -152,7 +155,7 @@ const register_fn = async () => {
                 <input
                   type="radio"
                   name="status"
-                  value="approved"
+                  value="delivered"
                   v-model="status"
                   class="w-4 h-4"
                   required
@@ -163,7 +166,7 @@ const register_fn = async () => {
                 <input
                   type="radio"
                   name="status"
-                  value="rejected"
+                  value="cancelled"
                   v-model="status"
                   class="w-4 h-4"
                   required

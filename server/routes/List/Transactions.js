@@ -36,7 +36,7 @@ router.get("/api/transaction/verify", async (req, res) => {
     status: "dispatched",
   }).lean();
   if (transaction_response === null) {
-    res.status(201).json({
+    return res.status(201).json({
       message: "Transaction not found",
       type: "error",
     });
