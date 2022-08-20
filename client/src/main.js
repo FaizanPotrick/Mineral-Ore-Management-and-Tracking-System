@@ -314,6 +314,17 @@ app.use(
         component: () => import("@/views/QRCodeGenerator.vue"),
       },
       {
+        path: "/scanqr",
+        name: "scanqr",
+        component: () => import("@/views/ScanQr.vue"),
+      },
+      {
+        path: "/view",
+        name: "Views",
+        component: () => import("@/views/Views_page.vue"),
+      },
+
+      {
         path: "/:catchAll(.*)",
         name: "404",
         component: () => import("@/components/PageNotFound.vue"),
