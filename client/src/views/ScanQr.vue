@@ -11,7 +11,7 @@
 
 <script>
 import { QrcodeStream } from 'vue3-qrcode-reader';
-
+import axios from 'axios';
 export default {
 
   components: { QrcodeStream },
@@ -53,7 +53,12 @@ export default {
       }
     },
     async verifyHash(){
-      const response = await axios.get(`/api/transaction_verify/${this.result}`);
+      const checkpoint_id = this.$cookies.get('checkpoint_id');
+      const body = {
+        checkpoint_id: checkpoint_id,
+        transaction: this.result
+      };
+      const response = await axios.get(`/api/verify_qr/${body}`);
       if(response.data.success){
         this.$router.push('/transaction_details:id', {id: this.result.transaction_id});
       }

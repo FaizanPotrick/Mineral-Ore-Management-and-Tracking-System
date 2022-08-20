@@ -4,7 +4,7 @@ const Region = require("../../models/RegionSchema");
 const Mine = require("../../models/MineSchema");
 const Transaction = require("../../models/TransactionSchema");
 
-router.get("/api/transaction", async (req, res) => {
+router.get("/api/verify_qr", async (req, res) => {
     const {
         transaction,
         checkpoint_id
