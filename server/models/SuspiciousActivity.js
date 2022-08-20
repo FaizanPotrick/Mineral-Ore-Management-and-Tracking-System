@@ -6,7 +6,7 @@ const SuspiciousActivity = new mongoose.Schema({
   },
   type_of_activity: {
     type: String,
-    enum: ["price_difference"],
+    enum: ["transaction"],
     required: true,
   },
   reason: {
