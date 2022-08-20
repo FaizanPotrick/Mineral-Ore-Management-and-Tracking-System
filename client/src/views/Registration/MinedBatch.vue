@@ -95,6 +95,7 @@ const register_fn = async () => {
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               v-model="mined_batch.fe_percentage"
               type="number"
+              pattern="[0-9]+"
               required
             />
           </div>
@@ -108,6 +109,7 @@ const register_fn = async () => {
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               v-model="mined_batch.quantity"
               type="number"
+              pattern="[0-9]+"
               required
             />
           </div>
