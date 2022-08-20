@@ -88,7 +88,7 @@ router.post("/api/registration/transaction", async (req, res) => {
     });
     await Mine.findByIdAndUpdate(_id, {
       $inc: {
-        [`ores_available.${type_of_ore}.${grade}`]: parseInt(quantity),
+        [`ores_available.${type_of_ore}.${grade}`]: -parseInt(quantity),
       },
     });
     const today = new Date();
@@ -172,6 +172,79 @@ router.post("/api/registration/transaction", async (req, res) => {
     }
     res.status(200).json({
       message: "Successfully Registered",
+      type: "success",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "Invalid Request",
+      type: "error",
+    });
+  }
+});
+
+router.post("/api/transaction/organisation", async (req, res) => {
+  const { _id } = req.cookies;
+  const { transaction_id } = req.query;
+  const { status } = req.body;
+  try {
+    const transaction_response = await Transaction.findByIdAndUpdate(
+      transaction_id,
+      {
+        status: status === "approved" ? "delivered" : "cancelled",
+      }
+    );
+    if (status === "approved") {
+      await Organisation.findByIdAndUpdate(_id, {
+        $inc: {
+          [`ores_bought.${transaction_response.type_of_ore}.${transaction_response.grade}`]:
+            transaction_response.quantity,
+        },
+      });
+    } else {
+      await Mine.findByIdAndUpdate(transaction_response.mine_id, {
+        $inc: {
+          [`ores_available.${transaction_response.type_of_ore}.${transaction_response.grade}`]:
+            transaction_response.quantity,
+        },
+      });
+    }
+    res.status(200).json({
+      message: "Successfully Updated Transaction",
+      type: "success",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "Invalid Request",
+      type: "error",
+    });
+  }
+});
+
+router.post("/api/transaction/checkpoint", async (req, res) => {
+  const { _id } = req.cookies;
+  const { transaction_id } = req.query;
+  const { status } = req.body;
+  try {
+    if (status !== "approved") {
+      if (!transaction_response.checkpoints.includes(_id)) {
+        await Transaction.findByIdAndUpdate(transaction_id, {
+          $push: {
+            status: "cancelled",
+            checkpoints: _id,
+          },
+        });
+      }
+      await Mine.findByIdAndUpdate(transaction_response.mine_id, {
+        $inc: {
+          [`ores_available.${transaction_response.type_of_ore}.${transaction_response.grade}`]:
+            transaction_response.quantity,
+        },
+      });
+    }
+    res.status(200).json({
+      message: "Successfully Updated Transaction",
       type: "success",
     });
   } catch (error) {

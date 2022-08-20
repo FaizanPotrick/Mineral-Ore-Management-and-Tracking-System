@@ -152,6 +152,7 @@ get_mined_batch();
                   value="approved"
                   v-model="approve_mined_batch.status"
                   class="w-4 h-4"
+                  required
                 />
                 <label class="ml-2 font-medium">Approve</label>
               </div>
@@ -162,6 +163,7 @@ get_mined_batch();
                   value="rejected"
                   v-model="approve_mined_batch.status"
                   class="w-4 h-4"
+                  required
                 />
                 <label class="ml-2 font-medium">Reject</label>
               </div>
