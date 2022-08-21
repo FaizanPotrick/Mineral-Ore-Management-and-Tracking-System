@@ -44,10 +44,8 @@ get_officers();
               v-for="officer in officers"
               class="text-center"
             >
-              <abbr style="text-decoration:none" :title="officer._id">
-              <td class="px-1 py-4">
-                ...{{ officer._id.slice(19) }}
-              </td>
+              <abbr style="text-decoration: none" :title="officer._id">
+                <td class="px-1 py-4">...{{ officer._id.slice(19) }}</td>
               </abbr>
               <td class="px-1 py-4">
                 {{ officer.officer_id.slice(4) }}
@@ -80,9 +78,9 @@ get_officers();
                   </svg> -->
                   <button
                     type="button"
-                    class=" inline-block px-4 py-2 border-2 border-yellow-600 text-orange-600 font-medium text-xs leading-normal uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
+                    class="inline-block px-4 py-2  border-2 bg-blue-600 hover:bg-blue-800 text-white font-medium text-xs leading-normal uppercase rounded-lg"
                   >
-                   View
+                    View
                   </button>
                 </RouterLink>
               </td>
