@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import axios from "axios";
 
 const route = useRoute();
@@ -22,6 +22,9 @@ const dashboard = async () => {
 };
 
 dashboard();
+onBeforeMount(() => {
+  dashboard();
+});
 </script>
 <template>
   <div class="flex flex-col gap-8">

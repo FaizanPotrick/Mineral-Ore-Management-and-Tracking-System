@@ -194,8 +194,8 @@ router.get("/api/dashboard/officer/state", async (req, res) => {
 });
 router.get("/api/dashboard/officer/district", async (req, res) => {
   let _id = req.cookies._id;
-  if (req.query.mine_id) {
-    _id = req.query.mine_id;
+  if (req.query.region_id) {
+    _id = req.query.region_id;
   }
   const response = await Region.aggregate([
     {
@@ -378,13 +378,25 @@ router.get("/api/dashboard/miner", async (req, res) => {
               backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#E48665"],
               data: [
                 {
-                  $sum: "$ores_available.fine",
+                  $sum: [
+                    "$ores_available.fine.high",
+                    "$ores_available.fine.medium",
+                    "$ores_available.fine.low",
+                  ],
                 },
                 {
-                  $sum: "$ores_available.lump",
+                  $sum: [
+                    "$ores_available.lump.high",
+                    "$ores_available.lump.medium",
+                    "$ores_available.lump.low",
+                  ],
                 },
                 {
-                  $sum: "$ores_available.iron_pellet",
+                  $sum: [
+                    "$ores_available.iron_pellet.high",
+                    "$ores_available.iron_pellet.medium",
+                    "$ores_available.iron_pellet.low",
+                  ],
                 },
                 {
                   $subtract: [
