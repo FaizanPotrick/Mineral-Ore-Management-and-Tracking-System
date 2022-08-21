@@ -30,11 +30,26 @@ router.get("/api/transaction", async (req, res) => {
   res.status(200).json(transaction_response);
 });
 router.get("/api/transaction/verify", async (req, res) => {
+  const { type_of_user, _id } = req.cookies;
   const { transaction_id, transaction_hash } = req.query;
-  const transaction_response = await Transaction.findOne({
-    _id: transaction_id,
-    status: "dispatched",
-  }).lean();
+  let transaction_response;
+  if (type_of_user === "organisation") {
+    transaction_response = await Transaction.findOne({
+      _id: transaction_id,
+      buyer_org_id: _id,
+      status: "dispatched",
+    }).lean();
+  } else if (type_of_user === "checkpoint") {
+    transaction_response = await Transaction.findOne({
+      _id: transaction_id,
+      status: "dispatched",
+    }).lean();
+  } else {
+    return res.status(400).json({
+      message: "Invalid User",
+      type: "error",
+    });
+  }
   if (transaction_response === null) {
     return res.status(201).json({
       message: "Transaction not found",
