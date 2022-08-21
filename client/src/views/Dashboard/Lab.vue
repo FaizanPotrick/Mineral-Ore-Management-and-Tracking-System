@@ -5,17 +5,15 @@ import { ref } from "vue";
 import moment from "moment";
 
 const route = useRoute();
-const transactions = ref([]);
+const mined_batches = ref([]);
 
 const dashboard = async () => {
   const { data } = await axios.get(
-    `/api/dashboard/checkpoint${
-      route.params.checkpoint_id === undefined
-        ? ""
-        : `?checkpoint_id=${route.params.checkpoint_id}`
+    `/api/dashboard/lab${
+      route.params.lab_id === undefined ? "" : `?lab_id=${route.params.lab_id}`
     }`
   );
-  transactions.value = data;
+  mined_batches.value = data;
 };
 
 dashboard();
@@ -26,18 +24,43 @@ dashboard();
       class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md"
     >
       <div class="flex justify-between items-center w-full">
-        <div class="text-3xl font-semibold">Check Point Transations</div>
-        <input
-          type="search"
-          class="max-w-sm w-full px-4 py-2 border border-gray-300 rounded-lg"
-          placeholder="Search"
-        />
+        <div class="text-3xl font-semibold">Lab Mined Batches</div>
+        <div class="flex flex-wrap items-center">
+          <div class="hidden sm:block">
+            <input
+              type="search"
+              class="max-w-sm w-8vw px-4 py-2 border border-gray-300 rounded-lg"
+              placeholder="Search"
+            />
+            <button
+              type="submit"
+              class="absolute top-18 right-5 p-2.5 text-sm font-medium text-white bg-yellow-500 rounded-r-lg border border-yellow-600 hover:bg-orange-400"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
+              <span class="sr-only">Search</span>
+            </button>
+          </div>
+        </div>
       </div>
       <div class="w-full border rounded-xl overflow-hidden drop-shadow-md">
         <table class="w-full">
           <thead class="border-b whitespace-nowrap bg-yellow-400">
             <tr class="text-center">
-              <th class="px-2 py-4">Transaction Id</th>
+              <th class="px-2 py-4">Batch Id</th>
               <th class="px-2 py-4">Manager Id</th>
               <th class="px-2 py-4">Grade</th>
               <th class="px-2 py-4">Fe Percentage</th>
@@ -51,7 +74,7 @@ dashboard();
           <tbody class="font-normal text-gray-600 whitespace-nowrap">
             <tr
               :key="mine._id"
-              v-for="mine in transactions"
+              v-for="mine in mined_batches"
               class="text-center"
             >
               <td class="px-2 py-4">
@@ -60,7 +83,7 @@ dashboard();
                 </abbr>
               </td>
               <td class="px-2 py-4">
-                {{ mine.manager_id }}
+                {{ mine.manager_id.slice(4) }}
               </td>
               <td class="px-2 py-4">
                 {{ mine.grade }}
@@ -81,16 +104,16 @@ dashboard();
                 {{ moment(mine.createdAt).format("DD/MM/YYYY hh:mm:ss") }}
               </td>
 
-              <td class="px-2 py-4">
+              <td class="px-6 py-4">
                 <RouterLink
-                  :to="'/dashboard/transactions/' + mine._id"
+                  :to="'/dashboard/mined_batches/' + mine._id"
                   class="hover:text-yellow-700"
                 >
                   <!-- <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    ></path>
-                  </svg> -->
+                  <path
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  ></path>
+                </svg> -->
                   <button
                     type="button"
                     class="inline-block px-4 py-2 border-2 bg-blue-600 hover:bg-blue-800 text-white font-medium text-xs leading-normal uppercase rounded-lg"

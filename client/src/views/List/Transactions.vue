@@ -26,7 +26,7 @@ get_transaction();
       class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md"
     >
       <div class="flex justify-between items-center w-full">
-        <div class="text-3xl font-semibold">Transations</div>
+        <div class="text-3xl font-semibold">Check Point Transations</div>
         <input
           type="search"
           class="max-w-sm w-full px-4 py-2 border border-gray-300 rounded-lg"
@@ -50,16 +50,7 @@ get_transaction();
               <th class="px-2 py-4">Quantity</th>
               <th class="px-2 py-4">Status</th>
               <th class="px-2 py-4">Timestamp</th>
-              <th
-                v-if="
-                  $cookies.get('type_of_user') === 'organisation' &&
-                  route.params.mine_id === undefined
-                "
-                class="px-2 py-4"
-              >
-                Form
-              </th>
-              <th v-else class="px-2 py-4"></th>
+              <th class="px-2 py-4"></th>
             </tr>
           </thead>
           <tbody class="font-normal text-gray-600 whitespace-nowrap">
@@ -97,38 +88,9 @@ get_transaction();
               <td class="px-2 py-4">
                 {{ moment(mine.createdAt).format("DD/MM/YYYY hh:mm:ss") }}
               </td>
-              <td
-                v-if="
-                  $cookies.get('type_of_user') === 'officer' &&
-                  route.params.mine_id === undefined
-                "
-                class="px-2 py-4"
-              >
+              <td class="px-2 py-4">
                 <RouterLink
-                  :to="
-                    '/dashboard/transactions/' +
-                    mine._id +
-                    '/approve_transaction'
-                  "
-                  class="hover:text-yellow-700"
-                >
-                  <!-- <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    ></path>
-                  </svg> -->
-                </RouterLink>
-              </td>
-              <td v-else class="px-2 py-4">
-                <RouterLink
-                  :to="
-                    $cookies.get('type_of_user') !== 'miner'
-                      ? '/dashboard/mines/' +
-                        route.params.mine_id +
-                        '/transactions/' +
-                        mine._id
-                      : '/dashboard/transactions/' + mine._id
-                  "
+                  :to="'/dashboard/transactions/' + mine._id"
                   class="hover:text-yellow-700"
                 >
                   <!-- <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">

@@ -3,7 +3,7 @@ const router = express.Router();
 const Organisation = require("../models/OrganisationSchema");
 const Mine = require("../models/MineSchema");
 const Region = require("../models/RegionSchema");
-const CheckPoint = require("../models/CheckPointSchema");
+const MinedBatch = require("../models/MinedBatchSchema");
 const Transaction = require("../models/TransactionSchema");
 const mongoose = require("mongoose");
 
@@ -431,6 +431,21 @@ router.get("/api/dashboard/checkpoint", async (req, res) => {
         $expr: {
           $in: [_id, "$checkpoints"],
         },
+      },
+    },
+  ]);
+  res.json(response);
+});
+
+router.get("/api/dashboard/lab", async (req, res) => {
+  let _id = req.cookies._id;
+  if (req.query.lab_id) {
+    _id = req.query.lab_id;
+  }
+  const response = await MinedBatch.aggregate([
+    {
+      $match: {
+        lab_id: _id,
       },
     },
   ]);

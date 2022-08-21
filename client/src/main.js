@@ -65,7 +65,13 @@ app.use(
             meta: {
               active: "home",
               access: false,
-              type_of_user: ["officer", "organisation", "miner", "checkpoint"],
+              type_of_user: [
+                "officer",
+                "organisation",
+                "miner",
+                "checkpoint",
+                "lab",
+              ],
               type_of_region: ["country", "state", "district"],
             },
             beforeEnter: [Authentication, PageAccess],
@@ -76,8 +82,10 @@ app.use(
                 return import("@/views/Dashboard/Organisation.vue");
               } else if ($cookies.get("type_of_user") === "miner") {
                 return import("@/views/Dashboard/Mine.vue");
-              } else {
+              } else if ($cookies.get("type_of_user") === "checkpoint") {
                 return import("@/views/Dashboard/CheckPoint.vue");
+              } else {
+                return import("@/views/Dashboard/Lab.vue");
               }
             },
           },
@@ -166,6 +174,18 @@ app.use(
             component: () => import("@/views/Registration/CheckPoint.vue"),
           },
           {
+            path: "lab_registration",
+            name: "lab_registration",
+            meta: {
+              active: "lab registration",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Registration/Lab.vue"),
+          },
+          {
             path: "officers",
             name: "officers",
             meta: {
@@ -207,7 +227,7 @@ app.use(
             meta: {
               active: "mined batches",
               access: false,
-              type_of_user: ["officer", "miner"],
+              type_of_user: ["officer", "miner", "lab"],
               type_of_region: ["district"],
             },
             beforeEnter: [Authentication, PageAccess],
@@ -219,10 +239,21 @@ app.use(
             meta: {
               active: "mined batches",
               access: false,
-              type_of_user: ["miner"],
+              type_of_user: ["miner", "lab"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/MinedBatch.vue"),
+          },
+          {
+            path: "mined_batches/:batch_id/testing_mined_batch",
+            name: "testing_mined_batch",
+            meta: {
+              active: "mined batches",
+              access: false,
+              type_of_user: ["lab"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Registration/LabBatchTesting.vue"),
           },
           {
             path: "mines/:mine_id/mined_batches",
@@ -266,7 +297,7 @@ app.use(
             meta: {
               active: "transactions",
               access: false,
-              type_of_user: ["miner"],
+              type_of_user: ["miner", "checkpoint"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Transaction.vue"),

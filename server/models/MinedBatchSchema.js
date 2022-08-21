@@ -13,6 +13,10 @@ const MinedBatch = new mongoose.Schema(
       type: String,
       required: true,
     },
+    lab_id: {
+      type: String,
+      required: true,
+    },
     type_of_ore: {
       type: String,
       enum: ["fine", "lump", "iron_pellet"],
@@ -21,11 +25,9 @@ const MinedBatch = new mongoose.Schema(
     grade: {
       type: String,
       enum: ["high", "medium", "low"],
-      required: true,
     },
     fe_percentage: {
       type: Number,
-      required: true,
     },
     quantity: {
       type: Number,
@@ -33,8 +35,8 @@ const MinedBatch = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "approved", "rejected"],
-      default: "pending",
+      enum: ["testing", "pending", "approved", "rejected"],
+      default: "testing",
       required: true,
     },
     sample_image_url: {
@@ -43,7 +45,6 @@ const MinedBatch = new mongoose.Schema(
     },
     mine_lab_report_url: {
       type: String,
-      required: true,
     },
     gov_lab_report_url: {
       type: String,

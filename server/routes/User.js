@@ -5,6 +5,7 @@ const Organisation = require("../models/OrganisationSchema");
 const Mine = require("../models/MineSchema");
 const User = require("../models/UserSchema");
 const CheckPoint = require("../models/CheckPointSchema");
+const Lab = require("../models/LabSchema");
 
 router.get("/api/user/officer", async (req, res) => {
   let _id = req.cookies._id;
@@ -59,14 +60,31 @@ router.get("/api/user/miner", async (req, res) => {
 
 router.get("/api/user/checkpoint", async (req, res) => {
   let _id = req.cookies._id;
-  if (req.query.mine_id) {
-    _id = req.query.mine_id;
+  if (req.query.checkpoint_id) {
+    _id = req.query.checkpoint_id;
   }
   const checkpoint_response = await CheckPoint.findById(_id).distinct(
     "checkpoint_officer_id"
   );
   const user_response = await User.findOne({
     user_id: checkpoint_response[0],
+  })
+    .select(["user_name", "email_address"])
+    .lean();
+  res.json({
+    name: user_response.user_name,
+    email_address: user_response.email_address,
+  });
+});
+
+router.get("/api/user/lab", async (req, res) => {
+  let _id = req.cookies._id;
+  if (req.query.lab_id) {
+    _id = req.query.lab_id;
+  }
+  const lab_response = await Lab.findById(_id).distinct("lab_manager_id");
+  const user_response = await User.findOne({
+    user_id: lab_response[0],
   })
     .select(["user_name", "email_address"])
     .lean();

@@ -7,7 +7,8 @@ const { open_alert_box } = useAlertStore();
 
 const center = ref([78.9629, 20.5937]);
 const zoom = ref(4);
-const checkpoint = ref({
+const lab = ref({
+  lab_name: "",
   name: "",
   email_address: "",
   phone_no: "",
@@ -21,21 +22,22 @@ const loading = ref(false);
 
 const register_fn = async () => {
   if (
-    checkpoint.value.coordinates.latitude === 0 ||
-    checkpoint.value.coordinates.longitude === 0
+    lab.value.coordinates.latitude === 0 ||
+    lab.value.coordinates.longitude === 0
   ) {
     return open_alert_box("Please select a location", "warning");
   }
   loading.value = true;
   await axios({
     method: "post",
-    url: "/api/registration/checkpoint",
-    data: checkpoint.value,
+    url: "/api/registration/lab",
+    data: lab.value,
   })
     .then((res) => {
       open_alert_box(res.data.message, res.data.type);
       if (res.status === 200) {
-        checkpoint.value = {
+        lab.value = {
+          lab_name: "",
           name: "",
           email_address: "",
           phone_no: "",
@@ -54,7 +56,7 @@ const register_fn = async () => {
 };
 
 const marker_selector = async (e) => {
-  checkpoint.value.coordinates = {
+  lab.value.coordinates = {
     latitude: e.feature.values_.geometry.flatCoordinates[1],
     longitude: e.feature.values_.geometry.flatCoordinates[0],
   };
@@ -75,21 +77,32 @@ onMounted(async () => {
     >
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
-          Checkpoint Officer Registration
+          Lab Registration
         </div>
-        <div class="text-gray-500 text-sm">Register a checkpoint.</div>
+        <div class="text-gray-500 text-sm">Register a lab.</div>
       </div>
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
         <div class="grid gap-6 grid-cols-1">
           <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Lab Name*</label>
+            <input
+              type="text"
+              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              placeholder="Lab Name"
+              v-model="lab.lab_name"
+              maxlength="300"
+              required
+            />
+          </div>
+          <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >Checkpoint Officer Name*</label
+              >Lab Manager Name*</label
             >
             <input
               type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Officer Name"
-              v-model="checkpoint.name"
+              placeholder="Manager Name"
+              v-model="lab.name"
               maxlength="150"
               required
             />
@@ -98,13 +111,13 @@ onMounted(async () => {
         <div class="grid gap-6 sm:grid-cols-2">
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >Checkpoint Officer Email Address*</label
+              >Lab Manager Email Address*</label
             >
             <input
               type="email"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Email Address"
-              v-model="checkpoint.email_address"
+              v-model="lab.email_address"
               maxlength="150"
               pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]+"
               required
@@ -112,13 +125,13 @@ onMounted(async () => {
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >Checkpoint Officer Phone No.*</label
+              >Lab Manager Phone No.*</label
             >
             <input
               type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Phone Number"
-              v-model="checkpoint.phone_no"
+              v-model="lab.phone_no"
               minlength="10"
               maxlength="10"
               pattern="[0-9]{10}"
@@ -127,13 +140,13 @@ onMounted(async () => {
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >Checkpoint Officer Aadhar Card*</label
+              >Lab Manager Aadhar Card*</label
             >
             <input
               type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Aadhar Card"
-              v-model="checkpoint.aadhar_card"
+              v-model="lab.aadhar_card"
               minlength="12"
               maxlength="12"
               pattern="[0-9]{12}"

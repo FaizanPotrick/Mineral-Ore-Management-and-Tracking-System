@@ -1,42 +1,47 @@
 <script setup>
 import useAlertStore from "@/stores/Alert";
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const { open_alert_box } = useAlertStore();
-const labs = ref([]);
-const mined_batch = ref({
-  type_of_ore: "",
-  quantity: 0,
-  lab_id: "",
-  sample_image: {},
+const lab_mined_batch = ref({
+  fe_percentage: 0,
+  mine_lab_report: {},
 });
+const mined_batch = ref([]);
 const loading = ref(false);
 
-const store_image = (event) => {
-  mined_batch.value.sample_image = event.target.files[0];
+const store_document = (event) => {
+  lab_mined_batch.value.mine_lab_report = event.target.files[0];
 };
 
 const register_fn = async () => {
   loading.value = true;
   const formData = new FormData();
-  formData.append("type_of_ore", mined_batch.value.type_of_ore);
-  formData.append("quantity", mined_batch.value.quantity);
-  formData.append("lab_id", mined_batch.value.lab_id);
-  formData.append("sample_image", mined_batch.value.sample_image);
+  formData.append("fe_percentage", lab_mined_batch.value.fe_percentage);
+  formData.append(
+    "grade",
+    lab_mined_batch.value.fe_percentage >= 65
+      ? "high"
+      : lab_mined_batch.value.fe_percentage >= 62 &&
+        lab_mined_batch.value.fe_percentage < 65
+      ? "medium"
+      : "low"
+  );
+  formData.append("mine_lab_report", lab_mined_batch.value.mine_lab_report);
   await axios({
     method: "post",
-    url: "/api/registration/mined_batch/miner",
+    url: `/api/registration/mined_batch/lab?batch_id=${route.params.batch_id}`,
     data: formData,
   })
     .then((res) => {
       open_alert_box(res.data.message, res.data.type);
       if (res.status === 200) {
-        mined_batch.value = {
-          type_of_ore: "",
-          quantity: 0,
-          lab_id: "",
-          sample_image: {},
+        lab_mined_batch.value = {
+          fe_percentage: "",
+          mine_lap_report: {},
         };
       }
     })
@@ -46,83 +51,91 @@ const register_fn = async () => {
   loading.value = false;
 };
 
-onMounted(async () => {
-  const { data } = await axios.get("/api/mined_batches/lab_list");
+const get_mined_batch = async () => {
+  const { data } = await axios.get(
+    `/api/mined_batch?batch_id=${route.params.batch_id}`
+  );
   console.log(data);
-  labs.value = data;
-});
+  mined_batch.value = data;
+};
+
+get_mined_batch();
 </script>
 <template>
   <div class="flex justify-center items-center">
     <div
-      class="max-w-lg w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl m-5 sm:10 text-gray-800"
+      class="max-w-5xl w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl m-5 sm:10 text-gray-800"
     >
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
-          Ores Registration
+          Lab Batch Testing
         </div>
-        <div class="text-gray-500 text-sm">Register a Batch</div>
+        <div class="text-gray-500 text-sm">Testing a Batch</div>
+      </div>
+      <div class="flex gap-2 justify-between">
+        <div class="flex flex-col p-3">
+          <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+              <div class="overflow-hidden">
+                <table class="min-w-[400px] table-auto">
+                  <tbody>
+                    <tr class="bg-gray-200 border-b">
+                      <td
+                        class="text-md text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+                      >
+                        Type of Ore:
+                      </td>
+                      <td
+                        class="text-md text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+                      >
+                        {{ mined_batch.type_of_ore }}
+                      </td>
+                    </tr>
+                    <tr class="bg-white border-b">
+                      <td
+                        class="text-md text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+                      >
+                        Quantity of Ore:
+                      </td>
+                      <td
+                        class="text-md text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+                      >
+                        {{ mined_batch.quantity }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="max-width-400">
+          <img :src="mined_batch.sample_image_url" alt="sample_image" />
+        </div>
       </div>
       <form
         class="space-y-5 drop-shadow-md"
         @submit.prevent="register_fn()"
         enctype="multipart/form-data"
       >
-        <div class="grid gap-6 mb-6 sm:grid-cols-2">
+        <div class="grid gap-6 mb-6 sm:grid-cols-1">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Type*</label>
-            <select
-              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mined_batch.type_of_ore"
-              required
-            >
-              <option disabled value="" selected>Select the Type</option>
-              <option value="lump">Lump</option>
-              <option value="fine">Fine</option>
-              <option value="iron_pellet">Iron Pellet</option>
-            </select>
-          </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Quantity(in mt)*</label
-            >
+            <label class="text-sm font-medium text-gray-700">Grade(Fe%)*</label>
             <input
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mined_batch.quantity"
+              v-model="lab_mined_batch.fe_percentage"
               type="number"
               pattern="[0-9]+"
               required
             />
           </div>
-        </div>
-        <div class="grid gap-6 grid-cols-1">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Lab ID*</label>
-            <input
-              type="text"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Lab ID"
-              v-model="mined_batch.lab_id"
-              required
-              list="lab_id_list"
-            />
-            <datalist id="lab_id_list">
-              <option :value="lab._id" v-for="lab of labs">
-                {{ lab.lab_name }}
-              </option>
-            </datalist>
-          </div>
-        </div>
-        <div class="grid gap-6 mb-6 grid-cols-1">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Sample Image*</label
-            >
+            <label class="text-sm font-medium text-gray-700">Upload Pdf*</label>
             <input
               class="w-full content-center text-base border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              @change="store_image"
+              @change="store_document"
               type="file"
-              accept="image/*"
+              accept="application/pdf"
               required
             />
           </div>
@@ -136,7 +149,7 @@ onMounted(async () => {
             class="w-full flex text-lg justify-center items-center bg-yellow-600 text-gray-100 p-2.5 rounded-full font-semibold shadow-md"
             :disabled="loading"
           >
-            <span v-if="!loading" class="h-6"> Create Batch </span>
+            <span v-if="!loading" class="h-6"> Update Batch </span>
             <span v-else>
               <svg
                 class="w-6 h-6 animate-spin text-yellow-600 fill-white"
