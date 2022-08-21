@@ -121,7 +121,7 @@ const data = {
                     maintainAspectRatio: false,
                 }" :chart-data="data" />
             </div> -->
-      <div class="bg-white p-2 text-center rounded-xl" style="height:65vh; width:80vw">
+      <div class="bg-white p-2 text-center rounded-xl max-w-xl w-full" >
         Warehouse Overview
         <Doughnut
           :chart-options="{
