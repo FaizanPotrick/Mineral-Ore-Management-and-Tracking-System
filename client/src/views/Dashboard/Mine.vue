@@ -98,7 +98,7 @@ const data = {
       <div
         :key="card"
         v-for="card of cards"
-        class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-8 bg-white rounded-lg drop-shadow-md"
+        class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-4 bg-white rounded-lg drop-shadow-md"
       >
         <div class="text-xl">{{ card.title }}</div>
         <div class="flex gap-4 capitalize">
@@ -121,14 +121,16 @@ const data = {
                     maintainAspectRatio: false,
                 }" :chart-data="data" />
             </div> -->
-      <div class="bg-white p-4 text-center rounded-xl">
+      <div class="bg-white p-2 text-center rounded-xl max-w-xl w-full" >
         Warehouse Overview
         <Doughnut
           :chart-options="{
             responsive: true,
             maintainAspectRatio: false,
+          
           }"
           :chart-data="doughnut"
+          
         />
       </div>
     </div>
