@@ -4,17 +4,18 @@ import App from "./App.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import axios from "axios";
 import VueCookies from "vue-cookies";
-import VueGoogleMaps from "@fawmi/vue-google-maps";
 import OpenLayersMap from "vue3-openlayers";
 import "vue3-openlayers/dist/vue3-openlayers.css";
 
 const app = createApp(App);
+
 const Authentication = async () => {
   const { data } = await axios.get("/api/authentication");
   if (!data) {
     return { path: "/login" };
   }
 };
+
 const PageAccess = (to) => {
   to.meta.type_of_user.forEach((type_of_user) => {
     if (type_of_user === $cookies.get("type_of_user")) {
@@ -29,16 +30,11 @@ const PageAccess = (to) => {
     }
   });
 };
-app.use(OpenLayersMap);
 
 app.use(createPinia());
+app.use(OpenLayersMap);
 app.use(VueCookies);
-app.use(VueGoogleMaps, {
-  load: {
-    key: "AIzaSyBnpAKWxu7ciOW1OnMqYXkaHeuXOhrb6Es",
-    libraries: "places",
-  },
-});
+
 app.use(
   createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),

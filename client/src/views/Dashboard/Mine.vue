@@ -1,8 +1,7 @@
 <script setup>
-import useHomeStore from "@/stores/HomeStore";
 import { Bar, Doughnut } from "vue-chartjs";
 import { useRoute } from "vue-router";
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import axios from "axios";
 import {
   Chart as ChartJS,
@@ -43,6 +42,9 @@ const dashboard = async () => {
 };
 
 dashboard();
+onBeforeMount(() => {
+  dashboard();
+});
 
 const data = {
   labels: ["January", "February", "March"],
@@ -64,7 +66,6 @@ const data = {
     },
   ],
 };
-// console.log(useHomeStore().buttons_test());
 </script>
 <template>
   <div class="flex flex-col gap-4">
