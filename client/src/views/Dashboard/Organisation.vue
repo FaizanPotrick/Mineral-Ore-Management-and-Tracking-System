@@ -32,7 +32,7 @@ dashboard();
       <div
         :key="card"
         v-for="card of cards"
-        class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-8 bg-white rounded-lg drop-shadow-md min-w-[24rem]"
+        class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-4 bg-white rounded-lg drop-shadow-md min-w-[20rem]"
       >
         <div class="text-xl">{{ card.title }}</div>
         <div class="flex gap-4 capitalize">
@@ -46,7 +46,7 @@ dashboard();
         </div>
       </div>
     </div>
-    <ol-map style="height: 40vh">
+    <ol-map style="height: 40vh; width: 65vw;">
       <ol-view :center="[78.9629, 20.5937]" :zoom="5" projection="EPSG:4326" />
       <ol-tile-layer>
         <ol-source-osm />
