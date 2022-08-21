@@ -41,18 +41,14 @@ get_organisations();
               v-for="organisation in organisations"
               class="text-center"
             >
-              <td class="px-2 py-4">
-                {{ organisation._id }}
-              </td>
+              <td class="px-2 py-4">...{{ organisation._id.slice(19) }}</td>
               <td class="px-2 py-4 capitalize">
                 {{ organisation.organisation_name }}
               </td>
               <td class="px-2 py-4">
                 {{ organisation.ceo_id }}
               </td>
-              <td class="px-2 py-4">
-                {{ organisation.gst_no }}
-              </td>
+              <td class="px-2 py-4">...{{ organisation.gst_no.slice(10) }}</td>
               <td class="px-2 py-4">
                 <RouterLink
                   :to="'/dashboard/organisations/' + organisation._id"
