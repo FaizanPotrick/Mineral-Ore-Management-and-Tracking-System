@@ -52,7 +52,7 @@ const login_fn = async () => {
       </RouterLink>
     </nav>
     <div
-      class="max-w-md w-full bg-white p-10 border border-gray-400/20 shadow-md rounded-2xl m-5 sm:m-10 text-gray-800"
+      class="max-w-md w-full sm:mx-2 bg-white p-10 border border-gray-400/20 shadow-md rounded-2xl m-5 sm:m-10 text-gray-800"
     >
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">Login</div>
@@ -114,9 +114,9 @@ const login_fn = async () => {
       </form>
     </div>
     <footer
-      class="flex items-center justify-around bg-white font-semibold text-yellow-700 text-lg py-3 w-full"
+      class="flex items-center justify-around bg-white font-semibold text-yellow-700 py-3 w-full sm:text-sm md:text-md lg:text-lg"
     >
-      <div>© Ministry of Mines. All Rights Reserved.</div>
+      <div class="sm: mx-2">© Ministry of Mines. All Rights Reserved.</div>
       <div>@Team Mining.eth</div>
     </footer>
   </div>
