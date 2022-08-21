@@ -39,7 +39,7 @@ const downloadQRCode = () => {
         <div class="font-semibold text-2xl text-yellow-700">Transaction</div>
       </div>
       <div class="flex flex-col gap-6 justify-center">
-        <div class="flex justify-center" >
+        <div class="flex justify-center">
           <QrcodeVue
             :value="
               JSON.stringify({
@@ -49,8 +49,8 @@ const downloadQRCode = () => {
             "
             :size="300"
             level="H"
+            margin="10"
             id="qr_code"
-            class="p-4"
           />
         </div>
         <button
