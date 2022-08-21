@@ -28,11 +28,11 @@ get_organisations();
         <table class="w-full">
           <thead class="border-b whitespace-nowrap bg-yellow-400">
             <tr class="text-center">
-              <th class="px-6 py-4">Organisation Id</th>
-              <th class="px-6 py-4">Organisation Name</th>
-              <th class="px-6 py-4">CEO Id</th>
-              <th class="px-6 py-4">Gst no</th>
-              <th class="px-6 py-4">View</th>
+              <th class="px-2 py-4">Organisation Id</th>
+              <th class="px-2 py-4">Organisation Name</th>
+              <th class="px-2 py-4">CEO Id</th>
+              <th class="px-2 py-4">Gst no</th>
+              <th class="px-2 py-4">View</th>
             </tr>
           </thead>
           <tbody class="font-normal text-gray-600 whitespace-nowrap">
@@ -41,19 +41,19 @@ get_organisations();
               v-for="organisation in organisations"
               class="text-center"
             >
-              <td class="px-6 py-4">
+              <td class="px-2 py-4">
                 {{ organisation._id }}
               </td>
-              <td class="px-6 py-4 capitalize">
+              <td class="px-2 py-4 capitalize">
                 {{ organisation.organisation_name }}
               </td>
-              <td class="px-6 py-4">
+              <td class="px-2 py-4">
                 {{ organisation.ceo_id }}
               </td>
-              <td class="px-6 py-4">
+              <td class="px-2 py-4">
                 {{ organisation.gst_no }}
               </td>
-              <td class="px-6 py-4">
+              <td class="px-2 py-4">
                 <RouterLink
                   :to="'/dashboard/organisations/' + organisation._id"
                   class="hover:text-yellow-700"
