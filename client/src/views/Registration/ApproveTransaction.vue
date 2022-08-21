@@ -162,7 +162,7 @@ const register_fn = async () => {
                   class="w-4 h-4"
                   required
                 />
-                <label class="ml-2 font-medium">Approve</label>
+                <label class="ml-2 font-medium">Accept</label>
               </div>
               <div class="flex items-center">
                 <input
