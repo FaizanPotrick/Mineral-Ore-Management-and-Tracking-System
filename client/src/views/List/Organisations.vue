@@ -41,14 +41,25 @@ get_organisations();
               v-for="organisation in organisations"
               class="text-center"
             >
-              <td class="px-2 py-4">...{{ organisation._id.slice(19) }}</td>
+              <td class="px-2 py-4">
+                <abbr style="text-decoration: none" :title="organisation._id">
+                  ...{{ organisation._id.slice(19) }}
+                </abbr>
+              </td>
               <td class="px-2 py-4 capitalize">
                 {{ organisation.organisation_name.slice(-13) }}
               </td>
               <td class="px-2 py-4">
                 {{ organisation.ceo_id.slice(4) }}
               </td>
-              <td class="px-2 py-4">...{{ organisation.gst_no.slice(10) }}</td>
+              <td class="px-2 py-4">
+                <abbr
+                  style="text-decoration: none"
+                  :title="organisation.gst_no"
+                >
+                  ...{{ organisation.gst_no.slice(10) }}
+                </abbr>
+              </td>
               <td class="px-2 py-4">
                 <RouterLink
                   :to="'/dashboard/organisations/' + organisation._id"
@@ -59,11 +70,11 @@ get_organisations();
                       d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                     ></path>
                   </svg> -->
-                   <button
+                  <button
                     type="button"
-                    class=" inline-block px-4 py-2 border-2 border-yellow-600 text-orange-600 font-medium text-xs leading-normal uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
+                    class="inline-block px-4 py-2 border-2 border-yellow-600 text-orange-600 font-medium text-xs leading-normal uppercase rounded hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
                   >
-                   View
+                    View
                   </button>
                 </RouterLink>
               </td>
