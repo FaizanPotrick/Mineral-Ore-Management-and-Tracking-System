@@ -69,7 +69,7 @@ app.use(
             meta: {
               active: "home",
               access: false,
-              type_of_user: ["officer", "organisation", "miner"],
+              type_of_user: ["officer", "organisation", "miner", "checkpoint"],
               type_of_region: ["country", "state", "district"],
             },
             beforeEnter: [Authentication, PageAccess],
@@ -80,6 +80,8 @@ app.use(
                 return import("@/views/Dashboard/Organisation.vue");
               } else if ($cookies.get("type_of_user") === "miner") {
                 return import("@/views/Dashboard/Mine.vue");
+              } else {
+                return import("@/views/Dashboard/CheckPoint.vue");
               }
             },
           },
@@ -154,6 +156,18 @@ app.use(
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Registration/Mine.vue"),
+          },
+          {
+            path: "checkpoint_registration",
+            name: "checkpoint_registration",
+            meta: {
+              active: "checkpoint registration",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Registration/CheckPoint.vue"),
           },
           {
             path: "officers",
@@ -314,7 +328,7 @@ app.use(
             meta: {
               active: "approve transaction",
               access: false,
-              type_of_user: ["organisation"],
+              type_of_user: ["organisation", "checkpoint"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () =>

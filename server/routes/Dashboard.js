@@ -3,6 +3,8 @@ const router = express.Router();
 const Organisation = require("../models/OrganisationSchema");
 const Mine = require("../models/MineSchema");
 const Region = require("../models/RegionSchema");
+const CheckPoint = require("../models/CheckPointSchema");
+const Transaction = require("../models/TransactionSchema");
 const mongoose = require("mongoose");
 
 router.get("/api/dashboard/officer/country", async (req, res) => {
@@ -405,4 +407,22 @@ router.get("/api/dashboard/miner", async (req, res) => {
   ]);
   res.json(response[0]);
 });
+
+router.get("/api/dashboard/checkpoint", async (req, res) => {
+  let _id = req.cookies._id;
+  if (req.query.checkpoint_id) {
+    _id = req.query.checkpoint_id;
+  }
+  const response = await Transaction.aggregate([
+    {
+      $match: {
+        $expr: {
+          $in: [_id, "$checkpoints"],
+        },
+      },
+    },
+  ]);
+  res.json(response);
+});
+
 module.exports = router;

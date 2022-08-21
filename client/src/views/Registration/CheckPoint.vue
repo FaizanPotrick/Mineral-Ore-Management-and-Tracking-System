@@ -5,19 +5,14 @@ import axios from "axios";
 import { ref } from "vue";
 const { open_alert_box } = useAlertStore();
 
-const organisations = ref([]);
 const center = ref([78.9629, 20.5937]);
 const zoom = ref(4);
-const mine = ref({
+const checkpoint = ref({
   organisation_id: "",
   name: "",
   email_address: "",
   phone_no: "",
   aadhar_card: "",
-  pin_code: "",
-  area: 0,
-  warehouse_capacity: 0,
-  period: 0,
   coordinates: {
     latitude: 0,
     longitude: 0,
@@ -27,30 +22,25 @@ const loading = ref(false);
 
 const register_fn = async () => {
   if (
-    mine.value.coordinates.latitude === 0 ||
-    mine.value.coordinates.longitude === 0
+    checkpoint.value.coordinates.latitude === 0 ||
+    checkpoint.value.coordinates.longitude === 0
   ) {
     return open_alert_box("Please select a location", "warning");
   }
   loading.value = true;
   await axios({
     method: "post",
-    url: "/api/registration/mine",
-    data: mine.value,
+    url: "/api/registration/checkpoint",
+    data: checkpoint.value,
   })
     .then((res) => {
       open_alert_box(res.data.message, res.data.type);
       if (res.status === 200) {
-        mine.value = {
-          organisation_id: "",
+        checkpoint.value = {
           name: "",
           email_address: "",
           phone_no: "",
           aadhar_card: "",
-          pin_code: "",
-          area: 0,
-          warehouse_capacity: 0,
-          period: 0,
           coordinates: {
             latitude: 0,
             longitude: 0,
@@ -65,7 +55,7 @@ const register_fn = async () => {
 };
 
 const marker_selector = async (e) => {
-  mine.value.coordinates = {
+  checkpoint.value.coordinates = {
     latitude: e.feature.values_.geometry.flatCoordinates[1],
     longitude: e.feature.values_.geometry.flatCoordinates[0],
   };
@@ -75,7 +65,6 @@ onMounted(async () => {
   const { data } = await axios.get(
     "/api/region_coordinates_and_organisation_list"
   );
-  organisations.value = data.organisations;
   center.value = [data.coordinates.longitude, data.coordinates.latitude];
   zoom.value = 10;
 });
@@ -87,42 +76,21 @@ onMounted(async () => {
     >
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
-          Mine Registration
+          Checkpoint Officer Registration
         </div>
-        <div class="text-gray-500 text-sm">Register a mine.</div>
+        <div class="text-gray-500 text-sm">Register a checkpoint.</div>
       </div>
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
         <div class="grid gap-6 grid-cols-1">
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >Organisation ID*</label
+              >Checkpoint Officer Name*</label
             >
             <input
               type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Organization ID"
-              v-model="mine.organisation_id"
-              required
-              list="org_id_list"
-            />
-            <datalist id="org_id_list">
-              <option
-                :value="organisation._id"
-                v-for="organisation of organisations"
-              >
-                {{ organisation.organisation_name }}
-              </option>
-            </datalist>
-          </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Manager Name*</label
-            >
-            <input
-              type="text"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Manager Name"
-              v-model="mine.name"
+              placeholder="Officer Name"
+              v-model="checkpoint.name"
               maxlength="150"
               required
             />
@@ -131,13 +99,13 @@ onMounted(async () => {
         <div class="grid gap-6 sm:grid-cols-2">
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >Manager Email Address*</label
+              >Checkpoint Officer Email Address*</label
             >
             <input
               type="email"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Email Address"
-              v-model="mine.email_address"
+              v-model="checkpoint.email_address"
               maxlength="150"
               pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]+"
               required
@@ -145,13 +113,13 @@ onMounted(async () => {
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >Manager Phone No.*</label
+              >Checkpoint Officer Phone No.*</label
             >
             <input
               type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Phone Number"
-              v-model="mine.phone_no"
+              v-model="checkpoint.phone_no"
               minlength="10"
               maxlength="10"
               pattern="[0-9]{10}"
@@ -160,66 +128,16 @@ onMounted(async () => {
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >Manager Aadhar Card*</label
+              >Checkpoint Officer Aadhar Card*</label
             >
             <input
               type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Aadhar Card"
-              v-model="mine.aadhar_card"
+              v-model="checkpoint.aadhar_card"
               minlength="12"
               maxlength="12"
               pattern="[0-9]{12}"
-              required
-            />
-          </div>
-        </div>
-        <div class="grid gap-6 md:grid-cols-3 sm:grid-cols-2">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Pin Code*</label>
-            <input
-              type="text"
-              placeholder="Pin Code"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.pin_code"
-              maxlength="10"
-              pattern="[0-9]+"
-              required
-            />
-          </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Area(in sqr.)*</label
-            >
-            <input
-              type="number"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.area"
-              pattern="[0-9]+"
-              required
-            />
-          </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Warehouse Capacity(in mt)*</label
-            >
-            <input
-              type="number"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.warehouse_capacity"
-              pattern="[0-9]+"
-              required
-            />
-          </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Lease Period(in year)*</label
-            >
-            <input
-              type="number"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.period"
-              pattern="[0-9]+"
               required
             />
           </div>

@@ -5,7 +5,8 @@
         "type_of_user": [
             "officer",
             "organisation",
-            "miner"
+            "miner",
+            "checkpoint"
         ],
         "type_of_region": [
             "country",
@@ -46,10 +47,21 @@
         ]
     },
     {
+        "name": "checkpoint registration",
+        "router_link": "/dashboard/checkpoint_registration",
+        "type_of_user": [
+            "officer"
+        ],
+        "type_of_region": [
+            "district"
+        ]
+    },
+    {
         "name": "approve transaction",
         "router_link": "/dashboard/approve_transaction",
         "type_of_user": [
-            "organisation"
+            "organisation",
+            "checkpoint"
         ]
     },
     {

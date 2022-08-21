@@ -194,7 +194,7 @@ router.post("/api/transaction/organisation", async (req, res) => {
         status: status,
       }
     );
-    if (status === "approved") {
+    if (status === "delivered") {
       await Organisation.findByIdAndUpdate(_id, {
         $inc: {
           [`ores_bought.${transaction_response.type_of_ore}.${transaction_response.grade}`]:
@@ -227,6 +227,7 @@ router.post("/api/transaction/checkpoint", async (req, res) => {
   const { transaction_id } = req.query;
   const { status } = req.body;
   try {
+    const transaction_response = await Transaction.findById(transaction_id);
     if (!transaction_response.checkpoints.includes(_id)) {
       await Transaction.findByIdAndUpdate(transaction_id, {
         $push: {
@@ -234,7 +235,7 @@ router.post("/api/transaction/checkpoint", async (req, res) => {
         },
       });
     }
-    if (status !== "approved") {
+    if (status === "cancelled") {
       await Transaction.findByIdAndUpdate(transaction_id, {
         status: "cancelled",
       });

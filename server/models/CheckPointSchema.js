@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const CheckPoint = new mongoose.Schema({
-  checkpoint_id: {
+  checkpoint_officer_id: {
     type: String,
     required: true,
   },
@@ -22,4 +22,3 @@ const CheckPoint = new mongoose.Schema({
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
   .model("Check Point", CheckPoint);
-// Add Check Point Officer

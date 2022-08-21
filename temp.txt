@@ -33,3 +33,7 @@ password: NunMHZMR
 Mine
 UserName: rB3xVjWD
 Password: MY6G2CO4
+
+Checkpoint Officer
+UserName: JGb6iA9c
+Password: DCYxVAz7
