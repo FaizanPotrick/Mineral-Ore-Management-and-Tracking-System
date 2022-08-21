@@ -2,6 +2,7 @@
 import axios from "axios";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+import moment from "moment";
 
 const route = useRoute();
 const transactions = ref([]);
@@ -68,8 +69,8 @@ get_transaction();
               class="text-center"
             >
               <td class="px-2 py-4">
-                <abbr style="text-decoration:none" :title="mine._id">
-                ...{{ mine._id.slice(19) }}
+                <abbr style="text-decoration: none" :title="mine._id">
+                  ...{{ mine._id.slice(19) }}
                 </abbr>
               </td>
               <td
@@ -94,7 +95,7 @@ get_transaction();
                 {{ mine.status }}
               </td>
               <td class="px-2 py-4">
-                {{ mine.createdAt.slice(-12,-5) }}
+                {{ moment(mine.createdAt).format("DD/MM/YYYY hh:mm:ss") }}
               </td>
               <td
                 v-if="
@@ -135,9 +136,9 @@ get_transaction();
                       d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                     ></path>
                   </svg> -->
-                   <button
+                  <button
                     type="button"
-                    class="inline-block px-4 py-2  border-2 bg-blue-600 hover:bg-blue-800 text-white font-medium text-xs leading-normal uppercase rounded-lg"
+                    class="inline-block px-4 py-2 border-2 bg-blue-600 hover:bg-blue-800 text-white font-medium text-xs leading-normal uppercase rounded-lg"
                   >
                     View
                   </button>

@@ -2,6 +2,7 @@
 import axios from "axios";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+import moment from "moment";
 
 const route = useRoute();
 const mined_batch = ref([]);
@@ -93,7 +94,11 @@ mined_batch_fn();
                     <tr class="bg-white border-b">
                       <td class="px-6 py-4">Timestamp:</td>
                       <td class="px-6 py-4 font-bold">
-                        {{ mined_batch.createdAt }}
+                        {{
+                          moment(mined_batch.createdAt).format(
+                            "DD/MM/YYYY hh:mm:ss"
+                          )
+                        }}
                       </td>
                     </tr>
                   </tbody>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import QrcodeVue from "qrcode.vue";
+import moment from "moment";
 
 const route = useRoute();
 const transaction = ref([]);
@@ -49,7 +50,7 @@ const downloadQRCode = () => {
             "
             :size="300"
             level="H"
-            margin="10"
+            :margin="10"
             id="qr_code"
           />
         </div>
@@ -125,7 +126,11 @@ const downloadQRCode = () => {
                     <tr class="bg-white border-b">
                       <td class="px-6 py-4">Status:</td>
                       <td class="px-6 py-4 font-bold">
-                        {{ transaction.createdAt }}
+                        {{
+                          moment(transaction.createdAt).format(
+                            "DD/MM/YYYY hh:mm:ss"
+                          )
+                        }}
                       </td>
                     </tr>
                   </tbody>

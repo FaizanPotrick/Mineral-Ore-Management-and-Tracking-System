@@ -62,9 +62,7 @@ const register_fn = async () => {
 };
 
 onMounted(async () => {
-  const { data } = await axios.get(
-    "/api/region_coordinates_and_organisation_list"
-  );
+  const { data } = await axios.get("/api/miner/organisation_list");
   organisations.value = data.organisations;
 });
 </script>

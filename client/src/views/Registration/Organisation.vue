@@ -145,7 +145,7 @@ const register_fn = async () => {
               v-model="organisation.gst_no"
               minlength="15"
               maxlength="15"
-              pattern="[0-9]{15}"
+              pattern="[a-zA-Z0-9]{15}"
               required
             />
           </div>

@@ -136,7 +136,7 @@ app.use(
               active: "organisation registration",
               access: false,
               type_of_user: ["officer"],
-              type_of_region: ["country", "state"],
+              type_of_region: ["country", "state", "district"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Registration/Organisation.vue"),
@@ -366,16 +366,6 @@ app.use(
               import("@/views/Registration/ApproveMinedBatch.vue"),
           },
         ],
-      },
-      {
-        path: "/scanqr",
-        name: "scanqr",
-        component: () => import("@/views/ScanQr.vue"),
-      },
-      {
-        path: "/transaction_details/:transaction_id",
-        name: "TransactionDetails",
-        component: () => import("@/views/TransactionDetails.vue"),
       },
       {
         path: "/:catchAll(.*)",
