@@ -4,8 +4,8 @@ const User = require("../models/UserSchema");
 const Region = require("../models/RegionSchema");
 const Organisation = require("../models/OrganisationSchema");
 const Mine = require("../models/MineSchema");
+const CheckPoint = require("../models/CheckPointSchema");
 const bcrypt = require("bcrypt");
-const Transaction = require("../models/TransactionSchema");
 
 router.get("/api/authentication", async (req, res) => {
   if (req.session.type_of_user === req.cookies.type_of_user) {
@@ -76,6 +76,15 @@ router.post("/api/login", async (req, res) => {
         .lean();
       req.session._id = mine_response._id;
       res.cookie("_id", mine_response._id);
+    }
+    if (user_response.type_of_user === "checkpoint") {
+      const checkpoint_response = await CheckPoint.findOne({
+        checkpoint_officer_id: user_response.user_id,
+      })
+        .select("_id")
+        .lean();
+      req.session._id = checkpoint_response._id;
+      res.cookie("_id", checkpoint_response._id);
     }
     res
       .cookie("auth", user_response.auth, {
