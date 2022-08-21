@@ -102,7 +102,16 @@ const searchList = () => {
             <th class="px-6 py-4">Quantity</th>
             <th class="px-6 py-4">Status</th>
             <th class="px-6 py-4">Timestamp</th>
-            <th class="px-6 py-4">View</th>
+            <th
+              v-if="
+                $cookies.get('type_of_user') === 'officer' &&
+                route.params.mine_id === undefined
+              "
+              class="px-6 py-4"
+            >
+              Form
+            </th>
+            <th v-else class="px-6 py-4">View</th>
           </tr>
         </thead>
         <tbody class="font-normal text-gray-600 whitespace-nowrap">
@@ -134,7 +143,29 @@ const searchList = () => {
             <td class="px-6 py-4">
               {{ mine.createdAt }}
             </td>
-            <td class="px-6 py-4">
+            <td
+              v-if="
+                $cookies.get('type_of_user') === 'officer' &&
+                route.params.mine_id === undefined
+              "
+              class="px-6 py-4"
+            >
+              <RouterLink
+                :to="
+                  '/dashboard/mined_batches/' +
+                  mine._id +
+                  '/approve_mined_batch'
+                "
+                class="hover:text-yellow-700"
+              >
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  ></path>
+                </svg>
+              </RouterLink>
+            </td>
+            <td v-else class="px-6 py-4">
               <RouterLink
                 :to="
                   $cookies.get('type_of_user') !== 'miner'

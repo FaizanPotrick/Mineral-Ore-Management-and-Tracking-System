@@ -6,14 +6,30 @@ State Officer
 username: VhUaQnYj
 password: 4M24fPva
 
+State Officer
+UserName: wzBnaDPI
+Password: st4SAefZ
+
 District Officer
 username: iAHUb1sH
 password: hSlaIkXm
+
+District Officer
+UserName: 6Ioh0DLP
+Password: ob7islf3
 
 Organisation
 username: bs5zYIdw
 password: tQIvwqr6
 
+Organisation
+UserName: mHTDZX1a
+Password: FCI8Fwbw
+
 Mine
 username: 1ahXzGtt
 password: NunMHZMR
+
+Mine
+UserName: rB3xVjWD
+Password: MY6G2CO4
