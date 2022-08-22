@@ -26,6 +26,7 @@ onBeforeMount(() => {
   dashboard();
 });
 </script>
+
 <template>
   <div class="flex flex-col gap-8">
     <div class="text-xl font-semibold capitalize">
@@ -49,7 +50,7 @@ onBeforeMount(() => {
         </div>
       </div>
     </div>
-    <ol-map style="height: 40vh; width: 65vw;">
+    <ol-map style="height: 40vh; width: 65vw">
       <ol-view :center="[78.9629, 20.5937]" :zoom="5" projection="EPSG:4326" />
       <ol-tile-layer>
         <ol-source-osm />

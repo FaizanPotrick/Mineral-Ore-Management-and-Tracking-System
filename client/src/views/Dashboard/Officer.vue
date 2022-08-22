@@ -28,6 +28,7 @@ onBeforeMount(() => {
   dashboard();
 });
 </script>
+
 <template>
   <div class="flex flex-col gap-8">
     <div class="text-2xl font-semibold capitalize">
