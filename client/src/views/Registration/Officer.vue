@@ -45,7 +45,7 @@ const register_fn = async () => {
 
 onMounted(async () => {
   const { data } = await axios.get(
-    `/api/list/region/${$cookies.get("type_of_region")}`
+    `/api/region/${$cookies.get("type_of_region")}`
   );
   regions.value = data;
 });

@@ -8,12 +8,12 @@ const route = useRoute();
 const transactions = ref([]);
 const get_transaction = async () => {
   const { data } = await axios.get(
-    `/api/transactions${
+    `/api/transactions/${
       route.params.mine_id !== undefined
-        ? `?mine_id=${route.params.mine_id}`
+        ? `officer?mine_id=${route.params.mine_id}`
         : $cookies.get("type_of_user") === "organisation"
-        ? "/organisation"
-        : "/miner"
+        ? "organisation"
+        : "miner"
     }`
   );
   transactions.value = data;

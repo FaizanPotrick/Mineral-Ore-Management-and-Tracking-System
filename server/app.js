@@ -45,19 +45,15 @@ app.use(
 app.use(require("./routes/Credentials.js"));
 app.use(require("./routes/User.js"));
 app.use(require("./routes/Dashboard.js"));
-app.use(require("./routes/List/Officers.js"));
-app.use(require("./routes/List/Organisations.js"));
-app.use(require("./routes/List/Mines.js"));
-app.use(require("./routes/List/MinedBatches.js"));
-app.use(require("./routes/List/Transactions.js"));
-app.use(require("./routes/Registration/Officer.js"));
+app.use(require("./routes/List.js"));
+app.use(require("./routes/Card.js"));
+app.use(require("./routes/Input.js"));
+app.use(require("./routes/Registration/User.js"));
 app.use(require("./routes/Registration/Region.js"));
 app.use(require("./routes/Registration/Organisation.js"));
-app.use(require("./routes/Registration/CEO.js"));
 app.use(require("./routes/Registration/Mine.js"));
 app.use(require("./routes/Registration/CheckPoint.js"));
 app.use(require("./routes/Registration/Lab.js"));
-app.use(require("./routes/Registration/Manager.js"));
 app.use(require("./routes/Registration/Transaction.js"));
 app.use(require("./routes/Registration/MinedBatch.js"));
 
