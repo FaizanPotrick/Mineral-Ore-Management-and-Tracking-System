@@ -8,18 +8,19 @@ const SuspiciousActivity = require("../../models/SuspiciousActivity");
 const { initializeApp } = require("firebase/app");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-
 const {
   getStorage,
   ref,
   uploadBytes,
   getDownloadURL,
 } = require("firebase/storage");
+
 const app = initializeApp({
   storageBucket: process.env.BUCKET_URL,
 });
+const storage = getStorage(app);
 
-router.post("/api/registration/transaction", async (req, res) => {
+router.post("/api/registration/transaction/miner", async (req, res) => {
   const { _id } = req.cookies;
   const {
     organisation_id,
@@ -54,7 +55,6 @@ router.post("/api/registration/transaction", async (req, res) => {
       .select(["ceo_id"])
       .lean();
     const region_response = await Region.findById(mine_response[0].region_id);
-    const storage = getStorage(app);
     const invoiceRef = ref(storage, "/invoice_report/" + invoice.name);
     const invoice_path = await uploadBytes(invoiceRef, invoice.data);
     const invoice_url = await getDownloadURL(
@@ -91,7 +91,6 @@ router.post("/api/registration/transaction", async (req, res) => {
         [`ores_available.${type_of_ore}.${grade}`]: -parseInt(quantity),
       },
     });
-    const today = new Date();
     const mine_average_price_response = await Transaction.aggregate([
       {
         $match: {
@@ -99,7 +98,7 @@ router.post("/api/registration/transaction", async (req, res) => {
           type_of_ore: type_of_ore,
           grade: grade,
           createdAt: {
-            $gte: new Date(new Date(today).setMonth(today.getMonth() - 1)),
+            $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
             $lt: new Date(),
           },
         },
@@ -120,9 +119,7 @@ router.post("/api/registration/transaction", async (req, res) => {
     ]);
     const mine_response_ids = await Mine.find({
       region_id: region_response._id,
-    })
-      .distinct("_id")
-      .lean();
+    }).distinct("_id");
     const mine_ids = mine_response_ids.map((mine) => mine._id.toString());
     const region_average_price_response = await Transaction.aggregate([
       {
@@ -130,10 +127,10 @@ router.post("/api/registration/transaction", async (req, res) => {
           mine_id: {
             $in: mine_ids,
           },
-          type_of_ore: "lump",
-          grade: "low",
+          type_of_ore: type_of_ore,
+          grade: grade,
           createdAt: {
-            $gte: new Date(new Date(today).setMonth(today.getMonth() - 1)),
+            $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
             $lt: new Date(),
           },
         },
@@ -152,23 +149,35 @@ router.post("/api/registration/transaction", async (req, res) => {
         },
       },
     ]);
-    const average_price =
-      mine_average_price_response.length !== 0
-        ? mine_average_price_response[0].price
-        : 500;
-    const acceptable_difference =
+    const acceptable_difference = 20;
+    if (
+      mine_average_price_response.length !== 0 &&
       region_average_price_response.length !== 0
-        ? region_average_price_response[0].price
-        : 500;
-    const actual_difference = Math.abs(100 - (price * 100) / average_price);
-    if (actual_difference > acceptable_difference) {
-      await SuspiciousActivity.create({
-        region_id: region_response._id,
-        type_of_activity: "transaction",
-        reason: "price for difference too high",
-        price_difference: actual_difference,
-        transaction_id: transaction_response._id,
-      });
+    ) {
+      const mine_actual_difference = Math.abs(
+        100 - (parseInt(price) * 100) / mine_average_price_response[0].price
+      );
+      const region_actual_difference = Math.abs(
+        100 - (parseInt(price) * 100) / region_average_price_response[0].price
+      );
+      if (mine_actual_difference > acceptable_difference) {
+        await SuspiciousActivity.create({
+          region_id: region_response._id,
+          type_of_activity: "transaction",
+          reason: `price difference by more then ${acceptable_difference} wrt mine average price`,
+          price_difference: mine_actual_difference,
+          transaction_id: transaction_response._id,
+        });
+      }
+      if (region_actual_difference > acceptable_difference) {
+        await SuspiciousActivity.create({
+          region_id: region_response._id,
+          type_of_activity: "transaction",
+          reason: `price difference by more then ${acceptable_difference} wrt region average price`,
+          price_difference: region_actual_difference,
+          transaction_id: transaction_response._id,
+        });
+      }
     }
     res.status(200).json({
       message: "Successfully Registered",
@@ -183,7 +192,7 @@ router.post("/api/registration/transaction", async (req, res) => {
   }
 });
 
-router.post("/api/transaction/organisation", async (req, res) => {
+router.post("/api/registration/transaction/organisation", async (req, res) => {
   const { _id } = req.cookies;
   const { transaction_id } = req.query;
   const { status } = req.body;
@@ -194,7 +203,7 @@ router.post("/api/transaction/organisation", async (req, res) => {
         status: status,
       }
     );
-    if (status === "delivered") {
+    if (transaction_response.status === "delivered") {
       await Organisation.findByIdAndUpdate(_id, {
         $inc: {
           [`ores_bought.${transaction_response.type_of_ore}.${transaction_response.grade}`]:
@@ -222,7 +231,7 @@ router.post("/api/transaction/organisation", async (req, res) => {
   }
 });
 
-router.post("/api/transaction/checkpoint", async (req, res) => {
+router.post("/api/registration/transaction/checkpoint", async (req, res) => {
   const { _id } = req.cookies;
   const { transaction_id } = req.query;
   const { status } = req.body;

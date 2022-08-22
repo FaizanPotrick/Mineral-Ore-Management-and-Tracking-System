@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
 const moment = require("moment");
+
 const id_genarate = new ShortUniqueId({
   length: 8,
 });
@@ -104,4 +105,5 @@ router.post(
   },
   RegistrationEmailSender
 );
+
 module.exports = router;

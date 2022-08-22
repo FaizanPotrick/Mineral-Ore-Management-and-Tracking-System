@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const Transaction = new mongoose.Schema(
   {
     mine_id: {
@@ -61,6 +62,7 @@ const Transaction = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
   .model("Transaction", Transaction);

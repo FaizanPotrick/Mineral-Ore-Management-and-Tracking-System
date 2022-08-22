@@ -42,6 +42,7 @@ const register_fn = async () => {
     });
   loading.value = false;
 };
+
 onMounted(async () => {
   const { data } = await axios.get(
     `/api/list/region/${$cookies.get("type_of_region")}`
@@ -49,6 +50,7 @@ onMounted(async () => {
   regions.value = data;
 });
 </script>
+
 <template>
   <div class="flex justify-center items-center">
     <div

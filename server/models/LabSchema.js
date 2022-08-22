@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const Lab = new mongoose.Schema({
   lab_manager_id: {
     type: String,
@@ -26,4 +27,5 @@ const Lab = new mongoose.Schema({
     },
   },
 });
+
 module.exports = mongoose.connection.useDb("Ores_Tracking").model("Lab", Lab);

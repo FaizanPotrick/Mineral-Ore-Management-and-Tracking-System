@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const User = new mongoose.Schema(
   {
     auth: {
@@ -63,4 +64,5 @@ const User = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 module.exports = mongoose.connection.useDb("Ores_Tracking").model("User", User);

@@ -6,9 +6,11 @@ const Organisation = require("../../models/OrganisationSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
+
 const id_generate = new ShortUniqueId({
   length: 8,
 });
+
 router.post(
   "/api/registration/ceo",
   async (req, res, next) => {
@@ -81,4 +83,5 @@ router.post(
   },
   RegistrationEmailSender
 );
+
 module.exports = router;

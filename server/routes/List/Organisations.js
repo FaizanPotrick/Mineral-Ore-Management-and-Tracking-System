@@ -8,7 +8,7 @@ router.get("/api/organisations/officer", async (req, res) => {
   res.json(organisation_response);
 });
 
-router.get("/api/miner/organisation_list", async (req, res) => {
+router.get("/api/transaction/organisation_list", async (req, res) => {
   const { _id } = req.cookies;
   const mine_response = await Mine.findById(_id).lean();
   const organisation_response = await Organisation.find({

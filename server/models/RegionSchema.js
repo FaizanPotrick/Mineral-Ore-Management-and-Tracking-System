@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const Region = new mongoose.Schema({
   officer_id: {
     type: String,
@@ -30,6 +31,7 @@ const Region = new mongoose.Schema({
     },
   },
 });
+
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
   .model("Region", Region);

@@ -19,8 +19,9 @@ const onInit = async (promise) => {
     errors.value = error.name;
   }
 };
+
 const onDecode = async (result) => {
-  const resultParse = JSON.parse(result);
+  const resultParse = await JSON.parse(result);
   const { status, data } = await axios.get(
     `/api/transaction/verify?transaction_id=${resultParse.transaction_id}&transaction_hash=${resultParse.transaction_hash}`
   );
@@ -57,6 +58,7 @@ const register_fn = async () => {
   loading.value = false;
 };
 </script>
+
 <template>
   <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
     <div
@@ -72,7 +74,6 @@ const register_fn = async () => {
         {{ errors }}
       </div>
       <QrcodeStream @decode="onDecode" @init="onInit" />
-
       <div class="flex flex-col mt-6">
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">

@@ -6,7 +6,7 @@ const Lab = require("../../models/LabSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
-const MinedBatchSchema = require("../../models/MinedBatchSchema");
+
 const id_generate = new ShortUniqueId({
   length: 8,
 });
@@ -80,40 +80,4 @@ router.post(
   RegistrationEmailSender
 );
 
-router.post("/api/upload_batch_report", async (req, res, next) => {
-  try {
-    const { _id } = req.cookies;
-    const { batch_id, fe_percent } = req.body;
-    const { batch_lab_report } = req.files;
-    const storage = getStorage(app);
-    const documentRef = ref(
-      storage,
-      "/batch_lab_report/" + batch_lab_report.name
-    );
-    const batch_lab_report_path = await uploadBytes(
-      documentRef,
-      batch_lab_report.data
-    );
-    const batch_lab_report_url_signed = await getSignedUrl(
-      batch_lab_report_path
-    );
-    console.log("signed urls: ", batch_lab_report_url_signed);
-    const batch_lab_report_url = await getDownloadURL(
-      ref(storage, mine_lap_report_path.metadata.fullPath)
-    );
-    await MinedBatchSchema.updateOne(batch_id, {
-      batch_lab_report_url: batch_lab_report_url,
-    });
-    res.status(200).json({
-      message: "Successfully Registered",
-      type: "success",
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: "Invalid Request",
-      type: "error",
-    });
-  }
-});
 module.exports = router;

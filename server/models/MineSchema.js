@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const Mine = new mongoose.Schema({
   organisation_id: {
     type: String,
@@ -104,6 +105,5 @@ const Mine = new mongoose.Schema({
     },
   },
 });
-module.exports = mongoose.connection
-  .useDb("Ores_Tracking")
-  .model("Mine", Mine);
+
+module.exports = mongoose.connection.useDb("Ores_Tracking").model("Mine", Mine);

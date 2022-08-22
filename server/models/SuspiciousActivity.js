@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const SuspiciousActivity = new mongoose.Schema({
   region_id: {
     type: String,

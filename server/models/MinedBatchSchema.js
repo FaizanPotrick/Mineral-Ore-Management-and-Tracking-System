@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const MinedBatch = new mongoose.Schema(
   {
     mine_id: {
@@ -54,6 +55,7 @@ const MinedBatch = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
   .model("Mined Batch", MinedBatch);

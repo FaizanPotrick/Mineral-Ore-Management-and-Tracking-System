@@ -29,6 +29,7 @@ router.get("/api/transaction", async (req, res) => {
   const transaction_response = await Transaction.findById(transaction_id);
   res.status(200).json(transaction_response);
 });
+
 router.get("/api/transaction/verify", async (req, res) => {
   const { type_of_user, _id } = req.cookies;
   const { transaction_id, transaction_hash } = req.query;
