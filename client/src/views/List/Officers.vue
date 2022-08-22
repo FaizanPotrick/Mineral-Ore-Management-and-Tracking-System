@@ -57,34 +57,34 @@ const searchList = () => {
         <table class="w-full">
           <thead class="border-b whitespace-nowrap bg-yellow-400">
             <tr class="text-center">
-              <th class="px-1 py-4">Region Id</th>
-              <th class="px-1 py-4">Officer Id</th>
-              <th class="px-1 py-4">Region Type</th>
-              <th class="px-1 py-4">State</th>
-              <th class="px-1 py-4">District</th>
-              <th class="px-1 py-4"></th>
+              <th class="py-4">Region Id</th>
+              <th class="py-4">Officer Id</th>
+              <th class="py-4">Region Type</th>
+              <th class="py-4">State</th>
+              <th class="py-4">District</th>
+              <th class="py-4"></th>
             </tr>
           </thead>
           <tbody class="font-normal text-gray-600 whitespace-nowrap">
             <tr :key="officer._id" v-for="officer in officers" class="text-center">
               <abbr style="text-decoration: none" :title="officer._id">
-                <td class="px-1 py-4">...{{ officer._id.slice(19) }}</td>
+                <td class="py-4">...{{ officer._id.slice(10) }}</td>
               </abbr>
-              <td class="px-1 py-4">
-                {{ officer.officer_id.slice(4) }}
+              <td class="py-4">
+                {{ officer.officer_id }}
               </td>
-              <td class="px-1 py-4 capitalize">
+              <td class="py-4 capitalize">
                 {{ officer.type_of_region }}
               </td>
-              <td class="px-1 py-4 capitalize">
+              <td class="py-4 capitalize">
                 {{ officer.state }}
               </td>
-              <td class="px-1 py-4 capitalize">
+              <td class="py-4 capitalize">
                 {{
                     officer.type_of_region === "state" ? "-" : officer.district
                 }}
               </td>
-              <td class="px-1 py-4">
+              <td class="py-4 flex items-center justify-center">
                 <RouterLink :to="
                   '/dashboard/officers/' +
                   officer.type_of_region +
@@ -93,11 +93,12 @@ const searchList = () => {
                 " class="hover:text-yellow-700">
                   <!-- <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                     <path
-                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    ></path>
+                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z">
+                    </path>
+
                   </svg> -->
                   <button type="button"
-                    class="inline-block px-4 py-2  border-2 bg-blue-600 hover:bg-blue-800 text-white font-medium text-xs leading-normal uppercase rounded-lg">
+                    class="inline-block px-4 py-2  border-2 bg-yellow-500 hover:bg-yellow-400 text-white font-medium text-xs leading-normal uppercase rounded-lg">
                     View
                   </button>
                 </RouterLink>
