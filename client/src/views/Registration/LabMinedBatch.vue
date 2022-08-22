@@ -2,9 +2,10 @@
 import useAlertStore from "@/stores/Alert";
 import axios from "axios";
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 const { open_alert_box } = useAlertStore();
 const lab_mined_batch = ref({
   fe_percentage: 0,
@@ -43,6 +44,7 @@ const register_fn = async () => {
           fe_percentage: "",
           mine_lap_report: {},
         };
+        router.push("/dashboard/mined_batches");
       }
     })
     .catch((err) => {

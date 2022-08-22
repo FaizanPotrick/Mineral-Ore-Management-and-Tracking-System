@@ -197,6 +197,42 @@ app.use(
             component: () => import("@/views/Registration/CEO.vue"),
           },
           {
+            path: "officers",
+            name: "officers",
+            meta: {
+              active: "officers",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/Officers.vue"),
+          },
+          {
+            path: "organisations",
+            name: "organisations",
+            meta: {
+              active: "organisations",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/Organisations.vue"),
+          },
+          {
+            path: "mines",
+            name: "mines",
+            meta: {
+              active: "mines",
+              access: false,
+              type_of_user: ["officer", "organisation"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/Mines.vue"),
+          },
+          {
             path: "mines/:mine_id/manager_registration",
             name: "manager_registration",
             meta: {
@@ -206,6 +242,53 @@ app.use(
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Registration/Manager.vue"),
+          },
+          {
+            path: "mined_batches",
+            name: "mined_batches",
+            meta: {
+              active: "mined batches",
+              access: false,
+              type_of_user: ["officer", "miner", "lab"],
+              type_of_region: ["district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/MinedBatches.vue"),
+          },
+          {
+            path: "mined_batches/:batch_id",
+            name: "mined_batch",
+            meta: {
+              active: "mined batches",
+              access: false,
+              type_of_user: ["miner", "lab"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/MinedBatch.vue"),
+          },
+          {
+            path: "mines/:mine_id/mined_batches",
+            name: "officer_mined_batches",
+            meta: {
+              active: "mines",
+              access: false,
+              type_of_user: ["officer", "organisation"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/MinedBatches.vue"),
+          },
+          {
+            path: "mines/:mine_id/mined_batches/:batch_id",
+            name: "officer_mined_batch",
+            meta: {
+              active: "mines",
+              access: false,
+              type_of_user: ["officer", "organisation"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/MinedBatch.vue"),
           },
           {
             path: "add_mined_batch",
@@ -243,6 +326,28 @@ app.use(
               import("@/views/Registration/OfficerMinedBatch.vue"),
           },
           {
+            path: "transactions",
+            name: "transactions",
+            meta: {
+              active: "transactions",
+              access: false,
+              type_of_user: ["organisation", "miner"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/Transactions.vue"),
+          },
+          {
+            path: "add_transaction",
+            name: "add_transaction",
+            meta: {
+              active: "add transaction",
+              access: false,
+              type_of_user: ["miner"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Registration/Transaction.vue"),
+          },
+          {
             path: "approve_transaction",
             name: "approve_transaction ",
             meta: {
@@ -254,103 +359,6 @@ app.use(
             component: () =>
               import("@/views/Registration/ApproveTransaction.vue"),
           },
-
-          {
-            path: "officers",
-            name: "officers",
-            meta: {
-              active: "officers",
-              access: false,
-              type_of_user: ["officer"],
-              type_of_region: ["country", "state"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/List/Officers.vue"),
-          },
-          {
-            path: "organisations",
-            name: "organisations",
-            meta: {
-              active: "organisations",
-              access: false,
-              type_of_user: ["officer"],
-              type_of_region: ["country", "state"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/List/Organisations.vue"),
-          },
-          {
-            path: "mines",
-            name: "mines",
-            meta: {
-              active: "mines",
-              access: false,
-              type_of_user: ["officer", "organisation"],
-              type_of_region: ["country", "state", "district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/List/Mines.vue"),
-          },
-          {
-            path: "mined_batches",
-            name: "mined_batches",
-            meta: {
-              active: "mined batches",
-              access: false,
-              type_of_user: ["officer", "miner", "lab"],
-              type_of_region: ["district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/List/MinedBatches.vue"),
-          },
-          {
-            path: "mined_batches/:batch_id",
-            name: "mined_batch",
-            meta: {
-              active: "mined batches",
-              access: false,
-              type_of_user: ["miner", "lab"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/MinedBatch.vue"),
-          },
-
-          {
-            path: "mines/:mine_id/mined_batches",
-            name: "officer_mined_batches",
-            meta: {
-              active: "mines",
-              access: false,
-              type_of_user: ["officer", "organisation"],
-              type_of_region: ["country", "state", "district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/List/MinedBatches.vue"),
-          },
-          {
-            path: "mines/:mine_id/mined_batches/:batch_id",
-            name: "officer_mined_batch",
-            meta: {
-              active: "mines",
-              access: false,
-              type_of_user: ["officer", "organisation"],
-              type_of_region: ["country", "state", "district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/MinedBatch.vue"),
-          },
-          {
-            path: "transactions",
-            name: "transactions",
-            meta: {
-              active: "transactions",
-              access: false,
-              type_of_user: ["organisation", "miner"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/List/Transactions.vue"),
-          },
-
           {
             path: "transactions/:transaction_id",
             name: "transaction",
@@ -386,18 +394,6 @@ app.use(
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Transaction.vue"),
-          },
-
-          {
-            path: "add_transaction",
-            name: "add_transaction",
-            meta: {
-              active: "add transaction",
-              access: false,
-              type_of_user: ["miner"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Registration/Transaction.vue"),
           },
         ],
       },
