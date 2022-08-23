@@ -28,7 +28,13 @@ router.get("/api/region/state", async (req, res) => {
 });
 
 router.get("/api/mined_batch/lab_list", async (req, res) => {
-  const lab_response = await Lab.find().select("lab_name").lean();
+  const { _id } = req.cookies;
+  const mine_response = await Mine.findById(_id).distinct("region_id");
+  const lab_response = await Lab.find({
+    region_id: mine_response[0],
+  })
+    .select("lab_name")
+    .lean();
   res.json(lab_response);
 });
 

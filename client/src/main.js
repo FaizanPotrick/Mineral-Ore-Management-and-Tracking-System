@@ -261,7 +261,8 @@ app.use(
             meta: {
               active: "mined batches",
               access: false,
-              type_of_user: ["miner", "lab"],
+              type_of_user: ["officer", "miner", "lab"],
+              type_of_region: ["district"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/MinedBatch.vue"),

@@ -70,19 +70,19 @@ get_transaction();
               <td class="py-4">
                 {{ transaction.manager_id }}
               </td>
-              <td class="py-4">
+              <td class="py-4 capitalize">
                 {{ transaction.grade }}
               </td>
               <td class="py-4">
                 {{ transaction.fe_percentage }}
               </td>
-              <td class="py-4">
+              <td class="py-4 capitalize">
                 {{ transaction.type_of_ore }}
               </td>
               <td class="py-4">
                 {{ transaction.quantity }}
               </td>
-              <td class="py-4">
+              <td class="py-4 capitalize">
                 {{ transaction.status }}
               </td>
               <td class="py-4">

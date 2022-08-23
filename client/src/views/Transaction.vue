@@ -31,6 +31,7 @@ const downloadQRCode = () => {
   //TODO: Addition details for the transaction to be displayed is pending in pdf
 };
 </script>
+
 <template>
   <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
     <div
@@ -55,6 +56,7 @@ const downloadQRCode = () => {
           />
         </div>
         <button
+          v-if="$cookies.get('type_of_user')"
           class="bg-orange-600 font-bold py-2 px-4 rounded text-center"
           @click="downloadQRCode"
         >

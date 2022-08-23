@@ -62,19 +62,19 @@ dashboard();
               <td class="py-4">
                 {{ minedbatch.manager_id.slice(4) }}
               </td>
-              <td class="py-4">
+              <td class="py-4 capitalize">
                 {{ minedbatch.grade }}
               </td>
               <td class="py-4">
                 {{ minedbatch.fe_percentage }}
               </td>
-              <td class="py-4">
+              <td class="py-4 capitalize">
                 {{ minedbatch.type_of_ore }}
               </td>
               <td class="py-4">
                 {{ minedbatch.quantity }}
               </td>
-              <td class="py-4">
+              <td class="py-4 capitalize">
                 {{ minedbatch.status }}
               </td>
               <td class="py-4">
