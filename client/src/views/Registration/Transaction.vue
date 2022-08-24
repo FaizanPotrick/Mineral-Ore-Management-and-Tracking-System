@@ -25,15 +25,6 @@ const register_fn = async () => {
   formData.append("organisation_id", transaction.value.organisation_id);
   formData.append("type_of_ore", transaction.value.type_of_ore);
   formData.append("fe_percentage", transaction.value.fe_percentage);
-  formData.append(
-    "grade",
-    transaction.value.fe_percentage >= 65
-      ? "high"
-      : transaction.value.fe_percentage >= 62 &&
-        transaction.value.fe_percentage < 65
-      ? "medium"
-      : "low"
-  );
   formData.append("quantity", transaction.value.quantity);
   formData.append("price", transaction.value.price);
   formData.append("invoice", transaction.value.invoice);

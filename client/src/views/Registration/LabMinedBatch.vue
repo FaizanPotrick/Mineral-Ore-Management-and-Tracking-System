@@ -22,15 +22,6 @@ const register_fn = async () => {
   loading.value = true;
   const formData = new FormData();
   formData.append("fe_percentage", lab_mined_batch.value.fe_percentage);
-  formData.append(
-    "grade",
-    lab_mined_batch.value.fe_percentage >= 65
-      ? "high"
-      : lab_mined_batch.value.fe_percentage >= 62 &&
-        lab_mined_batch.value.fe_percentage < 65
-      ? "medium"
-      : "low"
-  );
   formData.append("mine_lab_report", lab_mined_batch.value.mine_lab_report);
   await axios({
     method: "post",
