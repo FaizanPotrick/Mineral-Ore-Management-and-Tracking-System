@@ -13,7 +13,7 @@ const user = ref({
   email_address: "",
 });
 const showMenu = ref(false);
-const toggleMenu  = () => {
+const toggleMenu = () => {
   showMenu.value = !showMenu.value;
 }
 const user_fetch = async () => {
@@ -33,8 +33,7 @@ const logout = async () => {
 <template>
   <div class="bg-yellow-50" v-if="route.meta.access">
     <div
-      class="flex gap-4 md:justify-between items-center bg-white border-gray-400/20 font-medium drop-shadow text-gray-900 px-5 py-3 md:px-10"
-    >
+      class="flex gap-4 md:justify-between items-center bg-white border-gray-400/20 font-medium drop-shadow text-gray-900 px-5 py-3 md:px-10">
       <div class="flex flex-col items-start flex-shrink-0">
         <div class="text-xl capitalize">{{ user.name }}</div>
         <div class="text-gray-600 text-sm">
@@ -42,64 +41,56 @@ const logout = async () => {
         </div>
       </div>
       <!-- Hamburger button -->
-       <button @click="toggleMenu" id="hamburger" type="button"
-              class="
+      <button @click="toggleMenu" id="hamburger" type="button" class="
               md:hidden
                 text-gray-800
                 hover:text-gray-400
                 focus:outline-none focus:text-gray-400
               ">
- <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-                <path
-                  fill-rule="evenodd"
-                  d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
-                ></path>
-              </svg>
-    </button>
-  
-  <!-- Desktop Nav -->
-      <div id="desktop_nav" class="flex flex-row justify-start w-full gap-4">
-        <RouterLink
-          :key="button"
-          v-for="button of useHomeStore().buttons_fetch()"
-          :to="button.router_link"
-          :class="
-            route.meta.active === button.name
-              ? 'bg-yellow-300 shadow-inner'
-              : 'bg-yellow-100/60 hover:bg-yellow-300 hover:shadow-inner'
-          "
-          class="rounded-xl py-2.5 px-4 capitalize shadow-md"
-        >
-          {{ button.name }}
-        </RouterLink>
-         <button @click="logout" class="text-yellow-700 hover:text-gray-900">
-        Logout
+        <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+          <path fill-rule="evenodd"
+            d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z">
+          </path>
+        </svg>
       </button>
+
+      <!-- Desktop Nav -->
+      <div id="desktop_nav" class="flex flex-row justify-start w-full gap-4">
+        <RouterLink :key="button" v-for="button of useHomeStore().buttons_fetch()" :to="button.router_link" :class="
+          route.meta.active === button.name
+            ? 'bg-yellow-300 shadow-inner'
+            : 'bg-yellow-100/60 hover:bg-yellow-300 hover:shadow-inner'
+        " class="rounded-xl py-2.5 px-4 capitalize shadow-md">
+          {{ button.name }}
+        </RouterLink>
+        <RouterLink to="/dashboard/suspisious_activity" class="flex items-center text-yellow-700 hover:text-gray-900">
+          Alert
+        </RouterLink>
+        <button @click="logout" class="text-yellow-700 hover:text-gray-900">
+          Logout
+        </button>
       </div>
-       </div>
-    
+    </div>
+
     <!-- mobile Hamburger View-->
-      <div id="mobile_nav" v-if="showMenu"  class="container">
-    
-     <div class=" flex flex-col md:hidden justify-start w-full gap-4">
-        <RouterLink
-          :key="button"
-          v-for="button of useHomeStore().buttons_fetch()"
-          :to="button.router_link"
-          :class="
-            route.meta.active === button.name
-              ? 'bg-yellow-300 shadow-inner'
-              : 'bg-yellow-100/60 hover:bg-yellow-300 hover:shadow-inner'
-          "
-          class="rounded-xl py-2.5 px-4 capitalize shadow-md"
-        >
+    <div id="mobile_nav" v-if="showMenu" class="container">
+
+      <div class=" flex flex-col md:hidden justify-start w-full gap-4">
+        <RouterLink :key="button" v-for="button of useHomeStore().buttons_fetch()" :to="button.router_link" :class="
+          route.meta.active === button.name
+            ? 'bg-yellow-300 shadow-inner'
+            : 'bg-yellow-100/60 hover:bg-yellow-300 hover:shadow-inner'
+        " class="rounded-xl py-2.5 px-4 capitalize shadow-md">
           {{ button.name }}
         </RouterLink>
       </div>
+      <RouterLink to="/dashboard/suspisious_activity" class="flex items-center text-yellow-700 hover:text-gray-900">
+        Alert
+      </RouterLink>
       <button @click="logout" class="text-yellow-700 hover:text-gray-900">
         Logout
       </button>
-      </div>
+    </div>
 
 
     <RouterView class="p-10 w-full min-h-[92vh]" />
@@ -117,15 +108,19 @@ const logout = async () => {
   </div>
 </template>
 <style>
+#hamburger,
+#mobile_nav {
+  visibility: hidden;
+}
 
- #hamburger, #mobile_nav {
-        visibility: hidden;
-    }
 @media screen and (max-width: 640px) {
-  #desktop_nav 
-    { visibility: hidden; }
-    #hamburger, #mobile_nav {
-        visibility: visible;
-    }
+  #desktop_nav {
+    visibility: hidden;
+  }
+
+  #hamburger,
+  #mobile_nav {
+    visibility: visible;
+  }
 }
 </style>

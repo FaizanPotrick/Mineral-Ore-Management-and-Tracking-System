@@ -3,6 +3,7 @@ const router = express.Router();
 const Region = require("../../models/RegionSchema");
 const Mine = require("../../models/MineSchema");
 const MinedBatch = require("../../models/MinedBatchSchema");
+const BlockchainConnection = require("../../blockchain_scripts/connection");
 const { initializeApp } = require("firebase/app");
 const {
   getStorage,
@@ -87,8 +88,8 @@ router.post("/api/registration/mined_batch/lab", async (req, res) => {
   }
 });
 
-router.post("/api/registration/mined_batch/officer", async (req, res) => {
-  const { batch_id } = req.query;
+router.post("/api/registration/approve_mined_batch", async (req, res) => {
+  const { batch_id } = req.query; 
   const { status } = req.body;
   try {
     if (req.files.gov_lab_report) {
@@ -117,6 +118,24 @@ router.post("/api/registration/mined_batch/officer", async (req, res) => {
             parseInt(batch_response.quantity),
         },
       });
+      // Add to chain
+      let blockchain = new BlockchainConnection();
+      await blockchain.connectToContract();
+      // batch_id,mine_id,manager_id,amount,ore_type,grade,Fe_amount,sample_img,lab_doc,officer_id,state
+      await blockchain.createMinedBatch(
+        batch_id,
+        batch_response.mine_id,
+        batch_response.manager_id,
+        batch_response.quantity,
+        batch_response.type_of_ore,
+        batch_response.grade,
+        batch_response.fe_percentage,
+        batch_response.sample_image_url,
+        batch_response.mine_lab_report_url,
+        batch_response.officer_id,
+        "approved"
+      );
+
     }
     res.status(200).json({
       message: "Successfully Registered",
@@ -125,7 +144,7 @@ router.post("/api/registration/mined_batch/officer", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({
-      message: "Invalid Request",
+      message: "yo",
       type: "error",
     });
   }

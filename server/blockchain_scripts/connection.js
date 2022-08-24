@@ -1,5 +1,6 @@
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const Web3 = require("web3");
+const crypto = require("crypto");
 require('dotenv').config({
   path: '../.env'
 });
@@ -17,9 +18,10 @@ const web3 = new Web3(provider);
 
 class BlockchainConnection {
 
+
   async connectToContract() {
     try {
-
+      console.log("abi: ",abi.length);
       this.accounts = await web3.eth.getAccounts();
       console.log('Attempting to connect from account', this.accounts[0]);
       this.contract = await new web3.eth.Contract(abi, contractID);
@@ -29,7 +31,37 @@ class BlockchainConnection {
     }
   }
 
+async createMinedBatch(batch_id,mine_id,manager_id,amount,ore_type,grade,Fe_amount,sample_img,lab_doc,officer_id,state) {
+  try{
+    const contract = await this.contract;
+    const ore_details = {
+      batch_id:batch_id,
+                                                     mine_id:mine_id,
+                        manager_id:                             manager_id,
+                        amount:amount,
+                        ore_type:ore_type,
+                        grade: grade,
+                        Fe_amount:Fe_amount,  
+                        sample_img: sample_img,
+                        lab_doc:lab_doc,
+                        officer_id:officer_id,
+                        state:state
+    }
+    const batch_hash = crypto.createHash('sha256').update(JSON.stringify(ore_details)).digest('hex');
+    const doc_hash = crypto.createHash('sha256').update(lab_doc).digest('hex');
+    
+    console.log("ore Details",ore_details);
+    await contract.methods.createMinedBatch(batch_id,mine_id,batch_hash,doc_hash).send({
+      from: this.accounts[0]
+    }).then((results) => {
+      console.log("Mined batch added successfully");
+      console.log(results);
+    });
+  }catch (e) {
+    console.log("Error in adding mined batch to contract: ", e);
 
+  }
+}
   async getOrganisations(organisation_id) {
 
     try {
@@ -165,6 +197,4 @@ const org_hash = "afdilhnwef8o8Y8N3YR";
 // })
 
 
-module.exports = {
-  BlockchainConnection
-};
+module.exports = BlockchainConnection;

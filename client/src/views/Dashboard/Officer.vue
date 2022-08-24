@@ -29,17 +29,33 @@ onBeforeMount(() => {
 });
 </script>
 <template>
-  <div class="flex flex-col gap-2 text-center">
-    <div class="text-3xl text-center font-semibold capitalize my-1">
-      {{ title }}
+  <div class="flex flex-col gap-8">
+    <div class="flex justify-between">
+      <div class="text-xl font-semibold capitalize">
+        {{ title }}
+      </div>
+      <div v-if="route.params.region_id === undefined" class="flex gap-3">
+        <RouterLink v-if="$cookies.get('type_of_region') !== 'district'" to="/dashboard/organisation_registration"
+          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Officer Registration</RouterLink>
+        <RouterLink to="/dashboard/organisation_registration"
+          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Organisation Registration</RouterLink>
+        <RouterLink v-if="$cookies.get('type_of_region') === 'district'" to="/dashboard/mine_registration"
+          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Mine Registration</RouterLink>
+        <RouterLink v-if="$cookies.get('type_of_region') === 'district'" to="/dashboard/checkpoint_registration"
+          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Checkpoint Registration</RouterLink>
+        <RouterLink v-if="$cookies.get('type_of_region') === 'district'" to="/dashboard/lab_registration"
+          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Lab Registration</RouterLink>
+      </div>
     </div>
     <div class="flex gap-4 flex-wrap font-semibold">
       <div
         :key="card"
         v-for="card of cards"
-        class="flex flex-col  border-l-4 shadow-2xl border-yellow-300 py-2 px-2 bg-white rounded-3xl rounded-br-3xl border-r-3 drop-shadow-md min-w-[17rem]"
+        class="flex flex-col border-l-4 shadow-2xl border-yellow-300 py-2 px-2 bg-white rounded-3xl rounded-br-3xl border-r-3 drop-shadow-md min-w-[17rem]"
       >
-        <div class="text-xl text-center border-b-4 border-yellow-300">{{ card.title }}</div>
+        <div class="text-xl text-center border-b-4 border-yellow-300">
+          {{ card.title }}
+        </div>
 
         <div class="text-center text-5xl mb-1 my-2">
           <!-- <hr class="border-yellow-300 border-1"> -->

@@ -5,6 +5,7 @@ const Organisation = require("../models/OrganisationSchema");
 const Mine = require("../models/MineSchema");
 const MinedBatch = require("../models/MinedBatchSchema");
 const Transaction = require("../models/TransactionSchema");
+const SuspiciousActivity = require("../models/SuspiciousActivity");
 
 router.get("/api/officers/officer/country", async (req, res) => {
   const region_response = await Region.find({
@@ -157,4 +158,13 @@ router.get("/api/transactions/miner", async (req, res) => {
   res.json(transaction_response);
 });
 
+router.get("/api/suspicious_activity/officer", async (req, res) => {
+  const { _id } = req.cookies;
+  const suspicious_activity_response = await SuspiciousActivity.find({
+    region_id: _id,
+  })
+    .sort({ updatedAt: -1 })
+    .lean();
+  res.json(suspicious_activity_response);
+});
 module.exports = router;
