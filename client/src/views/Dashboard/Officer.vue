@@ -28,20 +28,21 @@ onBeforeMount(() => {
   dashboard();
 });
 </script>
-
 <template>
-  <div class="flex flex-col gap-8">
-    <div class="text-2xl font-semibold capitalize">
+  <div class="flex flex-col gap-2 text-center">
+    <div class="text-3xl text-center font-semibold capitalize my-1">
       {{ title }}
     </div>
     <div class="flex gap-4 flex-wrap font-semibold">
       <div
         :key="card"
         v-for="card of cards"
-        class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-4 bg-white rounded-lg drop-shadow-md min-w-[20rem]"
+        class="flex flex-col  border-l-4 shadow-2xl border-yellow-300 py-2 px-2 bg-white rounded-3xl rounded-br-3xl border-r-3 drop-shadow-md min-w-[17rem]"
       >
-        <div class="text-xl">{{ card.title }}</div>
-        <div class="flex gap-4 capitalize">
+        <div class="text-xl text-center border-b-4 border-yellow-300">{{ card.title }}</div>
+
+        <div class="text-center text-5xl mb-1 my-2">
+          <!-- <hr class="border-yellow-300 border-1"> -->
           <div
             v-if="typeof card.value === 'object'"
             v-for="(value, name) of card.value"
@@ -52,7 +53,7 @@ onBeforeMount(() => {
         </div>
       </div>
     </div>
-    <ol-map style="height: 40vh; width: 65vw">
+    <ol-map style="height: 40vh; width: 65vw" class="my-2">
       <ol-view :center="[78.9629, 20.5937]" :zoom="5" projection="EPSG:4326" />
       <ol-tile-layer>
         <ol-source-osm />
