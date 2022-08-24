@@ -103,7 +103,20 @@ async createMinedBatch(batch_id,mine_id,manager_id,amount,ore_type,grade,Fe_amou
 
     }
   }
+async verifyMinedBatch(batch_id, batch_hash,doc_hash){
+  try {
+    const contract = await this.contract;
+   const result = await contract.methods.verifyMineBatch(batch_id,batch_hash,doc_hash).call().then((results) => {
+      console.log("Mined batch fetched successfully");
+      console.log(results);
+      return results;
+    });
+    return result;
+  } catch (e) {
+    console.log("Error in fetching mined batch to contract: ", e);
 
+  }
+}
   async getTransactions(mine_id) {
 
     try {
