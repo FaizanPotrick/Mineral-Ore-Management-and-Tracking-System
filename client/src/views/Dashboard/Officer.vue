@@ -10,10 +10,11 @@ const markers = ref([]);
 
 const dashboard = async () => {
   const { data } = await axios.get(
-    `/api/dashboard/officer/${route.params.region_type === undefined &&
+    `/api/dashboard/officer/${
+      route.params.region_type === undefined &&
       route.params.region_id === undefined
-      ? $cookies.get("type_of_region")
-      : `${route.params.region_type}?region_id=${route.params.region_id}`
+        ? $cookies.get("type_of_region")
+        : `${route.params.region_type}?region_id=${route.params.region_id}`
     }`
   );
   title.value = data.title;
@@ -27,14 +28,13 @@ onBeforeMount(() => {
   dashboard();
 });
 </script>
-
 <template>
   <div class="flex flex-col gap-8">
-    <div class="flex justify-between">
+    <div class="flex flex-wrap justify-between">
       <div class="text-xl font-semibold capitalize">
         {{ title }}
       </div>
-      <div v-if="route.params.region_id === undefined" class="flex gap-3">
+      <div v-if="route.params.region_id === undefined" class="flex flex-wrap gap-3">
         <RouterLink v-if="$cookies.get('type_of_region') !== 'district'" to="/dashboard/organisation_registration"
           class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Officer Registration</RouterLink>
         <RouterLink to="/dashboard/organisation_registration"
@@ -48,25 +48,43 @@ onBeforeMount(() => {
       </div>
     </div>
     <div class="flex gap-4 flex-wrap font-semibold">
-      <div :key="card" v-for="card of cards"
-        class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-4 bg-white rounded-lg drop-shadow-md min-w-[20rem]">
-        <div class="text-xl">{{ card.title }}</div>
-        <div class="flex gap-4 capitalize">
-          <div v-if="typeof card.value === 'object'" v-for="(value, name) of card.value">
+      <div
+        :key="card"
+        v-for="card of cards"
+        class="flex flex-col border-l-4 shadow-2xl border-yellow-300 py-2 px-2 bg-white rounded-3xl rounded-br-3xl border-r-3 drop-shadow-md min-w-[17rem]"
+      >
+        <div class="text-xl text-center border-b-4 border-yellow-300">
+          {{ card.title }}
+        </div>
+
+        <div class="text-center text-5xl mb-1 my-2">
+          <!-- <hr class="border-yellow-300 border-1"> -->
+          <div
+            v-if="typeof card.value === 'object'"
+            v-for="(value, name) of card.value"
+          >
             {{ name }} : {{ value }}
           </div>
           <div v-else>{{ card.value }}</div>
         </div>
       </div>
     </div>
-    <ol-map style="height: 40vh; width: 65vw">
+    <ol-map style="height: 40vh; width: 65vw" class="my-2">
       <ol-view :center="[78.9629, 20.5937]" :zoom="5" projection="EPSG:4326" />
       <ol-tile-layer>
         <ol-source-osm />
       </ol-tile-layer>
       <ol-zoom-control />
-      <ol-overlay :key="marker._id" v-for="marker of markers" :position="marker.coordinates">
-        <img src="@/assets/marker.png" class="h-8 w-8 cursor-pointer" alt="marker" />
+      <ol-overlay
+        :key="marker._id"
+        v-for="marker of markers"
+        :position="marker.coordinates"
+      >
+        <img
+          src="@/assets/marker.png"
+          class="h-8 w-8 cursor-pointer"
+          alt="marker"
+        />
       </ol-overlay>
     </ol-map>
   </div>
