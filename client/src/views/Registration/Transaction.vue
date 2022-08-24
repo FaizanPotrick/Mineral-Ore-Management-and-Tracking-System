@@ -39,7 +39,7 @@ const register_fn = async () => {
   formData.append("invoice", transaction.value.invoice);
   await axios({
     method: "post",
-    url: "/api/registration/transaction",
+    url: "/api/registration/transaction/miner",
     data: formData,
   })
     .then((res) => {
@@ -62,10 +62,11 @@ const register_fn = async () => {
 };
 
 onMounted(async () => {
-  const { data } = await axios.get("/api/miner/organisation_list");
+  const { data } = await axios.get("/api/transaction/organisation_list");
   organisations.value = data.organisations;
 });
 </script>
+
 <template>
   <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
     <div

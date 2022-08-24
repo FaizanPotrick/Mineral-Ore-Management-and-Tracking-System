@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const Organisation = new mongoose.Schema({
   ceo_id: {
     type: String,
@@ -79,6 +80,7 @@ const Organisation = new mongoose.Schema({
     },
   },
 });
+
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
   .model("Organisation", Organisation);

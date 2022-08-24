@@ -11,6 +11,7 @@ const {
   uploadBytes,
   getDownloadURL,
 } = require("firebase/storage");
+
 const app = initializeApp({
   storageBucket: process.env.BUCKET_URL,
 });
@@ -56,14 +57,13 @@ router.post("/api/registration/mined_batch/miner", async (req, res) => {
 });
 
 router.post("/api/registration/mined_batch/lab", async (req, res) => {
-  const { _id } = req.cookies;
+  const { batch_id } = req.query;
   const { fe_percentage, grade } = req.body;
   const { mine_lab_report } = req.files;
-  const { batch_id } = req.query;
   try {
-    const LapRef = ref(storage, "/mine_lab_report/" + mine_lab_report.name);
+    const LabRef = ref(storage, "/mine_lab_report/" + mine_lab_report.name);
     const mine_lab_report_path = await uploadBytes(
-      LapRef,
+      LabRef,
       mine_lab_report.data
     );
     const mine_lab_report_url = await getDownloadURL(
@@ -89,14 +89,29 @@ router.post("/api/registration/mined_batch/lab", async (req, res) => {
 });
 
 router.post("/api/registration/approve_mined_batch", async (req, res) => {
-  const { batch_id } = req.body;
+  const { batch_id } = req.query; 
   const { status } = req.body;
-  // const { gov_lab_report } = req.files;
   try {
+    if (req.files.gov_lab_report) {
+      const GovRef = ref(
+        storage,
+        "/gov_lab_report/" + req.files.gov_lab_report.name
+      );
+      const gov_lab_report_path = await uploadBytes(
+        GovRef,
+        req.files.gov_lab_report.data
+      );
+      const gov_lab_report_url = await getDownloadURL(
+        ref(storage, gov_lab_report_path.metadata.fullPath)
+      );
+      await MinedBatch.findByIdAndUpdate(batch_id, {
+        gov_lab_report_url: gov_lab_report_url,
+      });
+    }
     const batch_response = await MinedBatch.findByIdAndUpdate(batch_id, {
       status: status,
     });
-    if (status === "approved") {
+    if (batch_response.status === "approved") {
       await Mine.findByIdAndUpdate(batch_response.mine_id, {
         $inc: {
           [`ores_available.${batch_response.type_of_ore}.${batch_response.grade}`]:
@@ -134,4 +149,5 @@ router.post("/api/registration/approve_mined_batch", async (req, res) => {
     });
   }
 });
+
 module.exports = router;

@@ -1,34 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const Transaction = require("../../models/TransactionSchema");
-const bcrypt = require("bcrypt");
+const MinedBatch = require("../models/MinedBatchSchema");
+const Transaction = require("../models/TransactionSchema");
 
-router.get("/api/transactions", async (req, res) => {
-  const { mine_id } = req.query;
-  const transaction_response = await Transaction.find({
-    mine_id: mine_id,
-  });
-  res.json(transaction_response);
+router.get("/api/mined_batch", async (req, res) => {
+  const { batch_id } = req.query;
+  const mined_batch_response = await MinedBatch.findById(batch_id).lean();
+  res.status(200).json(mined_batch_response);
 });
-router.get("/api/transactions/miner", async (req, res) => {
-  const { _id } = req.cookies;
-  const transaction_response = await Transaction.find({
-    mine_id: _id,
-  });
-  res.json(transaction_response);
-});
-router.get("/api/transactions/organisation", async (req, res) => {
-  const { _id } = req.cookies;
-  const transaction_response = await Transaction.find({
-    org_id: _id,
-  });
-  res.json(transaction_response);
-});
+
 router.get("/api/transaction", async (req, res) => {
   const { transaction_id } = req.query;
-  const transaction_response = await Transaction.findById(transaction_id);
+  const transaction_response = await Transaction.findById(
+    transaction_id
+  ).lean();
   res.status(200).json(transaction_response);
 });
+
 router.get("/api/transaction/verify", async (req, res) => {
   const { type_of_user, _id } = req.cookies;
   const { transaction_id, transaction_hash } = req.query;

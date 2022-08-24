@@ -47,11 +47,11 @@ const register_fn = async () => {
 };
 
 onMounted(async () => {
-  const { data } = await axios.get("/api/mined_batches/lab_list");
-  console.log(data);
+  const { data } = await axios.get("/api/mined_batch/lab_list");
   labs.value = data;
 });
 </script>
+
 <template>
   <div class="flex justify-center items-center">
     <div

@@ -39,6 +39,7 @@ const register_fn = async () => {
   loading.value = false;
 };
 </script>
+
 <template>
   <div class="flex justify-center items-center">
     <div

@@ -2,8 +2,10 @@
 import useAlertStore from "@/stores/Alert";
 import axios from "axios";
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 
 const { open_alert_box } = useAlertStore();
+const route = useRoute();
 const manager = ref({
   name: "",
   email_address: "",
@@ -36,6 +38,7 @@ const register_fn = async () => {
   loading.value = false;
 };
 </script>
+
 <template>
   <div class="flex justify-center items-center">
     <div

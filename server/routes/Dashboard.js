@@ -59,6 +59,32 @@ router.get("/api/dashboard/officer/country", async (req, res) => {
       },
     },
     {
+      $lookup: {
+        from: "check points",
+        pipeline: [
+          {
+            $match: {
+              _id: { $exists: true },
+            },
+          },
+        ],
+        as: "check points",
+      },
+    },
+    {
+      $lookup: {
+        from: "labs",
+        pipeline: [
+          {
+            $match: {
+              _id: { $exists: true },
+            },
+          },
+        ],
+        as: "labs",
+      },
+    },
+    {
       $project: {
         _id: 0,
         title: "central",
@@ -74,6 +100,14 @@ router.get("/api/dashboard/officer/country", async (req, res) => {
           {
             title: "Total Mines",
             value: { $size: "$mines" },
+          },
+          {
+            title: "Total Check Points",
+            value: { $size: "$check points" },
+          },
+          {
+            title: "Total Labs",
+            value: { $size: "$labs" },
           },
         ],
         markers: {
@@ -94,6 +128,7 @@ router.get("/api/dashboard/officer/country", async (req, res) => {
   ]);
   res.json(response[0]);
 });
+
 router.get("/api/dashboard/officer/state", async (req, res) => {
   let _id = req.cookies._id;
   if (req.query.region_id) {
@@ -157,6 +192,22 @@ router.get("/api/dashboard/officer/state", async (req, res) => {
       },
     },
     {
+      $lookup: {
+        from: "check points",
+        localField: "region_ids",
+        foreignField: "region_id",
+        as: "check points",
+      },
+    },
+    {
+      $lookup: {
+        from: "labs",
+        localField: "region_ids",
+        foreignField: "region_id",
+        as: "labs",
+      },
+    },
+    {
       $project: {
         _id: 0,
         title: "state",
@@ -172,6 +223,14 @@ router.get("/api/dashboard/officer/state", async (req, res) => {
           {
             title: "Total Mines",
             value: { $size: "$mines" },
+          },
+          {
+            title: "Total Check Points",
+            value: { $size: "$check points" },
+          },
+          {
+            title: "Total Labs",
+            value: { $size: "$labs" },
           },
         ],
         markers: {
@@ -192,11 +251,14 @@ router.get("/api/dashboard/officer/state", async (req, res) => {
   ]);
   res.json(response[0]);
 });
+
 router.get("/api/dashboard/officer/district", async (req, res) => {
   let _id = req.cookies._id;
   if (req.query.region_id) {
     _id = req.query.region_id;
   }
+  const mine_response = await Mine.find({ region_id: _id }).distinct("_id");
+  const mine_ids = mine_response.map((mine) => mine._id.toString());
   const response = await Region.aggregate([
     {
       $match: {
@@ -219,6 +281,41 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
       },
     },
     {
+      $lookup: {
+        from: "check points",
+        localField: "_id",
+        foreignField: "region_id",
+        as: "check points",
+      },
+    },
+    {
+      $lookup: {
+        from: "labs",
+        localField: "_id",
+        foreignField: "region_id",
+        as: "labs",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: {
+                $in: mine_ids,
+              },
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "transactions",
+      },
+    },
+    {
       $project: {
         _id: 0,
         title: "district",
@@ -226,6 +323,18 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
           {
             title: "Total Mines",
             value: { $size: "$mines" },
+          },
+          {
+            title: "Total Check Points",
+            value: { $size: "$check points" },
+          },
+          {
+            title: "Total Labs",
+            value: { $size: "$labs" },
+          },
+          {
+            title: "Average Region Price",
+            value: { $avg: "$transactions.price" },
           },
         ],
         markers: {
@@ -246,6 +355,7 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
   ]);
   res.json(response[0]);
 });
+
 router.get("/api/dashboard/organisation", async (req, res) => {
   let _id = req.cookies._id;
   if (req.query.organisation_id) {
@@ -312,6 +422,7 @@ router.get("/api/dashboard/organisation", async (req, res) => {
   ]);
   res.json(response[0]);
 });
+
 router.get("/api/dashboard/miner", async (req, res) => {
   let _id = req.cookies._id;
   if (req.query.mine_id) {
@@ -418,6 +529,7 @@ router.get("/api/dashboard/miner", async (req, res) => {
     },
   ]);
   res.json(response[0]);
+  // check: { $push: "$transactions.type_of_ore" },
 });
 
 router.get("/api/dashboard/checkpoint", async (req, res) => {
@@ -433,6 +545,11 @@ router.get("/api/dashboard/checkpoint", async (req, res) => {
         },
       },
     },
+    {
+      $sort: {
+        updatedAt: -1,
+      },
+    },
   ]);
   res.json(response);
 });
@@ -446,6 +563,14 @@ router.get("/api/dashboard/lab", async (req, res) => {
     {
       $match: {
         lab_id: _id,
+        status: {
+          $ne: "testing",
+        },
+      },
+    },
+    {
+      $sort: {
+        updatedAt: -1,
       },
     },
   ]);

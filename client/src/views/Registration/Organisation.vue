@@ -2,8 +2,8 @@
 import useAlertStore from "@/stores/Alert";
 import axios from "axios";
 import { ref } from "vue";
-const { open_alert_box } = useAlertStore();
 
+const { open_alert_box } = useAlertStore();
 const organisation = ref({
   organisation_name: "",
   address: "",
@@ -42,6 +42,7 @@ const register_fn = async () => {
   loading.value = false;
 };
 </script>
+
 <template>
   <div class="flex justify-center items-center min-h-[86vh]">
     <div

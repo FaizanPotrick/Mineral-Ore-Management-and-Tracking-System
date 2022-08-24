@@ -3,8 +3,8 @@ import useAlertStore from "@/stores/Alert";
 import { onMounted } from "vue";
 import axios from "axios";
 import { ref } from "vue";
-const { open_alert_box } = useAlertStore();
 
+const { open_alert_box } = useAlertStore();
 const organisations = ref([]);
 const center = ref([78.9629, 20.5937]);
 const zoom = ref(4);
@@ -72,14 +72,13 @@ const marker_selector = async (e) => {
 };
 
 onMounted(async () => {
-  const { data } = await axios.get(
-    "/api/region_coordinates_and_organisation_list"
-  );
+  const { data } = await axios.get("/api/coordinates_and_organisation_list");
   organisations.value = data.organisations;
   center.value = [data.coordinates.longitude, data.coordinates.latitude];
   zoom.value = 10;
 });
 </script>
+
 <template>
   <div class="flex justify-center items-center">
     <div

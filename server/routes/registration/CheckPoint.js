@@ -6,6 +6,7 @@ const CheckPoint = require("../../models/CheckPointSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
+
 const id_genarate = new ShortUniqueId({
   length: 8,
 });
@@ -71,4 +72,5 @@ router.post(
   },
   RegistrationEmailSender
 );
+
 module.exports = router;

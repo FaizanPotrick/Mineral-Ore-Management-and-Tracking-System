@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const Production = new mongoose.Schema(
   {
     organisation_id: {
@@ -40,6 +41,7 @@ const Production = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
   .model("Production", Production);

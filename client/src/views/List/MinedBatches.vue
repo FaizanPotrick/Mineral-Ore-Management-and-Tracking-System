@@ -1,10 +1,11 @@
 <script setup>
 import axios from "axios";
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import moment from "moment";
 
 const route = useRoute();
+const router = useRouter();
 const mined_batches = ref([]);
 const filter_batches = ref([]);
 const search = ref("");
@@ -63,14 +64,33 @@ const searchList = () => {
 
   mined_batches.value = data;
 };
+
+const onClick = (mined_batch) => {
+  if (
+    ($cookies.get("type_of_user") === "officer" &&
+      route.params.mine_id === undefined) ||
+    $cookies.get("type_of_user") === "lab"
+  ) {
+    if (mined_batch.status !== "pending" && mined_batch.status !== "testing") {
+      router.push(`/dashboard/mined_batches/${mined_batch._id}`);
+    }
+  } else {
+    router.push(
+      $cookies.get("type_of_user") !== "miner"
+        ? `/dashboard/mines/${route.params.mine_id}/mined_batches/${mined_batch._id}`
+        : `/dashboard/mined_batches/${mined_batch._id}`
+    );
+  }
+};
 </script>
+
 <template>
   <div class="flex flex-col gap-4 items-center">
     <div
       class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md"
     >
       <div class="flex justify-between items-center w-full">
-        <div class="text-3xl font-semibold">Mines</div>
+        <div class="text-3xl font-semibold">Mined Batches</div>
         <div class="flex flex-wrap items-center">
           <div class="hidden flex-wrap items-center lg:flex md:flex">
             <div class="px-3">
@@ -159,66 +179,66 @@ const searchList = () => {
       <div class="w-full border rounded-xl overflow-hidden drop-shadow-md">
         <table class="w-full">
           <thead class="border-b whitespace-nowrap bg-yellow-400">
-            <tr class="text-center">
-              <th class="px-2 py-4">Batch Id</th>
-              <th
-                class="px-2 py-4"
-                v-if="$cookies.get('type_of_user') === 'officer'"
-              >
-                Manager Id
-              </th>
-              <th class="px-2 py-4">Grade</th>
-              <th class="px-2 py-4">Fe Percentage</th>
-              <th class="px-2 py-4">Type of Ore</th>
-              <th class="px-2 py-4">Quantity</th>
-              <th class="px-2 py-4">Status</th>
-              <th class="px-2 py-4">Timestamp</th>
+            <tr>
+              <th class="py-4">Batch Id</th>
+              <th class="py-4">Manager Id</th>
+              <th class="py-4">Grade</th>
+              <th class="py-4">Fe Percentage</th>
+              <th class="py-4">Type of Ore</th>
+              <th class="py-4">Quantity</th>
+              <th class="py-4">Status</th>
+              <th class="py-4">Timestamp</th>
               <th
                 v-if="
-                  $cookies.get('type_of_user') === 'officer' &&
-                  route.params.mine_id === undefined
+                  ($cookies.get('type_of_user') === 'officer' &&
+                    route.params.mine_id === undefined) ||
+                  $cookies.get('type_of_user') === 'lab'
                 "
-                class="px-2 py-4"
-              >
-                Form
-              </th>
-              <th v-else class="px-2 py-4"></th>
+                class="py-4"
+              ></th>
             </tr>
           </thead>
-          <tbody class="font-normal text-gray-600 whitespace-nowrap">
+          <tbody class="whitespace-nowrap">
             <tr
-              :key="mine._id"
-              v-for="mine in mined_batches"
+              :key="mined_batch._id"
+              v-for="mined_batch in mined_batches"
+              :class="{
+                'hover:bg-yellow-100/20 cursor-pointer':
+                  $cookies.get('type_of_user') !== 'officer' ||
+                  route.params.mine_id !== undefined ||
+                  (mined_batch.status !== 'pending' &&
+                    mined_batch.status !== 'testing'),
+              }"
               class="text-center"
+              @click="onClick(mined_batch)"
             >
-              <td class="px-2 py-4">
-                <abbr style="text-decoration: none" :title="mine._id">
-                  ...{{ mine._id.slice(19) }}
+              <td class="py-4">
+                <abbr style="text-decoration: none" :title="mined_batch._id">
+                  ...{{ mined_batch._id.slice(10) }}
                 </abbr>
               </td>
-              <td
-                class="px-2 py-4"
-                v-if="$cookies.get('type_of_user') === 'officer'"
-              >
-                {{ mine.manager_id.slice(4) }}
+              <td class="py-4">
+                {{ mined_batch.manager_id }}
               </td>
-              <td class="px-2 py-4">
-                {{ mine.grade }}
+              <td class="py-4 capitalize">
+                {{ mined_batch.grade }}
               </td>
-              <td class="px-2 py-4">
-                {{ mine.fe_percentage }}
+              <td class="py-4">
+                {{ mined_batch.fe_percentage }}
               </td>
-              <td class="px-2 py-4">
-                {{ mine.type_of_ore }}
+              <td class="py-4 capitalize">
+                {{ mined_batch.type_of_ore }}
               </td>
-              <td class="px-2 py-4">
-                {{ mine.quantity }}
+              <td class="py-4">
+                {{ mined_batch.quantity }}
               </td>
-              <td class="px-2 py-4">
-                {{ mine.status }}
+              <td class="py-4 capitalize">
+                {{ mined_batch.status }}
               </td>
-              <td class="px-2 py-4">
-                {{ moment(mine.createdAt).format("DD/MM/YYYY hh:mm:ss") }}
+              <td class="py-4">
+                {{
+                  moment(mined_batch.createdAt).format("HH:MM A/DD MMM YYYY")
+                }}
               </td>
               <td
                 v-if="
@@ -226,47 +246,23 @@ const searchList = () => {
                     route.params.mine_id === undefined) ||
                   $cookies.get('type_of_user') === 'lab'
                 "
-                class="px-6 py-4"
+                class="py-4 flex justify-center"
               >
                 <RouterLink
-                  :to="`/dashboard/mined_batches/${mine._id}/${
+                  v-if="
+                    mined_batch.status === 'pending' ||
+                    mined_batch.status === 'testing'
+                  "
+                  :to="`/dashboard/mined_batches/${mined_batch._id}/${
                     $cookies.get('type_of_user') === 'officer'
                       ? 'approve_mined_batch'
                       : 'testing_mined_batch'
                   }`"
-                  class="hover:text-yellow-700"
+                  class="hover:text-yellow-700 bg-yellow-300 px-2 py-1 rounded-md shadow-md font-semibold"
                 >
-                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                    ></path>
-                  </svg>
+                  Form
                 </RouterLink>
-              </td>
-              <td v-else class="px-6 py-4">
-                <RouterLink
-                  :to="
-                    $cookies.get('type_of_user') !== 'miner'
-                      ? '/dashboard/mines/' +
-                        route.params.mine_id +
-                        '/mined_batches/' +
-                        mine._id
-                      : '/dashboard/mined_batches/' + mine._id
-                  "
-                  class="hover:text-yellow-700"
-                >
-                  <!-- <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  ></path>
-                </svg> -->
-                  <button
-                    type="button"
-                    class="inline-block px-4 py-2 border-2 bg-blue-600 hover:bg-blue-800 text-white font-medium text-xs leading-normal uppercase rounded-lg"
-                  >
-                    View
-                  </button>
-                </RouterLink>
+                <div v-else class="font-semibold">-</div>
               </td>
             </tr>
           </tbody>

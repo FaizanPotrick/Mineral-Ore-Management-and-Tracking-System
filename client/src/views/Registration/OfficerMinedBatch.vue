@@ -54,6 +54,7 @@ const get_mined_batch = async () => {
 
 get_mined_batch();
 </script>
+
 <template>
   <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
     <div

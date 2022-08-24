@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+
 const RegistrationEmailSender = (req) => {
   const user_id = req.user_id;
   const user_name = req.user_name;
@@ -46,4 +47,5 @@ const RegistrationEmailSender = (req) => {
       }
     );
 };
+
 module.exports = RegistrationEmailSender;
