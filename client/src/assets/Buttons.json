@@ -16,59 +16,6 @@
         ]
     },
     {
-        "name": "officer registration",
-        "router_link": "/dashboard/officer_registration",
-        "type_of_user": [
-            "officer"
-        ],
-        "type_of_region": [
-            "country",
-            "state"
-        ]
-    },
-    {
-        "name": "organisation registration",
-        "router_link": "/dashboard/organisation_registration",
-        "type_of_user": [
-            "officer"
-        ],
-        "type_of_region": [
-            "country",
-            "state",
-            "district"
-        ]
-    },
-    {
-        "name": "mine registration",
-        "router_link": "/dashboard/mine_registration",
-        "type_of_user": [
-            "officer"
-        ],
-        "type_of_region": [
-            "district"
-        ]
-    },
-    {
-        "name": "checkpoint registration",
-        "router_link": "/dashboard/checkpoint_registration",
-        "type_of_user": [
-            "officer"
-        ],
-        "type_of_region": [
-            "district"
-        ]
-    },
-    {
-        "name": "lab registration",
-        "router_link": "/dashboard/lab_registration",
-        "type_of_user": [
-            "officer"
-        ],
-        "type_of_region": [
-            "district"
-        ]
-    },
-    {
         "name": "approve transaction",
         "router_link": "/dashboard/approve_transaction",
         "type_of_user": [
