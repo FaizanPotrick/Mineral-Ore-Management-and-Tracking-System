@@ -16,18 +16,29 @@ contract mining{
         string doc_hash;
     }
 
+    address owner;
+    
     mapping (string => batch_details) public batch;
     mapping (string => transaction_details) public transaction;
 
-    function createMinedBatch (string calldata batch_id,string calldata _mine_id,string calldata _batch_hash,string calldata _doc_hash) external{
+    constructor () {
+        owner = msg.sender;   
+    }
+
+    modifier onlyOwner {
+      require(msg.sender == owner,"Unauthorized Wallet");
+      _;
+    }
+
+    function createMinedBatch (string calldata batch_id,string calldata _mine_id,string calldata _batch_hash,string calldata _doc_hash) external onlyOwner {
         batch[batch_id]=batch_details(_mine_id,_batch_hash,_doc_hash);
     }
 
-    function createTransaction (string calldata transaction_id,string calldata _mine_id,string calldata _org_id,string calldata _transaction_hash,string calldata _doc_hash) external{
+    function createTransaction (string calldata transaction_id,string calldata _mine_id,string calldata _org_id,string calldata _transaction_hash,string calldata _doc_hash) external onlyOwner {
         transaction[transaction_id]=transaction_details(_mine_id,_org_id,_transaction_hash,_doc_hash);
     }
 
-    function verifyMineBatch (string calldata batch_id, string calldata _batch_hash, string calldata _doc_hash) external view returns(bool) {
+    function verifyMineBatch (string calldata batch_id, string calldata _batch_hash, string calldata _doc_hash) external view returns(bool)  {
         if (keccak256(abi.encodePacked(batch[batch_id].batch_hash)) == keccak256(abi.encodePacked(_batch_hash)) && keccak256(abi.encodePacked(batch[batch_id].doc_hash)) == keccak256(abi.encodePacked(_doc_hash))){
             return(true);
         }
@@ -36,7 +47,7 @@ contract mining{
         }
     }
 
-    function verifyTransaction (string calldata transaction_id, string calldata _transaction_hash, string calldata _doc_hash) external view returns(bool) {
+    function verifyTransaction (string calldata transaction_id, string calldata _transaction_hash, string calldata _doc_hash) external view returns(bool)  {
         if (keccak256(abi.encodePacked(transaction[transaction_id].transaction_hash)) == keccak256(abi.encodePacked(_transaction_hash)) && keccak256(abi.encodePacked(transaction[transaction_id].doc_hash)) == keccak256(abi.encodePacked(_doc_hash))){
             return(true);
         }

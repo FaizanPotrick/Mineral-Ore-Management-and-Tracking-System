@@ -30,10 +30,9 @@ const doughnut = ref([]);
 
 const dashboard = async () => {
   const { data } = await axios.get(
-    `/api/dashboard/miner${
-      route.params.mine_id === undefined
-        ? ""
-        : `?mine_id=${route.params.mine_id}`
+    `/api/dashboard/miner${route.params.mine_id === undefined
+      ? ""
+      : `?mine_id=${route.params.mine_id}`
     }`
   );
   title.value = data.title;
@@ -74,23 +73,14 @@ const data = {
       <div class="text-xl font-semibold capitalize">
         {{ title }}
       </div>
-      <div v-if="$cookies.get('type_of_user') !== 'miner'" class="flex gap-3">
-        <RouterLink
-          :to="`/dashboard/mines/${route.params.mine_id}/mined_batches`"
-          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold"
-          >Mined Batches</RouterLink
-        >
-        <RouterLink
-          :to="`/dashboard/mines/${route.params.mine_id}/transactions`"
-          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold"
-          >Transactions</RouterLink
-        >
-        <RouterLink
-          v-if="$cookies.get('type_of_user') === 'organisation'"
+      <div v-if="$cookies.get('type_of_user') !== 'miner'" class="flex flex-wrap gap-3">
+        <RouterLink :to="`/dashboard/mines/${route.params.mine_id}/mined_batches`"
+          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Mined Batches</RouterLink>
+        <RouterLink :to="`/dashboard/mines/${route.params.mine_id}/transactions`"
+          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Transactions</RouterLink>
+        <RouterLink v-if="$cookies.get('type_of_user') === 'organisation'"
           :to="`/dashboard/mines/${route.params.mine_id}/manager_registration`"
-          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold"
-          >Manager Registration</RouterLink
-        >
+          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Manager Registration</RouterLink>
       </div>
     </div>
     <div class="flex gap-4 flex-wrap w-full font-semibold">
@@ -111,9 +101,7 @@ const data = {
         </div>
       </div>
     </div>
-    <div
-      class="flex justify-start gap-4 w-full drop-shadow-md text-xl font-medium"
-    >
+    <div class="flex justify-start gap-4 w-full drop-shadow-md text-xl font-medium">
       <!-- <div class="bg-white p-4 text-center rounded-xl">Mining Overview
                 <Bar :chart-options="{
                     responsive: true,
@@ -122,13 +110,10 @@ const data = {
             </div> -->
       <div class="bg-white p-2 text-center rounded-xl max-w-xl w-full">
         Warehouse Overview
-        <Doughnut
-          :chart-options="{
-            responsive: true,
-            maintainAspectRatio: false,
-          }"
-          :chart-data="doughnut"
-        />
+        <Doughnut :chart-options="{
+          responsive: true,
+          maintainAspectRatio: false,
+        }" :chart-data="doughnut" />
       </div>
     </div>
   </div>

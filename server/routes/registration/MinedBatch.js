@@ -12,6 +12,7 @@ const {
   getDownloadURL,
 } = require("firebase/storage");
 
+const { Grade } = require("../../Constant");
 const app = initializeApp({
   storageBucket: process.env.BUCKET_URL,
 });
@@ -58,8 +59,15 @@ router.post("/api/registration/mined_batch/miner", async (req, res) => {
 
 router.post("/api/registration/mined_batch/lab", async (req, res) => {
   const { batch_id } = req.query;
-  const { fe_percentage, grade } = req.body;
+  const { fe_percentage } = req.body;
   const { mine_lab_report } = req.files;
+  const grade =
+    parseInt(fe_percentage) >= Grade.high
+      ? "high"
+      : parseInt(fe_percentage) < Grade.medium &&
+        parseInt(fe_percentage) >= Grade.low
+      ? "medium"
+      : "low";
   try {
     const LabRef = ref(storage, "/mine_lab_report/" + mine_lab_report.name);
     const mine_lab_report_path = await uploadBytes(
@@ -89,7 +97,7 @@ router.post("/api/registration/mined_batch/lab", async (req, res) => {
 });
 
 router.post("/api/registration/approve_mined_batch", async (req, res) => {
-  const { batch_id } = req.query; 
+  const { batch_id } = req.query;
   const { status } = req.body;
   try {
     if (req.files.gov_lab_report) {
@@ -135,7 +143,6 @@ router.post("/api/registration/approve_mined_batch", async (req, res) => {
         batch_response.officer_id,
         "approved"
       );
-
     }
     res.status(200).json({
       message: "Successfully Registered",

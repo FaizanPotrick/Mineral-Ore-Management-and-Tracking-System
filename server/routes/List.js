@@ -16,7 +16,7 @@ router.get("/api/officers/officer/country", async (req, res) => {
   })
     .select(["type_of_region", "country", "state", "district", "officer_id"])
     .lean();
-  res.json(region_response);
+  res.json(region_response.reverse());
 });
 
 router.get("/api/officers/officer/state", async (req, res) => {
@@ -30,17 +30,17 @@ router.get("/api/officers/officer/state", async (req, res) => {
   })
     .select(["type_of_region", "country", "state", "district", "officer_id"])
     .lean();
-  res.json(region_response);
+  res.json(region_response.reverse());
 });
 
 router.get("/api/organisations/officer", async (req, res) => {
   const organisation_response = await Organisation.find().lean();
-  res.json(organisation_response);
+  res.json(organisation_response.reverse());
 });
 
 router.get("/api/mines/officer/country", async (req, res) => {
   const mine_response = await Mine.find().lean();
-  res.json(mine_response);
+  res.json(mine_response.reverse());
 });
 
 router.get("/api/mines/officer/state", async (req, res) => {
@@ -55,7 +55,7 @@ router.get("/api/mines/officer/state", async (req, res) => {
     state: region_user,
   }).distinct("_id");
   const mine_response = await Mine.find({ region_id: region_response }).lean();
-  res.json(mine_response);
+  res.json(mine_response.reverse());
 });
 
 router.get("/api/mines/officer/district", async (req, res) => {
@@ -63,7 +63,7 @@ router.get("/api/mines/officer/district", async (req, res) => {
   const mine_response = await Mine.find({
     region_id: _id,
   }).lean();
-  res.json(mine_response);
+  res.json(mine_response.reverse());
 });
 
 router.get("/api/mines/organisation", async (req, res) => {
@@ -71,7 +71,7 @@ router.get("/api/mines/organisation", async (req, res) => {
   const organization_response = await Mine.find({
     organization_id: _id,
   }).lean();
-  res.json(organization_response);
+  res.json(organization_response.reverse());
 });
 
 router.get("/api/mined_batches/officer/district", async (req, res) => {
