@@ -129,7 +129,7 @@ app.use(
             path: "officer_registration",
             name: "officer_registration",
             meta: {
-              active: "officer registration",
+              active: "home",
               access: false,
               type_of_user: ["officer"],
               type_of_region: ["country", "state"],
@@ -141,7 +141,7 @@ app.use(
             path: "organisation_registration",
             name: "organisation_registration",
             meta: {
-              active: "organisation registration",
+              active: "home",
               access: false,
               type_of_user: ["officer"],
               type_of_region: ["country", "state", "district"],
@@ -153,7 +153,7 @@ app.use(
             path: "mine_registration",
             name: "mine_registration",
             meta: {
-              active: "mine registration",
+              active: "home",
               access: false,
               type_of_user: ["officer"],
               type_of_region: ["district"],
@@ -165,7 +165,7 @@ app.use(
             path: "checkpoint_registration",
             name: "checkpoint_registration",
             meta: {
-              active: "checkpoint registration",
+              active: "home",
               access: false,
               type_of_user: ["officer"],
               type_of_region: ["district"],
@@ -177,7 +177,7 @@ app.use(
             path: "lab_registration",
             name: "lab_registration",
             meta: {
-              active: "lab registration",
+              active: "home",
               access: false,
               type_of_user: ["officer"],
               type_of_region: ["district"],
@@ -189,7 +189,7 @@ app.use(
             path: "ceo_registration",
             name: "ceo_registration",
             meta: {
-              active: "CEO registration",
+              active: "home",
               access: false,
               type_of_user: ["organisation"],
             },
@@ -383,7 +383,6 @@ app.use(
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/List/Transactions.vue"),
           },
-
           {
             path: "mines/:mine_id/transactions/:transaction_id",
             name: "officer_transaction",
@@ -395,6 +394,17 @@ app.use(
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Transaction.vue"),
+          },
+          {
+            path: "suspisious_activity",
+            name: "suspisious_activity",
+            meta: {
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: [ "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/SuspisiousActivity.vue"),
           },
         ],
       },

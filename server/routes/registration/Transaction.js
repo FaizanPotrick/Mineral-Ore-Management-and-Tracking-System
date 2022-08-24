@@ -14,6 +14,7 @@ const {
   uploadBytes,
   getDownloadURL,
 } = require("firebase/storage");
+const { Grade, AcceptablePercentage } = require("../../Constant");
 
 const app = initializeApp({
   storageBucket: process.env.BUCKET_URL,
@@ -22,15 +23,16 @@ const storage = getStorage(app);
 
 router.post("/api/registration/transaction/miner", async (req, res) => {
   const { _id } = req.cookies;
-  const {
-    organisation_id,
-    type_of_ore,
-    fe_percentage,
-    grade,
-    quantity,
-    price,
-  } = req.body;
+  const { organisation_id, type_of_ore, fe_percentage, quantity, price } =
+    req.body;
   const { invoice } = req.files;
+  const grade =
+    parseInt(fe_percentage) >= Grade.high
+      ? "high"
+      : parseInt(fe_percentage) < Grade.medium &&
+        parseInt(fe_percentage) >= Grade.low
+      ? "medium"
+      : "low";
   try {
     const mine_response = await Mine.aggregate([
       {
@@ -149,7 +151,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
         },
       },
     ]);
-    const acceptable_difference = 20;
+    const acceptable_difference = AcceptablePercentage;
     if (
       mine_average_price_response.length !== 0 &&
       region_average_price_response.length !== 0
