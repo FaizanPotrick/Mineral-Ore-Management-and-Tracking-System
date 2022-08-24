@@ -69,9 +69,9 @@ const data = {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-4 ">
     <div class="flex justify-between">
-      <div class="text-xl font-semibold capitalize">
+      <div class="text-2xl text-center  font-semibold capitalize">
         {{ title }}
       </div>
       <div v-if="$cookies.get('type_of_user') !== 'miner'" class="flex gap-3">
@@ -97,10 +97,10 @@ const data = {
       <div
         :key="card"
         v-for="card of cards"
-        class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-4 bg-white rounded-lg drop-shadow-md"
+        class="flex flex-col  border-l-4 shadow-2xl border-yellow-300 py-2 px-2 bg-white rounded-3xl rounded-br-3xl border-r-3 drop-shadow-md min-w-[17rem]"
       >
-        <div class="text-xl">{{ card.title }}</div>
-        <div class="flex gap-4 capitalize">
+        <div class="text-xl text-center border-b-4 border-yellow-300">{{ card.title }}</div>
+        <div class=" flex gap-2 justify-center text-2xl mb-1 my-2" :class="'px-5',typeof card.value === 'object'">
           <div
             v-if="typeof card.value === 'object'"
             v-for="(value, name) of card.value"
