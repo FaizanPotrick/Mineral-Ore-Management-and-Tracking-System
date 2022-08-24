@@ -30,11 +30,11 @@ onBeforeMount(() => {
 
 <template>
   <div class="flex flex-col gap-8">
-    <div class="flex justify-between">
+    <div class="flex flex-wrap justify-between">
       <div class="text-xl font-semibold capitalize">
         {{ title }}
       </div>
-      <div v-if="route.params.region_id === undefined" class="flex gap-3">
+      <div v-if="route.params.region_id === undefined" class="flex flex-wrap gap-3">
         <RouterLink v-if="$cookies.get('type_of_region') !== 'district'" to="/dashboard/organisation_registration"
           class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Officer Registration</RouterLink>
         <RouterLink to="/dashboard/organisation_registration"
