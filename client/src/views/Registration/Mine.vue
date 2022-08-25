@@ -3,20 +3,20 @@ import useAlertStore from "@/stores/Alert";
 import { onMounted } from "vue";
 import axios from "axios";
 import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
 const { open_alert_box } = useAlertStore();
-
+const router = useRouter()
+const route = useRoute()
 const center = ref([78.9629, 20.5937]);
 const zoom = ref(4);
 const mine = ref({
-  
   name: "",
   email_address: "",
   phone_no: "",
   aadhar_card: "",
   pin_code: "",
   area: 0,
-  
   expected_ores_available: {
     high: 0,
     medium: 0,
@@ -62,19 +62,17 @@ const register_fn = async () => {
       open_alert_box(res.data.message, res.data.type);
       if (res.status === 200) {
         mine.value = {
-          
           name: "",
           email_address: "",
           phone_no: "",
           aadhar_card: "",
           pin_code: "",
           area: 0,
-          
           expected_ores_available: {
-    high: 0,
-    medium: 0,
-    low: 0
-  },
+            high: 0,
+            medium: 0,
+            low: 0
+          },
           period: 0,
           coordinates: {
             latitude: 0,
@@ -82,6 +80,7 @@ const register_fn = async () => {
           },
           plan_doc: {}
         };
+        router.push(`/dashboard/mine_registration/${route.params.mine_id}/warehouse_registration`)
       }
     })
     .catch((err) => {
@@ -102,7 +101,7 @@ const store_document = (event) => {
 
 onMounted(async () => {
   const { data } = await axios.get("/api/coordinates_and_organisation_list");
-  
+
   center.value = [data.coordinates.longitude, data.coordinates.latitude];
   zoom.value = 10;
 });
@@ -119,7 +118,7 @@ onMounted(async () => {
       </div>
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()" enctype="multipart/form-data">
         <div class="grid gap-6 grid-cols-1">
-          
+
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Manager Name*</label>
             <input type="text"
@@ -163,7 +162,7 @@ onMounted(async () => {
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               v-model="mine.area" pattern="[0-9]+" required />
           </div>
-         
+
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Lease Period(in year)*</label>
             <input type="number"
