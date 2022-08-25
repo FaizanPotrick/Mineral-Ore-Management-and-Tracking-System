@@ -63,7 +63,8 @@ const logout = async () => {
         " class="rounded-xl py-2.5 px-4 capitalize shadow-md">
           {{ button.name }}
         </RouterLink>
-        <RouterLink to="/dashboard/suspisious_activity" class="flex items-center text-yellow-700 hover:text-gray-900">
+        <RouterLink v-if="$cookies.get('type_of_region') === 'district'" to="/dashboard/suspisious_activity"
+          class="flex items-center text-yellow-700 hover:text-gray-900">
           Alert
         </RouterLink>
         <button @click="logout" class="text-yellow-700 hover:text-gray-900">
@@ -84,7 +85,8 @@ const logout = async () => {
           {{ button.name }}
         </RouterLink>
       </div>
-      <RouterLink to="/dashboard/suspisious_activity" class="flex items-center text-yellow-700 hover:text-gray-900">
+      <RouterLink v-if="$cookies.get('type_of_region') === 'district'" to="/dashboard/suspisious_activity"
+        class="flex items-center text-yellow-700 hover:text-gray-900">
         Alert
       </RouterLink>
       <button @click="logout" class="text-yellow-700 hover:text-gray-900">
