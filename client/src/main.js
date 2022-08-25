@@ -65,6 +65,11 @@ app.use(
         component: () => import("@/views/SampleTest.vue"),
       },
       {
+        path: "/stocker",
+        name: "Stocker",
+        component: () => import("@/views/Stocker.vue"),
+      },
+      {
         path: "/warehouse",
         name: "Warehouse",
         component: () => import("@/views/Warehouse.vue"),
