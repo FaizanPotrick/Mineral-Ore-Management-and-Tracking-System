@@ -26140,12 +26140,12 @@
     "4": {
       "events": {},
       "links": {},
-      "address": "0x8D3Abe6D5917322b9994a9c72269DDD7A1Ef2968",
-      "transactionHash": "0xce361b7719b765ae9bb85c9bb96aeb4f53f51fb6e1f85763514a32c04b8baefa"
+      "address": "0x171Ff6ea19864879b825866f6047450Cc26fA004",
+      "transactionHash": "0xe905bf74bca0b63abf00084be5721407d457ea5a7bdff8df15d8f91a4d3918b4"
     }
   },
   "schemaVersion": "3.4.8",
-  "updatedAt": "2022-08-22T06:16:42.243Z",
+  "updatedAt": "2022-08-25T05:26:28.913Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
