@@ -18,9 +18,11 @@ const TestedMinedBatch = new mongoose.Schema(
     grade: {
       type: String,
       enum: ["high", "medium", "low"],
+      required: true,
     },
     fe_percentage: {
       type: Number,
+      required: true,
     },
     quantity: {
       type: Number,
@@ -32,6 +34,7 @@ const TestedMinedBatch = new mongoose.Schema(
     },
     mine_lab_report_url: {
       type: String,
+      required: true,
     },
   },
   {
