@@ -42,7 +42,7 @@ const Transaction = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["dispatched", "delivered", "cancelled"],
+      enum: ["pending", "dispatched", "delivered", "cancelled"],
       default: "dispatched",
       required: true,
     },

@@ -201,6 +201,43 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
   }
 });
 
+router.post(
+  "/api/registration/transaction/officer/district",
+  async (req, res) => {
+    const { transaction_id } = req.cookies;
+    const { status } = req.body;
+    try {
+      // const transaction_response = await Transaction.findById(
+      //   transaction_id
+      // ).lean();
+      const transaction_response = await Transaction.findByIdAndUpdate(
+        transaction_id,
+        {
+          status: status,
+        }
+      );
+      if (transaction_response.status === "cancelled") {
+        await Mine.findByIdAndUpdate(transaction_response.mine_id, {
+          $inc: {
+            [`ores_available.${transaction_response.type_of_ore}.${transaction_response.grade}`]:
+              transaction_response.quantity,
+          },
+        });
+      }
+      res.status(200).json({
+        message: "Successfully Updated Transaction",
+        type: "success",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({
+        message: "Invalid Request",
+        type: "error",
+      });
+    }
+  }
+);
+
 router.post("/api/registration/transaction/organisation", async (req, res) => {
   const { _id } = req.cookies;
   const { transaction_id } = req.query;
@@ -243,13 +280,25 @@ router.post("/api/registration/transaction/organisation", async (req, res) => {
 router.post("/api/registration/transaction/checkpoint", async (req, res) => {
   const { _id } = req.cookies;
   const { transaction_id } = req.query;
-  const { status } = req.body;
+  const { status, weight } = req.body;
+  let checkpoint = weight
+    ? {
+        checkpoint_id: _id,
+        weight: weight,
+      }
+    : {
+        checkpoint_id: _id,
+      };
   try {
     const transaction_response = await Transaction.findById(transaction_id);
-    if (!transaction_response.checkpoints.includes(_id)) {
+    if (
+      transaction_response.checkpoints.filter((checkpoint) => {
+        return checkpoint.checkpoint_id === _id;
+      }).length === 0
+    ) {
       await Transaction.findByIdAndUpdate(transaction_id, {
         $push: {
-          checkpoints: _id,
+          checkpoints: checkpoint,
         },
       });
     }
