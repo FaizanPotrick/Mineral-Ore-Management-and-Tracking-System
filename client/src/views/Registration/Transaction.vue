@@ -11,6 +11,7 @@ const transaction = ref({
   fe_percentage: 0,
   quantity: 0,
   price: 0,
+  transport_no: "",
   invoice: {},
 });
 const loading = ref(false);
@@ -27,6 +28,7 @@ const register_fn = async () => {
   formData.append("fe_percentage", transaction.value.fe_percentage);
   formData.append("quantity", transaction.value.quantity);
   formData.append("price", transaction.value.price);
+  formData.append("transport_no", transaction.value.transport_no);
   formData.append("invoice", transaction.value.invoice);
   await axios({
     method: "post",
@@ -42,6 +44,7 @@ const register_fn = async () => {
           fe_percentage: 0,
           quantity: 0,
           price: 0,
+          transport_no: "",
           invoice: {},
         };
       }
@@ -112,7 +115,13 @@ onMounted(async () => {
               v-model="transaction.price" type="number" pattern="[0-9]+" required />
           </div>
         </div>
-        <div class="grid gap-6 mb-6 grid-cols-1">
+        <div class="grid gap-6 mb-6 grid-cols-2">
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Transport No.*</label>
+            <input
+              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              v-model="transaction.transport_no" type="text" placeholder="Truck no." required />
+          </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Upload Pdf*</label>
             <input

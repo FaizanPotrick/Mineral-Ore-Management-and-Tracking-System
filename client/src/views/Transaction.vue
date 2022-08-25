@@ -34,34 +34,24 @@ const downloadQRCode = () => {
 
 <template>
   <div class="flex justify-center items-center min-h-[86vh] bg-yellow-50">
-    <div
-      class="max-w-5xl p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl sm:10 text-gray-800"
-    >
+    <div class="max-w-5xl p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl sm:10 text-gray-800">
       <div class="mb-4 text-center">
         <div class="font-semibold text-2xl text-yellow-700">Transaction</div>
       </div>
       <div class="flex flex-col gap-6 justify-center">
-        <div class="flex justify-center">
-          <QrcodeVue
-            :value="
+        <div v-if="$cookies.get('type_of_user') === 'miner'">
+          <div class="flex justify-center">
+            <QrcodeVue :value="
               JSON.stringify({
                 transaction_id: transaction._id,
                 transaction_hash: transaction.transaction_hash,
               })
-            "
-            :size="300"
-            level="H"
-            :margin="10"
-            id="qr_code"
-          />
+            " :size="300" level="H" :margin="10" id="qr_code" />
+          </div>
+          <button class="bg-orange-600 font-bold py-2 px-4 rounded text-center" @click="downloadQRCode">
+            QR Code Link
+          </button>
         </div>
-        <button
-          v-if="$cookies.get('type_of_user')"
-          class="bg-orange-600 font-bold py-2 px-4 rounded text-center"
-          @click="downloadQRCode"
-        >
-          QR Code Link
-        </button>
         <div class="flex flex-col">
           <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
@@ -129,9 +119,9 @@ const downloadQRCode = () => {
                       <td class="px-6 py-4">Status:</td>
                       <td class="px-6 py-4 font-bold">
                         {{
-                          moment(transaction.createdAt).format(
-                            "DD/MM/YYYY hh:mm:ss"
-                          )
+                            moment(transaction.createdAt).format(
+                              "DD/MM/YYYY hh:mm:ss"
+                            )
                         }}
                       </td>
                     </tr>
@@ -142,15 +132,9 @@ const downloadQRCode = () => {
           </div>
         </div>
       </div>
-      <a
-        class="bg-orange-600 hover:bg-grey text- font-bold py-2 px-4 rounded inline-flex items-center mx-5"
-        :href="transaction.invoice_url"
-      >
-        <svg
-          class="fill-current w-4 h-4 mr-2"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-        >
+      <a class="bg-orange-600 hover:bg-grey text- font-bold py-2 px-4 rounded inline-flex items-center mx-5"
+        :href="transaction.invoice_url">
+        <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
           <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
         </svg>
         <span>Download</span>
