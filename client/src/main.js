@@ -182,6 +182,18 @@ app.use(
             component: () => import("@/views/Registration/Mine.vue"),
           },
           {
+            path: "mine_registration/:mine_id/warehouse_registration",
+            name: "warehouse_registration",
+            meta: {
+              active: "home",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Registration/Warehouse.vue"),
+          },
+          {
             path: "checkpoint_registration",
             name: "checkpoint_registration",
             meta: {
@@ -343,7 +355,8 @@ app.use(
               type_of_user: ["miner"],
             },
             beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Registration/TestedMinedBatch.vue"),
+            component: () =>
+              import("@/views/Registration/TestedMinedBatch.vue"),
           },
           {
             path: "mined_batches/:batch_id/approve_mined_batch",

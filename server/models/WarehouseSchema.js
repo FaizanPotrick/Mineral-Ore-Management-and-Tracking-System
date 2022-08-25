@@ -62,6 +62,10 @@ const Warehouse = new mongoose.Schema({
       },
     },
   },
+  area: {
+    type: Number,
+    required: true,
+  },
   coordinates: {
     latitude: {
       type: Number,
