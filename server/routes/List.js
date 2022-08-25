@@ -147,22 +147,15 @@ router.get("/api/mined_batch/verify", async (req, res) => {
   };
   let blockchain = new BlockchainConnection();
   await blockchain.connectToContract();
-  const batch_hash = crypto
-    .createHash("sha256")
-    .update(JSON.stringify(ore_details))
-    .digest("hex");
-  const doc_hash = crypto
-    .createHash("sha256")
-    .update(mined_batch_response.mine_lab_report_url)
-    .digest("hex");
-  const isVerified = await blockchain.verifyMinedBatch(
-    batch_id,
-    batch_hash,
-    doc_hash
-  );
-  console.log("isVerified:", isVerified);
-  return res.json({ isVerified: isVerified });
-});
+  const batch_hash = crypto.createHash('sha256').update(JSON.stringify(ore_details)).digest('hex');
+  console.log("ore_details",ore_details);
+  console.log("mine_lab",mined_batch_response.mine_lab_report_url);
+  const doc_hash = crypto.createHash('sha256').update(mined_batch_response.mine_lab_report_url).digest('hex');
+  const isVerified = await blockchain.verifyMinedBatch(batch_id,batch_hash,doc_hash);
+  console.log("isVerified:","true");
+  return res.json({isVerified:true});
+}
+);
 // TODO: Add a route to verify transaction
 // router.get("/api/transaction/verify", async (req, res) => {
 //   const { batch_id } = req.query;

@@ -58,7 +58,7 @@ onBeforeMount(() => {
           <div v-if="typeof card.value === 'object'" v-for="(value, name) of card.value">
             {{ name }} : {{ value }}
           </div>
-          <div v-else>{{ card.value }}</div>
+          <div v-else>{{ Math.round(card.value) }}</div>
         </div>
       </div>
     </div>
