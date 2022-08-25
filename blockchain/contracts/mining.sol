@@ -51,7 +51,14 @@ contract mining{
         }
     }
 
-
+    function verifyTestMineBatch (string calldata batch_id, string calldata _batch_hash, string calldata _doc_hash) external view returns(bool)  {
+        if (keccak256(abi.encodePacked(batch[batch_id].batch_hash)) == keccak256(abi.encodePacked(_batch_hash)) && keccak256(abi.encodePacked(batch[batch_id].doc_hash)) == keccak256(abi.encodePacked(_doc_hash))){
+            return(true);
+        }
+        else{
+            return(false);
+        }
+    }
 
     function verifyTransaction (string calldata transaction_id, string calldata _transaction_hash, string calldata _doc_hash) external view returns(bool)  {
         if (keccak256(abi.encodePacked(transaction[transaction_id].transaction_hash)) == keccak256(abi.encodePacked(_transaction_hash)) && keccak256(abi.encodePacked(transaction[transaction_id].doc_hash)) == keccak256(abi.encodePacked(_doc_hash))){
