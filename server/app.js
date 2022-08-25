@@ -56,6 +56,7 @@ app.use(require("./routes/Registration/CheckPoint.js"));
 app.use(require("./routes/Registration/Lab.js"));
 app.use(require("./routes/Registration/Transaction.js"));
 app.use(require("./routes/Registration/MinedBatch.js"));
+app.use(require("./routes/Registration/TestedMinedBatch.js"));
 
 app.listen(process.env.PORT || 8000, () => {
   console.log("server is running on port 8000");

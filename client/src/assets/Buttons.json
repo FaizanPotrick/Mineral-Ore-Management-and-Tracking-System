@@ -71,6 +71,18 @@
         ]
     },
     {
+        "name": "tested mined batches",
+        "router_link": "/dashboard/tested_mined_batches",
+        "type_of_user": [
+            "officer",
+            "miner",
+            "lab"
+        ],
+        "type_of_region": [
+            "district"
+        ]
+    },
+    {
         "name": "transactions",
         "router_link": "/dashboard/transactions",
         "type_of_user": [
@@ -82,20 +94,6 @@
         "router_link": "/dashboard/ceo_registration",
         "type_of_user": [
             "organisation"
-        ]
-    },
-    {
-        "name": "add mined batch",
-        "router_link": "/dashboard/add_mined_batch",
-        "type_of_user": [
-            "miner"
-        ]
-    },
-    {
-        "name": "add transaction",
-        "router_link": "/dashboard/add_transaction",
-        "type_of_user": [
-            "miner"
         ]
     }
 ]

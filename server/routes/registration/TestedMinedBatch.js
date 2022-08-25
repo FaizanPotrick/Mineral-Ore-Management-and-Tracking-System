@@ -33,9 +33,12 @@ router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
     const mine_response = await Mine.findById(_id)
       .select(["manager_id", "region_id"])
       .lean();
-    const mined_batch_response = await MinedBatch.findById(
-      mined_batch_id
-    ).distinct("quantity");
+    const mined_batch_response = await MinedBatch.findByIdAndUpdate(
+      mined_batch_id,
+      {
+        status: "approved",
+      }
+    );
     const imageRef = ref(storage, "/sample_image/" + sample_image.name);
     const documnetRef = ref(
       storage,
@@ -58,13 +61,13 @@ router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
       type_of_ore: type_of_ore,
       fe_percentage: fe_percentage,
       grade: grade,
-      quantity: mined_batch_response[0],
+      quantity: mined_batch_response.quantity,
       sample_image_url: sample_image_url,
       mine_lab_report_url: mine_lab_report_url,
     });
     await Mine.findByIdAndUpdate(_id, {
       $inc: {
-        [`ores_available.${type_of_ore}.${grade}`]: mined_batch_response[0],
+        [`ores_available.${type_of_ore}.${grade}`]: mined_batch_response.quantity,
       },
     });
     res.status(200).json({

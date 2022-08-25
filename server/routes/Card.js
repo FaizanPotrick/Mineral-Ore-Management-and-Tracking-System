@@ -4,8 +4,8 @@ const MinedBatch = require("../models/MinedBatchSchema");
 const Transaction = require("../models/TransactionSchema");
 
 router.get("/api/mined_batch", async (req, res) => {
-  const { batch_id } = req.query;
-  const mined_batch_response = await MinedBatch.findById(batch_id).lean();
+  const { mined_batch_id } = req.query;
+  const mined_batch_response = await MinedBatch.findById(mined_batch_id).lean();
   res.status(200).json(mined_batch_response);
 });
 

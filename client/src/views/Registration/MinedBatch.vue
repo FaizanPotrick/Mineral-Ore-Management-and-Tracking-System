@@ -1,43 +1,23 @@
 <script setup>
 import useAlertStore from "@/stores/Alert";
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 
 const { open_alert_box } = useAlertStore();
-const labs = ref([]);
-const mined_batch = ref({
-  type_of_ore: "",
-  quantity: 0,
-  lab_id: "",
-  sample_image: {},
-});
+const quantity = ref(0);
 const loading = ref(false);
-
-const store_image = (event) => {
-  mined_batch.value.sample_image = event.target.files[0];
-};
 
 const register_fn = async () => {
   loading.value = true;
-  const formData = new FormData();
-  formData.append("type_of_ore", mined_batch.value.type_of_ore);
-  formData.append("quantity", mined_batch.value.quantity);
-  formData.append("lab_id", mined_batch.value.lab_id);
-  formData.append("sample_image", mined_batch.value.sample_image);
   await axios({
     method: "post",
     url: "/api/registration/mined_batch/miner",
-    data: formData,
+    data: { quantity: quantity.value }
   })
     .then((res) => {
       open_alert_box(res.data.message, res.data.type);
       if (res.status === 200) {
-        mined_batch.value = {
-          type_of_ore: "",
-          quantity: 0,
-          lab_id: "",
-          sample_image: {},
-        };
+        quantity.value = 0
       }
     })
     .catch((err) => {
@@ -45,11 +25,6 @@ const register_fn = async () => {
     });
   loading.value = false;
 };
-
-onMounted(async () => {
-  const { data } = await axios.get("/api/mined_batch/lab_list");
-  labs.value = data;
-});
 </script>
 
 <template>
@@ -61,45 +36,13 @@ onMounted(async () => {
         </div>
         <div class="text-gray-500 text-sm">Register a Batch</div>
       </div>
-      <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()" enctype="multipart/form-data">
-        <div class="grid gap-6 mb-6 sm:grid-cols-2">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Type*</label>
-            <select
-              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mined_batch.type_of_ore" required>
-              <option disabled value="" selected>Select the Type</option>
-              <option value="lump">Lump</option>
-              <option value="fine">Fine</option>
-              <option value="iron_pellet">Iron Pellet</option>
-            </select>
-          </div>
+      <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
+        <div class="grid gap-6 mb-6 grid-cols-1">
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Quantity(in mt)*</label>
             <input
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mined_batch.quantity" type="number" pattern="[0-9]+" required />
-          </div>
-        </div>
-        <div class="grid gap-6 grid-cols-1">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Lab ID*</label>
-            <input type="text"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Lab ID" v-model="mined_batch.lab_id" required list="lab_id_list" />
-            <datalist id="lab_id_list">
-              <option :value="lab._id" v-for="lab of labs">
-                {{ lab.lab_name }}
-              </option>
-            </datalist>
-          </div>
-        </div>
-        <div class="grid gap-6 mb-6 grid-cols-1">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Sample Image*</label>
-            <input
-              class="w-full content-center text-base border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              @change="store_image" type="file" accept="image/*" required />
+              v-model="quantity" type="number" pattern="[0-9]+" required />
           </div>
         </div>
         <div class="space-y-3 py-5">
