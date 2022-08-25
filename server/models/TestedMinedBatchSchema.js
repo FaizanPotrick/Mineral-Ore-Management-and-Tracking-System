@@ -34,6 +34,10 @@ const TestedMinedBatch = new mongoose.Schema(
       default: "dispatched",
       required: true,
     },
+    tested_mined_batch_hash: {
+      type: String,
+      required: true,
+    },
     sample_image_url: {
       type: String,
       required: true,
