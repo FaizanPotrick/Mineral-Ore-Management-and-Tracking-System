@@ -23,8 +23,14 @@ const storage = getStorage(app);
 
 router.post("/api/registration/transaction/miner", async (req, res) => {
   const { _id } = req.cookies;
-  const { organisation_id, type_of_ore, fe_percentage, quantity, price } =
-    req.body;
+  const {
+    organisation_id,
+    type_of_ore,
+    fe_percentage,
+    quantity,
+    price,
+    transport_no,
+  } = req.body;
   const { invoice } = req.files;
   const grade =
     parseInt(fe_percentage) >= Grade.high
@@ -86,6 +92,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
         }),
         10
       ),
+      transport_no: transport_no,
       invoice_url: invoice_url,
     });
     await Mine.findByIdAndUpdate(_id, {

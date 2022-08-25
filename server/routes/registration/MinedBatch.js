@@ -100,25 +100,26 @@ router.post("/api/registration/approve_mined_batch", async (req, res) => {
   const { batch_id } = req.query;
   const { status } = req.body;
   try {
-    if (req.files.gov_lab_report) {
-      const GovRef = ref(
-        storage,
-        "/gov_lab_report/" + req.files.gov_lab_report.name
-      );
-      const gov_lab_report_path = await uploadBytes(
-        GovRef,
-        req.files.gov_lab_report.data
-      );
-      const gov_lab_report_url = await getDownloadURL(
-        ref(storage, gov_lab_report_path.metadata.fullPath)
-      );
-      await MinedBatch.findByIdAndUpdate(batch_id, {
-        gov_lab_report_url: gov_lab_report_url,
-      });
-    }
+    // if (req.files.gov_lab_report) {
+    //   const GovRef = ref(
+    //     storage,
+    //     "/gov_lab_report/" + req.files.gov_lab_report.name
+    //   );
+    //   const gov_lab_report_path = await uploadBytes(
+    //     GovRef,
+    //     req.files.gov_lab_report.data
+    //   );
+    //   const gov_lab_report_url = await getDownloadURL(
+    //     ref(storage, gov_lab_report_path.metadata.fullPath)
+    //   );
+    //   await MinedBatch.findByIdAndUpdate(batch_id, {
+    //     gov_lab_report_url: gov_lab_report_url,
+    //   });
+    // }
     const batch_response = await MinedBatch.findByIdAndUpdate(batch_id, {
       status: status,
     });
+    console.log("batch_response: ",batch_response)
     if (batch_response.status === "approved") {
       await Mine.findByIdAndUpdate(batch_response.mine_id, {
         $inc: {
