@@ -90,6 +90,23 @@ const Mine = new mongoose.Schema({
       },
     },
   },
+  expected_ores_available: {
+    high: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+    medium: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+    low: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+  },
   lease_period: {
     from: {
       type: String,

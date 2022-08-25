@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-const Production = new mongoose.Schema(
+const TestedMinedBatch = new mongoose.Schema(
   {
-    organisation_id: {
+    mine_id: {
       type: String,
       required: true,
     },
-    ceo_id: {
+    manager_id: {
       type: String,
       required: true,
     },
@@ -18,11 +18,9 @@ const Production = new mongoose.Schema(
     grade: {
       type: String,
       enum: ["high", "medium", "low"],
-      required: true,
     },
     fe_percentage: {
       type: Number,
-      required: true,
     },
     quantity: {
       type: Number,
@@ -30,11 +28,10 @@ const Production = new mongoose.Schema(
     },
     sample_image_url: {
       type: String,
-      // required: true,
-    },
-    production_lab_report_url: {
-      type: String,
       required: true,
+    },
+    mine_lab_report_url: {
+      type: String,
     },
   },
   {
@@ -44,5 +41,4 @@ const Production = new mongoose.Schema(
 
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
-  .model("Production", Production);
-// Array of Production for multiple type of ore, grade and fe percentage
+  .model("Tested Mined Batch", TestedMinedBatch);

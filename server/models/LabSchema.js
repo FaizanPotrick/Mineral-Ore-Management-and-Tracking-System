@@ -5,10 +5,6 @@ const Lab = new mongoose.Schema({
     type: String,
     required: true,
   },
-  region_id: {
-    type: String,
-    required: true,
-  },
   lab_name: {
     type: String,
     trim: true,
