@@ -24,6 +24,7 @@ router.post(
         aadhar_card,
         mine_id,
         latitude,
+        area,
         longitude
     } = req.body;
     
