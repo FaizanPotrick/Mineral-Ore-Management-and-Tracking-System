@@ -87,11 +87,11 @@ const data = {
       <div :key="card" v-for="card of cards"
         class="flex flex-col border-l-4 shadow-2xl text-center border-yellow-300 py-4 px-2 bg-white rounded-3xl rounded-br-3xl border-r-3 drop-shadow-md min-w-[17rem]">
         <div class="text-xl text-center border-b-4 border-yellow-300">{{ card.title }}</div>
-        <div class="flex justify-center gap-4 capitalize ">
-          <div v-if="typeof card.value === 'object'" v-for="(value, name) of card.value">
+        <div class="flex justify-center items-center gap-4 capitalize" :class="'px-5', typeof card.value === 'object'">
+          <div class="text-2xl px-3 " v-if="typeof card.value === 'object'" v-for="(value, name) of card.value">
             {{ name }} : {{ value }}
           </div>
-          <div v-else>{{ card.value }}</div>
+          <div v-else class="text-3xl">{{ card.value }}</div>
         </div>
       </div>
     </div>

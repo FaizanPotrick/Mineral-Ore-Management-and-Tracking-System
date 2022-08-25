@@ -52,13 +52,11 @@ onBeforeMount(() => {
         <div class="text-xl text-center border-b-4 border-yellow-300">
           {{ card.title }}
         </div>
-
-        <div class="text-center text-5xl mb-1 my-2">
-          <!-- <hr class="border-yellow-300 border-1"> -->
-          <div v-if="typeof card.value === 'object'" v-for="(value, name) of card.value">
+        <div class="flex justify-center gap-4 items-center capitalize" :class="'px-5', typeof card.value === 'object'">
+          <div class="text-2xl px-3" v-if="typeof card.value === 'object'" v-for="(value, name) of card.value">
             {{ name }} : {{ value }}
           </div>
-          <div v-else>{{ Math.round(card.value) }}</div>
+          <div class="text-3xl" v-else>{{ Math.round(card.value) }}</div>
         </div>
       </div>
     </div>
