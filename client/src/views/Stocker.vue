@@ -50,20 +50,20 @@ const Next_fn = async () => {
     >
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
-          Stocker Registration
+          Stocker/Trader Registration
         </div>
-        <div class="text-gray-500 text-sm">Next a stocker.</div>
+        <div class="text-gray-500 text-sm">Register a stocker/trader.</div>
       </div>
       <form class="space-y-5 drop-shadow-md" @submit.prevent="Next_fn()">
         <div class="grid gap-6 mb-6 grid-cols-1">
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700"
-              >Stocker Name*</label
+              >Stocker/Trader Name*</label
             >
             <input
               type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Organization Name"
+              placeholder="Stocker/Trader Name"
               v-model="organisation.organisation_name"
               maxlength="300"
               required
@@ -80,12 +80,11 @@ const Next_fn = async () => {
               required
             />
           </div>
-          
         </div>
         <div class="grid gap-6 sm:grid-cols-2">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              > Email Address*</label
+            <label class="text-sm font-medium text-gray-700">
+              Email Address*</label
             >
             <input
               type="email"
@@ -98,9 +97,7 @@ const Next_fn = async () => {
             />
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              > Phone No.*</label
-            >
+            <label class="text-sm font-medium text-gray-700"> Phone No.*</label>
             <input
               type="tel"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
@@ -113,8 +110,8 @@ const Next_fn = async () => {
             />
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              > Aadhar Card*</label
+            <label class="text-sm font-medium text-gray-700">
+              Aadhar Card*</label
             >
             <input
               type="tel"
