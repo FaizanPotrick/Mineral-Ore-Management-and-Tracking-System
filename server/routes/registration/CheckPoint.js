@@ -57,6 +57,10 @@ router.post(
       req.user_type = "Checkpoint Officer";
       req.email_address = email_address;
       req.password = password;
+      console.log({
+        Username: checkpoint_officer_id,
+        Password: password,
+      });
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",

@@ -64,6 +64,10 @@ router.post(
       req.user_type = "Lab";
       req.email_address = email_address;
       req.password = password;
+      console.log({
+        Username: lab_manager_id,
+        Password: password,
+      });
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",

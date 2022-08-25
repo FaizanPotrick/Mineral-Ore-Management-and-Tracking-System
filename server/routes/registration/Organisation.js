@@ -73,6 +73,10 @@ router.post(
       req.user_type = "Organisation";
       req.email_address = email_address;
       req.password = password;
+      console.log({
+        Username: ceo_id,
+        Password: password,
+      });
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",

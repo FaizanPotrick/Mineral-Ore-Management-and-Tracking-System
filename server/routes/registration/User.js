@@ -87,6 +87,10 @@ router.post(
       req.user_type = "Officer";
       req.email_address = email_address;
       req.password = password;
+      console.log({
+        Username: officer_id,
+        Password: password,
+      });
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",
@@ -152,6 +156,10 @@ router.post(
       req.user_type = "CEO";
       req.email_address = email_address;
       req.password = password;
+      console.log({
+        Username: user_id,
+        Password: password,
+      });
       req.session.destroy();
       res
         .clearCookie("auth")
@@ -228,6 +236,10 @@ router.post(
       req.user_type = "Manager";
       req.email_address = email_address;
       req.password = password;
+      console.log({
+        Username: user_id,
+        Password: password,
+      });
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",

@@ -1,38 +1,23 @@
 Central Officer
-username: t3EbpvK5
-password: g4Ns4SCE
+Username: 12YtIy1j
+Password: gRQHkk8J
 
 State Officer
-username: VhUaQnYj
-password: 4M24fPva
-
-State Officer
-UserName: wzBnaDPI
-Password: st4SAefZ
+Username: LMCwsKiG
+Password: 4b3DEMc8
 
 District Officer
-username: iAHUb1sH
-password: hSlaIkXm
-
-District Officer
-UserName: 6Ioh0DLP
-Password: ob7islf3
+Username: 42NyAIQQ
+Password: PpS0QGR4
 
 Organisation
-username: bs5zYIdw
-password: tQIvwqr6
-
-Organisation
-UserName: mHTDZX1a
-Password: FCI8Fwbw
+Username: Xiqt4Q41 
+Password: 7Zpbok8C
 
 Mine
-username: 1ahXzGtt
-password: NunMHZMR
+Username: B8W7eqc9
+Password: zUYk8GIq
 
-Mine
-UserName: rB3xVjWD
-Password: MY6G2CO4
 
 Checkpoint
 UserName: JGb6iA9c

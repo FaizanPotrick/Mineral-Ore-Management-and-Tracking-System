@@ -107,6 +107,10 @@ const Mine = new mongoose.Schema({
       required: true,
     },
   },
+  plan_doc_url: {
+    type: String,
+    required: true,
+  },
   lease_period: {
     from: {
       type: String,

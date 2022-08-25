@@ -8,7 +8,18 @@ const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
 const moment = require("moment");
+const { initializeApp } = require("firebase/app");
+const {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} = require("firebase/storage");
 
+const app = initializeApp({
+  storageBucket: process.env.BUCKET_URL,
+});
+const storage = getStorage(app);
 const id_genarate = new ShortUniqueId({
   length: 8,
 });
@@ -26,9 +37,12 @@ router.post(
       pin_code,
       area,
       warehouse_capacity,
+      grade,
       period,
-      coordinates,
+      latitude,
+      longitude,
     } = req.body;
+    const { plan_doc } = req.files;
     try {
       const organisation_check = await Organisation.findById(
         organisation_id
@@ -48,6 +62,11 @@ router.post(
           type: "warning",
         });
       }
+      const planDocRef = ref(storage, "/plan_doc/" + plan_doc.name);
+      const plan_doc_path = await uploadBytes(planDocRef, plan_doc.data);
+      const plan_doc_url = await getDownloadURL(
+        ref(storage, plan_doc_path.metadata.fullPath)
+      );
       const manager_id = id_genarate();
       const password = id_genarate();
       const today = new Date();
@@ -74,10 +93,19 @@ router.post(
           region_id: _id,
           location: {
             pin_code: pin_code,
-            coordinates: coordinates,
+            coordinates: {
+              latitude: latitude,
+              longitude: longitude,
+            },
           },
           warehouse_capacity: warehouse_capacity,
           area: area,
+          expected_ores_available: {
+            high: grade.high,
+            medium: grade.medium,
+            low: grade.low,
+          },
+          plan_doc_url: plan_doc_url,
           lease_period: {
             from: moment(today).format("DD MMM YYYY"),
             period: period,
@@ -90,6 +118,10 @@ router.post(
       req.user_type = "Mine";
       req.email_address = email_address;
       req.password = password;
+      console.log({
+        Username: manager_id,
+        Password: password,
+      });
       res.status(200).json({
         message: "Successfully Registered",
         type: "success",

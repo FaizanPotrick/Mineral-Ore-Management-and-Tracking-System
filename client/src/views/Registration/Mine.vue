@@ -17,11 +17,17 @@ const mine = ref({
   pin_code: "",
   area: 0,
   warehouse_capacity: 0,
+  grade: {
+    high: 0,
+    medium: 0,
+    low: 0
+  },
   period: 0,
   coordinates: {
     latitude: 0,
     longitude: 0,
   },
+  plan_doc: {}
 });
 const loading = ref(false);
 
@@ -32,11 +38,25 @@ const register_fn = async () => {
   ) {
     return open_alert_box("Please select a location", "warning");
   }
+  const formData = new FormData();
+  formData.append("organisation_id", mine.value.organisation_id);
+  formData.append("name", mine.value.name);
+  formData.append("email_address", mine.value.email_address);
+  formData.append("phone_no", mine.value.phone_no);
+  formData.append("aadhar_card", mine.value.aadhar_card);
+  formData.append("pin_code", mine.value.pin_code);
+  formData.append("area", mine.value.area);
+  formData.append("warehouse_capacity", mine.value.warehouse_capacity);
+  formData.append("grade", mine.value.grade);
+  formData.append("period", mine.value.period);
+  formData.append("latitude", mine.value.coordinates.latitude);
+  formData.append("longitude", mine.value.coordinates.longitude);
+  formData.append("plan_doc", mine.value.plan_doc);
   loading.value = true;
   await axios({
     method: "post",
     url: "/api/registration/mine",
-    data: mine.value,
+    data: formData,
   })
     .then((res) => {
       open_alert_box(res.data.message, res.data.type);
@@ -50,11 +70,17 @@ const register_fn = async () => {
           pin_code: "",
           area: 0,
           warehouse_capacity: 0,
+          grade: {
+            high: 0,
+            medium: 0,
+            low: 0
+          },
           period: 0,
           coordinates: {
             latitude: 0,
             longitude: 0,
           },
+          plan_doc: {}
         };
       }
     })
@@ -70,6 +96,9 @@ const marker_selector = async (e) => {
     longitude: e.feature.values_.geometry.flatCoordinates[0],
   };
 };
+const store_document = (event) => {
+  mine.value.plan_doc = event.target.files[0];
+};
 
 onMounted(async () => {
   const { data } = await axios.get("/api/coordinates_and_organisation_list");
@@ -81,146 +110,109 @@ onMounted(async () => {
 
 <template>
   <div class="flex justify-center items-center">
-    <div
-      class="max-w-4xl w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl text-gray-800"
-    >
+    <div class="max-w-4xl w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl text-gray-800">
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
           Mine Registration
         </div>
         <div class="text-gray-500 text-sm">Register a mine.</div>
       </div>
-      <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
+      <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()" enctype="multipart/form-data">
         <div class="grid gap-6 grid-cols-1">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Organisation ID*</label
-            >
-            <input
-              type="text"
+            <label class="text-sm font-medium text-gray-700">Organisation ID*</label>
+            <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Organization ID"
-              v-model="mine.organisation_id"
-              required
-              list="org_id_list"
-            />
+              placeholder="Organization ID" v-model="mine.organisation_id" required list="org_id_list" />
             <datalist id="org_id_list">
-              <option
-                :value="organisation._id"
-                v-for="organisation of organisations"
-              >
+              <option :value="organisation._id" v-for="organisation of organisations">
                 {{ organisation.organisation_name }}
               </option>
             </datalist>
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Manager Name*</label
-            >
-            <input
-              type="text"
+            <label class="text-sm font-medium text-gray-700">Manager Name*</label>
+            <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Manager Name"
-              v-model="mine.name"
-              maxlength="150"
-              required
-            />
+              placeholder="Manager Name" v-model="mine.name" maxlength="150" required />
           </div>
         </div>
         <div class="grid gap-6 sm:grid-cols-2">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Manager Email Address*</label
-            >
-            <input
-              type="email"
+            <label class="text-sm font-medium text-gray-700">Manager Email Address*</label>
+            <input type="email"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Email Address"
-              v-model="mine.email_address"
-              maxlength="150"
-              pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]+"
-              required
-            />
+              placeholder="Email Address" v-model="mine.email_address" maxlength="150"
+              pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]+" required />
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Manager Phone No.*</label
-            >
-            <input
-              type="text"
+            <label class="text-sm font-medium text-gray-700">Manager Phone No.*</label>
+            <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Phone Number"
-              v-model="mine.phone_no"
-              minlength="10"
-              maxlength="10"
-              pattern="[0-9]{10}"
-              required
-            />
+              placeholder="Phone Number" v-model="mine.phone_no" minlength="10" maxlength="10" pattern="[0-9]{10}"
+              required />
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Manager Aadhar Card*</label
-            >
-            <input
-              type="text"
+            <label class="text-sm font-medium text-gray-700">Manager Aadhar Card*</label>
+            <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Aadhar Card"
-              v-model="mine.aadhar_card"
-              minlength="12"
-              maxlength="12"
-              pattern="[0-9]{12}"
-              required
-            />
+              placeholder="Aadhar Card" v-model="mine.aadhar_card" minlength="12" maxlength="12" pattern="[0-9]{12}"
+              required />
           </div>
         </div>
         <div class="grid gap-6 md:grid-cols-3 sm:grid-cols-2">
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Pin Code*</label>
-            <input
-              type="text"
-              placeholder="Pin Code"
+            <input type="text" placeholder="Pin Code"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.pin_code"
-              maxlength="10"
-              pattern="[0-9]+"
-              required
-            />
+              v-model="mine.pin_code" maxlength="10" pattern="[0-9]+" required />
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Area(in sqr.)*</label
-            >
-            <input
-              type="number"
+            <label class="text-sm font-medium text-gray-700">Area(in sqr. km)*</label>
+            <input type="number"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.area"
-              pattern="[0-9]+"
-              required
-            />
+              v-model="mine.area" pattern="[0-9]+" required />
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Warehouse Capacity(in mt)*</label
-            >
-            <input
-              type="number"
+            <label class="text-sm font-medium text-gray-700">Warehouse Capacity(in mt)*</label>
+            <input type="number"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.warehouse_capacity"
-              pattern="[0-9]+"
-              required
-            />
+              v-model="mine.warehouse_capacity" pattern="[0-9]+" required />
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Lease Period(in year)*</label
-            >
-            <input
-              type="number"
+            <label class="text-sm font-medium text-gray-700">Lease Period(in year)*</label>
+            <input type="number"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.period"
-              pattern="[0-9]+"
-              required
-            />
+              v-model="mine.period" pattern="[0-9]+" required />
+          </div>
+        </div>
+        <div class="grid gap-6 mb-6 sm:grid-cols-3">
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Available High Grade Ores(in sqr. km)</label>
+            <input
+              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              v-model="mine.grade.high" type="number" pattern="[0-9]+" />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Available Medium Grade Ores(in sqr. km)</label>
+            <input
+              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              v-model="mine.grade.medium" type="number" pattern="[0-9]+" />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Available Low Grade Ores(in sqr. km)</label>
+            <input
+              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              v-model="mine.grade.low" type="number" pattern="[0-9]+" />
+          </div>
+
+        </div>
+        <div class="grid gap-6 mb-6 grid-cols-1">
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Upload Plan Doc Pdf*</label>
+            <input
+              class="w-full content-center text-base border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              @change="store_document" type="file" accept="application/pdf" required />
           </div>
         </div>
         <ol-map style="height: 40vh">
@@ -237,29 +229,20 @@ onMounted(async () => {
           </ol-vector-layer>
         </ol-map>
         <div class="space-y-3 py-5">
-          <button
-            type="submit"
-            :class="{
-              'hover:bg-yellow-600/80': !loading,
-            }"
+          <button type="submit" :class="{
+            'hover:bg-yellow-600/80': !loading,
+          }"
             class="w-full flex text-lg justify-center items-center bg-yellow-600 text-gray-100 p-2.5 rounded-full font-semibold shadow-md"
-            :disabled="loading"
-          >
+            :disabled="loading">
             <span v-if="!loading" class="h-6"> Register </span>
             <span v-else>
-              <svg
-                class="w-6 h-6 animate-spin text-yellow-600 fill-white"
-                viewBox="0 0 100 101"
-                fill="none"
-              >
+              <svg class="w-6 h-6 animate-spin text-yellow-600 fill-white" viewBox="0 0 100 101" fill="none">
                 <path
                   d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                  fill="currentColor"
-                />
+                  fill="currentColor" />
                 <path
                   d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                  fill="currentFill"
-                />
+                  fill="currentFill" />
               </svg>
             </span>
           </button>
@@ -268,3 +251,9 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+<style>
+input[type="file"]::-webkit-file-upload-button,
+input[type="file"]::file-selector-button {
+  @apply bg-yellow-600 text-white font-medium border-0 py-2 pl-4 pr-4 mr-4;
+}
+</style>
