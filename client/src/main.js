@@ -55,6 +55,26 @@ app.use(
         component: () => import("@/views/ForgotPassword.vue"),
       },
       {
+        path: "/weight_details",
+        name: "Weight Details",
+        component: () => import("@/views/TestWeightDetails.vue"),
+      },
+      {
+        path: "/sample_test",
+        name: "Sample Test",
+        component: () => import("@/views/SampleTest.vue"),
+      },
+      {
+        path: "/stocker",
+        name: "Stocker",
+        component: () => import("@/views/Stocker.vue"),
+      },
+      {
+        path: "/warehouse",
+        name: "Warehouse",
+        component: () => import("@/views/Warehouse.vue"),
+      },
+      {
         path: "/dashboard",
         name: "dashboard",
         component: () => import("@/views/DashBoard.vue"),
@@ -413,7 +433,7 @@ app.use(
             meta: {
               access: false,
               type_of_user: ["officer"],
-              type_of_region: [ "district"],
+              type_of_region: ["district"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/List/SuspisiousActivity.vue"),
