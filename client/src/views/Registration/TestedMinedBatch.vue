@@ -55,12 +55,13 @@ const register_fn = async () => {
 
 const get_mined_batch = async () => {
   const { data } = await axios.get(
-    `/api/mined_batch?batch_id=${route.params.mined_batch_id}`
+    `/api/mined_batch?mined_batch_id=${route.params.mined_batch_id}`
   );
   mined_batch.value = data;
 };
 
 get_mined_batch();
+//TODO: Learn Add Function
 </script>
 
 <template>

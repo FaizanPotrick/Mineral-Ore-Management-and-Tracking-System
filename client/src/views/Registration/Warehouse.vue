@@ -3,8 +3,11 @@ import useAlertStore from "@/stores/Alert";
 import { onMounted } from "vue";
 import axios from "axios";
 import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
 const { open_alert_box } = useAlertStore();
+const router = useRouter()
+const route = useRoute()
 const center = ref([78.9629, 20.5937]);
 const zoom = ref(4);
 const warehouse = ref({
@@ -38,7 +41,7 @@ const register_fn = async () => {
   loading.value = true;
   await axios({
     method: "post",
-    url: "/api/registration/warehouse",
+    url: `/api/registration/warehouse?mine_id=${route.params.mine_id}`,
     data: formData,
   })
     .then((res) => {
@@ -54,8 +57,8 @@ const register_fn = async () => {
             latitude: 0,
             longitude: 0,
           },
-
         };
+        router.push('/dashboard')
       }
     })
     .catch((err) => {

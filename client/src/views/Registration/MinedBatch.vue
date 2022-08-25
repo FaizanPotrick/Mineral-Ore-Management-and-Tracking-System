@@ -2,8 +2,10 @@
 import useAlertStore from "@/stores/Alert";
 import axios from "axios";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const { open_alert_box } = useAlertStore();
+const router = useRouter()
 const quantity = ref(0);
 const loading = ref(false);
 
@@ -19,6 +21,7 @@ const register_fn = async () => {
       if (res.status === 200) {
         quantity.value = 0
       }
+      router.push('/dashboard')
     })
     .catch((err) => {
       open_alert_box(err.response.data.message, err.response.data.type);
@@ -32,7 +35,7 @@ const register_fn = async () => {
     <div class="max-w-lg w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl m-5 sm:10 text-gray-800">
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
-          Ores Registration
+          Batch Registration
         </div>
         <div class="text-gray-500 text-sm">Register a Batch</div>
       </div>

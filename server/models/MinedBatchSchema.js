@@ -14,6 +14,12 @@ const MinedBatch = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["pending", "approved"],
+      default: "pending",
+      required: true,
+    },
   },
   {
     timestamps: true,

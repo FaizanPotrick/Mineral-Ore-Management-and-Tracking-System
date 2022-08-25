@@ -80,7 +80,7 @@ const register_fn = async () => {
           },
           plan_doc: {}
         };
-        router.push(`/dashboard/mine_registration/${route.params.mine_id}/warehouse_registration`)
+        router.push(`/dashboard/mine_registration/${res.data.mine_id}/warehouse_registration`)
       }
     })
     .catch((err) => {
@@ -172,19 +172,19 @@ onMounted(async () => {
         </div>
         <div class="grid gap-6 mb-6 sm:grid-cols-3">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Available High Grade Ores(in sqr. km)</label>
+            <label class="text-sm font-medium text-gray-700">Available High Grade Ores(in mt)</label>
             <input
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               v-model="mine.expected_ores_available.high" type="number" pattern="[0-9]+" />
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Available Medium Grade Ores(in sqr. km)</label>
+            <label class="text-sm font-medium text-gray-700">Available Medium Grade Ores(in mt)</label>
             <input
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               v-model="mine.expected_ores_available.medium" type="number" pattern="[0-9]+" />
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Available Low Grade Ores(in sqr. km)</label>
+            <label class="text-sm font-medium text-gray-700">Available Low Grade Ores(in mt)</label>
             <input
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               v-model="mine.expected_ores_available.low" type="number" pattern="[0-9]+" />

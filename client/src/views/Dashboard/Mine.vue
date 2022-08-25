@@ -35,9 +35,10 @@ const dashboard = async () => {
       : `?mine_id=${route.params.mine_id}`
     }`
   );
+  console.log(data)
   title.value = data.title;
   cards.value = data.cards;
-  doughnut.value = data.doughnut;
+  // doughnut.value = data.doughnut;
 };
 
 dashboard();
@@ -108,13 +109,13 @@ const data = {
                     maintainAspectRatio: false,
                 }" :chart-data="data" />
             </div> -->
-      <div class="bg-white p-2 text-center rounded-xl max-w-xl w-full">
+      <!-- <div class="bg-white p-2 text-center rounded-xl max-w-xl w-full">
         Warehouse Overview
         <Doughnut :chart-options="{
           responsive: true,
           maintainAspectRatio: false,
         }" :chart-data="doughnut" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
