@@ -62,20 +62,14 @@ const Warehouse = new mongoose.Schema({
       },
     },
   },
-  location: {
-    pin_code: {
+  coordinates: {
+    latitude: {
       type: Number,
       required: true,
     },
-    coordinates: {
-      latitude: {
-        type: Number,
-        required: true,
-      },
-      longitude: {
-        type: Number,
-        required: true,
-      },
+    longitude: {
+      type: Number,
+      required: true,
     },
   },
 });
