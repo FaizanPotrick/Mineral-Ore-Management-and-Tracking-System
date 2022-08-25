@@ -5,19 +5,19 @@ import axios from "axios";
 import { ref } from "vue";
 
 const { open_alert_box } = useAlertStore();
-const organisations = ref([]);
+
 const center = ref([78.9629, 20.5937]);
 const zoom = ref(4);
 const mine = ref({
-  organisation_id: "",
+  
   name: "",
   email_address: "",
   phone_no: "",
   aadhar_card: "",
   pin_code: "",
   area: 0,
-  warehouse_capacity: 0,
-  grade: {
+  
+  expected_ores_available: {
     high: 0,
     medium: 0,
     low: 0
@@ -39,15 +39,15 @@ const register_fn = async () => {
     return open_alert_box("Please select a location", "warning");
   }
   const formData = new FormData();
-  formData.append("organisation_id", mine.value.organisation_id);
   formData.append("name", mine.value.name);
   formData.append("email_address", mine.value.email_address);
   formData.append("phone_no", mine.value.phone_no);
   formData.append("aadhar_card", mine.value.aadhar_card);
   formData.append("pin_code", mine.value.pin_code);
   formData.append("area", mine.value.area);
-  formData.append("warehouse_capacity", mine.value.warehouse_capacity);
-  formData.append("grade", mine.value.grade);
+  formData.append("expected_ores_available_high", mine.value.expected_ores_available.high);
+  formData.append("expected_ores_available_medium", mine.value.expected_ores_available.medium);
+  formData.append("expected_ores_available_low", mine.value.expected_ores_available.low);
   formData.append("period", mine.value.period);
   formData.append("latitude", mine.value.coordinates.latitude);
   formData.append("longitude", mine.value.coordinates.longitude);
@@ -62,19 +62,19 @@ const register_fn = async () => {
       open_alert_box(res.data.message, res.data.type);
       if (res.status === 200) {
         mine.value = {
-          organisation_id: "",
+          
           name: "",
           email_address: "",
           phone_no: "",
           aadhar_card: "",
           pin_code: "",
           area: 0,
-          warehouse_capacity: 0,
-          grade: {
-            high: 0,
-            medium: 0,
-            low: 0
-          },
+          
+          expected_ores_available: {
+    high: 0,
+    medium: 0,
+    low: 0
+  },
           period: 0,
           coordinates: {
             latitude: 0,
@@ -102,7 +102,7 @@ const store_document = (event) => {
 
 onMounted(async () => {
   const { data } = await axios.get("/api/coordinates_and_organisation_list");
-  organisations.value = data.organisations;
+  
   center.value = [data.coordinates.longitude, data.coordinates.latitude];
   zoom.value = 10;
 });
@@ -119,17 +119,7 @@ onMounted(async () => {
       </div>
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()" enctype="multipart/form-data">
         <div class="grid gap-6 grid-cols-1">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Organisation ID*</label>
-            <input type="text"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Organization ID" v-model="mine.organisation_id" required list="org_id_list" />
-            <datalist id="org_id_list">
-              <option :value="organisation._id" v-for="organisation of organisations">
-                {{ organisation.organisation_name }}
-              </option>
-            </datalist>
-          </div>
+          
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Manager Name*</label>
             <input type="text"
@@ -173,12 +163,7 @@ onMounted(async () => {
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               v-model="mine.area" pattern="[0-9]+" required />
           </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Warehouse Capacity(in mt)*</label>
-            <input type="number"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.warehouse_capacity" pattern="[0-9]+" required />
-          </div>
+         
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Lease Period(in year)*</label>
             <input type="number"
@@ -191,19 +176,19 @@ onMounted(async () => {
             <label class="text-sm font-medium text-gray-700">Available High Grade Ores(in sqr. km)</label>
             <input
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.grade.high" type="number" pattern="[0-9]+" />
+              v-model="mine.expected_ores_available.high" type="number" pattern="[0-9]+" />
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Available Medium Grade Ores(in sqr. km)</label>
             <input
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.grade.medium" type="number" pattern="[0-9]+" />
+              v-model="mine.expected_ores_available.medium" type="number" pattern="[0-9]+" />
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Available Low Grade Ores(in sqr. km)</label>
             <input
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.grade.low" type="number" pattern="[0-9]+" />
+              v-model="mine.expected_ores_available.low" type="number" pattern="[0-9]+" />
           </div>
 
         </div>

@@ -20,7 +20,7 @@ const app = initializeApp({
   storageBucket: process.env.BUCKET_URL,
 });
 const storage = getStorage(app);
-const id_genarate = new ShortUniqueId({
+const id_generate = new ShortUniqueId({
   length: 8,
 });
 
@@ -29,30 +29,23 @@ router.post(
   async (req, res, next) => {
     const { _id } = req.cookies;
     const {
-      organisation_id,
+     
       name,
       email_address,
       phone_no,
       aadhar_card,
       pin_code,
       area,
-      warehouse_capacity,
-      grade,
+    expected_ores_available_high,
+    expected_ores_available_low,
+    expected_ores_available_medium, 
       period,
       latitude,
       longitude,
     } = req.body;
     const { plan_doc } = req.files;
     try {
-      const organisation_check = await Organisation.findById(
-        organisation_id
-      ).lean();
-      if (organisation_check === null) {
-        return res.status(201).json({
-          message: "No Organisation Found",
-          type: "warning",
-        });
-      }
+    
       const aadhar_card_check = await User.findOne({
         aadhar_card: aadhar_card,
       }).lean();
@@ -67,10 +60,10 @@ router.post(
       const plan_doc_url = await getDownloadURL(
         ref(storage, plan_doc_path.metadata.fullPath)
       );
-      const manager_id = id_genarate();
-      const password = id_genarate();
+      const manager_id = id_generate();
+      const password = id_generate();
       const today = new Date();
-      await Promise.all([
+      const [user,mine] = await Promise.all([
         User.create({
           auth: jwt.sign(
             {
@@ -88,7 +81,7 @@ router.post(
           c_password: bcrypt.hashSync(password, 10),
         }),
         Mine.create({
-          organisation_id: organisation_id,
+          
           manager_id: manager_id,
           region_id: _id,
           location: {
@@ -98,12 +91,12 @@ router.post(
               longitude: longitude,
             },
           },
-          warehouse_capacity: warehouse_capacity,
+          
           area: area,
           expected_ores_available: {
-            high: grade.high,
-            medium: grade.medium,
-            low: grade.low,
+            high: expected_ores_available_high,
+            medium: expected_ores_available_medium,
+            low: expected_ores_available_low,
           },
           plan_doc_url: plan_doc_url,
           lease_period: {
@@ -122,7 +115,9 @@ router.post(
         Username: manager_id,
         Password: password,
       });
+      
       res.status(200).json({
+        mine_id: mine._id,
         message: "Successfully Registered",
         type: "success",
       });
