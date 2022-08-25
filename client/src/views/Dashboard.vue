@@ -55,16 +55,16 @@ const logout = async () => {
       </button>
 
       <!-- Desktop Nav -->
-      <div id="desktop_nav" class="flex flex-row justify-start w-full gap-4">
+      <div id="desktop_nav" class="flex flex-row justify-end w-full gap-4">
         <RouterLink :key="button" v-for="button of useHomeStore().buttons_fetch()" :to="button.router_link" :class="
           route.meta.active === button.name
-            ? 'bg-yellow-300 shadow-inner'
-            : 'bg-yellow-100/60 hover:bg-yellow-300 hover:shadow-inner'
-        " class="rounded-xl py-2.5 px-4 capitalize shadow-md">
+            ? 'text-gray-900'
+            : 'text-yellow-700 hover:text-gray-900'
+        " class="capitalize">
           {{ button.name }}
         </RouterLink>
         <RouterLink to="/dashboard/suspisious_activity" class="flex items-center text-yellow-700 hover:text-gray-900">
-          Alert
+          Suspicious Activity
         </RouterLink>
         <button @click="logout" class="text-yellow-700 hover:text-gray-900">
           Logout
@@ -85,7 +85,7 @@ const logout = async () => {
         </RouterLink>
       </div>
       <RouterLink to="/dashboard/suspisious_activity" class="flex items-center text-yellow-700 hover:text-gray-900">
-        Alert
+        Suspicious Activity
       </RouterLink>
       <button @click="logout" class="text-yellow-700 hover:text-gray-900">
         Logout

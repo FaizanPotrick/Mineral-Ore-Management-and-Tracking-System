@@ -53,6 +53,10 @@ const Transaction = new mongoose.Schema(
       type: String,
       required: true,
     },
+    transport_no: {
+      type: String,
+      required: true,
+    },
     invoice_url: {
       type: String,
       required: true,

@@ -133,27 +133,36 @@ router.get("/api/mined_batch/verify", async (req, res) => {
   const { batch_id } = req.query;
   const mined_batch_response = await MinedBatch.findById(batch_id).lean();
   const ore_details = {
-    batch_id:mined_batch_response._id.str,
-                                                   mine_id:mined_batch_response.mine_id,
-                      manager_id:                             mined_batch_response.manager_id,
-                      amount:mined_batch_response.quantity,
-                      ore_type:mined_batch_response.type_of_ore,
-                      grade: mined_batch_response.grade,
-                      Fe_amount:mined_batch_response.fe_percentage,  
-                      sample_img: mined_batch_response.sample_image_url,
-                      lab_doc:mined_batch_response.mine_lab_report_url,
-                      officer_id:mined_batch_response.officer_id,
-                      state:mined_batch_response.status
-  }
+    batch_id: mined_batch_response._id.str,
+    mine_id: mined_batch_response.mine_id,
+    manager_id: mined_batch_response.manager_id,
+    amount: mined_batch_response.quantity,
+    ore_type: mined_batch_response.type_of_ore,
+    grade: mined_batch_response.grade,
+    Fe_amount: mined_batch_response.fe_percentage,
+    sample_img: mined_batch_response.sample_image_url,
+    lab_doc: mined_batch_response.mine_lab_report_url,
+    officer_id: mined_batch_response.officer_id,
+    state: mined_batch_response.status,
+  };
   let blockchain = new BlockchainConnection();
   await blockchain.connectToContract();
-  const batch_hash = crypto.createHash('sha256').update(JSON.stringify(ore_details)).digest('hex');
-  const doc_hash = crypto.createHash('sha256').update(mined_batch_response.mine_lab_report_url).digest('hex');
-  const isVerified = await blockchain.verifyMinedBatch(batch_id,batch_hash,doc_hash);
-  console.log("isVerified:",isVerified);
-  return res.json({isVerified:isVerified});
-}
-);
+  const batch_hash = crypto
+    .createHash("sha256")
+    .update(JSON.stringify(ore_details))
+    .digest("hex");
+  const doc_hash = crypto
+    .createHash("sha256")
+    .update(mined_batch_response.mine_lab_report_url)
+    .digest("hex");
+  const isVerified = await blockchain.verifyMinedBatch(
+    batch_id,
+    batch_hash,
+    doc_hash
+  );
+  console.log("isVerified:", isVerified);
+  return res.json({ isVerified: isVerified });
+});
 // TODO: Add a route to verify transaction
 // router.get("/api/transaction/verify", async (req, res) => {
 //   const { batch_id } = req.query;
@@ -200,11 +209,46 @@ router.get("/api/transactions/miner", async (req, res) => {
 
 router.get("/api/suspicious_activity/officer", async (req, res) => {
   const { _id } = req.cookies;
-  const suspicious_activity_response = await SuspiciousActivity.find({
-    region_id: _id,
-  })
-    .sort({ updatedAt: -1 })
-    .lean();
-  res.json(suspicious_activity_response);
+  const response = await SuspiciousActivity.aggregate([
+    {
+      $match: {
+        region_id: _id,
+      },
+    },
+    {
+      $addFields: {
+        transaction_id: {
+          $toObjectId: "$transaction_id",
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        localField: "transaction_id",
+        foreignField: "_id",
+        as: "transactions",
+      },
+    },
+    {
+      $unwind: "$transactions",
+    },
+    {
+      $project: {
+        region_id: 1,
+        type_of_activity: 1,
+        reason: 1,
+        price_difference: 1,
+        transaction_id: 1,
+        "transactions.mine_id": 1,
+      },
+    },
+    {
+      $sort: {
+        updatedAt: -1,
+      },
+    },
+  ]);
+  res.json(response);
 });
 module.exports = router;
