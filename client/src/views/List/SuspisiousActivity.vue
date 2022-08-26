@@ -66,18 +66,30 @@ get_suspicious_activity();
           <thead class="whitespace-nowrap">
             <tr class="border border-solid border-gray-300">
               <th class="py-4 font-bold">Transaction Id</th>
+              <th class="py-4 font-bold">Mine Id</th>
+              <th class="py-4 font-bold">Region Id</th>
               <th class="py-4 font-bold">Type Of activity</th>
+              <th class="py-4 font-bold">Price Difference</th>
               <th class="py-4 font-bold">Reason</th>
             </tr>
           </thead>
           <tbody class="whitespace-nowrap">
             <tr :key="transaction._id" v-for="transaction in suspicious_activities"
-              class="text-center hover:bg-yellow-100/20 cursor-pointer border my-5">
+              class=" text-center hover:bg-yellow-100/20 cursor-pointer border my-5" @click="">
               <td class="py-4">
                 {{ transaction.transaction_id }}
               </td>
+              <td class="py-4">
+                ...{{ transaction._id.slice(15) }}
+              </td>
+              <td class="py-4">
+                ...{{ transaction.region_id.slice(15) }}
+              </td>
               <td class="py-4 capitalize">
                 {{ transaction.type_of_activity }}
+              </td>
+              <td class="py-4">
+                {{ transaction.price_difference }}
               </td>
               <td class="py-4 font-extrabold">
                 {{ transaction.reason }}
@@ -88,4 +100,5 @@ get_suspicious_activity();
       </div>
     </div>
   </div>
+
 </template>
