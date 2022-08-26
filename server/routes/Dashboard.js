@@ -458,7 +458,7 @@ router.get("/api/dashboard/miner", async (req, res) => {
         title: "Darshika Pongallu",
         cards: [
           {
-            title: "Mine Area(in sq.)",
+            title: "Mine Area(in Sq.KM)",
             value: "$area",
           },
           {
@@ -466,11 +466,11 @@ router.get("/api/dashboard/miner", async (req, res) => {
             value: "$warehouse.ores_available.high",
           },
           {
-            title: "Total Low Ores Available(in mt)",
+            title: "Total Medium Ores Available(in mt)",
             value: "$warehouse.ores_available.medium",
           },
           {
-            title: "Total Medium Ores Available(in mt)",
+            title: "Total Low Ores Available(in mt)",
             value: "$warehouse.ores_available.low",
           },
           {
