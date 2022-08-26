@@ -161,6 +161,18 @@ app.use(
             component: () => import("@/views/Dashboard/CheckPoint.vue"),
           },
           {
+            path: "labs/:lab_id",
+            name: "lab_dashboard",
+            meta: {
+              active: "labs",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Dashboard/Lab.vue"),
+          },
+          {
             path: "officer_registration",
             name: "officer_registration",
             meta: {
@@ -279,6 +291,18 @@ app.use(
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/List/CheckPoints.vue"),
+          },
+          {
+            path: "labs",
+            name: "labs",
+            meta: {
+              active: "labs",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/Labs.vue"),
           },
           {
             path: "mined_batches",
