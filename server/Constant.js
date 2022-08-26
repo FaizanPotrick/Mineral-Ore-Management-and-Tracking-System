@@ -1,7 +1,7 @@
 const Grade = {
-    high : 65,
-    medium : 65,
-    low: 62
+    high : 62,
+    medium : 61,
+    low: 55
 }
 const AcceptablePercentage = 20
  

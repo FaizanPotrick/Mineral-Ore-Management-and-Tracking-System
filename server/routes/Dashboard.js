@@ -666,7 +666,7 @@ router.get("/api/dashboard/miner", async (req, res) => {
         title: "$mine_name",
         cards: [
           {
-            title: "Mine Area(in sq.)",
+            title: "Mine Area(in Sq.KM)",
             value: "$area",
           },
           {
