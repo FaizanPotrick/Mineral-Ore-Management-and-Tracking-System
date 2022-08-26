@@ -4,7 +4,7 @@ const Transaction = new mongoose.Schema(
   {
     transport_id: {
       type: String,
-      required: true,
+      
     },
     mine_id: {
       type: String,
@@ -56,10 +56,10 @@ const Transaction = new mongoose.Schema(
     checkpoints: {
       type: Array,
     },
-    total_vehicles: {
-      type: Number,
-      required: true,
-    },
+    // total_vehicles: {
+    //   type: Number,
+    //   required: true,
+    // },
     royalty: {
       type: Number,
       required: true,
@@ -82,7 +82,7 @@ const Transaction = new mongoose.Schema(
     },
     lab_report_url: {
       type: String,
-      required: true,
+  
     },
   },
   {

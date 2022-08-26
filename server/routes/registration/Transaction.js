@@ -27,9 +27,12 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
     organisation_id,
     type_of_ore,
     fe_percentage,
-    quantity,
+    quantity, // array of quantity
     price,
-    transport_no,
+    // total_vehicles,
+    royalty,
+    vehicle_no, // array of vehicle_no
+    driving_license, // array of driving license
   } = req.body;
   const { invoice } = req.files;
   const grade =
@@ -68,6 +71,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
     const invoice_url = await getDownloadURL(
       ref(storage, invoice_path.metadata.fullPath)
     );
+    
     const transaction_response = await Transaction.create({
       mine_id: _id,
       manager_id: mine_response[0].manager_id,
@@ -78,6 +82,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
       grade: grade,
       quantity: quantity,
       price: price,
+      driving_license: driving_license,
       transaction_hash: bcrypt.hashSync(
         JSON.stringify({
           mine_id: _id,
@@ -89,12 +94,17 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
           grade: grade,
           quantity: quantity,
           price: price,
+          royalty: royalty,
+          driving_license: driving_license,
+          vehicle_no: vehicle_no,
+          invoice_url: invoice_url,
         }),
         10
       ),
-      transport_no: transport_no,
+      vehicle_no: vehicle_no,
       invoice_url: invoice_url,
     });
+  
     await Mine.findByIdAndUpdate(_id, {
       $inc: {
         [`ores_available.${type_of_ore}.${grade}`]: -parseInt(quantity),
