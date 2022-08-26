@@ -83,15 +83,15 @@ const data = {
           class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Manager Registration</RouterLink>
       </div>
     </div>
-    <div class="flex gap-4 flex-wrap w-full font-semibold">
+    <div class="flex gap-4 flex-wrap font-semibold">
       <div :key="card" v-for="card of cards"
-        class="flex flex-col border-l-4 shadow-2xl text-center border-yellow-300 py-4 px-2 bg-white rounded-3xl rounded-br-3xl border-r-3 drop-shadow-md min-w-[17rem]">
-        <div class="text-xl text-center border-b-4 border-yellow-300">{{ card.title }}</div>
-        <div class="flex justify-center items-center gap-4 capitalize" :class="'px-5', typeof card.value === 'object'">
-          <div class="text-2xl px-3 " v-if="typeof card.value === 'object'" v-for="(value, name) of card.value">
+        class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-4 bg-white rounded-lg drop-shadow-md min-w-[20rem]">
+        <div class="text-xl">{{ card.title }}</div>
+        <div class="flex gap-4 capitalize">
+          <div v-if="typeof card.value === 'object'" v-for="(value, name) of card.value">
             {{ name }} : {{ value }}
           </div>
-          <div v-else class="text-3xl">{{ card.value }}</div>
+          <div class="text-2xl font-semibold" v-else>{{ card.value }}</div>
         </div>
       </div>
     </div>

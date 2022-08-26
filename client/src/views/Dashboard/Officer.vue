@@ -48,19 +48,17 @@ onBeforeMount(() => {
     </div>
     <div class="flex gap-4 flex-wrap font-semibold">
       <div :key="card" v-for="card of cards"
-        class="flex flex-col border-l-4 shadow-2xl border-yellow-300 py-2 px-2 bg-white rounded-3xl rounded-br-3xl border-r-3 drop-shadow-md min-w-[17rem]">
-        <div class="text-xl text-center border-b-4 border-yellow-300">
-          {{ card.title }}
-        </div>
-        <div class="flex justify-center gap-4 items-center capitalize" :class="'px-5', typeof card.value === 'object'">
-          <div class="text-2xl px-3" v-if="typeof card.value === 'object'" v-for="(value, name) of card.value">
+        class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-4 bg-white rounded-lg drop-shadow-md min-w-[20rem]">
+        <div class="text-xl">{{ card.title }}</div>
+        <div class="flex gap-4 capitalize">
+          <div v-if="typeof card.value === 'object'" v-for="(value, name) of card.value">
             {{ name }} : {{ value }}
           </div>
-          <div class="text-3xl" v-else>{{ Math.round(card.value) }}</div>
+          <div class="text-2xl font-semibold" v-else>{{ card.value }}</div>
         </div>
       </div>
     </div>
-    <ol-map style="height: 40vh; width: 65vw" class="my-2">
+    <ol-map style="height: 40vh; width: 92vw" class="my-2">
       <ol-view :center="[78.9629, 20.5937]" :zoom="5" projection="EPSG:4326" />
       <ol-tile-layer>
         <ol-source-osm />
