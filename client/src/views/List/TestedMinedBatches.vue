@@ -9,7 +9,7 @@ const router = useRouter();
 const tested_mined_batches = ref([]);
 const filter_batches = ref([]);
 const search = ref("");
-const status = ["delivered", "dispatched"];
+const status = ["delivered", "dispatched", "holding", "approving"];
 const grade = ["low", "medium", "high"];
 const type_of_ore = ["fine", "lump", "iron_pellets"];
 const checked_list = ref([]);
@@ -73,10 +73,10 @@ const searchList = () => {
         <div class="flex flex-wrap items-center">
           <div class="hidden flex-wrap items-center lg:flex md:flex">
             <div class="px-3">
-              <h3 class="mb-1 font-semibold text-gray-900">Status</h3>
+              <h3 class="mb-1 mt-8 font-semibold text-gray-900">Status</h3>
               <ul class="w-42 text-sm font-medium text-gray-900 bg-white">
                 <li v-for="status in status" class="w-full rounded-t-lg">
-                  <div class="flex items-center">
+                  <div class="flex justify-center items-center">
                     <input type="radio" v-model="checked_list" v-bind:value="status" @keyup.enter="filterList()"
                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
                     <label class="py-1 ml-2 w-full text-sm font-medium text-gray-900">{{ status }}
