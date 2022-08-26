@@ -9,11 +9,7 @@ const filter_mines = ref([]);
 const search = ref("");
 const get_mines = async () => {
   const { data } = await axios.get(
-    `/api/mines/${
-      $cookies.get("type_of_user") === "officer"
-        ? `officer/${$cookies.get("type_of_region")}`
-        : "organisation"
-    }`
+    `/api/mines/officer/${$cookies.get("type_of_region")}`
   );
   mines.value = data;
   filter_mines.value = data;
@@ -47,37 +43,18 @@ const searchList = () => {
 <template>
   <div class="flex flex-col gap-4 items-center">
     <div
-      class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md"
-    >
+      class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md">
       <div class="flex justify-between items-center w-full">
         <div class="text-3xl font-semibold">Mines</div>
         <div class="hidden sm:block">
-          <input
-            type="search"
-            class="max-w-sm w-8vw px-4 py-2 border border-gray-300 rounded-lg"
-            placeholder="Search"
-            v-model="search"
-            @keyup.enter="searchList()"
-          />
-          <button
-            type="submit"
-            @click="searchList()"
-            class="absolute top-18 right-5 p-2.5 text-sm font-medium text-white bg-yellow-500 rounded-r-lg border border-yellow-600 hover:bg-orange-400"
-          >
-            <svg
-              aria-hidden="true"
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              ></path>
+          <input type="search" class="max-w-sm w-8vw px-4 py-2 border border-gray-300 rounded-lg" placeholder="Search"
+            v-model="search" @keyup.enter="searchList()" />
+          <button type="submit" @click="searchList()"
+            class="absolute top-18 right-5 p-2.5 text-sm font-medium text-white bg-yellow-500 rounded-r-lg border border-yellow-600 hover:bg-orange-400">
+            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
             <span class="sr-only">Search</span>
           </button>
@@ -88,45 +65,31 @@ const searchList = () => {
           <thead class="border-b whitespace-nowrap bg-yellow-400">
             <tr>
               <th class="py-4">Mine Id</th>
+              <th class="py-4">Mine Name</th>
               <th class="py-4">Manager Id</th>
-              <th class="py-4">Organisation Id</th>
               <th class="py-4">Region Id</th>
-              <th class="py-4">Warehouse Capacity</th>
               <th class="py-4">Pin Code</th>
               <th class="py-4">Lease Expiry</th>
-              <th class="py-4"></th>
             </tr>
           </thead>
           <tbody class="whitespace-nowrap">
-            <tr
-              :key="mine._id"
-              v-for="mine in mines"
-              class="text-center hover:bg-yellow-100/20 cursor-pointer"
-              @click="router.push(`/dashboard/mines/${mine._id}`)"
-            >
+            <tr :key="mine._id" v-for="mine in mines" class="text-center hover:bg-yellow-100/20 cursor-pointer"
+              @click="router.push(`/dashboard/mines/${mine._id}`)">
               <td class="py-4">
                 <abbr style="text-decoration: none" :title="mine._id">
                   ...{{ mine._id.slice(10) }}
                 </abbr>
               </td>
               <td class="py-4">
-                {{ mine.manager_id }}
+                {{ mine.mine_name }}
               </td>
               <td class="py-4">
-                <abbr
-                  style="text-decoration: none"
-                  :title="mine.organisation_id"
-                >
-                  ...{{ mine.organisation_id.slice(10) }}
-                </abbr>
+                {{ mine.manager_id }}
               </td>
               <td class="py-4">
                 <abbr style="text-decoration: none" :title="mine.region_id">
                   ...{{ mine.region_id.slice(10) }}
                 </abbr>
-              </td>
-              <td class="py-4">
-                {{ mine.warehouse_capacity }}
               </td>
               <td class="py-4">
                 {{ mine.location.pin_code }}

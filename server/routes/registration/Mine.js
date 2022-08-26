@@ -29,23 +29,22 @@ router.post(
   async (req, res, next) => {
     const { _id } = req.cookies;
     const {
-     
+      mine_name,
       name,
       email_address,
       phone_no,
       aadhar_card,
       pin_code,
       area,
-    expected_ores_available_high,
-    expected_ores_available_low,
-    expected_ores_available_medium, 
+      expected_ores_available_high,
+      expected_ores_available_low,
+      expected_ores_available_medium,
       period,
       latitude,
       longitude,
     } = req.body;
     const { plan_doc } = req.files;
     try {
-    
       const aadhar_card_check = await User.findOne({
         aadhar_card: aadhar_card,
       }).lean();
@@ -63,7 +62,7 @@ router.post(
       const manager_id = id_generate();
       const password = id_generate();
       const today = new Date();
-      const [user,mine] = await Promise.all([
+      const [user, mine] = await Promise.all([
         User.create({
           auth: jwt.sign(
             {
@@ -81,9 +80,9 @@ router.post(
           c_password: bcrypt.hashSync(password, 10),
         }),
         Mine.create({
-          
           manager_id: manager_id,
           region_id: _id,
+          mine_name: mine_name,
           location: {
             pin_code: pin_code,
             coordinates: {
@@ -91,7 +90,6 @@ router.post(
               longitude: longitude,
             },
           },
-          
           area: area,
           expected_ores_available: {
             high: expected_ores_available_high,
@@ -115,7 +113,7 @@ router.post(
         Username: manager_id,
         Password: password,
       });
-      
+
       res.status(200).json({
         mine_id: mine._id,
         message: "Successfully Registered",

@@ -24,6 +24,10 @@ const TestedMinedBatch = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    waste: {
+      type: Number,
+      required: true,
+    },
     quantity: {
       type: Number,
       required: true,

@@ -9,6 +9,13 @@ const Mine = new mongoose.Schema({
     type: String,
     required: true,
   },
+  mine_name: {
+    type: String,
+    trim: true,
+    maxlength: 300,
+    lowercase: true,
+    required: true,
+  },
   location: {
     pin_code: {
       type: Number,
@@ -49,6 +56,11 @@ const Mine = new mongoose.Schema({
   plan_doc_url: {
     type: String,
     required: true,
+  },
+  rom: {
+    type: Number,
+    required: true,
+    default: 0,
   },
   lease_period: {
     from: {

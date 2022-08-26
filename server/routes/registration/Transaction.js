@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Mine = require("../../models/MineSchema");
+const Warehouse = require("../../models/WarehouseSchema");
 const Organisation = require("../../models/OrganisationSchema");
 const Transaction = require("../../models/TransactionSchema");
 const Region = require("../../models/RegionSchema");
@@ -43,20 +44,25 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
       ? "medium"
       : "low";
   try {
-    const mine_response = await Mine.aggregate([
+    const mine_response = await Mine.findById(_id)
+      .select(["manager_id", "region_id"])
+      .lean();
+
+    const warehouse_response = await Warehouse.aggregate([
       {
-        $match: { _id: mongoose.Types.ObjectId(_id) },
+        $match: { mine_id: _id },
       },
       {
         $project: {
           _id: 0,
-          manager_id: 1,
-          region_id: 1,
-          grade: `$ores_available.${type_of_ore}.${grade}`,
+          grade: `$ores_available.${grade}.${type_of_ore}`,
         },
       },
     ]);
-    if (mine_response.length !== 0 && mine_response[0].grade < quantity) {
+    if (
+      warehouse_response.length !== 0 &&
+      warehouse_response[0].grade < quantity
+    ) {
       return res.status(201).json({
         message: "Not enough ore in the warehouse",
         type: "warning",
@@ -71,7 +77,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
     const invoice_url = await getDownloadURL(
       ref(storage, invoice_path.metadata.fullPath)
     );
-    
+
     const transaction_response = await Transaction.create({
       mine_id: _id,
       manager_id: mine_response[0].manager_id,
@@ -104,12 +110,15 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
       vehicle_no: vehicle_no,
       invoice_url: invoice_url,
     });
-  
-    await Mine.findByIdAndUpdate(_id, {
-      $inc: {
-        [`ores_available.${type_of_ore}.${grade}`]: -parseInt(quantity),
-      },
-    });
+
+    await Warehouse.findOneAndUpdate(
+      { mine_id: _id },
+      {
+        $inc: {
+          [`ores_available.${grade}.${type_of_ore}`]: -parseInt(quantity),
+        },
+      }
+    );
     const mine_average_price_response = await Transaction.aggregate([
       {
         $match: {

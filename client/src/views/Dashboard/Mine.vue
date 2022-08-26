@@ -78,9 +78,6 @@ const data = {
           class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Mined Batches</RouterLink>
         <RouterLink :to="`/dashboard/mines/${route.params.mine_id}/transactions`"
           class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Transactions</RouterLink>
-        <RouterLink v-if="$cookies.get('type_of_user') === 'organisation'"
-          :to="`/dashboard/mines/${route.params.mine_id}/manager_registration`"
-          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Manager Registration</RouterLink>
       </div>
       <div v-if="$cookies.get('type_of_user') === 'miner'" class="flex flex-wrap gap-3">
         <RouterLink to="/dashboard/add_mined_batch"

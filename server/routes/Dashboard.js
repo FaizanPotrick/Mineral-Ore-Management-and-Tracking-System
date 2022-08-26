@@ -5,7 +5,9 @@ const Mine = require("../models/MineSchema");
 const Region = require("../models/RegionSchema");
 const MinedBatch = require("../models/MinedBatchSchema");
 const Transaction = require("../models/TransactionSchema");
+const CheckPoint = require("../models/CheckPointSchema");
 const mongoose = require("mongoose");
+const TransactionSchema = require("../models/TransactionSchema");
 
 router.get("/api/dashboard/officer/country", async (req, res) => {
   let _id = req.cookies._id;
@@ -274,6 +276,19 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
     },
     {
       $lookup: {
+        from: "organisations",
+        pipeline: [
+          {
+            $match: {
+              _id: { $exists: true },
+            },
+          },
+        ],
+        as: "organisations",
+      },
+    },
+    {
+      $lookup: {
         from: "mines",
         localField: "_id",
         foreignField: "region_id",
@@ -305,6 +320,8 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
               mine_id: {
                 $in: mine_ids,
               },
+              type_of_ore: "fine",
+              grade: "high",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -312,7 +329,112 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
             },
           },
         ],
-        as: "transactions",
+        as: "fine_high",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: {
+                $in: mine_ids,
+              },
+              type_of_ore: "fine",
+              grade: "medium",
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "fine_medium",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: {
+                $in: mine_ids,
+              },
+              type_of_ore: "fine",
+              grade: "low",
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "fine_low",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: {
+                $in: mine_ids,
+              },
+              type_of_ore: "lump",
+              grade: "high",
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "lump_high",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: {
+                $in: mine_ids,
+              },
+              type_of_ore: "lump",
+              grade: "medium",
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "lump_medium",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: {
+                $in: mine_ids,
+              },
+              type_of_ore: "lump",
+              grade: "low",
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "lump_low",
       },
     },
     {
@@ -320,6 +442,10 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
         _id: 0,
         title: "district",
         cards: [
+          {
+            title: "Total Organisations",
+            value: { $size: "$organisations" },
+          },
           {
             title: "Total Mines",
             value: { $size: "$mines" },
@@ -333,8 +459,25 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
             value: { $size: "$labs" },
           },
           {
-            title: "Average Region Price",
-            value: { $avg: "$transactions.price" },
+            title: "Average High Region Price",
+            value: {
+              fine: { $avg: "$fine_high.price" },
+              lump: { $avg: "$lump_high.price" },
+            },
+          },
+          {
+            title: "Average Medium Region Price",
+            value: {
+              fine: { $avg: "$fine_medium.price" },
+              lump: { $avg: "$lump_medium.price" },
+            },
+          },
+          {
+            title: "Average Low Region Price",
+            value: {
+              fine: { $avg: "$fine_low.price" },
+              lump: { $avg: "$lump_low.price" },
+            },
           },
         ],
         markers: {
@@ -368,55 +511,23 @@ router.get("/api/dashboard/organisation", async (req, res) => {
       },
     },
     {
-      $addFields: {
-        _id: {
-          $toString: "$_id",
-        },
-      },
-    },
-    {
-      $lookup: {
-        from: "mines",
-        localField: "_id",
-        foreignField: "organisation_id",
-        as: "mines",
-      },
-    },
-    {
       $project: {
         _id: 0,
         title: "$organisation_name",
         cards: [
           {
-            title: "Total Mines",
-            value: { $size: "$mines" },
+            title: "Total High Ores Bought(in mt)",
+            value: "$ores_bought.high",
           },
           {
-            title: "Total Fine Ores Bought(in mt)",
-            value: "$ores_bought.fine",
+            title: "Total Medium Ores Bought(in mt)",
+            value: "$ores_bought.medium",
           },
           {
-            title: "Total Lump Ores Bought(in mt)",
-            value: "$ores_bought.lump",
-          },
-          {
-            title: "Total Iron Pellet Ores Bought(in mt)",
-            value: "$ores_bought.iron_pellet",
+            title: "Total Low Ores Bought(in mt)",
+            value: "$ores_bought.low",
           },
         ],
-        markers: {
-          $map: {
-            input: "$mines",
-            as: "mine",
-            in: {
-              _id: "$$mine._id",
-              coordinates: [
-                "$$mine.location.coordinates.longitude",
-                "$$mine.location.coordinates.latitude",
-              ],
-            },
-          },
-        },
       },
     },
   ]);
@@ -453,9 +564,123 @@ router.get("/api/dashboard/miner", async (req, res) => {
       $unwind: "$warehouse",
     },
     {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: _id,
+              type_of_ore: "fine",
+              grade: "high",
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "fine_high",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: _id,
+              type_of_ore: "fine",
+              grade: "medium",
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "fine_medium",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: _id,
+              type_of_ore: "fine",
+              grade: "low",
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "fine_low",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: _id,
+              type_of_ore: "lump",
+              grade: "high",
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "lump_high",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: _id,
+              type_of_ore: "lump",
+              grade: "medium",
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "lump_medium",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: _id,
+              type_of_ore: "lump",
+              grade: "low",
+              createdAt: {
+                $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+                $lte: new Date(),
+              },
+            },
+          },
+        ],
+        as: "lump_low",
+      },
+    },
+    {
       $project: {
         _id: 0,
-        title: "Darshika Pongallu",
+        title: "$mine_name",
         cards: [
           {
             title: "Mine Area(in Sq.KM)",
@@ -477,12 +702,32 @@ router.get("/api/dashboard/miner", async (req, res) => {
             title: "Lease Period",
             value: "$lease_period.to",
           },
+          {
+            title: "Average High Region Price",
+            value: {
+              fine: { $avg: "$fine_high.price" },
+              lump: { $avg: "$lump_high.price" },
+            },
+          },
+          {
+            title: "Average Medium Region Price",
+            value: {
+              fine: { $avg: "$fine_medium.price" },
+              lump: { $avg: "$lump_medium.price" },
+            },
+          },
+          {
+            title: "Average Low Region Price",
+            value: {
+              fine: { $avg: "$fine_low.price" },
+              lump: { $avg: "$lump_low.price" },
+            },
+          },
         ],
       },
     },
   ]);
   res.json(response[0]);
-  // check: { $push: "$transactions.type_of_ore" },
 });
 
 router.get("/api/dashboard/checkpoint", async (req, res) => {
@@ -490,21 +735,11 @@ router.get("/api/dashboard/checkpoint", async (req, res) => {
   if (req.query.checkpoint_id) {
     _id = req.query.checkpoint_id;
   }
-  const response = await Transaction.aggregate([
-    {
-      $match: {
-        $expr: {
-          $in: [_id, "$checkpoints"],
-        },
-      },
-    },
-    {
-      $sort: {
-        updatedAt: -1,
-      },
-    },
-  ]);
-  res.json(response);
+  const checkpoint_response = await CheckPoint.findById(_id).lean();
+  const transaction_response = await Transaction.find({
+    _id: checkpoint_response.transactions,
+  }).lean();
+  res.json(transaction_response);
 });
 
 router.get("/api/dashboard/lab", async (req, res) => {
@@ -512,21 +747,14 @@ router.get("/api/dashboard/lab", async (req, res) => {
   if (req.query.lab_id) {
     _id = req.query.lab_id;
   }
-  const response = await MinedBatch.aggregate([
-    {
-      $match: {
-        lab_id: _id,
-        status: {
-          $ne: "testing",
-        },
-      },
-    },
-    {
-      $sort: {
-        updatedAt: -1,
-      },
-    },
-  ]);
+  const response = await Transaction.find({
+    lab_id: _id,
+  })
+    .sort({
+      updatedAt: -1,
+    })
+    .lean();
+
   res.json(response);
 });
 
