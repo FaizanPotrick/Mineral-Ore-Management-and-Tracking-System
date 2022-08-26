@@ -60,7 +60,7 @@ const downloadQRCode = () => {
                   <tbody>
                     <tr class="border-b">
                       <td class="text-gray-900 font-base px-6 py-4">
-                        Transcation Id:
+                        Transaction Id:
                       </td>
                       <td class="px-6 py-4 font-bold">
                         {{ transaction._id }}

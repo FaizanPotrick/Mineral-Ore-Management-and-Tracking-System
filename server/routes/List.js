@@ -99,33 +99,8 @@ router.get("/api/checkpoints/officer/district", async (req, res) => {
   res.json(mine_response.reverse());
 });
 
-router.get("/api/labs/officer/country", async (req, res) => {
+router.get("/api/labs/officer", async (req, res) => {
   const lab_response = await Lab.find().lean();
-  res.json(lab_response.reverse());
-});
-
-router.get("/api/labs/officer/state", async (req, res) => {
-  const { _id, type_of_region } = req.cookies;
-  const region_user = await Region.findOne({
-    _id: _id,
-    type_of_region: type_of_region,
-  }).distinct("state");
-  const region_response = await Region.find({
-    officer_id: { $exists: true },
-    district: { $exists: true },
-    state: region_user,
-  }).distinct("_id");
-  const lab_response = await Lab.find({
-    region_id: region_response,
-  }).lean();
-  res.json(lab_response.reverse());
-});
-
-router.get("/api/labs/officer/district", async (req, res) => {
-  const { _id } = req.cookies;
-  const lab_response = await Lab.find({
-    region_id: _id,
-  }).lean();
   res.json(lab_response.reverse());
 });
 

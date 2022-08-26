@@ -204,8 +204,15 @@ router.get("/api/dashboard/officer/state", async (req, res) => {
     {
       $lookup: {
         from: "labs",
-        localField: "region_ids",
-        foreignField: "region_id",
+        pipeline: [
+          {
+            $match: {
+              _id: {
+                $exists: true,
+              },
+            },
+          },
+        ],
         as: "labs",
       },
     },
@@ -306,8 +313,15 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
     {
       $lookup: {
         from: "labs",
-        localField: "_id",
-        foreignField: "region_id",
+        pipeline: [
+          {
+            $match: {
+              _id: {
+                $exists: true,
+              },
+            },
+          },
+        ],
         as: "labs",
       },
     },
@@ -459,21 +473,21 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
             value: { $size: "$labs" },
           },
           {
-            title: "Average High Region Price",
+            title: "Average High Mine Price",
             value: {
               fine: { $avg: "$fine_high.price" },
               lump: { $avg: "$lump_high.price" },
             },
           },
           {
-            title: "Average Medium Region Price",
+            title: "Average Medium Mine Price",
             value: {
               fine: { $avg: "$fine_medium.price" },
               lump: { $avg: "$lump_medium.price" },
             },
           },
           {
-            title: "Average Low Region Price",
+            title: "Average Low Mine Price",
             value: {
               fine: { $avg: "$fine_low.price" },
               lump: { $avg: "$lump_low.price" },
