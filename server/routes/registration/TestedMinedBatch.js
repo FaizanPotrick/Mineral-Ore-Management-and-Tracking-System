@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Mine = require("../../models/MineSchema");
+const Warehouse = require("../../models/WarehouseSchema");
 const MinedBatch = require("../../models/MinedBatchSchema");
 const TestedMinedBatch = require("../../models/TestedMinedBatchSchema");
+const bcrypt = require("bcrypt");
 const { initializeApp } = require("firebase/app");
 const {
   getStorage,
@@ -20,7 +22,7 @@ const storage = getStorage(app);
 router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
   const { _id } = req.cookies;
   const { mined_batch_id } = req.query;
-  const { type_of_ore, fe_percentage } = req.body;
+  const { type_of_ore, fe_percentage, quantity } = req.body;
   const { sample_image, mine_lab_report } = req.files;
   const grade =
     parseInt(fe_percentage) >= Grade.high
@@ -33,12 +35,6 @@ router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
     const mine_response = await Mine.findById(_id)
       .select(["manager_id", "region_id"])
       .lean();
-    const mined_batch_response = await MinedBatch.findByIdAndUpdate(
-      mined_batch_id,
-      {
-        status: "approved",
-      }
-    );
     const imageRef = ref(storage, "/sample_image/" + sample_image.name);
     const documnetRef = ref(
       storage,
@@ -61,15 +57,37 @@ router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
       type_of_ore: type_of_ore,
       fe_percentage: fe_percentage,
       grade: grade,
-      quantity: mined_batch_response.quantity,
+      quantity: quantity,
+      tested_mined_batch_hash: bcrypt.hashSync(
+        JSON.stringify({
+          mine_id: _id,
+          manager_id: mine_response.manager_id,
+          type_of_ore: type_of_ore,
+          fe_percentage: fe_percentage,
+          grade: grade,
+          quantity: parseInt(quantity),
+          status: "dispatched",
+          sample_image_url: sample_image_url,
+          mine_lab_report_url: mine_lab_report_url,
+        }),
+        10
+      ),
       sample_image_url: sample_image_url,
       mine_lab_report_url: mine_lab_report_url,
     });
-    await Mine.findByIdAndUpdate(_id, {
-      $inc: {
-        [`ores_available.${type_of_ore}.${grade}`]: mined_batch_response.quantity,
-      },
+    await MinedBatch.findByIdAndUpdate(mined_batch_id, {
+      status: "approved",
     });
+    // await Warehouse.findByIdAndUpdate(
+    //   {
+    //     mine_id: _id,
+    //   },
+    //   {
+    //     $inc: {
+    //       [`ores_available.${grade}.${type_of_ore}`]: quantity,
+    //     },
+    //   }
+    // );
     res.status(200).json({
       message: "Successfully Registered",
       type: "success",

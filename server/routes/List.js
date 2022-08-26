@@ -114,7 +114,6 @@ router.get("/api/mined_batches/miner", async (req, res) => {
   const { _id } = req.cookies;
   const mined_batch_response = await MinedBatch.find({
     mine_id: _id,
-    status: "pending",
   })
     .sort({ updatedAt: -1 })
     .lean();
