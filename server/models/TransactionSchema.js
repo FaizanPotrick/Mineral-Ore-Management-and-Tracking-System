@@ -4,7 +4,7 @@ const Transaction = new mongoose.Schema(
   {
     transport_id: {
       type: String,
-      
+
     },
     mine_id: {
       type: String,
@@ -49,8 +49,8 @@ const Transaction = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "dispatched", "delivered"],
-      default: "dispatched",
+      enum: ["pending", "dispatched", "delivered","holding"],
+      default: "pending",
       required: true,
     },
     checkpoints: {
