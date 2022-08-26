@@ -5,9 +5,9 @@ const Organisation = new mongoose.Schema({
     type: String,
     required: true,
   },
-  type_of_user:{
+  type_of_user: {
     type: String,
-    enum: ["end_user","stocker","iron_pellet"],
+    enum: ["end_user", "stocker", "iron_pellet"],
     required: true,
   },
   organisation_name: {

@@ -12,6 +12,7 @@ const organisation = ref({
   phone_no: "",
   aadhar_card: "",
   gst_no: "",
+  type_of_user:"",
 });
 const loading = ref(false);
 
@@ -33,6 +34,7 @@ const register_fn = async () => {
           phone_no: "",
           aadhar_card: "",
           gst_no: "",
+          type_of_user:"",
         };
       }
     })
@@ -87,6 +89,17 @@ const register_fn = async () => {
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               placeholder="Name"
               v-model="organisation.name"
+              maxlength="150"
+              required
+            />
+          </div>
+            <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Organisation type (end_user,"stocker","iron_pellet")*</label>
+            <input
+              type="text"
+              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              placeholder="type of user"
+              v-model="organisation.type_of_user"
               maxlength="150"
               required
             />
