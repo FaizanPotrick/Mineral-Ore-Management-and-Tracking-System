@@ -4,7 +4,7 @@ const Transaction = new mongoose.Schema(
   {
     transport_id: {
       type: String,
-
+      
     },
     mine_id: {
       type: String,
@@ -30,10 +30,7 @@ const Transaction = new mongoose.Schema(
       enum: ["fine", "lump", "iron pellet"],
       required: true,
     },
-    fe_percentage: {
-      type: Number,
-      required: true,
-    },
+
     quantity: {
       type: Number,
       required: true,
