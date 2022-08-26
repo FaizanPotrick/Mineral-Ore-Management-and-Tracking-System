@@ -134,6 +134,26 @@ router.get("/api/tested_mined_batches/officer", async (req, res) => {
   res.json(mined_batch_response);
 });
 
+router.get("/api/transactions/officer", async (req, res) => {
+  const { mine_id } = req.query;
+  const transaction_response = await Transaction.find({
+    mine_id: mine_id,
+  })
+    .sort({ updatedAt: -1 })
+    .lean();
+  res.json(transaction_response);
+});
+
+router.get("/api/transactions/miner", async (req, res) => {
+  const { _id } = req.cookies;
+  const transaction_response = await Transaction.find({
+    mine_id: _id,
+  })
+    .sort({ updatedAt: -1 })
+    .lean();
+  res.json(transaction_response);
+});
+
 ////////////
 
 router.get("/api/mined_batch/verify", async (req, res) => {
@@ -186,35 +206,6 @@ router.get("/api/mined_batch/verify", async (req, res) => {
 //   return res.json(isVerified);
 // }
 // );
-router.get("/api/transactions/officer", async (req, res) => {
-  const { mine_id } = req.query;
-  const transaction_response = await Transaction.find({
-    mine_id: mine_id,
-  })
-    .sort({ updatedAt: -1 })
-    .lean();
-  res.json(transaction_response);
-});
-
-router.get("/api/transactions/organisation", async (req, res) => {
-  const { _id } = req.cookies;
-  const transaction_response = await Transaction.find({
-    org_id: _id,
-  })
-    .sort({ updatedAt: -1 })
-    .lean();
-  res.json(transaction_response);
-});
-
-router.get("/api/transactions/miner", async (req, res) => {
-  const { _id } = req.cookies;
-  const transaction_response = await Transaction.find({
-    mine_id: _id,
-  })
-    .sort({ updatedAt: -1 })
-    .lean();
-  res.json(transaction_response);
-});
 
 router.get("/api/suspicious_activity/officer", async (req, res) => {
   const { _id } = req.cookies;

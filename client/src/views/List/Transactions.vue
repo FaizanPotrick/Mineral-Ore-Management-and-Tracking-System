@@ -11,11 +11,9 @@ const filter_transactions = ref([]);
 const search = ref("");
 const get_transaction = async () => {
   const { data } = await axios.get(
-    `/api/transactions/${route.params.mine_id !== undefined
+    `/api/transactions/${$cookies.get("type_of_user") === "officer"
       ? `officer?mine_id=${route.params.mine_id}`
-      : $cookies.get("type_of_user") === "organisation"
-        ? "organisation"
-        : "miner"
+      : "miner"
     }`
   );
   transactions.value = data;
@@ -76,7 +74,7 @@ const searchList = () => {
               <th class="py-4">Transaction Id</th>
               <th class="py-4">Manager Id</th>
               <th class="py-4">Grade</th>
-             
+
               <th class="py-4">Type of Ore</th>
               <th class="py-4">Quantity</th>
               <th class="py-4">Status</th>
@@ -103,7 +101,7 @@ const searchList = () => {
               <td class="py-4 capitalize">
                 {{ transaction.grade }}
               </td>
-     
+
               <td class="py-4 capitalize">
                 {{ transaction.type_of_ore }}
               </td>

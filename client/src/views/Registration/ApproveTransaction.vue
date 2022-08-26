@@ -9,7 +9,6 @@ const { open_alert_box } = useAlertStore();
 const router = useRouter();
 const errors = ref("");
 const transaction = ref([]);
-const status = ref("");
 const loading = ref(false);
 
 const onInit = async (promise) => {
@@ -35,14 +34,12 @@ const onDecode = async (result) => {
 const register_fn = async () => {
   loading.value = true;
   await axios({
-    method: "post",
+    method: "get",
     url: `/api/transaction/${$cookies.get("type_of_user") === "organisation"
-        ? "organisation"
-        : "checkpoint"
+      ? "organisation"
+      : "checkpoint"
       }?transaction_id=${transaction.value._id}`,
-    data: {
-      status: status.value,
-    },
+
   })
     .then((res) => {
       open_alert_box(res.data.message, res.data.type);
