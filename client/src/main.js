@@ -89,6 +89,7 @@ app.use(
                 "officer",
                 "organisation",
                 "miner",
+                "warehouse",
                 "checkpoint",
                 "lab",
               ],
@@ -102,6 +103,8 @@ app.use(
                 return import("@/views/Dashboard/Organisation.vue");
               } else if ($cookies.get("type_of_user") === "miner") {
                 return import("@/views/Dashboard/Mine.vue");
+              } else if ($cookies.get("type_of_user") === "warehouse") {
+                return import("@/views/Dashboard/Warehouse.vue");
               } else if ($cookies.get("type_of_user") === "checkpoint") {
                 return import("@/views/Dashboard/CheckPoint.vue");
               } else {

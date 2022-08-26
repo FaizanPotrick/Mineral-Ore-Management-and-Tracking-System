@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Region = require("../models/RegionSchema");
 const Organisation = require("../models/OrganisationSchema");
+const Warehouse = require("../models/WarehouseSchema");
 const Mine = require("../models/MineSchema");
 const CheckPoint = require("../models/CheckPointSchema");
 const Lab = require("../models/LabSchema");
@@ -88,6 +89,39 @@ router.get("/api/user/miner", async (req, res) => {
       $lookup: {
         from: "users",
         localField: "manager_id",
+        foreignField: "user_id",
+        as: "user",
+      },
+    },
+    {
+      $unwind: "$user",
+    },
+    {
+      $project: {
+        _id: 0,
+        name: "$user.user_name",
+        email_address: "$user.email_address",
+      },
+    },
+  ]);
+  res.json(response[0]);
+});
+
+router.get("/api/user/warehouse", async (req, res) => {
+  let _id = req.cookies._id;
+  if (req.query.warehouse_id) {
+    _id = req.query.warehouse_id;
+  }
+  const response = await Warehouse.aggregate([
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(_id),
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "warehouse_manager_id",
         foreignField: "user_id",
         as: "user",
       },

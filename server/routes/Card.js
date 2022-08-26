@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const TestedMinedBatch = require("../models/TestedMinedBatchSchema");
 const Transaction = require("../models/TransactionSchema");
+const bcrypt = require("bcrypt");
 
 router.get("/api/tested_mined_batch", async (req, res) => {
   const { tested_mined_batch_id } = req.query;
@@ -9,6 +10,40 @@ router.get("/api/tested_mined_batch", async (req, res) => {
     tested_mined_batch_id
   ).lean();
   res.status(200).json(mined_batch_response);
+});
+
+router.get("/api/tested_mined_batch/verify", async (req, res) => {
+  const { tested_mined_batch_id, tested_mined_batch_hash } = req.query;
+  const tested_mined_batch_response = await TestedMinedBatch.findOne({
+    _id: tested_mined_batch_id,
+  }).lean();
+  if (tested_mined_batch_response === null) {
+    return res.status(201).json({
+      message: "Mined Batch not found",
+      type: "error",
+    });
+  }
+  const hashMatch = bcrypt.compare(
+    JSON.stringify({
+      mine_id: tested_mined_batch_response._id,
+      manager_id: tested_mined_batch_response.manager_id,
+      type_of_ore: tested_mined_batch_response.type_of_ore,
+      fe_percentage: tested_mined_batch_response.fe_percentage,
+      grade: tested_mined_batch_response.grade,
+      quantity: tested_mined_batch_response.quantity,
+      status: tested_mined_batch_response.status,
+      sample_image_url: tested_mined_batch_response.sample_image_url,
+      mine_lab_report_url: tested_mined_batch_response.mine_lab_report_url,
+    }),
+    tested_mined_batch_hash
+  );
+  if (!hashMatch) {
+    return res.status(201).json({
+      message: "Mined Batch hash does not match",
+      type: "error",
+    });
+  }
+  res.status(200).json(tested_mined_batch_response);
 });
 
 router.get("/api/transaction", async (req, res) => {

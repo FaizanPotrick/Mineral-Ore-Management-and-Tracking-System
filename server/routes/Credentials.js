@@ -4,6 +4,7 @@ const User = require("../models/UserSchema");
 const Region = require("../models/RegionSchema");
 const Organisation = require("../models/OrganisationSchema");
 const Mine = require("../models/MineSchema");
+const Warehouse = require("../models/WarehouseSchema");
 const CheckPoint = require("../models/CheckPointSchema");
 const Lab = require("../models/LabSchema");
 const bcrypt = require("bcrypt");
@@ -77,6 +78,15 @@ router.post("/api/login", async (req, res) => {
         .lean();
       req.session._id = mine_response._id;
       res.cookie("_id", mine_response._id);
+    }
+    if (user_response.type_of_user === "warehouse") {
+      const warehouse_response = await Warehouse.findOne({
+        warehouse_manager_id: user_response.user_id,
+      })
+        .select("_id")
+        .lean();
+      req.session._id = warehouse_response._id;
+      res.cookie("_id", warehouse_response._id);
     }
     if (user_response.type_of_user === "checkpoint") {
       const checkpoint_response = await CheckPoint.findOne({

@@ -78,16 +78,6 @@ router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
     await MinedBatch.findByIdAndUpdate(mined_batch_id, {
       status: "approved",
     });
-    // await Warehouse.findByIdAndUpdate(
-    //   {
-    //     mine_id: _id,
-    //   },
-    //   {
-    //     $inc: {
-    //       [`ores_available.${grade}.${type_of_ore}`]: quantity,
-    //     },
-    //   }
-    // );
     res.status(200).json({
       message: "Successfully Registered",
       type: "success",
@@ -100,5 +90,37 @@ router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
     });
   }
 });
+
+router.get(
+  "/api/registration/tested_mined_batch/warehouse",
+  async (req, res) => {
+    const { _id } = req.cookies;
+    const { tested_mined_batch_id } = req.query;
+    try {
+      const tested_mined_batch = await TestedMinedBatch.findByIdAndUpdate(
+        tested_mined_batch_id,
+        {
+          status: "delivered",
+        }
+      ).lean();
+      await Warehouse.findByIdAndUpdate(_id, {
+        $inc: {
+          [`ores_available.${tested_mined_batch.grade}.${tested_mined_batch.type_of_ore}`]:
+            tested_mined_batch.quantity,
+        },
+      });
+      res.status(200).json({
+        message: "Updated Tested Mined Batch",
+        type: "success",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({
+        message: "Invalid Request",
+        type: "error",
+      });
+    }
+  }
+);
 
 module.exports = router;
