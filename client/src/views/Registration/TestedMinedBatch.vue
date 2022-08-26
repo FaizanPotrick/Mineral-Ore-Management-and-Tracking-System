@@ -10,6 +10,7 @@ const { open_alert_box } = useAlertStore();
 const tested_mined_batch = ref({
   type_of_ore: "",
   fe_percentage: 0,
+  quantity: 0,
   sample_image: {},
   mine_lab_report: {},
 });
@@ -28,6 +29,7 @@ const register_fn = async () => {
   const formData = new FormData();
   formData.append("type_of_ore", tested_mined_batch.value.type_of_ore);
   formData.append("fe_percentage", tested_mined_batch.value.fe_percentage);
+  formData.append("quantity", tested_mined_batch.value.quantity);
   formData.append("sample_image", tested_mined_batch.value.sample_image);
   formData.append("mine_lab_report", tested_mined_batch.value.mine_lab_report);
   await axios({
@@ -41,6 +43,7 @@ const register_fn = async () => {
         tested_mined_batch.value = {
           type_of_ore: "",
           fe_percentage: 0,
+          quantity: 0,
           sample_image: {},
           mine_lab_report: {},
         };
@@ -94,6 +97,12 @@ get_mined_batch();
             <input
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               v-model="tested_mined_batch.fe_percentage" type="number" pattern="[0-9]+" required />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Quantity(in mt)*</label>
+            <input
+              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              v-model="tested_mined_batch.quantity" type="number" pattern="[0-9]+" required />
           </div>
         </div>
         <div class="grid gap-6 mb-6 sm:grid-cols-2">

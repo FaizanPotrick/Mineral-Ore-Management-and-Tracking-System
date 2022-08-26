@@ -59,23 +59,6 @@ const searchList = () => {
   mined_batches.value = data;
 };
 
-const onClick = (mined_batch) => {
-  if (
-    ($cookies.get("type_of_user") === "officer" &&
-      route.params.mine_id === undefined) ||
-    $cookies.get("type_of_user") === "lab"
-  ) {
-    if (mined_batch.status !== "pending" && mined_batch.status !== "testing") {
-      router.push(`/dashboard/mined_batches/${mined_batch._id}`);
-    }
-  } else {
-    router.push(
-      $cookies.get("type_of_user") !== "miner"
-        ? `/dashboard/mines/${route.params.mine_id}/mined_batches/${mined_batch._id}`
-        : `/dashboard/mined_batches/${mined_batch._id}`
-    );
-  }
-};
 </script>
 
 <template>
@@ -146,64 +129,42 @@ const onClick = (mined_batch) => {
               <th class="py-4">Quantity</th>
               <th class="py-4">Status</th>
               <th class="py-4">Timestamp</th>
-              <th v-if="
-                ($cookies.get('type_of_user') === 'officer' &&
-                  route.params.mine_id === undefined) ||
-                $cookies.get('type_of_user') === 'lab'
-              " class="py-4"></th>
             </tr>
           </thead>
           <tbody class="whitespace-nowrap">
-            <tr :key="mined_batch._id" v-for="mined_batch in tested_mined_batches" :class="{
-              'hover:bg-yellow-100/20 cursor-pointer':
-                $cookies.get('type_of_user') !== 'officer' ||
-                route.params.mine_id !== undefined ||
-                (mined_batch.status !== 'pending' &&
-                  mined_batch.status !== 'testing'),
-            }" class="text-center" @click="onClick(mined_batch)">
+            <tr :key="tested_mined_batch._id" v-for="tested_mined_batch in tested_mined_batches"
+              class="text-center hover:bg-yellow-100/20 cursor-pointer" @click="router.push(
+                $cookies.get('type_of_user') !== 'miner'
+                  ? `/dashboard/mines/${route.params.mine_id}/tested_mined_batches/${tested_mined_batch._id}`
+                  : `/dashboard/tested_mined_batches/${tested_mined_batch._id}`
+              )">
               <td class="py-4">
-                <abbr style="text-decoration: none" :title="mined_batch._id">
-                  ...{{ mined_batch._id.slice(10) }}
+                <abbr style="text-decoration: none" :title="tested_mined_batch._id">
+                  ...{{ tested_mined_batch._id.slice(10) }}
                 </abbr>
               </td>
               <td class="py-4">
-                {{ mined_batch.manager_id }}
+                {{ tested_mined_batch.manager_id }}
               </td>
               <td class="py-4 capitalize">
-                {{ mined_batch.grade }}
+                {{ tested_mined_batch.grade }}
               </td>
               <td class="py-4">
-                {{ mined_batch.fe_percentage }}
+                {{ tested_mined_batch.fe_percentage }}
               </td>
               <td class="py-4 capitalize">
-                {{ mined_batch.type_of_ore }}
+                {{ tested_mined_batch.type_of_ore }}
               </td>
               <td class="py-4">
-                {{ mined_batch.quantity }}
+                {{ tested_mined_batch.quantity }}
               </td>
               <td class="py-4 capitalize">
-                {{ mined_batch.status }}
+                {{ tested_mined_batch.status }}
               </td>
               <td class="py-4">
                 {{
-                    moment(mined_batch.createdAt).format("HH:MM A/DD MMM YYYY")
+                    moment(tested_mined_batch.createdAt).format("HH:MM A/DD MMM YYYY")
                 }}
-              </td>
-              <td v-if="
-                ($cookies.get('type_of_user') === 'officer' &&
-                  route.params.mine_id === undefined) ||
-                $cookies.get('type_of_user') === 'lab'
-              " class="py-4 flex justify-center">
-                <RouterLink v-if="
-                  mined_batch.status === 'pending' ||
-                  mined_batch.status === 'testing'
-                " :to="`/dashboard/mined_batches/${mined_batch._id}/${$cookies.get('type_of_user') === 'officer'
-? 'approve_mined_batch'
-: 'testing_mined_batch'
-}`" class="hover:text-yellow-700 bg-yellow-300 px-2 py-1 rounded-md shadow-md font-semibold">
-                  Form
-                </RouterLink>
-                <div v-else class="font-semibold">-</div>
               </td>
             </tr>
           </tbody>

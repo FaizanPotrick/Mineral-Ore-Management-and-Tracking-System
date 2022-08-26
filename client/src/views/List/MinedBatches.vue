@@ -152,11 +152,15 @@ const searchList = () => {
                 }}
               </td>
               <td v-if="
-              $cookies.get('type_of_user') === 'miner'" class="py-4 flex justify-center">
+              $cookies.get('type_of_user') === 'miner' && mined_batch.status === 'pending'"
+                class="py-4 flex justify-center">
                 <RouterLink :to="`/dashboard/mined_batches/${mined_batch._id}/testing_mined_batch`"
                   class="hover:text-yellow-700 bg-yellow-300 px-2 py-1 rounded-md shadow-md font-semibold">
                   Form
                 </RouterLink>
+              </td>
+              <td v-else class="py-4 flex justify-center">
+                -
               </td>
             </tr>
           </tbody>

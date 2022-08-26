@@ -35,7 +35,6 @@ const dashboard = async () => {
       : `?mine_id=${route.params.mine_id}`
     }`
   );
-  console.log(data)
   title.value = data.title;
   cards.value = data.cards;
   // doughnut.value = data.doughnut;
