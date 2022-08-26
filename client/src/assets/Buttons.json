@@ -1,101 +1,53 @@
 [
-    {
-        "name": "home",
-        "router_link": "/dashboard",
-        "type_of_user": [
-            "officer",
-            "organisation",
-            "miner",
-            "checkpoint",
-            "lab"
-        ],
-        "type_of_region": [
-            "country",
-            "state",
-            "district"
-        ]
-    },
-    {
-        "name": "approve transaction",
-        "router_link": "/dashboard/approve_transaction",
-        "type_of_user": [
-            "organisation",
-            "checkpoint"
-        ]
-    },
-    {
-        "name": "officers",
-        "router_link": "/dashboard/officers",
-        "type_of_user": [
-            "officer"
-        ],
-        "type_of_region": [
-            "country",
-            "state"
-        ]
-    },
-    {
-        "name": "organisations",
-        "router_link": "/dashboard/organisations",
-        "type_of_user": [
-            "officer"
-        ],
-        "type_of_region": [
-            "country",
-            "state"
-        ]
-    },
-    {
-        "name": "mines",
-        "router_link": "/dashboard/mines",
-        "type_of_user": [
-            "officer",
-            "organisation"
-        ],
-        "type_of_region": [
-            "country",
-            "state",
-            "district"
-        ]
-    },
-    {
-        "name": "mined batches",
-        "router_link": "/dashboard/mined_batches",
-        "type_of_user": [
-            "officer",
-            "miner",
-            "lab"
-        ],
-        "type_of_region": [
-            "district"
-        ]
-    },
-    {
-        "name": "transactions",
-        "router_link": "/dashboard/transactions",
-        "type_of_user": [
-            "miner"
-        ]
-    },
-    {
-        "name": "CEO registration",
-        "router_link": "/dashboard/ceo_registration",
-        "type_of_user": [
-            "organisation"
-        ]
-    },
-    {
-        "name": "add mined batch",
-        "router_link": "/dashboard/add_mined_batch",
-        "type_of_user": [
-            "miner"
-        ]
-    },
-    {
-        "name": "add transaction",
-        "router_link": "/dashboard/add_transaction",
-        "type_of_user": [
-            "miner"
-        ]
-    }
+  {
+    "name": "home",
+    "router_link": "/dashboard",
+    "type_of_user": ["officer", "organisation", "miner", "checkpoint", "lab"],
+    "type_of_region": ["country", "state", "district"]
+  },
+  {
+    "name": "approve transaction",
+    "router_link": "/dashboard/approve_transaction",
+    "type_of_user": ["organisation", "checkpoint"]
+  },
+  {
+    "name": "officers",
+    "router_link": "/dashboard/officers",
+    "type_of_user": ["officer"],
+    "type_of_region": ["country", "state"]
+  },
+  {
+    "name": "organisations",
+    "router_link": "/dashboard/organisations",
+    "type_of_user": ["officer"],
+    "type_of_region": ["country", "state"]
+  },
+  {
+    "name": "mines",
+    "router_link": "/dashboard/mines",
+    "type_of_user": ["officer", "organisation"],
+    "type_of_region": ["country", "state", "district"]
+  },
+  {
+    "name": "mined batches",
+    "router_link": "/dashboard/mined_batches",
+    "type_of_user": ["officer", "miner", "lab"],
+    "type_of_region": ["district"]
+  },
+  {
+    "name": "tested mined batches",
+    "router_link": "/dashboard/tested_mined_batches",
+    "type_of_user": ["officer", "miner"],
+    "type_of_region": ["country", "state", "district"]
+  },
+  {
+    "name": "transactions",
+    "router_link": "/dashboard/transactions",
+    "type_of_user": ["miner"]
+  },
+  {
+    "name": "CEO registration",
+    "router_link": "/dashboard/ceo_registration",
+    "type_of_user": ["organisation"]
+  }
 ]

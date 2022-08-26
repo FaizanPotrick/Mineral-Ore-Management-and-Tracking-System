@@ -9,6 +9,9 @@ const CheckPoint = new mongoose.Schema({
     type: String,
     required: true,
   },
+  transactions: {
+    type: Array,
+  },
   coordinates: {
     latitude: {
       type: Number,

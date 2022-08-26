@@ -424,7 +424,8 @@ router.get("/api/dashboard/organisation", async (req, res) => {
 });
 
 router.get("/api/dashboard/miner", async (req, res) => {
-  let _id = req.cookies._id;
+  // let _id = req.cookies._id;
+  const _id = "630801530bff334ec1ea3798";
   if (req.query.mine_id) {
     _id = req.query.mine_id;
   }
@@ -436,95 +437,48 @@ router.get("/api/dashboard/miner", async (req, res) => {
     },
     {
       $addFields: {
-        organisation_id: {
-          $toObjectId: "$organisation_id",
+        mine_id: {
+          $toString: "$_id",
         },
       },
     },
     {
       $lookup: {
-        from: "organisations",
-        localField: "organisation_id",
-        foreignField: "_id",
-        as: "organisation",
+        from: "warehouses",
+        localField: "mine_id",
+        foreignField: "mine_id",
+        as: "warehouse",
       },
     },
     {
-      $unwind: "$organisation",
+      $unwind: "$warehouse",
     },
     {
       $project: {
         _id: 0,
-        title: "$organisation.organisation_name",
+        title: "Darshika Pongallu",
         cards: [
           {
             title: "Mine Area(in sq.)",
             value: "$area",
           },
           {
-            title: "Warehouse Capacity(in mt)",
-            value: "$warehouse_capacity",
+            title: "Total High Ores Available(in mt)",
+            value: "$warehouse.ores_available.high",
           },
           {
-            title: "Total Fine Ores Available(in mt)",
-            value: "$ores_available.fine",
+            title: "Total Low Ores Available(in mt)",
+            value: "$warehouse.ores_available.medium",
           },
           {
-            title: "Total Lump Ores Available(in mt)",
-            value: "$ores_available.lump",
-          },
-          {
-            title: "Total Iron Pellet Ores Available(in mt)",
-            value: "$ores_available.iron_pellet",
+            title: "Total Medium Ores Available(in mt)",
+            value: "$warehouse.ores_available.low",
           },
           {
             title: "Lease Period",
             value: "$lease_period.to",
           },
         ],
-        doughnut: {
-          labels: ["Fine", "Lump", "Iron Pellet", "Empty"],
-          datasets: [
-            {
-              backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#E48665"],
-              data: [
-                {
-                  $sum: [
-                    "$ores_available.fine.high",
-                    "$ores_available.fine.medium",
-                    "$ores_available.fine.low",
-                  ],
-                },
-                {
-                  $sum: [
-                    "$ores_available.lump.high",
-                    "$ores_available.lump.medium",
-                    "$ores_available.lump.low",
-                  ],
-                },
-                {
-                  $sum: [
-                    "$ores_available.iron_pellet.high",
-                    "$ores_available.iron_pellet.medium",
-                    "$ores_available.iron_pellet.low",
-                  ],
-                },
-                {
-                  $subtract: [
-                    "$warehouse_capacity",
-                    {
-                      $add: [
-                        { $sum: "$ores_available.fine" },
-                        { $sum: "$ores_available.lump" },
-                        { $sum: "$ores_available.iron_pellet" },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
       },
     },
   ]);

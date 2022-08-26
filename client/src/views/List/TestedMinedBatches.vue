@@ -6,7 +6,7 @@ import moment from "moment";
 
 const route = useRoute();
 const router = useRouter();
-const mined_batches = ref([]);
+const tested_mined_batches = ref([]);
 const filter_batches = ref([]);
 const search = ref("");
 const status = ["pending", "approved", "disapproved"];
@@ -15,14 +15,9 @@ const checked_list = ref([]);
 
 const get_mined_batches = async () => {
   const { data } = await axios.get(
-    `/api/mined_batches/${route.params.mine_id !== undefined
-      ? `officer?mine_id=${route.params.mine_id}`
-      : $cookies.get("type_of_user") === "officer"
-        ? "officer/district"
-        : $cookies.get("type_of_user")
-    }`
+    '/api/tested_mined_batches/miner'
   );
-  mined_batches.value = data;
+  tested_mined_batches.value = data;
   filter_batches.value = data;
 };
 get_mined_batches();
@@ -63,6 +58,7 @@ const searchList = () => {
 
   mined_batches.value = data;
 };
+
 </script>
 
 <template>
@@ -127,40 +123,48 @@ const searchList = () => {
             <tr>
               <th class="py-4">Batch Id</th>
               <th class="py-4">Manager Id</th>
+              <th class="py-4">Grade</th>
+              <th class="py-4">Fe Percentage</th>
+              <th class="py-4">Type of Ore</th>
               <th class="py-4">Quantity</th>
+              <th class="py-4">Status</th>
               <th class="py-4">Timestamp</th>
-              <th class="py-4"></th>
             </tr>
           </thead>
           <tbody class="whitespace-nowrap">
-            <tr :key="mined_batch._id" v-for="mined_batch in mined_batches" class="text-center">
+            <tr :key="tested_mined_batch._id" v-for="tested_mined_batch in tested_mined_batches"
+              class="text-center hover:bg-yellow-100/20 cursor-pointer" @click="router.push(
+                $cookies.get('type_of_user') !== 'miner'
+                  ? `/dashboard/mines/${route.params.mine_id}/tested_mined_batches/${tested_mined_batch._id}`
+                  : `/dashboard/tested_mined_batches/${tested_mined_batch._id}`
+              )">
               <td class="py-4">
-                <abbr style="text-decoration: none" :title="mined_batch._id">
-                  {{ mined_batch._id }}
+                <abbr style="text-decoration: none" :title="tested_mined_batch._id">
+                  ...{{ tested_mined_batch._id.slice(10) }}
                 </abbr>
               </td>
               <td class="py-4">
-                {{ mined_batch.manager_id }}
+                {{ tested_mined_batch.manager_id }}
               </td>
-
+              <td class="py-4 capitalize">
+                {{ tested_mined_batch.grade }}
+              </td>
               <td class="py-4">
-                {{ mined_batch.quantity }}
+                {{ tested_mined_batch.fe_percentage }}
+              </td>
+              <td class="py-4 capitalize">
+                {{ tested_mined_batch.type_of_ore }}
+              </td>
+              <td class="py-4">
+                {{ tested_mined_batch.quantity }}
+              </td>
+              <td class="py-4 capitalize">
+                {{ tested_mined_batch.status }}
               </td>
               <td class="py-4">
                 {{
-                    moment(mined_batch.createdAt).format("HH:MM A/DD MMM YYYY")
+                    moment(tested_mined_batch.createdAt).format("HH:MM A/DD MMM YYYY")
                 }}
-              </td>
-              <td v-if="
-              $cookies.get('type_of_user') === 'miner' && mined_batch.status === 'pending'"
-                class="py-4 flex justify-center">
-                <RouterLink :to="`/dashboard/mined_batches/${mined_batch._id}/testing_mined_batch`"
-                  class="hover:text-yellow-700 bg-yellow-300 px-2 py-1 rounded-md shadow-md font-semibold">
-                  Form
-                </RouterLink>
-              </td>
-              <td v-else class="py-4 flex justify-center">
-                -
               </td>
             </tr>
           </tbody>

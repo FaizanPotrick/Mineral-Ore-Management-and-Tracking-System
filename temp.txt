@@ -10,19 +10,14 @@ District Officer
 Username: 42NyAIQQ
 Password: PpS0QGR4
 
+Mine
+Username: waBobcY8
+Password: NuoJXZ9E
+
+Warehouse
+Username: AcLoYfnU
+Password: bSyecodI
+
 Organisation
 Username: Xiqt4Q41 
 Password: 7Zpbok8C
-
-Mine
-Username: B8W7eqc9
-Password: zUYk8GIq
-
-
-Checkpoint
-UserName: JGb6iA9c
-Password: DCYxVAz7
-
-lab
-UserName: iH9wyxHz
-Password: FdjYFXRV

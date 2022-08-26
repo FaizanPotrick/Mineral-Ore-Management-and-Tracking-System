@@ -55,6 +55,26 @@ app.use(
         component: () => import("@/views/ForgotPassword.vue"),
       },
       {
+        path: "/weight_details",
+        name: "Weight Details",
+        component: () => import("@/views/TestWeightDetails.vue"),
+      },
+      {
+        path: "/sample_test",
+        name: "Sample Test",
+        component: () => import("@/views/SampleTest.vue"),
+      },
+      {
+        path: "/stocker",
+        name: "Stocker",
+        component: () => import("@/views/Stocker.vue"),
+      },
+      {
+        path: "/warehouse",
+        name: "Warehouse",
+        component: () => import("@/views/Warehouse.vue"),
+      },
+      {
         path: "/dashboard",
         name: "dashboard",
         component: () => import("@/views/DashBoard.vue"),
@@ -162,6 +182,18 @@ app.use(
             component: () => import("@/views/Registration/Mine.vue"),
           },
           {
+            path: "mine_registration/:mine_id/warehouse_registration",
+            name: "warehouse_registration",
+            meta: {
+              active: "home",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Registration/Warehouse.vue"),
+          },
+          {
             path: "checkpoint_registration",
             name: "checkpoint_registration",
             meta: {
@@ -249,11 +281,35 @@ app.use(
             meta: {
               active: "mined batches",
               access: false,
-              type_of_user: ["officer", "miner", "lab"],
-              type_of_region: ["district"],
+              type_of_user: ["officer", "miner"],
+              type_of_region: ["country", "state", "district"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/List/MinedBatches.vue"),
+          },
+          {
+            path: "tested_mined_batches",
+            name: "tested_mined_batches",
+            meta: {
+              active: "tested mined batches",
+              access: false,
+              type_of_user: ["officer", "miner"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/TestedMinedBatches.vue"),
+          },
+          {
+            path: "tested_mined_batches/:tested_mined_batch_id",
+            name: "tested_mined_batch",
+            meta: {
+              active: "tested mined batches",
+              access: false,
+              type_of_user: ["officer", "miner"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/ApproveMinedBatch.vue"),
           },
           {
             path: "mined_batches/:batch_id",
@@ -295,23 +351,24 @@ app.use(
             path: "add_mined_batch",
             name: "add_mined_batch",
             meta: {
-              active: "add mined batch",
+              active: "home",
               access: false,
               type_of_user: ["miner"],
             },
             beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Registration/MinerMinedBatch.vue"),
+            component: () => import("@/views/Registration/MinedBatch.vue"),
           },
           {
-            path: "mined_batches/:batch_id/testing_mined_batch",
+            path: "mined_batches/:mined_batch_id/testing_mined_batch",
             name: "testing_mined_batch",
             meta: {
               active: "mined batches",
               access: false,
-              type_of_user: ["lab"],
+              type_of_user: ["miner"],
             },
             beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Registration/LabMinedBatch.vue"),
+            component: () =>
+              import("@/views/Registration/TestedMinedBatch.vue"),
           },
           {
             path: "mined_batches/:batch_id/approve_mined_batch",
@@ -401,7 +458,7 @@ app.use(
             meta: {
               access: false,
               type_of_user: ["officer"],
-              type_of_region: [ "district"],
+              type_of_region: ["district"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/List/SuspisiousActivity.vue"),

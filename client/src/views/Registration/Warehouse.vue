@@ -10,77 +10,55 @@ const router = useRouter()
 const route = useRoute()
 const center = ref([78.9629, 20.5937]);
 const zoom = ref(4);
-const mine = ref({
+const warehouse = ref({
   name: "",
   email_address: "",
   phone_no: "",
-  aadhar_card: "",
-  pin_code: "",
   area: 0,
-  expected_ores_available: {
-    high: 0,
-    medium: 0,
-    low: 0
-  },
-  period: 0,
+  aadhar_card: "",
   coordinates: {
     latitude: 0,
     longitude: 0,
   },
-  plan_doc: {}
 });
 const loading = ref(false);
 
 const register_fn = async () => {
   if (
-    mine.value.coordinates.latitude === 0 ||
-    mine.value.coordinates.longitude === 0
+    warehouse.value.coordinates.latitude === 0 ||
+    warehouse.value.coordinates.longitude === 0
   ) {
     return open_alert_box("Please select a location", "warning");
   }
   const formData = new FormData();
-  formData.append("name", mine.value.name);
-  formData.append("email_address", mine.value.email_address);
-  formData.append("phone_no", mine.value.phone_no);
-  formData.append("aadhar_card", mine.value.aadhar_card);
-  formData.append("pin_code", mine.value.pin_code);
-  formData.append("area", mine.value.area);
-  formData.append("expected_ores_available_high", mine.value.expected_ores_available.high);
-  formData.append("expected_ores_available_medium", mine.value.expected_ores_available.medium);
-  formData.append("expected_ores_available_low", mine.value.expected_ores_available.low);
-  formData.append("period", mine.value.period);
-  formData.append("latitude", mine.value.coordinates.latitude);
-  formData.append("longitude", mine.value.coordinates.longitude);
-  formData.append("plan_doc", mine.value.plan_doc);
+  formData.append("name", warehouse.value.name);
+  formData.append("email_address", warehouse.value.email_address);
+  formData.append("phone_no", warehouse.value.phone_no);
+  formData.append("aadhar_card", warehouse.value.aadhar_card);
+  formData.append("area", warehouse.value.area);
+  formData.append("latitude", warehouse.value.coordinates.latitude);
+  formData.append("longitude", warehouse.value.coordinates.longitude);
   loading.value = true;
   await axios({
     method: "post",
-    url: "/api/registration/mine",
+    url: `/api/registration/warehouse?mine_id=${route.params.mine_id}`,
     data: formData,
   })
     .then((res) => {
       open_alert_box(res.data.message, res.data.type);
       if (res.status === 200) {
-        mine.value = {
+        warehouse.value = {
           name: "",
           email_address: "",
           phone_no: "",
           aadhar_card: "",
-          pin_code: "",
           area: 0,
-          expected_ores_available: {
-            high: 0,
-            medium: 0,
-            low: 0
-          },
-          period: 0,
           coordinates: {
             latitude: 0,
             longitude: 0,
           },
-          plan_doc: {}
         };
-        router.push(`/dashboard/mine_registration/${res.data.mine_id}/warehouse_registration`)
+        router.push('/dashboard')
       }
     })
     .catch((err) => {
@@ -90,18 +68,15 @@ const register_fn = async () => {
 };
 
 const marker_selector = async (e) => {
-  mine.value.coordinates = {
+  warehouse.value.coordinates = {
     latitude: e.feature.values_.geometry.flatCoordinates[1],
     longitude: e.feature.values_.geometry.flatCoordinates[0],
   };
 };
-const store_document = (event) => {
-  mine.value.plan_doc = event.target.files[0];
-};
+
 
 onMounted(async () => {
   const { data } = await axios.get("/api/coordinates_and_organisation_list");
-
   center.value = [data.coordinates.longitude, data.coordinates.latitude];
   zoom.value = 10;
 });
@@ -112,9 +87,9 @@ onMounted(async () => {
     <div class="max-w-4xl w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl text-gray-800">
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
-          Mine Registration
+          Warehouse Registration
         </div>
-        <div class="text-gray-500 text-sm">Register a mine.</div>
+        <div class="text-gray-500 text-sm">Register a warehouse.</div>
       </div>
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()" enctype="multipart/form-data">
         <div class="grid gap-6 grid-cols-1">
@@ -123,7 +98,7 @@ onMounted(async () => {
             <label class="text-sm font-medium text-gray-700">Manager Name*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Manager Name" v-model="mine.name" maxlength="150" required />
+              placeholder="Manager Name" v-model="warehouse.name" maxlength="150" required />
           </div>
         </div>
         <div class="grid gap-6 sm:grid-cols-2">
@@ -131,74 +106,34 @@ onMounted(async () => {
             <label class="text-sm font-medium text-gray-700">Manager Email Address*</label>
             <input type="email"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Email Address" v-model="mine.email_address" maxlength="150"
+              placeholder="Email Address" v-model="warehouse.email_address" maxlength="150"
               pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]+" required />
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Manager Phone No.*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Phone Number" v-model="mine.phone_no" minlength="10" maxlength="10" pattern="[0-9]{10}"
+              placeholder="Phone Number" v-model="warehouse.phone_no" minlength="10" maxlength="10" pattern="[0-9]{10}"
               required />
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Manager Aadhar Card*</label>
             <input type="text"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Aadhar Card" v-model="mine.aadhar_card" minlength="12" maxlength="12" pattern="[0-9]{12}"
-              required />
+              placeholder="Aadhar Card" v-model="warehouse.aadhar_card" minlength="12" maxlength="12"
+              pattern="[0-9]{12}" required />
           </div>
+
         </div>
         <div class="grid gap-6 md:grid-cols-3 sm:grid-cols-2">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Pin Code*</label>
-            <input type="text" placeholder="Pin Code"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.pin_code" maxlength="10" pattern="[0-9]+" required />
-          </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Area(in sqr. km)*</label>
             <input type="number"
               class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.area" pattern="[0-9]+" required />
+              v-model="warehouse.area" pattern="[0-9]+" required />
           </div>
+        </div>
 
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Lease Period(in year)*</label>
-            <input type="number"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.period" pattern="[0-9]+" required />
-          </div>
-        </div>
-        <div class="grid gap-6 mb-6 sm:grid-cols-3">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Available High Grade Ores(in mt)</label>
-            <input
-              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.expected_ores_available.high" type="number" pattern="[0-9]+" />
-          </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Available Medium Grade Ores(in mt)</label>
-            <input
-              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.expected_ores_available.medium" type="number" pattern="[0-9]+" />
-          </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Available Low Grade Ores(in mt)</label>
-            <input
-              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="mine.expected_ores_available.low" type="number" pattern="[0-9]+" />
-          </div>
-
-        </div>
-        <div class="grid gap-6 mb-6 grid-cols-1">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Upload Plan Doc Pdf*</label>
-            <input
-              class="w-full content-center text-base border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              @change="store_document" type="file" accept="application/pdf" required />
-          </div>
-        </div>
         <ol-map style="height: 40vh">
           <ol-view :center="center" :zoom="zoom" projection="EPSG:4326" />
           <ol-tile-layer>

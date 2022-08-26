@@ -28,6 +28,16 @@ const TestedMinedBatch = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["dispatched", "delivered"],
+      default: "dispatched",
+      required: true,
+    },
+    tested_mined_batch_hash: {
+      type: String,
+      required: true,
+    },
     sample_image_url: {
       type: String,
       required: true,

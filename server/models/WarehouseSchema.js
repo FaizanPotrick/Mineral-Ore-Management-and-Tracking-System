@@ -1,37 +1,15 @@
 const mongoose = require("mongoose");
 
-const Organisation = new mongoose.Schema({
-  ceo_id: {
+const Warehouse = new mongoose.Schema({
+  mine_id: {
     type: String,
     required: true,
   },
-  type_of_user:{
+  warehouse_manager_id: {
     type: String,
-    enum: ["end_user","stocker","iron_pellet"],
     required: true,
   },
-  organisation_name: {
-    type: String,
-    trim: true,
-    maxlength: 300,
-    lowercase: true,
-    required: true,
-  },
-  gst_no: {
-    type: String,
-    minlength: 15,
-    maxlength: 15,
-    unique: true,
-    required: true,
-  },
-  address: {
-    type: String,
-    trim: true,
-    maxlength: 500,
-    lowercase: true,
-    required: true,
-  },
-  ores_bought: {
+  ores_available: {
     high: {
       fine: {
         type: Number,
@@ -84,8 +62,22 @@ const Organisation = new mongoose.Schema({
       },
     },
   },
+  area: {
+    type: Number,
+    required: true,
+  },
+  coordinates: {
+    latitude: {
+      type: Number,
+      required: true,
+    },
+    longitude: {
+      type: Number,
+      required: true,
+    },
+  },
 });
 
 module.exports = mongoose.connection
   .useDb("Ores_Tracking")
-  .model("Organisation", Organisation);
+  .model("Warehouse", Warehouse);

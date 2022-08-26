@@ -37,7 +37,7 @@ const dashboard = async () => {
   );
   title.value = data.title;
   cards.value = data.cards;
-  doughnut.value = data.doughnut;
+  // doughnut.value = data.doughnut;
 };
 
 dashboard();
@@ -82,6 +82,12 @@ const data = {
           :to="`/dashboard/mines/${route.params.mine_id}/manager_registration`"
           class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Manager Registration</RouterLink>
       </div>
+      <div v-if="$cookies.get('type_of_user') === 'miner'" class="flex flex-wrap gap-3">
+        <RouterLink to="/dashboard/add_mined_batch"
+          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Add Mined Batch</RouterLink>
+        <RouterLink to="/dashboard/add_transaction"
+          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Add Transaction</RouterLink>
+      </div>
     </div>
     <div class="flex gap-4 flex-wrap font-semibold">
       <div :key="card" v-for="card of cards"
@@ -102,13 +108,13 @@ const data = {
                     maintainAspectRatio: false,
                 }" :chart-data="data" />
             </div> -->
-      <div class="bg-white p-2 text-center rounded-xl max-w-xl w-full">
+      <!-- <div class="bg-white p-2 text-center rounded-xl max-w-xl w-full">
         Warehouse Overview
         <Doughnut :chart-options="{
           responsive: true,
           maintainAspectRatio: false,
         }" :chart-data="doughnut" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
