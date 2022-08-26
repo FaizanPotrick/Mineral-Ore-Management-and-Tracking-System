@@ -27,9 +27,12 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
     organisation_id,
     type_of_ore,
     fe_percentage,
-    quantity,
+    quantities, // array of quantity
     price,
-    transport_no,
+    total_vehicles,
+    royalty,
+    vehicle_nos, // array of vehicle_no
+    driving_licenses, // array of driving license
   } = req.body;
   const { invoice } = req.files;
   const grade =
@@ -68,6 +71,8 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
     const invoice_url = await getDownloadURL(
       ref(storage, invoice_path.metadata.fullPath)
     );
+    for(let i= 0; i < total_vehicles; i++)
+    {
     const transaction_response = await Transaction.create({
       mine_id: _id,
       manager_id: mine_response[0].manager_id,
@@ -76,8 +81,9 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
       type_of_ore: type_of_ore,
       fe_percentage: fe_percentage,
       grade: grade,
-      quantity: quantity,
+      quantity: quantities[i],
       price: price,
+      driving_license: driving_licenses[i],
       transaction_hash: bcrypt.hashSync(
         JSON.stringify({
           mine_id: _id,
@@ -87,17 +93,22 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
           type_of_ore: type_of_ore,
           fe_percentage: fe_percentage,
           grade: grade,
-          quantity: quantity,
+          quantity: quantities[i],
           price: price,
+          royalty: royalty/total_vehicles,
+          driving_license: driving_licenses[i],
+          vehicle_no: vehicle_nos[i],
+          invoice_url: invoice_url,
         }),
         10
       ),
-      transport_no: transport_no,
+      vehicle_no: vehicle_nos[i],
       invoice_url: invoice_url,
     });
+  
     await Mine.findByIdAndUpdate(_id, {
       $inc: {
-        [`ores_available.${type_of_ore}.${grade}`]: -parseInt(quantity),
+        [`ores_available.${type_of_ore}.${grade}`]: -parseInt(quantities[i]),
       },
     });
     const mine_average_price_response = await Transaction.aggregate([
@@ -187,7 +198,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
           transaction_id: transaction_response._id,
         });
       }
-    }
+    }}
     res.status(200).json({
       message: "Successfully Registered",
       type: "success",
