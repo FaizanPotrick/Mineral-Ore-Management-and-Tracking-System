@@ -22,7 +22,7 @@ const storage = getStorage(app);
 router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
   const { _id } = req.cookies;
   const { mined_batch_id } = req.query;
-  const { type_of_ore, fe_percentage, quantity } = req.body;
+  const { type_of_ore, fe_percentage, quantity, waste } = req.body;
   const { sample_image, mine_lab_report } = req.files;
   const grade =
     parseInt(fe_percentage) >= Grade.high
@@ -58,6 +58,7 @@ router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
       fe_percentage: fe_percentage,
       grade: grade,
       quantity: quantity,
+      waste: waste,
       tested_mined_batch_hash: bcrypt.hashSync(
         JSON.stringify({
           mine_id: _id,
@@ -75,8 +76,14 @@ router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
       sample_image_url: sample_image_url,
       mine_lab_report_url: mine_lab_report_url,
     });
+
     await MinedBatch.findByIdAndUpdate(mined_batch_id, {
       status: "approved",
+    });
+    await Mine.findByIdAndUpdate(_id, {
+      $inc: {
+        rom: -(parseInt(quantity) + parseInt(waste)),
+      },
     });
     res.status(200).json({
       message: "Successfully Registered",

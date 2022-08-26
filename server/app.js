@@ -49,7 +49,7 @@ app.use(require("./routes/Dashboard.js"));
 app.use(require("./routes/List.js"));
 app.use(require("./routes/Card.js"));
 app.use(require("./routes/Input.js"));
-app.use(require("./routes/Registration/User.js"));
+app.use(require("./routes/registration/Officer.js"));
 app.use(require("./routes/Registration/Region.js"));
 app.use(require("./routes/Registration/Organisation.js"));
 app.use(require("./routes/Registration/Mine.js"));

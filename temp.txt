@@ -39,4 +39,5 @@ Username: T6W6fXfX
 Password: e5jyzEbI
 
 Organisation 2
-{ Username: '9BAHiMRD', Password: 'pzGwBObB' }
+Username: 9BAHiMRD
+Password: pzGwBObB

@@ -75,35 +75,10 @@ router.get("/api/mines/organisation", async (req, res) => {
   res.json(organization_response.reverse());
 });
 
-router.get("/api/mined_batches/officer/district", async (req, res) => {
-  const { _id } = req.cookies;
-  const region_response = await Region.findById(_id).distinct("officer_id");
-  const mined_batch_response = await MinedBatch.find({
-    officer_id: region_response,
-    status: {
-      $ne: "testing",
-    },
-  })
-    .sort({ updatedAt: -1 })
-    .lean();
-  res.json(mined_batch_response);
-});
-
 router.get("/api/mined_batches/officer", async (req, res) => {
   const { mine_id } = req.query;
   const mined_batch_response = await MinedBatch.find({
     mine_id: mine_id,
-  })
-    .sort({ updatedAt: -1 })
-    .lean();
-  res.json(mined_batch_response);
-});
-
-router.get("/api/mined_batches/organisation", async (req, res) => {
-  const { _id } = req.cookies;
-  const mine_response = await Mine.find({ organisation_id: _id });
-  const mined_batch_response = await MinedBatch.find({
-    mine_id: mine_response._id,
   })
     .sort({ updatedAt: -1 })
     .lean();
@@ -130,16 +105,7 @@ router.get("/api/tested_mined_batches/miner", async (req, res) => {
   res.json(tested_mined_batch_response);
 });
 
-router.get("/api/mined_batches/lab", async (req, res) => {
-  const { _id } = req.cookies;
-  const lab_response = await MinedBatch.find({
-    lab_id: _id,
-    status: "testing",
-  })
-    .sort({ updatedAt: -1 })
-    .lean();
-  res.json(lab_response);
-});
+
 router.get("/api/mined_batch/verify", async (req, res) => {
   const { batch_id } = req.query;
   const mined_batch_response = await MinedBatch.findById(batch_id).lean();

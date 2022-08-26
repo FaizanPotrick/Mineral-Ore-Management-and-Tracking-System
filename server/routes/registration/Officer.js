@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const Organisation = require("../../models/OrganisationSchema");
+const Region = require("../../models/RegionSchema");
 const User = require("../../models/UserSchema");
+const Organisation = require("../../models/OrganisationSchema");
+const Mine = require("../../models/MineSchema");
 const jwt = require("jsonwebtoken");
 const ShortUniqueId = require("short-unique-id");
 const RegistrationEmailSender = require("../../middleware/RegistrationEmailSender");
@@ -12,28 +14,17 @@ const id_generate = new ShortUniqueId({
 });
 
 router.post(
-  "/api/registration/organisation",
+  "/api/registration/officer",
   async (req, res, next) => {
     const {
-      organisation_name,
-      address,
       name,
       email_address,
       phone_no,
       aadhar_card,
-      gst_no,
-      type_of_user,
+      type_of_region,
+      region,
     } = req.body;
     try {
-      const organisation_check = await Organisation.findOne({
-        gst_no: gst_no,
-      }).lean();
-      if (organisation_check !== null) {
-        return res.status(201).json({
-          message: "GST Number already exist",
-          type: "warning",
-        });
-      }
       const aadhar_card_check = await User.findOne({
         aadhar_card: aadhar_card,
       }).lean();
@@ -43,18 +34,38 @@ router.post(
           type: "warning",
         });
       }
-      const ceo_id = id_generate();
+      const region_response = await Region.findOne({
+        type_of_region: type_of_region,
+        [type_of_region]: region,
+      }).lean();
+      if (region_response === null) {
+        return res.status(201).json({
+          message: "Region not found",
+          type: "warning",
+        });
+      }
+      if (region_response.officer_id !== undefined) {
+        await User.findOneAndUpdate(
+          {
+            user_id: region_response.officer_id,
+          },
+          {
+            is_valid: false,
+          }
+        );
+      }
+      const officer_id = id_generate();
       const password = id_generate();
       await Promise.all([
         User.create({
           auth: jwt.sign(
             {
-              auth_id: ceo_id,
+              auth_id: officer_id,
             },
             aadhar_card
           ),
-          user_id: ceo_id,
-          type_of_user: "organisation",
+          user_id: officer_id,
+          type_of_user: "officer",
           user_name: name,
           aadhar_card: aadhar_card,
           email_address: email_address,
@@ -62,21 +73,22 @@ router.post(
           password: bcrypt.hashSync(password, 10),
           c_password: bcrypt.hashSync(password, 10),
         }),
-        Organisation.create({
-          ceo_id: ceo_id,
-          type_of_user: type_of_user,
-          organisation_name: organisation_name,
-          gst_no: gst_no,
-          address: address,
-        }),
+        Region.findOneAndUpdate(
+          {
+            _id: region_response._id,
+          },
+          {
+            officer_id: officer_id,
+          }
+        ),
       ]);
-      req.user_id = ceo_id;
+      req.user_id = officer_id;
       req.user_name = name;
-      req.type_of_user = type_of_user;
+      req.user_type = "Officer";
       req.email_address = email_address;
       req.password = password;
       console.log({
-        Username: ceo_id,
+        Username: officer_id,
         Password: password,
       });
       res.status(200).json({
