@@ -18,6 +18,22 @@ Warehouse
 Username: AcLoYfnU
 Password: bSyecodI
 
+Mine2
+Username: p6TARtDL 
+Password: v4RIoQFs
+
+Warehouse2
+Username: U738Znxk
+Password: MhT563iX
+
+Mine3
+Username: ZiL2N5HE 
+Password: 3yQlpXYS
+
+Warehouse3
+Username: Xj4TXRhV 
+Password: wCo6XlQ2
+
 Organisation
 Username: T6W6fXfX
 Password: e5jyzEbI
