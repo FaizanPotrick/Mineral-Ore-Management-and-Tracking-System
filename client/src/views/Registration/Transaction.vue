@@ -8,7 +8,7 @@ const organisations = ref([]);
 const transaction = ref({
   organisation_id: "",
   type_of_ore: "",
-  grade: 0,
+  grade: "",
   quantity: 0,
   price: 0,
   vehicle_no: "",
@@ -105,7 +105,7 @@ onMounted(async () => {
               <select
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               v-model="transaction.grade" required>
-              
+              <option disabled value="" selected>Select the Type</option>
               <option value="high">High</option>
               <option value="medium">Medium</option>
               <option value="low">Low</option>

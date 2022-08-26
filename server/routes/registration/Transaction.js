@@ -36,7 +36,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
     driving_license, // array of driving license
   } = req.body;
   const { invoice } = req.files;
-  
+
   try {
     const mine_response = await Mine.findById(_id)
       .select(["manager_id", "region_id"])
@@ -65,7 +65,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
     const organisation_response = await Organisation.findById(organisation_id)
       .select(["ceo_id"])
       .lean();
- 
+
     const region_response = await Region.findById(mine_response.region_id);
     const invoiceRef = ref(storage, "/invoice_report/" + invoice.name);
     const invoice_path = await uploadBytes(invoiceRef, invoice.data);
@@ -91,7 +91,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
           ceo_id: organisation_response.ceo_id,
           buyer_org_id: organisation_id,
           type_of_ore: type_of_ore,
-          
+
           grade: grade,
           quantity: quantity,
           price: price,
@@ -198,7 +198,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
       if (region_actual_difference > acceptable_difference) {
         await SuspiciousActivity.create({
           region_id: region_response._id,
-           mine_id: _id,
+          mine_id: _id,
           type_of_activity: "transaction",
           reason: `price difference by more then ${acceptable_difference} wrt region average price`,
           price_difference: region_actual_difference,
@@ -219,40 +219,14 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
   }
 });
 
-router.post(
+router.get(
   "/api/registration/transaction/officer/district",
   async (req, res) => {
-    const { transaction_id } = req.cookies;
-    const { status } = req.body;
-    try {
-      // const transaction_response = await Transaction.findById(
-      //   transaction_id
-      // ).lean();
-      const transaction_response = await Transaction.findByIdAndUpdate(
-        transaction_id,
-        {
-          status: status,
-        }
-      );
-      if (transaction_response.status === "cancelled") {
-        await Mine.findByIdAndUpdate(transaction_response.mine_id, {
-          $inc: {
-            [`ores_available.${transaction_response.type_of_ore}.${transaction_response.grade}`]:
-              transaction_response.quantity,
-          },
-        });
-      }
-      res.status(200).json({
-        message: "Successfully Updated Transaction",
-        type: "success",
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({
-        message: "Invalid Request",
-        type: "error",
-      });
-    }
+    const { transaction_id } = req.query;
+    await Transaction.findByIdAndUpdate(transaction_id, {
+      status: "dispatched",
+    });
+    res.end();
   }
 );
 
@@ -270,14 +244,14 @@ router.post("/api/registration/transaction/organisation", async (req, res) => {
     if (transaction_response.status === "delivered") {
       await Organisation.findByIdAndUpdate(_id, {
         $inc: {
-          [`ores_bought.${transaction_response.type_of_ore}.${transaction_response.grade}`]:
+          [`ores_bought.${transaction_response.grade}.${transaction_response.type_of_ore}`]:
             transaction_response.quantity,
         },
       });
     } else {
-      await Mine.findByIdAndUpdate(transaction_response.mine_id, {
+      await Warehouse.findByIdAndUpdate(transaction_response.mine_id, {
         $inc: {
-          [`ores_available.${transaction_response.type_of_ore}.${transaction_response.grade}`]:
+          [`ores_available.${transaction_response.grade}.${transaction_response.type_of_ore}`]:
             transaction_response.quantity,
         },
       });
@@ -298,15 +272,7 @@ router.post("/api/registration/transaction/organisation", async (req, res) => {
 router.post("/api/registration/transaction/checkpoint", async (req, res) => {
   const { _id } = req.cookies;
   const { transaction_id } = req.query;
-  const { status, weight } = req.body;
-  let checkpoint = weight
-    ? {
-        checkpoint_id: _id,
-        weight: weight,
-      }
-    : {
-        checkpoint_id: _id,
-      };
+  const { status } = req.body;
   try {
     const transaction_response = await Transaction.findById(transaction_id);
     if (
@@ -324,9 +290,9 @@ router.post("/api/registration/transaction/checkpoint", async (req, res) => {
       await Transaction.findByIdAndUpdate(transaction_id, {
         status: "cancelled",
       });
-      await Mine.findByIdAndUpdate(transaction_response.mine_id, {
+      await Warehouse.findByIdAndUpdate(transaction_response.mine_id, {
         $inc: {
-          [`ores_available.${transaction_response.type_of_ore}.${transaction_response.grade}`]:
+          [`ores_available.${transaction_response.grade}.${transaction_response.type_of_ore}`]:
             transaction_response.quantity,
         },
       });
