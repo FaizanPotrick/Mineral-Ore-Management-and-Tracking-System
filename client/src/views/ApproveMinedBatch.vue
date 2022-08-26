@@ -39,7 +39,7 @@ const downloadQRCode = () => {
                 <div class="font-semibold text-2xl text-yellow-700">Transaction</div>
             </div>
             <div class="flex flex-col gap-6 justify-center">
-                <div v-if="$cookies.get('type_of_user') === 'miner'">
+                <div v-if="$cookies.get('type_of_user') === 'officer'">
                     <div class="flex justify-center">
                         <QrcodeVue :value="
                             JSON.stringify({
@@ -102,6 +102,12 @@ const downloadQRCode = () => {
                                             <td class="px-6 py-4">Quantity:</td>
                                             <td class="px-6 py-4 font-bold">
                                                 {{ tested_mined_batch.quantity }}
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white border-b">
+                                            <td class="px-6 py-4">Waste:</td>
+                                            <td class="px-6 py-4 font-bold">
+                                                {{ tested_mined_batch.waste }}
                                             </td>
                                         </tr>
                                         <tr class="bg-white border-b">

@@ -17,7 +17,7 @@ router.post("/api/registration/mined_batch/miner", async (req, res) => {
     });
     await Mine.findByIdAndUpdate(_id, {
       $inc: {
-        rom: parseInt(quantity),
+        rom: quantity,
       },
     });
     res.status(200).json({

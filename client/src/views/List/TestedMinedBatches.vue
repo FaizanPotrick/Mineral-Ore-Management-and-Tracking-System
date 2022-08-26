@@ -16,7 +16,7 @@ const checked_list = ref([]);
 
 const get_mined_batches = async () => {
   const { data } = await axios.get(
-    '/api/tested_mined_batches/miner'
+    `/api/tested_mined_batches/${$cookies.get('type_of_user') === 'miner' ? 'miner' : `officer?mine_id=${route.params.mine_id}`}`
   );
   tested_mined_batches.value = data;
   filter_batches.value = data;
@@ -69,7 +69,7 @@ const searchList = () => {
     <div
       class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md">
       <div class="flex justify-between items-center w-full">
-        <div class="text-3xl font-semibold">Mined Batches</div>
+        <div class="text-3xl font-semibold">Tested Mined Batches</div>
         <div class="flex flex-wrap items-center">
           <div class="hidden flex-wrap items-center lg:flex md:flex">
             <div class="px-3">
@@ -143,6 +143,7 @@ const searchList = () => {
               <th class="py-4">Fe Percentage</th>
               <th class="py-4">Type of Ore</th>
               <th class="py-4">Quantity</th>
+              <th class="py-4">Waste</th>
               <th class="py-4">Status</th>
               <th class="py-4">Timestamp</th>
             </tr>
@@ -173,6 +174,9 @@ const searchList = () => {
               </td>
               <td class="py-4">
                 {{ tested_mined_batch.quantity }}
+              </td>
+              <td class="py-4">
+                {{ tested_mined_batch.waste }}
               </td>
               <td class="py-4 capitalize">
                 {{ tested_mined_batch.status }}

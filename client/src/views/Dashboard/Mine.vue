@@ -74,7 +74,7 @@ const data = {
         {{ title }}
       </div>
       <div v-if="$cookies.get('type_of_user') !== 'miner'" class="flex flex-wrap gap-3">
-        <RouterLink :to="`/dashboard/mines/${route.params.mine_id}/mined_batches`"
+        <RouterLink :to="`/dashboard/mines/${route.params.mine_id}/tested_mined_batches`"
           class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Mined Batches</RouterLink>
         <RouterLink :to="`/dashboard/mines/${route.params.mine_id}/transactions`"
           class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Transactions</RouterLink>
@@ -82,6 +82,8 @@ const data = {
       <div v-if="$cookies.get('type_of_user') === 'miner'" class="flex flex-wrap gap-3">
         <RouterLink to="/dashboard/add_mined_batch"
           class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Add Mined Batch</RouterLink>
+        <RouterLink to="/dashboard/add_tested_mined_batch"
+          class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Add Tested Mined Batch</RouterLink>
         <RouterLink to="/dashboard/add_transaction"
           class="rounded-xl py-2.5 px-4 bg-yellow-300 shadow-md font-semibold">Add Transaction</RouterLink>
       </div>

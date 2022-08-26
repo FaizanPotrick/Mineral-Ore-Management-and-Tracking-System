@@ -12,12 +12,7 @@ const search = ref("");
 
 const get_mined_batches = async () => {
   const { data } = await axios.get(
-    `/api/mined_batches/${route.params.mine_id !== undefined
-      ? `officer?mine_id=${route.params.mine_id}`
-      : $cookies.get("type_of_user") === "officer"
-        ? "officer/district"
-        : $cookies.get("type_of_user")
-    }`
+    '/api/mined_batches/miner'
   );
   mined_batches.value = data;
   filter_batches.value = data;
@@ -93,17 +88,6 @@ const searchList = () => {
                 {{
                     moment(mined_batch.createdAt).format("HH:MM A/DD MMM YYYY")
                 }}
-              </td>
-              <td v-if="
-              $cookies.get('type_of_user') === 'miner' && mined_batch.status === 'pending'"
-                class="py-4 flex justify-center">
-                <RouterLink :to="`/dashboard/mined_batches/${mined_batch._id}/testing_mined_batch`"
-                  class="hover:text-yellow-700 bg-yellow-300 px-2 py-1 rounded-md shadow-md font-semibold">
-                  Form
-                </RouterLink>
-              </td>
-              <td v-else class="py-4 flex justify-center">
-                -
               </td>
             </tr>
           </tbody>

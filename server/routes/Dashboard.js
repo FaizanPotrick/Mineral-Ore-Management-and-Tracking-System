@@ -473,21 +473,21 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
             value: { $size: "$labs" },
           },
           {
-            title: "Average High Mine Price",
+            title: "Average High Region Price",
             value: {
               fine: { $avg: "$fine_high.price" },
               lump: { $avg: "$lump_high.price" },
             },
           },
           {
-            title: "Average Medium Mine Price",
+            title: "Average Medium Region Price",
             value: {
               fine: { $avg: "$fine_medium.price" },
               lump: { $avg: "$lump_medium.price" },
             },
           },
           {
-            title: "Average Low Mine Price",
+            title: "Average Low Region Price",
             value: {
               fine: { $avg: "$fine_low.price" },
               lump: { $avg: "$lump_low.price" },
@@ -717,26 +717,30 @@ router.get("/api/dashboard/miner", async (req, res) => {
             value: "$lease_period.to",
           },
           {
-            title: "Average High Region Price",
+            title: "Average High Mine Price",
             value: {
               fine: { $avg: "$fine_high.price" },
               lump: { $avg: "$lump_high.price" },
             },
           },
           {
-            title: "Average Medium Region Price",
+            title: "Average Medium Mine Price",
             value: {
               fine: { $avg: "$fine_medium.price" },
               lump: { $avg: "$lump_medium.price" },
             },
           },
           {
-            title: "Average Low Region Price",
+            title: "Average Low Mine Price",
             value: {
               fine: { $avg: "$fine_low.price" },
               lump: { $avg: "$lump_low.price" },
             },
           },
+          {
+            title: "Total ROM",
+            value: "$rom",
+          }
         ],
       },
     },

@@ -113,8 +113,8 @@ app.use(
             },
           },
           {
-            path: "officers/:region_type/:region_id",
-            name: "officer_dashboard",
+            path: "officers",
+            name: "officers",
             meta: {
               active: "officers",
               access: false,
@@ -122,55 +122,7 @@ app.use(
               type_of_region: ["country", "state"],
             },
             beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Dashboard/Officer.vue"),
-          },
-          {
-            path: "organisations/:organisation_id",
-            name: "organisation_dashboard",
-            meta: {
-              active: "organisations",
-              access: false,
-              type_of_user: ["officer"],
-              type_of_region: ["country", "state"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Dashboard/Organisation.vue"),
-          },
-          {
-            path: "mines/:mine_id",
-            name: "mine_dashboard",
-            meta: {
-              active: "mines",
-              access: false,
-              type_of_user: ["officer", "organisation"],
-              type_of_region: ["country", "state", "district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Dashboard/Mine.vue"),
-          },
-          {
-            path: "checkpoints/:checkpoint_id",
-            name: "checkpoint_dashboard",
-            meta: {
-              active: "checkpoints",
-              access: false,
-              type_of_user: ["officer"],
-              type_of_region: ["country", "state", "district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Dashboard/CheckPoint.vue"),
-          },
-          {
-            path: "labs/:lab_id",
-            name: "lab_dashboard",
-            meta: {
-              active: "labs",
-              access: false,
-              type_of_user: ["officer"],
-              type_of_region: ["country", "state", "district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Dashboard/Lab.vue"),
+            component: () => import("@/views/List/Officers.vue"),
           },
           {
             path: "officer_registration",
@@ -185,6 +137,31 @@ app.use(
             component: () => import("@/views/Registration/Officer.vue"),
           },
           {
+            path: "officers/:region_type/:region_id",
+            name: "officer_dashboard",
+            meta: {
+              active: "officers",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Dashboard/Officer.vue"),
+          },
+
+          {
+            path: "organisations",
+            name: "organisations",
+            meta: {
+              active: "organisations",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/Organisations.vue"),
+          },
+          {
             path: "organisation_registration",
             name: "organisation_registration",
             meta: {
@@ -195,6 +172,30 @@ app.use(
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Registration/Organisation.vue"),
+          },
+          {
+            path: "organisations/:organisation_id",
+            name: "organisation_dashboard",
+            meta: {
+              active: "organisations",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Dashboard/Organisation.vue"),
+          },
+          {
+            path: "mines",
+            name: "mines",
+            meta: {
+              active: "mines",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/Mines.vue"),
           },
           {
             path: "mine_registration",
@@ -221,64 +222,16 @@ app.use(
             component: () => import("@/views/Registration/Warehouse.vue"),
           },
           {
-            path: "checkpoint_registration",
-            name: "checkpoint_registration",
-            meta: {
-              active: "home",
-              access: false,
-              type_of_user: ["officer"],
-              type_of_region: ["district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Registration/CheckPoint.vue"),
-          },
-          {
-            path: "lab_registration",
-            name: "lab_registration",
-            meta: {
-              active: "home",
-              access: false,
-              type_of_user: ["officer"],
-              type_of_region: ["district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Registration/Lab.vue"),
-          },
-          {
-            path: "officers",
-            name: "officers",
-            meta: {
-              active: "officers",
-              access: false,
-              type_of_user: ["officer"],
-              type_of_region: ["country", "state"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/List/Officers.vue"),
-          },
-          {
-            path: "organisations",
-            name: "organisations",
-            meta: {
-              active: "organisations",
-              access: false,
-              type_of_user: ["officer"],
-              type_of_region: ["country", "state", "district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/List/Organisations.vue"),
-          },
-          {
-            path: "mines",
-            name: "mines",
+            path: "mines/:mine_id",
+            name: "mine_dashboard",
             meta: {
               active: "mines",
               access: false,
-              type_of_user: ["officer"],
+              type_of_user: ["officer", "organisation"],
               type_of_region: ["country", "state", "district"],
             },
             beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/List/Mines.vue"),
+            component: () => import("@/views/Dashboard/Mine.vue"),
           },
           {
             path: "checkpoints",
@@ -293,6 +246,31 @@ app.use(
             component: () => import("@/views/List/CheckPoints.vue"),
           },
           {
+            path: "checkpoint_registration",
+            name: "checkpoint_registration",
+            meta: {
+              active: "home",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Registration/CheckPoint.vue"),
+          },
+
+          {
+            path: "checkpoints/:checkpoint_id",
+            name: "checkpoint_dashboard",
+            meta: {
+              active: "checkpoints",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Dashboard/CheckPoint.vue"),
+          },
+          {
             path: "labs",
             name: "labs",
             meta: {
@@ -303,6 +281,41 @@ app.use(
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/List/Labs.vue"),
+          },
+          {
+            path: "lab_registration",
+            name: "lab_registration",
+            meta: {
+              active: "home",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Registration/Lab.vue"),
+          },
+          {
+            path: "labs/:lab_id",
+            name: "lab_dashboard",
+            meta: {
+              active: "labs",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Dashboard/Lab.vue"),
+          },
+          {
+            path: "add_mined_batch",
+            name: "add_mined_batch",
+            meta: {
+              active: "home",
+              access: false,
+              type_of_user: ["miner"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Registration/MinedBatch.vue"),
           },
           {
             path: "mined_batches",
@@ -317,81 +330,10 @@ app.use(
             component: () => import("@/views/List/MinedBatches.vue"),
           },
           {
-            path: "tested_mined_batches",
-            name: "tested_mined_batches",
-            meta: {
-              active: "tested mined batches",
-              access: false,
-              type_of_user: ["officer", "miner"],
-              type_of_region: ["country", "state", "district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/List/TestedMinedBatches.vue"),
-          },
-          {
-            path: "tested_mined_batches/:tested_mined_batch_id",
-            name: "tested_mined_batch",
-            meta: {
-              active: "tested mined batches",
-              access: false,
-              type_of_user: ["officer", "miner"],
-              type_of_region: ["country", "state", "district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/ApproveMinedBatch.vue"),
-          },
-          {
-            path: "mined_batches/:batch_id",
-            name: "mined_batch",
-            meta: {
-              active: "mined batches",
-              access: false,
-              type_of_user: ["officer", "miner", "lab"],
-              type_of_region: ["district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/MinedBatch.vue"),
-          },
-          {
-            path: "mines/:mine_id/mined_batches",
-            name: "officer_mined_batches",
-            meta: {
-              active: "mines",
-              access: false,
-              type_of_user: ["officer", "organisation"],
-              type_of_region: ["country", "state", "district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/List/MinedBatches.vue"),
-          },
-          {
-            path: "mines/:mine_id/mined_batches/:batch_id",
-            name: "officer_mined_batch",
-            meta: {
-              active: "mines",
-              access: false,
-              type_of_user: ["officer", "organisation"],
-              type_of_region: ["country", "state", "district"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/MinedBatch.vue"),
-          },
-          {
-            path: "add_mined_batch",
-            name: "add_mined_batch",
+            path: "add_tested_mined_batch",
+            name: "add_tested_mined_batch",
             meta: {
               active: "home",
-              access: false,
-              type_of_user: ["miner"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Registration/MinedBatch.vue"),
-          },
-          {
-            path: "mined_batches/:mined_batch_id/testing_mined_batch",
-            name: "testing_mined_batch",
-            meta: {
-              active: "mined batches",
               access: false,
               type_of_user: ["miner"],
             },
@@ -400,18 +342,91 @@ app.use(
               import("@/views/Registration/TestedMinedBatch.vue"),
           },
           {
-            path: "mined_batches/:batch_id/approve_mined_batch",
-            name: "approve_mined_batch",
+            path: "tested_mined_batches",
+            name: "tested_mined_batches",
             meta: {
-              active: "mined batches",
+              active: "tested mined batches",
               access: false,
-              type_of_user: ["officer"],
-              type_of_region: ["district"],
+              type_of_user: ["miner"],
             },
             beforeEnter: [Authentication, PageAccess],
-            component: () =>
-              import("@/views/Registration/OfficerMinedBatch.vue"),
+            component: () => import("@/views/List/TestedMinedBatches.vue"),
           },
+          {
+            path: "tested_mined_batches/:tested_mined_batch_id",
+            name: "tsted_mined_batches",
+            meta: {
+              active: "tested mined batches",
+              access: false,
+              type_of_user: ["miner"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/ApproveMinedBatch.vue"),
+          },
+          {
+            path: "mines/:mine_id/tested_mined_batches",
+            name: "officer_tested_mined_batches",
+            meta: {
+              active: "mines",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/TestedMinedBatches.vue"),
+          },
+          {
+            path: "mines/:mine_id/tested_mined_batches/:tested_mined_batch_id",
+            name: "off_tested_mined_batches",
+            meta: {
+              active: "mines",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/ApproveMinedBatch.vue"),
+          },
+
+          // {
+          //   path: "mined_batches/:batch_id",
+          //   name: "mined_batch",
+          //   meta: {
+          //     active: "mined batches",
+          //     access: false,
+          //     type_of_user: ["officer", "miner", "lab"],
+          //     type_of_region: ["district"],
+          //   },
+          //   beforeEnter: [Authentication, PageAccess],
+          //   component: () => import("@/views/MinedBatch.vue"),
+          // },
+
+          // {
+          //   path: "mines/:mine_id/mined_batches/:batch_id",
+          //   name: "officer_mined_batch",
+          //   meta: {
+          //     active: "mines",
+          //     access: false,
+          //     type_of_user: ["officer", "organisation"],
+          //     type_of_region: ["country", "state", "district"],
+          //   },
+          //   beforeEnter: [Authentication, PageAccess],
+          //   component: () => import("@/views/MinedBatch.vue"),
+          // },
+
+          // {
+          //   path: "mined_batches/:batch_id/approve_mined_batch",
+          //   name: "approve_mined_batch",
+          //   meta: {
+          //     active: "mined batches",
+          //     access: false,
+          //     type_of_user: ["officer"],
+          //     type_of_region: ["district"],
+          //   },
+          //   beforeEnter: [Authentication, PageAccess],
+          //   component: () =>
+          //     import("@/views/Registration/OfficerMinedBatch.vue"),
+          // },
           {
             path: "transactions",
             name: "transactions",

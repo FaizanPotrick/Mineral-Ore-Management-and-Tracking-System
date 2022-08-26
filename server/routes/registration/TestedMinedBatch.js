@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Mine = require("../../models/MineSchema");
 const Warehouse = require("../../models/WarehouseSchema");
-const MinedBatch = require("../../models/MinedBatchSchema");
 const TestedMinedBatch = require("../../models/TestedMinedBatchSchema");
 const bcrypt = require("bcrypt");
 const { initializeApp } = require("firebase/app");
@@ -21,7 +20,6 @@ const storage = getStorage(app);
 
 router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
   const { _id } = req.cookies;
-  const { mined_batch_id } = req.query;
   const { type_of_ore, fe_percentage, quantity, waste } = req.body;
   const { sample_image, mine_lab_report } = req.files;
   const grade =
@@ -33,8 +31,14 @@ router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
       : "low";
   try {
     const mine_response = await Mine.findById(_id)
-      .select(["manager_id", "region_id"])
+      .select(["manager_id", "region_id", "rom"])
       .lean();
+    if (mine_response.rom < parseInt(quantity) + parseInt(waste)) {
+      return res.status(200).json({
+        message: "Less ROM",
+        type: "warning",
+      });
+    }
     const imageRef = ref(storage, "/sample_image/" + sample_image.name);
     const documnetRef = ref(
       storage,
@@ -75,10 +79,6 @@ router.post("/api/registration/tested_mined_batch/miner", async (req, res) => {
       ),
       sample_image_url: sample_image_url,
       mine_lab_report_url: mine_lab_report_url,
-    });
-
-    await MinedBatch.findByIdAndUpdate(mined_batch_id, {
-      status: "approved",
     });
     await Mine.findByIdAndUpdate(_id, {
       $inc: {

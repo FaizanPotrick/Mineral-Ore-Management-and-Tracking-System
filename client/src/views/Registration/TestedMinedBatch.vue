@@ -11,6 +11,7 @@ const tested_mined_batch = ref({
   type_of_ore: "",
   fe_percentage: 0,
   quantity: 0,
+  waste: 0,
   sample_image: {},
   mine_lab_report: {},
 });
@@ -30,11 +31,12 @@ const register_fn = async () => {
   formData.append("type_of_ore", tested_mined_batch.value.type_of_ore);
   formData.append("fe_percentage", tested_mined_batch.value.fe_percentage);
   formData.append("quantity", tested_mined_batch.value.quantity);
+  formData.append("waste", tested_mined_batch.value.waste);
   formData.append("sample_image", tested_mined_batch.value.sample_image);
   formData.append("mine_lab_report", tested_mined_batch.value.mine_lab_report);
   await axios({
     method: "post",
-    url: `/api/registration/tested_mined_batch/miner?mined_batch_id=${route.params.mined_batch_id}`,
+    url: '/api/registration/tested_mined_batch/miner',
     data: formData,
   })
     .then((res) => {
@@ -44,6 +46,7 @@ const register_fn = async () => {
           type_of_ore: "",
           fe_percentage: 0,
           quantity: 0,
+          waste: 0,
           sample_image: {},
           mine_lab_report: {},
         };
@@ -55,17 +58,6 @@ const register_fn = async () => {
     });
   loading.value = false;
 };
-
-const get_mined_batch = async () => {
-  const { data } = await axios.get(
-    `/api/tested_mined_batch?tested_mined_batch_id=${route.params.tested_mined_batch_id}`
-  );
-  console.log(data)
-  mined_batch.value = data;
-};
-
-// get_mined_batch();
-//TODO: Learn Add Function
 </script>
 
 <template>
@@ -77,9 +69,6 @@ const get_mined_batch = async () => {
         </div>
         <div class="text-gray-500 text-sm">Testing a Batch</div>
       </div>
-      <!-- <div class="flex justify-center mb-4">
-        Quantity of Ore: <strong class="ml-2">{{ mined_batch.quantity }}</strong>
-      </div> -->
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()" enctype="multipart/form-data">
         <div class="grid gap-6 mb-6 sm:grid-cols-2">
           <div class="space-y-2">
@@ -104,6 +93,12 @@ const get_mined_batch = async () => {
             <input
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
               v-model="tested_mined_batch.quantity" type="number" pattern="[0-9]+" required />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Waste(in mt)*</label>
+            <input
+              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              v-model="tested_mined_batch.waste" type="number" pattern="[0-9]+" required />
           </div>
         </div>
         <div class="grid gap-6 mb-6 sm:grid-cols-2">

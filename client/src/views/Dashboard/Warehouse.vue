@@ -38,7 +38,7 @@ const register_fn = async () => {
     await axios.get(`/api/registration/tested_mined_batch/warehouse?tested_mined_batch_id=${tested_mined_batch.value._id}`)
         .then((res) => {
             window.location.reload()
-             open_alert_box(res.data.message, res.data.type);
+            open_alert_box(res.data.message, res.data.type);
 
         })
         .catch((err) => {
@@ -112,6 +112,12 @@ const register_fn = async () => {
                                         <td class="px-6 py-4">Quantity:</td>
                                         <td class="px-6 py-4 font-bold">
                                             {{ tested_mined_batch.quantity }}
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-white border-b">
+                                        <td class="px-6 py-4">Waste:</td>
+                                        <td class="px-6 py-4 font-bold">
+                                            {{ tested_mined_batch.waste }}
                                         </td>
                                     </tr>
                                     <tr class="bg-white border-b">

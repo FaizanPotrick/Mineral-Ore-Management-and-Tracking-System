@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const TestedMinedBatch = require("../models/TestedMinedBatchSchema");
 const Transaction = require("../models/TransactionSchema");
+const Warehouse = require("../models/WarehouseSchema");
 const bcrypt = require("bcrypt");
 
 router.get("/api/tested_mined_batch", async (req, res) => {
@@ -13,9 +14,12 @@ router.get("/api/tested_mined_batch", async (req, res) => {
 });
 
 router.get("/api/tested_mined_batch/verify", async (req, res) => {
+  const { _id } = req.cookies;
   const { tested_mined_batch_id, tested_mined_batch_hash } = req.query;
+  const warehouse_response = await Warehouse.findById(_id);
   const tested_mined_batch_response = await TestedMinedBatch.findOne({
     _id: tested_mined_batch_id,
+    mine_id: warehouse_response.mine_id,
   }).lean();
   if (tested_mined_batch_response === null) {
     return res.status(201).json({

@@ -104,18 +104,6 @@ router.get("/api/labs/officer", async (req, res) => {
   res.json(lab_response.reverse());
 });
 
-////////////
-
-router.get("/api/mined_batches/officer", async (req, res) => {
-  const { mine_id } = req.query;
-  const mined_batch_response = await MinedBatch.find({
-    mine_id: mine_id,
-  })
-    .sort({ updatedAt: -1 })
-    .lean();
-  res.json(mined_batch_response);
-});
-
 router.get("/api/mined_batches/miner", async (req, res) => {
   const { _id } = req.cookies;
   const mined_batch_response = await MinedBatch.find({
@@ -135,6 +123,18 @@ router.get("/api/tested_mined_batches/miner", async (req, res) => {
     .lean();
   res.json(tested_mined_batch_response);
 });
+
+router.get("/api/tested_mined_batches/officer", async (req, res) => {
+  const { mine_id } = req.query;
+  const mined_batch_response = await TestedMinedBatch.find({
+    mine_id: mine_id,
+  })
+    .sort({ updatedAt: -1 })
+    .lean();
+  res.json(mined_batch_response);
+});
+
+////////////
 
 router.get("/api/mined_batch/verify", async (req, res) => {
   const { batch_id } = req.query;

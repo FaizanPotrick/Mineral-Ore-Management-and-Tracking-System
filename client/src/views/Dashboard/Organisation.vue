@@ -43,7 +43,7 @@ onBeforeMount(() => {
         </div>
       </div>
     </div>
-    <ol-map style="height: 40vh; width: 92vw" class="my-3">
+    <!-- <ol-map style="height: 40vh; width: 92vw" class="my-3">
       <ol-view :center="[78.9629, 20.5937]" :zoom="5" projection="EPSG:4326" />
       <ol-tile-layer>
         <ol-source-osm />
@@ -52,6 +52,6 @@ onBeforeMount(() => {
       <ol-overlay :key="marker._id" v-for="marker of markers" :position="marker.coordinates">
         <img src="@/assets/marker.png" class="h-8 w-8 cursor-pointer" alt="marker" />
       </ol-overlay>
-    </ol-map>
+    </ol-map> -->
   </div>
 </template>
