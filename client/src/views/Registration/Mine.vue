@@ -11,6 +11,7 @@ const route = useRoute()
 const center = ref([78.9629, 20.5937]);
 const zoom = ref(4);
 const mine = ref({
+  mine_name: "",
   name: "",
   email_address: "",
   phone_no: "",
@@ -39,6 +40,7 @@ const register_fn = async () => {
     return open_alert_box("Please select a location", "warning");
   }
   const formData = new FormData();
+  formData.append("mine_name", mine.value.mine_name);
   formData.append("name", mine.value.name);
   formData.append("email_address", mine.value.email_address);
   formData.append("phone_no", mine.value.phone_no);
@@ -62,6 +64,7 @@ const register_fn = async () => {
       open_alert_box(res.data.message, res.data.type);
       if (res.status === 200) {
         mine.value = {
+          mine_name: "",
           name: "",
           email_address: "",
           phone_no: "",
@@ -101,7 +104,6 @@ const store_document = (event) => {
 
 onMounted(async () => {
   const { data } = await axios.get("/api/coordinates_and_organisation_list");
-
   center.value = [data.coordinates.longitude, data.coordinates.latitude];
   zoom.value = 10;
 });
@@ -118,7 +120,14 @@ onMounted(async () => {
       </div>
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()" enctype="multipart/form-data">
         <div class="grid gap-6 grid-cols-1">
-
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Mine Name*</label>
+            <input type="text"
+              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              placeholder="Mine Name" v-model="mine.mine_name" maxlength="150" required />
+          </div>
+        </div>
+        <div class="grid gap-6 grid-cols-1">
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Manager Name*</label>
             <input type="text"

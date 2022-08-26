@@ -149,6 +149,18 @@ app.use(
             component: () => import("@/views/Dashboard/Mine.vue"),
           },
           {
+            path: "checkpoints/:checkpoint_id",
+            name: "checkpoint_dashboard",
+            meta: {
+              active: "checkpoints",
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Dashboard/CheckPoint.vue"),
+          },
+          {
             path: "officer_registration",
             name: "officer_registration",
             meta: {
@@ -221,17 +233,6 @@ app.use(
             component: () => import("@/views/Registration/Lab.vue"),
           },
           {
-            path: "ceo_registration",
-            name: "ceo_registration",
-            meta: {
-              active: "home",
-              access: false,
-              type_of_user: ["organisation"],
-            },
-            beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Registration/CEO.vue"),
-          },
-          {
             path: "officers",
             name: "officers",
             meta: {
@@ -250,7 +251,7 @@ app.use(
               active: "organisations",
               access: false,
               type_of_user: ["officer"],
-              type_of_region: ["country", "state"],
+              type_of_region: ["country", "state", "district"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/List/Organisations.vue"),
@@ -261,22 +262,23 @@ app.use(
             meta: {
               active: "mines",
               access: false,
-              type_of_user: ["officer", "organisation"],
+              type_of_user: ["officer"],
               type_of_region: ["country", "state", "district"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/List/Mines.vue"),
           },
           {
-            path: "mines/:mine_id/manager_registration",
-            name: "manager_registration",
+            path: "checkpoints",
+            name: "checkpoints",
             meta: {
-              active: "mines",
+              active: "check points",
               access: false,
-              type_of_user: ["organisation"],
+              type_of_user: ["officer"],
+              type_of_region: ["country", "state", "district"],
             },
             beforeEnter: [Authentication, PageAccess],
-            component: () => import("@/views/Registration/Manager.vue"),
+            component: () => import("@/views/List/CheckPoints.vue"),
           },
           {
             path: "mined_batches",
