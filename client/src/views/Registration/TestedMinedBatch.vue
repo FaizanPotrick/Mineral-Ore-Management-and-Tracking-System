@@ -58,12 +58,13 @@ const register_fn = async () => {
 
 const get_mined_batch = async () => {
   const { data } = await axios.get(
-    `/api/mined_batch?mined_batch_id=${route.params.mined_batch_id}`
+    `/api/tested_mined_batch?tested_mined_batch_id=${route.params.tested_mined_batch_id}`
   );
+  console.log(data)
   mined_batch.value = data;
 };
 
-get_mined_batch();
+// get_mined_batch();
 //TODO: Learn Add Function
 </script>
 
@@ -76,9 +77,9 @@ get_mined_batch();
         </div>
         <div class="text-gray-500 text-sm">Testing a Batch</div>
       </div>
-      <div class="flex justify-center mb-4">
+      <!-- <div class="flex justify-center mb-4">
         Quantity of Ore: <strong class="ml-2">{{ mined_batch.quantity }}</strong>
-      </div>
+      </div> -->
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()" enctype="multipart/form-data">
         <div class="grid gap-6 mb-6 sm:grid-cols-2">
           <div class="space-y-2">

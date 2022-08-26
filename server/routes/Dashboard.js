@@ -424,8 +424,7 @@ router.get("/api/dashboard/organisation", async (req, res) => {
 });
 
 router.get("/api/dashboard/miner", async (req, res) => {
-  // let _id = req.cookies._id;
-  const _id = "630801530bff334ec1ea3798";
+  let _id = req.cookies._id;
   if (req.query.mine_id) {
     _id = req.query.mine_id;
   }
