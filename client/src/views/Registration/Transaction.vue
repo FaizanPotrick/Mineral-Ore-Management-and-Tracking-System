@@ -11,7 +11,9 @@ const transaction = ref({
   fe_percentage: 0,
   quantity: 0,
   price: 0,
-  transport_no: "",
+  vehicle_no: "",
+  driving_license:"",
+  royalty:0,
   invoice: {},
 });
 const loading = ref(false);
@@ -28,7 +30,9 @@ const register_fn = async () => {
   formData.append("fe_percentage", transaction.value.fe_percentage);
   formData.append("quantity", transaction.value.quantity);
   formData.append("price", transaction.value.price);
-  formData.append("transport_no", transaction.value.transport_no);
+  formData.append("vehicle_no", transaction.value.vehicle_no);
+  formData.append("driving_license", transaction.value.driving_license);
+  formData.append("royalty", transaction.value.royalty);
   formData.append("invoice", transaction.value.invoice);
   await axios({
     method: "post",
@@ -44,7 +48,9 @@ const register_fn = async () => {
           fe_percentage: 0,
           quantity: 0,
           price: 0,
-          transport_no: "",
+          vehicle_no: "",
+          driving_license:"",
+          royalty:0,
           invoice: {},
         };
       }
@@ -117,10 +123,10 @@ onMounted(async () => {
         </div>
         <div class="grid gap-6 mb-6 grid-cols-2">
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Transport No.*</label>
+            <label class="text-sm font-medium text-gray-700">vehicle No.*</label>
             <input
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="transaction.transport_no" type="text" placeholder="Truck no." required />
+              v-model="transaction.vehicle_no" type="text" placeholder="vehicle no." required />
           </div>
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Upload Pdf*</label>
@@ -129,6 +135,20 @@ onMounted(async () => {
               @change="invoice_document" type="file" accept="application/pdf" required />
           </div>
         </div>
+          <div class="grid gap-6 mb-6 grid-cols-2">
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">Driving License</label>
+            <input
+              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              v-model="transaction.driving_license" type="text" placeholder="driving license" required />
+          </div>
+            <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700">royalty</label>
+            <input
+              class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
+              v-model="transaction.royalty" type="text" placeholder="royalty" required />
+          </div>
+          </div>
         <div class="space-y-3 py-5">
           <button type="submit" :class="{
             'hover:bg-yellow-600/80': !loading,
