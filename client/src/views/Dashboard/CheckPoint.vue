@@ -53,7 +53,7 @@ const searchList = () => {
     <div
       class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md">
       <div class="flex justify-between items-center w-full">
-        <div class="text-3xl font-semibold">Check Point Transactions</div>
+        <div class="text-3xl font-semibold">Check Point Logs</div>
         <div class="hidden sm:block">
           <input type="search" class="max-w-sm w-8vw px-4 py-2 border border-gray-300 rounded-lg" placeholder="Search"
             v-model="search" @keyup.enter="searchList()" />

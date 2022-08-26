@@ -10,8 +10,7 @@ const mined_batches = ref([]);
 
 const dashboard = async () => {
   const { data } = await axios.get(
-    `/api/dashboard/lab${
-      route.params.lab_id === undefined ? "" : `?lab_id=${route.params.lab_id}`
+    `/api/dashboard/lab${route.params.lab_id === undefined ? "" : `?lab_id=${route.params.lab_id}`
     }`
   );
   mined_batches.value = data;
@@ -23,15 +22,10 @@ dashboard();
 <template>
   <div class="flex flex-col gap-4 items-center">
     <div
-      class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md"
-    >
+      class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md">
       <div class="flex justify-between items-center w-full">
-        <div class="text-3xl font-semibold">Lab Mined Batches</div>
-        <input
-          type="search"
-          class="max-w-sm w-full px-4 py-2 border border-gray-300 rounded-lg"
-          placeholder="Search"
-        />
+        <div class="text-3xl font-semibold">Lab Logs</div>
+        <input type="search" class="max-w-sm w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Search" />
       </div>
       <div class="w-full border rounded-xl overflow-hidden drop-shadow-md">
         <table class="w-full">
@@ -48,12 +42,9 @@ dashboard();
             </tr>
           </thead>
           <tbody class="whitespace-nowrap">
-            <tr
-              :key="minedbatch._id"
-              v-for="minedbatch in mined_batches"
+            <tr :key="minedbatch._id" v-for="minedbatch in mined_batches"
               class="text-center hover:bg-yellow-100/20 cursor-pointer"
-              @click="router.push(`/dashboard/mined_batches/${minedbatch._id}`)"
-            >
+              @click="router.push(`/dashboard/mined_batches/${minedbatch._id}`)">
               <td class="py-4">
                 <abbr style="text-decoration: none" :title="minedbatch._id">
                   ...{{ minedbatch._id.slice(15) }}

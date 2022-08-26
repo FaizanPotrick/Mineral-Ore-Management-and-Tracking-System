@@ -20,25 +20,35 @@
     "name": "organisations",
     "router_link": "/dashboard/organisations",
     "type_of_user": ["officer"],
-    "type_of_region": ["country", "state"]
+    "type_of_region": ["country", "state", "district"]
   },
   {
     "name": "mines",
     "router_link": "/dashboard/mines",
-    "type_of_user": ["officer", "organisation"],
+    "type_of_user": ["officer"],
+    "type_of_region": ["country", "state", "district"]
+  },
+  {
+    "name": "check points",
+    "router_link": "/dashboard/checkpoints",
+    "type_of_user": ["officer"],
+    "type_of_region": ["country", "state", "district"]
+  },
+  {
+    "name": "labs",
+    "router_link": "/dashboard/labs",
+    "type_of_user": ["officer"],
     "type_of_region": ["country", "state", "district"]
   },
   {
     "name": "mined batches",
     "router_link": "/dashboard/mined_batches",
-    "type_of_user": ["officer", "miner", "lab"],
-    "type_of_region": ["district"]
+    "type_of_user": ["miner"]
   },
   {
     "name": "tested mined batches",
     "router_link": "/dashboard/tested_mined_batches",
-    "type_of_user": ["officer", "miner"],
-    "type_of_region": ["country", "state", "district"]
+    "type_of_user": ["miner"]
   },
   {
     "name": "transactions",

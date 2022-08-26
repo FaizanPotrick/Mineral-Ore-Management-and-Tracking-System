@@ -204,8 +204,15 @@ router.get("/api/dashboard/officer/state", async (req, res) => {
     {
       $lookup: {
         from: "labs",
-        localField: "region_ids",
-        foreignField: "region_id",
+        pipeline: [
+          {
+            $match: {
+              _id: {
+                $exists: true,
+              },
+            },
+          },
+        ],
         as: "labs",
       },
     },
@@ -276,6 +283,19 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
     },
     {
       $lookup: {
+        from: "organisations",
+        pipeline: [
+          {
+            $match: {
+              _id: { $exists: true },
+            },
+          },
+        ],
+        as: "organisations",
+      },
+    },
+    {
+      $lookup: {
         from: "mines",
         localField: "_id",
         foreignField: "region_id",
@@ -293,8 +313,15 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
     {
       $lookup: {
         from: "labs",
-        localField: "_id",
-        foreignField: "region_id",
+        pipeline: [
+          {
+            $match: {
+              _id: {
+                $exists: true,
+              },
+            },
+          },
+        ],
         as: "labs",
       },
     },
@@ -308,7 +335,7 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
                 $in: mine_ids,
               },
               type_of_ore: "fine",
-              garde: "high",
+              grade: "high",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -329,7 +356,7 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
                 $in: mine_ids,
               },
               type_of_ore: "fine",
-              garde: "medium",
+              grade: "medium",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -350,7 +377,7 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
                 $in: mine_ids,
               },
               type_of_ore: "fine",
-              garde: "low",
+              grade: "low",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -371,7 +398,7 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
                 $in: mine_ids,
               },
               type_of_ore: "lump",
-              garde: "high",
+              grade: "high",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -392,7 +419,7 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
                 $in: mine_ids,
               },
               type_of_ore: "lump",
-              garde: "medium",
+              grade: "medium",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -413,7 +440,7 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
                 $in: mine_ids,
               },
               type_of_ore: "lump",
-              garde: "low",
+              grade: "low",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -430,6 +457,10 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
         title: "district",
         cards: [
           {
+            title: "Total Organisations",
+            value: { $size: "$organisations" },
+          },
+          {
             title: "Total Mines",
             value: { $size: "$mines" },
           },
@@ -442,21 +473,21 @@ router.get("/api/dashboard/officer/district", async (req, res) => {
             value: { $size: "$labs" },
           },
           {
-            title: "Average High Region Price",
+            title: "Average High Mine Price",
             value: {
               fine: { $avg: "$fine_high.price" },
               lump: { $avg: "$lump_high.price" },
             },
           },
           {
-            title: "Average Medium Region Price",
+            title: "Average Medium Mine Price",
             value: {
               fine: { $avg: "$fine_medium.price" },
               lump: { $avg: "$lump_medium.price" },
             },
           },
           {
-            title: "Average Low Region Price",
+            title: "Average Low Mine Price",
             value: {
               fine: { $avg: "$fine_low.price" },
               lump: { $avg: "$lump_low.price" },
@@ -554,7 +585,7 @@ router.get("/api/dashboard/miner", async (req, res) => {
             $match: {
               mine_id: _id,
               type_of_ore: "fine",
-              garde: "high",
+              grade: "high",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -573,7 +604,7 @@ router.get("/api/dashboard/miner", async (req, res) => {
             $match: {
               mine_id: _id,
               type_of_ore: "fine",
-              garde: "medium",
+              grade: "medium",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -592,7 +623,7 @@ router.get("/api/dashboard/miner", async (req, res) => {
             $match: {
               mine_id: _id,
               type_of_ore: "fine",
-              garde: "low",
+              grade: "low",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -611,7 +642,7 @@ router.get("/api/dashboard/miner", async (req, res) => {
             $match: {
               mine_id: _id,
               type_of_ore: "lump",
-              garde: "high",
+              grade: "high",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -630,7 +661,7 @@ router.get("/api/dashboard/miner", async (req, res) => {
             $match: {
               mine_id: _id,
               type_of_ore: "lump",
-              garde: "medium",
+              grade: "medium",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -649,7 +680,7 @@ router.get("/api/dashboard/miner", async (req, res) => {
             $match: {
               mine_id: _id,
               type_of_ore: "lump",
-              garde: "low",
+              grade: "low",
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),

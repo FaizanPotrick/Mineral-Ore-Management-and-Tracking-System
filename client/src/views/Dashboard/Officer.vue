@@ -16,7 +16,7 @@ const dashboard = async () => {
       : `${route.params.region_type}?region_id=${route.params.region_id}`
     }`
   );
-  title.value = data.title;
+  title.value = data.title; 
   cards.value = data.cards;
   markers.value = data.markers;
 };

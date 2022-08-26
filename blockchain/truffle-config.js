@@ -64,7 +64,7 @@ module.exports = {
     // Useful for deploying to a public network.
     // Note: It's important to wrap the provider as a function to ensure truffle uses a new provider every time.
     rinkeby: {
-      networkCheckTimeout: 100000,
+      networkCheckTimeout: 1000000000,
       provider: () => new HDWalletProvider(walletPass, infuraId),
       network_id: 4,       // Rinkeby's id
       gas: 5500000,        // Rinkeby has a lower block limit than mainnet

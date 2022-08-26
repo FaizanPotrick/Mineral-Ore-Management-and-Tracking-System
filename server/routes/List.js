@@ -3,6 +3,8 @@ const router = express.Router();
 const Region = require("../models/RegionSchema");
 const Organisation = require("../models/OrganisationSchema");
 const Mine = require("../models/MineSchema");
+const CheckPoint = require("../models/CheckPointSchema");
+const Lab = require("../models/LabSchema");
 const MinedBatch = require("../models/MinedBatchSchema");
 const TestedMinedBatch = require("../models/TestedMinedBatchSchema");
 const Transaction = require("../models/TransactionSchema");
@@ -67,13 +69,42 @@ router.get("/api/mines/officer/district", async (req, res) => {
   res.json(mine_response.reverse());
 });
 
-router.get("/api/mines/organisation", async (req, res) => {
-  const { _id } = req.cookies;
-  const organization_response = await Mine.find({
-    organization_id: _id,
-  }).lean();
-  res.json(organization_response.reverse());
+router.get("/api/checkpoints/officer/country", async (req, res) => {
+  const check_point_response = await CheckPoint.find().lean();
+  res.json(check_point_response.reverse());
 });
+
+router.get("/api/checkpoints/officer/state", async (req, res) => {
+  const { _id, type_of_region } = req.cookies;
+  const region_user = await Region.findOne({
+    _id: _id,
+    type_of_region: type_of_region,
+  }).distinct("state");
+  const region_response = await Region.find({
+    officer_id: { $exists: true },
+    district: { $exists: true },
+    state: region_user,
+  }).distinct("_id");
+  const check_point_response = await CheckPoint.find({
+    region_id: region_response,
+  }).lean();
+  res.json(check_point_response.reverse());
+});
+
+router.get("/api/checkpoints/officer/district", async (req, res) => {
+  const { _id } = req.cookies;
+  const mine_response = await CheckPoint.find({
+    region_id: _id,
+  }).lean();
+  res.json(mine_response.reverse());
+});
+
+router.get("/api/labs/officer", async (req, res) => {
+  const lab_response = await Lab.find().lean();
+  res.json(lab_response.reverse());
+});
+
+////////////
 
 router.get("/api/mined_batches/officer", async (req, res) => {
   const { mine_id } = req.query;
@@ -104,7 +135,6 @@ router.get("/api/tested_mined_batches/miner", async (req, res) => {
     .lean();
   res.json(tested_mined_batch_response);
 });
-
 
 router.get("/api/mined_batch/verify", async (req, res) => {
   const { batch_id } = req.query;
