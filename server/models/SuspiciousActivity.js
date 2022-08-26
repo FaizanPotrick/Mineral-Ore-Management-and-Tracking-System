@@ -10,6 +10,9 @@ const SuspiciousActivity = new mongoose.Schema({
     enum: ["transaction"],
     required: true,
   },
+  mine_id: {
+    type: String,
+  },
   reason: {
     type: String,
     required: true,

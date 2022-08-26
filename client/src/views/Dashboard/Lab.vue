@@ -34,7 +34,7 @@ dashboard();
               <th class="py-4">Batch Id</th>
               <th class="py-4">Manager Id</th>
               <th class="py-4">Grade</th>
-              <th class="py-4">Fe Percentage</th>
+           
               <th class="py-4">Type of Ore</th>
               <th class="py-4">Quantity</th>
               <th class="py-4">Status</th>
@@ -56,9 +56,7 @@ dashboard();
               <td class="py-4 capitalize">
                 {{ minedbatch.grade }}
               </td>
-              <td class="py-4">
-                {{ minedbatch.fe_percentage }}
-              </td>
+           
               <td class="py-4 capitalize">
                 {{ minedbatch.type_of_ore }}
               </td>

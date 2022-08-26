@@ -27,7 +27,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
   const {
     organisation_id,
     type_of_ore,
-    fe_percentage,
+    grade,
     quantity, // array of quantity
     price,
     // total_vehicles,
@@ -36,13 +36,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
     driving_license, // array of driving license
   } = req.body;
   const { invoice } = req.files;
-  const grade =
-    parseInt(fe_percentage) >= Grade.high
-      ? "high"
-      : parseInt(fe_percentage) < Grade.medium &&
-        parseInt(fe_percentage) >= Grade.low
-      ? "medium"
-      : "low";
+  
   try {
     const mine_response = await Mine.findById(_id)
       .select(["manager_id", "region_id"])
@@ -61,7 +55,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
     ]);
     if (
       warehouse_response.length !== 0 &&
-      warehouse_response[0].grade < quantity
+      warehouse_response[0].grade <= quantity
     ) {
       return res.status(201).json({
         message: "Not enough ore in the warehouse",
@@ -71,7 +65,8 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
     const organisation_response = await Organisation.findById(organisation_id)
       .select(["ceo_id"])
       .lean();
-    const region_response = await Region.findById(mine_response[0].region_id);
+ 
+    const region_response = await Region.findById(mine_response.region_id);
     const invoiceRef = ref(storage, "/invoice_report/" + invoice.name);
     const invoice_path = await uploadBytes(invoiceRef, invoice.data);
     const invoice_url = await getDownloadURL(
@@ -80,23 +75,23 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
 
     const transaction_response = await Transaction.create({
       mine_id: _id,
-      manager_id: mine_response[0].manager_id,
+      manager_id: mine_response.manager_id,
       ceo_id: organisation_response.ceo_id,
       buyer_org_id: organisation_id,
       type_of_ore: type_of_ore,
-      fe_percentage: fe_percentage,
       grade: grade,
       quantity: quantity,
       price: price,
       driving_license: driving_license,
+      royalty: royalty,
       transaction_hash: bcrypt.hashSync(
         JSON.stringify({
           mine_id: _id,
-          manager_id: mine_response[0].manager_id,
+          // manager_id: mine_response.manager_id,
           ceo_id: organisation_response.ceo_id,
           buyer_org_id: organisation_id,
           type_of_ore: type_of_ore,
-          fe_percentage: fe_percentage,
+          
           grade: grade,
           quantity: quantity,
           price: price,
@@ -177,6 +172,8 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
         },
       },
     ]);
+    console.log("mine_average_price_response", mine_average_price_response);
+    console.log("region_average_price_response", region_average_price_response);
     const acceptable_difference = AcceptablePercentage;
     if (
       mine_average_price_response.length !== 0 &&
@@ -191,8 +188,9 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
       if (mine_actual_difference > acceptable_difference) {
         await SuspiciousActivity.create({
           region_id: region_response._id,
+          mine_id: _id,
           type_of_activity: "transaction",
-          reason: `price difference by more then ${acceptable_difference} wrt mine average price`,
+          reason: `price difference by more then ${acceptable_difference} % wrt mine average price`,
           price_difference: mine_actual_difference,
           transaction_id: transaction_response._id,
         });
@@ -200,6 +198,7 @@ router.post("/api/registration/transaction/miner", async (req, res) => {
       if (region_actual_difference > acceptable_difference) {
         await SuspiciousActivity.create({
           region_id: region_response._id,
+           mine_id: _id,
           type_of_activity: "transaction",
           reason: `price difference by more then ${acceptable_difference} wrt region average price`,
           price_difference: region_actual_difference,

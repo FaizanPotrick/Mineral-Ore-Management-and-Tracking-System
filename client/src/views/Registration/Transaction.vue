@@ -8,7 +8,7 @@ const organisations = ref([]);
 const transaction = ref({
   organisation_id: "",
   type_of_ore: "",
-  fe_percentage: 0,
+  grade: 0,
   quantity: 0,
   price: 0,
   vehicle_no: "",
@@ -27,7 +27,7 @@ const register_fn = async () => {
   const formData = new FormData();
   formData.append("organisation_id", transaction.value.organisation_id);
   formData.append("type_of_ore", transaction.value.type_of_ore);
-  formData.append("fe_percentage", transaction.value.fe_percentage);
+  formData.append("grade", transaction.value.grade);
   formData.append("quantity", transaction.value.quantity);
   formData.append("price", transaction.value.price);
   formData.append("vehicle_no", transaction.value.vehicle_no);
@@ -45,7 +45,7 @@ const register_fn = async () => {
         transaction.value = {
           organisation_id: "",
           type_of_ore: "",
-          fe_percentage: 0,
+          grade: 0,
           quantity: 0,
           price: 0,
           vehicle_no: "",
@@ -101,10 +101,15 @@ onMounted(async () => {
             </select>
           </div>
           <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700">Grade(Fe%)*</label>
-            <input
+            <label class="text-sm font-medium text-gray-700">Grade of Ore</label>
+              <select
               class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              v-model="transaction.fe_percentage" type="number" pattern="[0-9]+" required />
+              v-model="transaction.grade" required>
+              
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
           </div>
         </div>
         <div class="grid gap-6 mb-6 sm:grid-cols-2">

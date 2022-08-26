@@ -75,7 +75,6 @@ const searchList = () => {
               <th class="py-4">Transaction Id</th>
               <th class="py-4">Manager Id</th>
               <th class="py-4">Grade</th>
-              <th class="py-4">Fe Percentage</th>
               <th class="py-4">Type of Ore</th>
               <th class="py-4">Quantity</th>
               <th class="py-4">Status</th>
@@ -97,9 +96,7 @@ const searchList = () => {
               <td class="py-4 capitalize">
                 {{ transaction.grade }}
               </td>
-              <td class="py-4">
-                {{ transaction.fe_percentage }}
-              </td>
+         
               <td class="py-4 capitalize">
                 {{ transaction.type_of_ore }}
               </td>
