@@ -35,7 +35,7 @@ onBeforeMount(() => {
       <div :key="card" v-for="card of cards"
         class="flex flex-col gap-2 border-l-4 border-yellow-300 py-5 px-4 bg-white rounded-lg drop-shadow-md min-w-[20rem]">
         <div class="text-xl">{{ card.title }}</div>
-        <div class="flex gap-4 capitalize">
+        <div class="flex gap-4 capitalize items-center justify-center">
           <div v-if="typeof card.value === 'object'" v-for="(value, name) of card.value">
             {{ name }} : {{ value }}
           </div>
@@ -43,7 +43,7 @@ onBeforeMount(() => {
         </div>
       </div>
     </div>
-    <ol-map style="height: 40vh; width: 92vw">
+    <ol-map style="height: 40vh; width: 92vw" class="my-3">
       <ol-view :center="[78.9629, 20.5937]" :zoom="5" projection="EPSG:4326" />
       <ol-tile-layer>
         <ol-source-osm />
