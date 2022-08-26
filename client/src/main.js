@@ -452,7 +452,7 @@ app.use(
             meta: {
               active: "transactions",
               access: false,
-              type_of_user: ["miner", "checkpoint"],
+              type_of_user: ["miner", "checkpoint","officer"],
             },
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Transaction.vue"),
