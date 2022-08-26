@@ -9,8 +9,9 @@ const router = useRouter();
 const tested_mined_batches = ref([]);
 const filter_batches = ref([]);
 const search = ref("");
-const status = ["pending", "approved", "disapproved"];
+const status = ["delivered", "dispatched"];
 const grade = ["low", "medium", "high"];
+const type_of_ore = ["fine", "lump", "iron_pellets"];
 const checked_list = ref([]);
 
 const get_mined_batches = async () => {
@@ -27,22 +28,24 @@ const filterList = () => {
     if (!checked_list.value.length) return filter_batches.value;
     if (
       item.status.includes(checked_list.value) ||
-      item.grade.includes(checked_list.value)
+      item.grade.includes(checked_list.value) ||
+      item.type_of_ore.includes(checked_list.value)
     )
       return true;
   });
-  mined_batches.value = data;
+  tested_mined_batches.value = data;
 };
 
 const searchList = () => {
   const data = filter_batches.value.filter((item) => {
     if (search.value === "") {
       return filter_batches.value;
-    } else if (
+    }
+    else if (item._id.toLowerCase().includes(search.value.toLowerCase()))
+      return true;
+    else if (
       item.type_of_ore.toLowerCase().includes(search.value.toLowerCase())
     )
-      return true;
-    else if (item._id.toLowerCase().includes(search.value.toLowerCase()))
       return true;
     else if (item.manager_id.toLowerCase().includes(search.value.toLowerCase()))
       return true;
@@ -56,7 +59,7 @@ const searchList = () => {
       return true;
   });
 
-  mined_batches.value = data;
+  tested_mined_batches.value = data;
 };
 
 </script>
@@ -90,6 +93,19 @@ const searchList = () => {
                     <input type="radio" v-model="checked_list" v-bind:value="grade" @keyup.enter="filterList()"
                       class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
                     <label class="py-1 ml-2 w-full text-sm font-medium text-gray-900">{{ grade }}
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="px-3">
+              <h3 class="mb-1 font-semibold text-gray-900">Type of Ore</h3>
+              <ul class="w-35 text-sm font-medium text-gray-900 bg-white">
+                <li v-for="type_of_ore in type_of_ore" class="w-full rounded-t-lg">
+                  <div class="flex items-center">
+                    <input type="radio" v-model="checked_list" v-bind:value="type_of_ore" @keyup.enter="filterList()"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
+                    <label class="py-1 ml-2 w-full text-sm font-medium text-gray-900">{{ type_of_ore }}
                     </label>
                   </div>
                 </li>
