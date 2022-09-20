@@ -42,6 +42,16 @@ Organisation 2
 Username: 9BAHiMRD
 Password: pzGwBObB
 
+<<<<<<< HEAD
 Checkpoint
 Username: 'gYkIC0JB',
 Password: 'uBvcWdpn' 
+=======
+CheckPoint
+Username: gYkIC0JB,
+Password: uBvcWdp
+
+Checkpoint
+Username: vDzdljSO
+Password: Dd8K0Lvp
+>>>>>>> c6abd5acbc678c7ecebe2a22d18522a6751df6d3

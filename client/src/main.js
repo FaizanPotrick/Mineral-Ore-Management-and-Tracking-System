@@ -50,6 +50,7 @@ app.use(
         component: () => import("@/views/Login.vue"),
       },
       {
+<<<<<<< HEAD
         path: "/forgot_password",
         name: "forgot password",
         component: () => import("@/views/ForgotPassword.vue"),
@@ -70,6 +71,8 @@ app.use(
         component: () => import("@/views/Stocker.vue"),
       },
       {
+=======
+>>>>>>> c6abd5acbc678c7ecebe2a22d18522a6751df6d3
         path: "/dashboard",
         name: "dashboard",
         component: () => import("@/views/DashBoard.vue"),
@@ -439,47 +442,6 @@ app.use(
             beforeEnter: [Authentication, PageAccess],
             component: () => import("@/views/Transaction.vue"),
           },
-
-          // {
-          //   path: "mined_batches/:batch_id",
-          //   name: "mined_batch",
-          //   meta: {
-          //     active: "mined batches",
-          //     access: false,
-          //     type_of_user: ["officer", "miner", "lab"],
-          //     type_of_region: ["district"],
-          //   },
-          //   beforeEnter: [Authentication, PageAccess],
-          //   component: () => import("@/views/MinedBatch.vue"),
-          // },
-
-          // {
-          //   path: "mines/:mine_id/mined_batches/:batch_id",
-          //   name: "officer_mined_batch",
-          //   meta: {
-          //     active: "mines",
-          //     access: false,
-          //     type_of_user: ["officer", "organisation"],
-          //     type_of_region: ["country", "state", "district"],
-          //   },
-          //   beforeEnter: [Authentication, PageAccess],
-          //   component: () => import("@/views/MinedBatch.vue"),
-          // },
-
-          // {
-          //   path: "mined_batches/:batch_id/approve_mined_batch",
-          //   name: "approve_mined_batch",
-          //   meta: {
-          //     active: "mined batches",
-          //     access: false,
-          //     type_of_user: ["officer"],
-          //     type_of_region: ["district"],
-          //   },
-          //   beforeEnter: [Authentication, PageAccess],
-          //   component: () =>
-          //     import("@/views/Registration/OfficerMinedBatch.vue"),
-          // },
-
           {
             path: "approve_transaction",
             name: "approve_transaction ",
