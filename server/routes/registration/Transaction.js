@@ -5,6 +5,7 @@ const Warehouse = require("../../models/WarehouseSchema");
 const Organisation = require("../../models/OrganisationSchema");
 const Transaction = require("../../models/TransactionSchema");
 const Region = require("../../models/RegionSchema");
+const Checkpoint = require("../../models/CheckpointSchema");
 const SuspiciousActivity = require("../../models/SuspiciousActivity");
 const { initializeApp } = require("firebase/app");
 const mongoose = require("mongoose");
@@ -233,29 +234,19 @@ router.get(
 router.post("/api/registration/transaction/organisation", async (req, res) => {
   const { _id } = req.cookies;
   const { transaction_id } = req.query;
-  const { status } = req.body;
   try {
     const transaction_response = await Transaction.findByIdAndUpdate(
       transaction_id,
       {
-        status: status,
+        status: "delivered",
       }
     );
-    if (transaction_response.status === "delivered") {
-      await Organisation.findByIdAndUpdate(_id, {
-        $inc: {
-          [`ores_bought.${transaction_response.grade}.${transaction_response.type_of_ore}`]:
-            transaction_response.quantity,
-        },
-      });
-    } else {
-      await Warehouse.findByIdAndUpdate(transaction_response.mine_id, {
-        $inc: {
-          [`ores_available.${transaction_response.grade}.${transaction_response.type_of_ore}`]:
-            transaction_response.quantity,
-        },
-      });
-    }
+    await Organisation.findByIdAndUpdate(_id, {
+      $inc: {
+        [`ores_bought.${transaction_response.grade}.${transaction_response.type_of_ore}`]:
+          transaction_response.quantity,
+      },
+    });
     res.status(200).json({
       message: "Successfully Updated Transaction",
       type: "success",
@@ -272,28 +263,17 @@ router.post("/api/registration/transaction/organisation", async (req, res) => {
 router.post("/api/registration/transaction/checkpoint", async (req, res) => {
   const { _id } = req.cookies;
   const { transaction_id } = req.query;
-  const { status } = req.body;
   try {
     const transaction_response = await Transaction.findById(transaction_id);
-    if (
-      transaction_response.checkpoints.filter((checkpoint) => {
-        return checkpoint.checkpoint_id === _id;
-      }).length === 0
-    ) {
+    if (!transaction_response.checkpoints.includes(_id)) {
       await Transaction.findByIdAndUpdate(transaction_id, {
         $push: {
-          checkpoints: checkpoint,
+          checkpoints: _id,
         },
       });
-    }
-    if (status === "cancelled") {
-      await Transaction.findByIdAndUpdate(transaction_id, {
-        status: "cancelled",
-      });
-      await Warehouse.findByIdAndUpdate(transaction_response.mine_id, {
-        $inc: {
-          [`ores_available.${transaction_response.grade}.${transaction_response.type_of_ore}`]:
-            transaction_response.quantity,
+      await Checkpoint.findByIdAndUpdate(_id, {
+        $push: {
+          transactions: transaction_id,
         },
       });
     }

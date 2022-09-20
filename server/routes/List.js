@@ -154,8 +154,6 @@ router.get("/api/transactions/miner", async (req, res) => {
   res.json(transaction_response);
 });
 
-////////////
-
 router.get("/api/mined_batch/verify", async (req, res) => {
   const { batch_id } = req.query;
   const mined_batch_response = await MinedBatch.findById(batch_id).lean();
