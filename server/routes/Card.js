@@ -4,6 +4,7 @@ const TestedMinedBatch = require("../models/TestedMinedBatchSchema");
 const Transaction = require("../models/TransactionSchema");
 const Warehouse = require("../models/WarehouseSchema");
 const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
 
 router.get("/api/tested_mined_batch", async (req, res) => {
   const { tested_mined_batch_id } = req.query;
@@ -52,10 +53,88 @@ router.get("/api/tested_mined_batch/verify", async (req, res) => {
 
 router.get("/api/transaction", async (req, res) => {
   const { transaction_id } = req.query;
-  const transaction_response = await Transaction.findById(
-    transaction_id
-  ).lean();
-  res.status(200).json(transaction_response);
+  const response = await Transaction.aggregate([
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(transaction_id),
+      },
+    },
+    {
+      $addFields: {
+        mine_id: {
+          $toObjectId: "$mine_id",
+        },
+        buyer_org_id: {
+          $toObjectId: "$buyer_org_id",
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "mines",
+        localField: "mine_id",
+        foreignField: "_id",
+        as: "mine",
+      },
+    },
+    {
+      $unwind: "$mine",
+    },
+    {
+      $addFields: {
+        mine_name: "$mine.mine_name",
+      },
+    },
+    {
+      $lookup: {
+        from: "organisations",
+        localField: "buyer_org_id",
+        foreignField: "_id",
+        as: "organisation",
+      },
+    },
+    {
+      $unwind: "$organisation",
+    },
+    {
+      $addFields: {
+        buyer_org_name: "$organisation.organisation_name",
+      },
+    },
+    {
+      $addFields: {
+        checkpoint_ids: {
+          $map: {
+            input: "$checkpoints",
+            as: "checkpoint",
+            in: {
+              $toObjectId: "$$checkpoint",
+            },
+          },
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "check points",
+        localField: "checkpoint_ids",
+        foreignField: "_id",
+        as: "checkpoint",
+      },
+    },
+    {
+      $addFields: {
+        checkpoints_name: {
+          $map: {
+            input: "$checkpoint",
+            as: "checkpoint",
+            in: "$$checkpoint.checkpoint_name",
+          },
+        },
+      },
+    },
+  ]);
+  res.status(200).json(response);
 });
 
 router.get("/api/transaction/verify", async (req, res) => {
