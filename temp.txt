@@ -41,3 +41,11 @@ Password: e5jyzEbI
 Organisation 2
 Username: 9BAHiMRD
 Password: pzGwBObB
+
+CheckPoint
+Username: gYkIC0JB,
+Password: uBvcWdp
+
+Checkpoint
+Username: vDzdljSO
+Password: Dd8K0Lvp
