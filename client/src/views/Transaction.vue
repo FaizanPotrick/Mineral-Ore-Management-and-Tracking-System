@@ -169,7 +169,7 @@ const downloadQRCode = async () => {
                       </td>
                     </tr>
                     <tr class="bg-white border-b">
-                      <td class="px-6 py-4">Created Transaction:</td>
+                      <td class="px-6 py-4">Dispatched from Mine:</td>
                       <td class="px-6 py-4 font-bold">
                         {{
                           moment(transaction.createdAt).format(
@@ -179,7 +179,7 @@ const downloadQRCode = async () => {
                       </td>
                     </tr>
                     <tr class="bg-white border-b">
-                      <td class="px-6 py-4">Last Updated Transaction:</td>
+                      <td class="px-6 py-4">Dispatched from last Location:</td>
                       <td class="px-6 py-4 font-bold">
                         {{
                           moment(transaction.updatedAt).format(

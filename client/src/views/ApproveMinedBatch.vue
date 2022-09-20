@@ -28,7 +28,6 @@ const downloadQRCode = () => {
   document.body.appendChild(downloadLink);
   downloadLink.click();
   document.body.removeChild(downloadLink);
-  //TODO: Addition details for the transaction to be displayed is pending in pdf
 };
 </script>
 
@@ -38,7 +37,9 @@ const downloadQRCode = () => {
       class="max-w-5xl p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl sm:10 text-gray-800"
     >
       <div class="mb-4 text-center">
-        <div class="font-semibold text-2xl text-yellow-700">Tested Mined Batch</div>
+        <div class="font-semibold text-2xl text-yellow-700">
+          Tested Mined Batch
+        </div>
       </div>
       <div class="flex flex-col gap-6 justify-center">
         <div>
