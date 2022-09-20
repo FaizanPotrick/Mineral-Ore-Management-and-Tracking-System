@@ -50,29 +50,6 @@ app.use(
         component: () => import("@/views/Login.vue"),
       },
       {
-<<<<<<< HEAD
-        path: "/forgot_password",
-        name: "forgot password",
-        component: () => import("@/views/ForgotPassword.vue"),
-      },
-      {
-        path: "/weight_details",
-        name: "Weight Details",
-        component: () => import("@/views/TestWeightDetails.vue"),
-      },
-      {
-        path: "/sample_test",
-        name: "Sample Test",
-        component: () => import("@/views/SampleTest.vue"),
-      },
-      {
-        path: "/stocker",
-        name: "Stocker",
-        component: () => import("@/views/Stocker.vue"),
-      },
-      {
-=======
->>>>>>> c6abd5acbc678c7ecebe2a22d18522a6751df6d3
         path: "/dashboard",
         name: "dashboard",
         component: () => import("@/views/DashBoard.vue"),
