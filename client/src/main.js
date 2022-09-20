@@ -70,11 +70,6 @@ app.use(
         component: () => import("@/views/Stocker.vue"),
       },
       {
-        path: "/warehouse",
-        name: "Warehouse",
-        component: () => import("@/views/Warehouse.vue"),
-      },
-      {
         path: "/dashboard",
         name: "dashboard",
         component: () => import("@/views/DashBoard.vue"),
@@ -497,7 +492,17 @@ app.use(
             component: () =>
               import("@/views/Registration/ApproveTransaction.vue"),
           },
-
+          {
+            path: "suspicious_transcation/:transaction_id",
+            name: "suspicious_transcation",
+            meta: {
+              access: false,
+              type_of_user: ["officer"],
+              type_of_region: ["district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/List/SuspiciousTranscation.vue"),
+          },
           {
             path: "suspisious_activity",
             name: "suspisious_activity",

@@ -11,10 +11,8 @@ const suspicious_activities = ref([]);
 // const search = ref("");
 
 const get_suspicious_activity = async () => {
-  const { data } = await axios.get(
-    '/api/suspicious_activity/officer'
-  );
-  console.log(data)
+  const { data } = await axios.get("/api/suspicious_activity/officer");
+  console.log(data);
   suspicious_activities.value = data;
   // filter_suspicious.value = data;
 };
@@ -38,14 +36,16 @@ get_suspicious_activity();
 
 //   suspicious_activities.value = data;
 // };
-
 </script>
 
 <template>
   <div class="flex flex-col gap-4 items-center">
     <div
-      class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl  bg-white text-gray-900 drop-shadow-md">
-      <div class="flex justify-between items-center w-full p-4 rounded-md bg-red-500 text-white">
+      class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md"
+    >
+      <div
+        class="flex justify-between items-center w-full p-4 rounded-md bg-red-500 text-white"
+      >
         <div class="text-3xl font-semibold">Suspicious Activity</div>
         <!-- <div class="hidden sm:block">
           <input type="search" class="max-w-sm w-8vw px-4 py-2 border border-gray-300 rounded-lg" placeholder="Search"
@@ -74,17 +74,21 @@ get_suspicious_activity();
             </tr>
           </thead>
           <tbody class="whitespace-nowrap">
-            <tr :key="transaction._id" v-for="transaction in suspicious_activities"
-              class=" text-center hover:bg-yellow-100/20 cursor-pointer border my-5" @click="">
+            <tr
+              :key="transaction._id"
+              v-for="transaction in suspicious_activities"
+              class="text-center hover:bg-yellow-100/20 cursor-pointer border my-5"
+              @click="
+                router.push(
+                  `/dashboard/suspicious_transcation/${transaction.transaction_id}`
+                )
+              "
+            >
               <td class="py-4">
                 {{ transaction.transaction_id }}
               </td>
-              <td class="py-4">
-                ...{{ transaction._id.slice(15) }}
-              </td>
-              <td class="py-4">
-                ...{{ transaction.region_id.slice(15) }}
-              </td>
+              <td class="py-4">...{{ transaction._id.slice(15) }}</td>
+              <td class="py-4">...{{ transaction.region_id.slice(15) }}</td>
               <td class="py-4 capitalize">
                 {{ transaction.type_of_activity }}
               </td>
@@ -100,5 +104,4 @@ get_suspicious_activity();
       </div>
     </div>
   </div>
-
 </template>
