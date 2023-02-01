@@ -1,100 +1,58 @@
 <script setup>
+import { useRouter } from "vue-router";
 import axios from "axios";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 
 const router = useRouter();
 const mines = ref([]);
-const filter_mines = ref([]);
-const search = ref("");
-const get_mines = async () => {
+
+const get_data = async () => {
   const { data } = await axios.get(
-    `/api/mines/officer/${$cookies.get("type_of_region")}`
+    `/api/government/mines/${$cookies.get("type_of_region")}`
   );
   mines.value = data;
-  filter_mines.value = data;
 };
-get_mines();
 
-const searchList = () => {
-  const data = filter_mines.value.filter((item) => {
-    if (search.value === "") {
-      return filter_mines.value;
-    } else if (item._id.toLowerCase().includes(search.value.toLowerCase()))
-      return true;
-    else if (
-      item.organisation_id.toLowerCase().includes(search.value.toLowerCase())
-    )
-      return true;
-    else if (item.manager_id.toLowerCase().includes(search.value.toLowerCase()))
-      return true;
-    else if (item.region_id.toLowerCase().includes(search.value.toLowerCase()))
-      return true;
-    else if (item.warehouse_capacity.toString().includes(search.value))
-      return true;
-    else if (item.location.pin_code.toString().includes(search.value))
-      return true;
-  });
-
-  mines.value = data;
-};
+get_data();
 </script>
 
 <template>
   <div class="flex flex-col gap-4 items-center">
     <div
-      class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md">
-      <div class="flex justify-between items-center w-full">
-        <div class="text-3xl font-semibold">Mines</div>
-        <div class="hidden sm:block">
-          <input type="search" class="max-w-sm w-8vw px-4 py-2 border border-gray-300 rounded-lg" placeholder="Search"
-            v-model="search" @keyup.enter="searchList()" />
-          <button type="submit" @click="searchList()"
-            class="absolute top-18 right-5 p-2.5 text-sm font-medium text-white bg-yellow-500 rounded-r-lg border border-yellow-600 hover:bg-orange-400">
-            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-            <span class="sr-only">Search</span>
-          </button>
-        </div>
-      </div>
+      class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md"
+    >
+      <div class="text-2xl font-semibold w-full">Mines</div>
       <div class="w-full border rounded-xl overflow-hidden drop-shadow-md">
         <table class="w-full">
-          <thead class="border-b whitespace-nowrap bg-yellow-400">
+          <thead class="whitespace-nowrap bg-yellow-400">
             <tr>
-              <th class="py-4">Mine Id</th>
-              <th class="py-4">Mine Name</th>
-              <th class="py-4">Manager Id</th>
-              <th class="py-4">Region Id</th>
-              <th class="py-4">Pin Code</th>
-              <th class="py-4">Lease Expiry</th>
+              <th class="py-2">Mine Id</th>
+              <th class="py-2">Mine Name</th>
+              <th class="py-2">Manager Id</th>
+              <th class="py-2">Region Id</th>
+              <th class="py-2">Lease Expiry</th>
             </tr>
           </thead>
           <tbody class="whitespace-nowrap">
-            <tr :key="mine._id" v-for="mine in mines" class="text-center hover:bg-yellow-100/20 cursor-pointer"
-              @click="router.push(`/dashboard/mines/${mine._id}`)">
-              <td class="py-4">
-                <abbr style="text-decoration: none" :title="mine._id">
-                  ...{{ mine._id.slice(10) }}
-                </abbr>
+            <tr
+              :key="mine._id"
+              v-for="mine in mines"
+              class="text-center hover:bg-yellow-100/20 cursor-pointer"
+              @click="router.push(`/dashboard/mines/${mine._id}`)"
+            >
+              <td class="py-2">
+                {{ mine._id }}
               </td>
-              <td class="py-4">
+              <td class="py-2 capitalize">
                 {{ mine.mine_name }}
               </td>
-              <td class="py-4">
+              <td class="py-2">
                 {{ mine.manager_id }}
               </td>
-              <td class="py-4">
-                <abbr style="text-decoration: none" :title="mine.region_id">
-                  ...{{ mine.region_id.slice(10) }}
-                </abbr>
+              <td class="py-2">
+                {{ mine.region_id }}
               </td>
-              <td class="py-4">
-                {{ mine.location.pin_code }}
-              </td>
-              <td class="py-4">
+              <td class="py-2">
                 {{ mine.lease_period.to }}
               </td>
             </tr>

@@ -10,8 +10,6 @@ const zoom = ref(4);
 const checkpoint = ref({
   name: "",
   email_address: "",
-  phone_no: "",
-  aadhar_card: "",
   coordinates: {
     latitude: 0,
     longitude: 0,
@@ -27,29 +25,19 @@ const register_fn = async () => {
     return open_alert_box("Please select a location", "warning");
   }
   loading.value = true;
-  await axios({
-    method: "post",
-    url: "/api/registration/checkpoint",
-    data: checkpoint.value,
-  })
-    .then((res) => {
-      open_alert_box(res.data.message, res.data.type);
-      if (res.status === 200) {
-        checkpoint.value = {
-          name: "",
-          email_address: "",
-          phone_no: "",
-          aadhar_card: "",
-          coordinates: {
-            latitude: 0,
-            longitude: 0,
-          },
-        };
-      }
-    })
-    .catch((err) => {
-      open_alert_box(err.response.data.message, err.response.data.type);
-    });
+  try {
+    await axios.post("/api/registration/checkpoint", checkpoint.value);
+    checkpoint.value = {
+      name: "",
+      email_address: "",
+      coordinates: {
+        latitude: 0,
+        longitude: 0,
+      },
+    };
+  } catch (err) {
+    open_alert_box(err.response.data.message, err.response.data.type);
+  }
   loading.value = false;
 };
 
@@ -61,8 +49,8 @@ const marker_selector = async (e) => {
 };
 
 onMounted(async () => {
-  const { data } = await axios.get("/api/coordinates_and_organisation_list");
-  center.value = [data.coordinates.longitude, data.coordinates.latitude];
+  const { data } = await axios.get("/api/region/coordinates");
+  center.value = [data.longitude, data.latitude];
   zoom.value = 10;
 });
 </script>
@@ -70,7 +58,7 @@ onMounted(async () => {
 <template>
   <div class="flex justify-center items-center">
     <div
-      class="max-w-4xl w-full p-10 bg-white border border-gray-400/20 shadow-md rounded-2xl text-gray-800"
+      class="max-w-2xl w-full p-10 bg-white border shadow-md rounded-2xl text-gray-800 m-5 sm:m-10"
     >
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
@@ -79,68 +67,26 @@ onMounted(async () => {
         <div class="text-gray-500 text-sm">Register a checkpoint.</div>
       </div>
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
-        <div class="grid gap-6 grid-cols-1">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Checkpoint Officer Name*</label
-            >
-            <input
-              type="text"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Officer Name"
-              v-model="checkpoint.name"
-              maxlength="150"
-              required
-            />
-          </div>
-        </div>
         <div class="grid gap-6 sm:grid-cols-2">
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Checkpoint Officer Email Address*</label
-            >
-            <input
-              type="email"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Email Address"
-              v-model="checkpoint.email_address"
-              maxlength="150"
-              pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]+"
-              required
-            />
-          </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Checkpoint Officer Phone No.*</label
-            >
-            <input
-              type="text"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Phone Number"
-              v-model="checkpoint.phone_no"
-              minlength="10"
-              maxlength="10"
-              pattern="[0-9]{10}"
-              required
-            />
-          </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-gray-700"
-              >Checkpoint Officer Aadhar Card*</label
-            >
-            <input
-              type="text"
-              class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-yellow-600"
-              placeholder="Aadhar Card"
-              v-model="checkpoint.aadhar_card"
-              minlength="12"
-              maxlength="12"
-              pattern="[0-9]{12}"
-              required
-            />
-          </div>
+          <input
+            type="text"
+            class="w-full px-3 py-1.5 border rounded-lg focus:outline-none focus:border-yellow-600/40"
+            placeholder="Officer Name"
+            v-model="checkpoint.name"
+            maxlength="150"
+            required
+          />
+          <input
+            type="email"
+            class="w-full px-3 py-1.5 border rounded-lg focus:outline-none focus:border-yellow-600/40"
+            placeholder="Email Address"
+            v-model="checkpoint.email_address"
+            maxlength="150"
+            pattern="[a-z0-9._]+@[a-z0-9]+\.[a-z]+"
+            required
+          />
         </div>
-        <ol-map style="height: 40vh">
+        <ol-map style="height: 30vh">
           <ol-view :center="center" :zoom="zoom" projection="EPSG:4326" />
           <ol-tile-layer>
             <ol-source-osm />
@@ -159,7 +105,7 @@ onMounted(async () => {
             :class="{
               'hover:bg-yellow-600/80': !loading,
             }"
-            class="w-full flex text-lg justify-center items-center bg-yellow-600 text-gray-100 p-2.5 rounded-full font-semibold shadow-md"
+            class="w-full flex text-lg justify-center items-center bg-yellow-600 text-white px-3 py-1.5 rounded-lg shadow-md"
             :disabled="loading"
           >
             <span v-if="!loading" class="h-6"> Register </span>

@@ -1,0 +1,116 @@
+[
+  {
+    "name": "home",
+    "router_link": "/dashboard",
+    "type_of_user": [
+      "government",
+      "organization",
+      "mine",
+      "checkpoint",
+      "lab"
+    ],
+    "type_of_region": [
+      "country",
+      "state",
+      "district"
+    ]
+  },
+  {
+    "name": "approve transaction",
+    "router_link": "/dashboard/approve_transaction",
+    "type_of_user": [
+      "organization",
+      "checkpoint"
+    ]
+  },
+  {
+    "name": "governments",
+    "router_link": "/dashboard/governments",
+    "type_of_user": [
+      "government"
+    ],
+    "type_of_region": [
+      "country",
+      "state"
+    ]
+  },
+  {
+    "name": "organizations",
+    "router_link": "/dashboard/organizations",
+    "type_of_user": [
+      "government"
+    ],
+    "type_of_region": [
+      "country",
+      "state",
+      "district"
+    ]
+  },
+  {
+    "name": "mines",
+    "router_link": "/dashboard/mines",
+    "type_of_user": [
+      "government"
+    ],
+    "type_of_region": [
+      "country",
+      "state",
+      "district"
+    ]
+  },
+  {
+    "name": "check points",
+    "router_link": "/dashboard/checkpoints",
+    "type_of_user": [
+      "government"
+    ],
+    "type_of_region": [
+      "country",
+      "state",
+      "district"
+    ]
+  },
+  {
+    "name": "labs",
+    "router_link": "/dashboard/labs",
+    "type_of_user": [
+      "government"
+    ],
+    "type_of_region": [
+      "country",
+      "state",
+      "district"
+    ]
+  },
+  {
+    "name": "suspicious",
+    "router_link": "/dashboard/suspicious",
+    "type_of_user": [
+      "government"
+    ],
+    "type_of_region": [
+      "district"
+    ]
+  },
+  {
+    "name": "mined batches",
+    "router_link": "/dashboard/mined_batches",
+    "type_of_user": [
+      "mine"
+    ]
+  },
+  {
+    "name": "tested mined batches",
+    "router_link": "/dashboard/tested_mined_batches",
+    "type_of_user": [
+      "mine"
+    ]
+  },
+  {
+    "name": "transactions",
+    "router_link": "/dashboard/transactions",
+    "type_of_user": [
+      "mine"
+    ]
+  }
+]

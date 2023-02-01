@@ -1,0 +1,60 @@
+<script setup>
+import axios from "axios";
+import { ref } from "vue";
+
+const suspicious = ref([]);
+
+const det_data = async () => {
+  const { data } = await axios.get("/api/government/suspicious");
+  console.log(data);
+  suspicious.value = data;
+};
+
+det_data();
+</script>
+
+<template>
+  <div class="flex flex-col gap-4 items-center">
+    <div
+      class="w-full flex flex-col justify-center items-center gap-4 p-5 rounded-xl bg-white text-gray-900 drop-shadow-md"
+    >
+      <div class="text-2xl font-semibold w-full">Suspicious</div>
+      <div class="w-full rounded-md overflow-hidden drop-shadow-lg">
+        <table class="w-full">
+          <thead class="whitespace-nowrap bg-red-500 text-white">
+            <tr>
+              <th class="py-2">Transaction Id</th>
+              <th class="py-2">Mine Id</th>
+              <th class="py-2">Region Id</th>
+              <th class="py-2">Type Of activity</th>
+              <th class="py-2">Price Difference</th>
+              <th class="py-2">Reason</th>
+            </tr>
+          </thead>
+          <tbody class="whitespace-nowrap">
+            <tr
+              :key="transaction._id"
+              v-for="transaction in suspicious"
+              class="text-center"
+            >
+              <td class="py-2">
+                {{ transaction.transaction_id }}
+              </td>
+              <td class="py-2">{{ transaction.mine_id }}</td>
+              <td class="py-2">{{ transaction.region_id }}</td>
+              <td class="py-2 capitalize">
+                {{ transaction.type_of_activity }}
+              </td>
+              <td class="py-2">
+                {{ Math.round(transaction.price_difference) }}%
+              </td>
+              <td class="py-2">
+                {{ transaction.reason }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>

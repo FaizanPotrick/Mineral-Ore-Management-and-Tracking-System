@@ -1,57 +1,39 @@
 Central Officer
-Username: 12YtIy1j
-Password: gRQHkk8J
+Username: 2Fi9kYO9
+Password: wyMqjxhU
 
 State Officer
-Username: LMCwsKiG
-Password: 4b3DEMc8
+Username: SE9L7aS9
+Password: rFPW8VIg
 
 District Officer
-Username: 42NyAIQQ
-Password: PpS0QGR4
+Username: XisOScgT
+Password: TIuNuzfZ
 
-Mine
-Username: waBobcY8
-Password: NuoJXZ9E
+Organization
+Username: pTQY8e8E
+Password: V78pS7uP
 
-Warehouse
-Username: AcLoYfnU
-Password: bSyecodI
+Mine 1
+Username: bWTJnHuY
+Password: MxnFMJi8
 
-Mine2
-Username: p6TARtDL 
-Password: v4RIoQFs
+Warehouse 1
+Username: jpiDF5vC
+Password: dW3WRp9X
 
-Warehouse2
-Username: U738Znxk
-Password: MhT563iX
+Mine 2
+Username: TcplTSKU
+Password: kBemIH2T
 
-Mine3
-Username: ZiL2N5HE 
-Password: 3yQlpXYS
-
-Warehouse3
-Username: Xj4TXRhV 
-Password: wCo6XlQ2
-
-Organisation
-Username: T6W6fXfX
-Password: e5jyzEbI
-
-Organisation 2
-Username: 9BAHiMRD
-Password: pzGwBObB
-
-<<<<<<< HEAD
-Checkpoint
-Username: 'gYkIC0JB',
-Password: 'uBvcWdpn' 
-=======
-CheckPoint
-Username: gYkIC0JB,
-Password: uBvcWdp
+Warehouse 2
+Username: NDmIfi4h
+Password: j0xjpGQ0
 
 Checkpoint
-Username: vDzdljSO
-Password: Dd8K0Lvp
->>>>>>> c6abd5acbc678c7ecebe2a22d18522a6751df6d3
+Username: B70onDrO
+Password: TbVvrWvk
+
+Lab
+Username: 64gVrntK
+Password: Dhcg96En
