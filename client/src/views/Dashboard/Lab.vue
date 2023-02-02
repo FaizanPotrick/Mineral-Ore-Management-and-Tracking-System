@@ -44,7 +44,7 @@ onBeforeMount(() => {
               :key="log._id"
               v-for="log in logs"
               class="text-center hover:bg-yellow-100/20 cursor-pointer"
-              @click="router.push(`/dashboard/mined_batches/${log._id}`)"
+              @click="router.push(`/dashboard/transactions/${log._id}`)"
             >
               <td class="py-2">
                 {{ log._id }}

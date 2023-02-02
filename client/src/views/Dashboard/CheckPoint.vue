@@ -41,6 +41,7 @@ onBeforeMount(() => {
               <th class="py-2">Type of Ore</th>
               <th class="py-2">Quantity</th>
               <th class="py-2">Status</th>
+              <th class="py-2"></th>
             </tr>
           </thead>
           <tbody class="whitespace-nowrap">
@@ -64,6 +65,20 @@ onBeforeMount(() => {
               </td>
               <td class="py-2 capitalize">
                 {{ log.status }}
+              </td>
+              <td class="py-2">
+                <button
+                  class="bg-yellow-400 px-2 py-1 rounded-md text-sm hover:scale-105"
+                  @click.stop="
+                    async () => {
+                      await axios.post(
+                        `/api/registration/checkpoint/transaction/lab?transaction_id=${log._id}`
+                      );
+                    }
+                  "
+                >
+                  Send to Lab
+                </button>
               </td>
             </tr>
           </tbody>

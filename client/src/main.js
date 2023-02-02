@@ -261,7 +261,7 @@ app.use(
             meta: {
               active: "transactions",
               access: false,
-              type_of_user: ["government", "mine", "checkpoint"],
+              type_of_user: ["government", "mine", "checkpoint", "lab"],
               type_of_region: ["country", "state", "district"],
             },
             beforeEnter: [Authentication, PageAccess],

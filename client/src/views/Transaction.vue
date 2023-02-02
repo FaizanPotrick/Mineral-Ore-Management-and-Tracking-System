@@ -71,6 +71,14 @@ const downloadQRCode = async () => {
               {{ transaction._id }}
             </td>
           </tr>
+          <tr
+            v-if="$cookies.get('type_of_user') !== 'mine' && transaction.lab_id"
+          >
+            <td class="mr-6 py-1 font-bold">Lab Id:</td>
+            <td class="py-1">
+              {{ transaction.lab_id }}
+            </td>
+          </tr>
           <tr>
             <td class="mr-6 py-1 font-bold">Mine Name:</td>
             <td class="py-1 capitalize">

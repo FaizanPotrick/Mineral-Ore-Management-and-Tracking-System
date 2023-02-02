@@ -105,7 +105,7 @@ const register_fn = async () => {
           </tr>
           <tr>
             <td class="mr-6 py-1 font-bold">Quantity:</td>
-            <td class="py-1">
+            <td class="py-1 capitalize">
               {{ transaction.type_of_ore }}
             </td>
           </tr>
@@ -118,12 +118,12 @@ const register_fn = async () => {
           <tr>
             <td class="mr-6 py-1 font-bold">Price:</td>
             <td class="py-1">
-              {{ transaction.status }}
+              {{ transaction.price }}
             </td>
           </tr>
           <tr>
             <td class="mr-6 py-1 font-bold">Status:</td>
-            <td class="py-1">
+            <td class="py-1 capitalize">
               {{ transaction.status }}
             </td>
           </tr>
