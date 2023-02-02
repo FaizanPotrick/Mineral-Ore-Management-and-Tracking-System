@@ -247,7 +247,11 @@ router.get("/api/dashboard/checkpoint", async (req, res) => {
   const checkpoint_response = await CheckPoint.findById(_id).lean();
   const transaction_response = await Transaction.find({
     _id: checkpoint_response.transactions,
-  }).lean();
+  })
+    .sort({
+      updatedAt: -1,
+    })
+    .lean();
   res.json(transaction_response);
 });
 
@@ -263,7 +267,6 @@ router.get("/api/dashboard/lab", async (req, res) => {
       updatedAt: -1,
     })
     .lean();
-
   res.json(response);
 });
 

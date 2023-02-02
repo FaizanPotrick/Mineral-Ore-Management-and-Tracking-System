@@ -6,6 +6,7 @@ const Organization = require("../../models/Organization");
 const Mine = require("../../models/Mine");
 const Warehouse = require("../../models/Warehouse");
 const Checkpoint = require("../../models/Checkpoint");
+const Lab = require("../../models/Lab");
 const Transaction = require("../../models/Transaction");
 const Suspicious = require("../../models/Suspicious");
 const { AcceptablePercentage } = require("../../Constant");
@@ -239,5 +240,25 @@ router.get("/api/registration/organization/transaction", async (req, res) => {
     });
   }
 });
+
+router.post(
+  "/api/registration/checkpoint/transaction/lab",
+  async (req, res) => {
+    const { transaction_id } = req.query;
+    try {
+      const lab_response = await Lab.findOne();
+      await Transaction.findByIdAndUpdate(transaction_id, {
+        lab_id: lab_response._id,
+      });
+      res.status(200).end();
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({
+        message: "Invalid Request",
+        type: "error",
+      });
+    }
+  }
+);
 
 module.exports = router;
