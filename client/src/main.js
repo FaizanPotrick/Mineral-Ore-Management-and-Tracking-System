@@ -405,6 +405,17 @@ app.use(
             component: () => import("@/views/Registration/Transaction.vue"),
           },
           {
+            path: "registration/suspicious/:transaction_id",
+            name: "suspicious_registration",
+            meta: {
+              active: "home",
+              access: false,
+              type_of_user: ["checkpoint"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Registration/Suspicious.vue"),
+          },
+          {
             path: "approve_transaction",
             name: "approve_transaction ",
             meta: {

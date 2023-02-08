@@ -176,6 +176,9 @@ router.post("/api/registration/mine/transaction", async (req, res) => {
         });
         const suspicious_response = await Suspicious.find({
           mine_id: _id,
+          type_of_activity: {
+            $nin: ["all"],
+          },
         }).count();
         if (suspicious_response > 3) {
           await Suspicious.create({
@@ -214,11 +217,6 @@ router.get("/api/registration/checkpoint/transaction", async (req, res) => {
       await Transaction.findByIdAndUpdate(transaction_id, {
         $push: {
           checkpoints: _id,
-        },
-      });
-      await Checkpoint.findByIdAndUpdate(_id, {
-        $push: {
-          transactions: transaction_id,
         },
       });
     }
@@ -266,6 +264,33 @@ router.post(
       const lab_response = await Lab.findOne();
       await Transaction.findByIdAndUpdate(transaction_id, {
         lab_id: lab_response._id,
+      });
+      res.status(200).end();
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({
+        message: "Invalid Request",
+        type: "error",
+      });
+    }
+  }
+);
+
+router.post(
+  "/api/registration/checkpoint/transaction/suspicious",
+  async (req, res) => {
+    const { transaction_id } = req.query;
+    const { reason } = req.body;
+    const { _id } = req.cookies;
+    try {
+      const checkpoint_response = await Checkpoint.findById(_id);
+      const transaction_response = await Transaction.findById(transaction_id);
+      await Suspicious.create({
+        region_id: checkpoint_response.region_id,
+        mine_id: transaction_response.mine_id,
+        type_of_activity: "checkpoint",
+        reason: reason,
+        transaction_id: transaction_id,
       });
       res.status(200).end();
     } catch (error) {

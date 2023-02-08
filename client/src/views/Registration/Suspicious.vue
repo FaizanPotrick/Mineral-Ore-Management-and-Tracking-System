@@ -2,20 +2,24 @@
 import useAlertStore from "@/stores/Alert";
 import axios from "axios";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const { open_alert_box } = useAlertStore();
 const router = useRouter();
-const quantity = ref("");
+const route = useRoute();
+const reason = ref("");
 const loading = ref(false);
 
 const register_fn = async () => {
   loading.value = true;
   try {
-    await axios.post("/api/registration/mine/mined_batch", {
-      quantity: quantity.value,
-    });
-    quantity.value = "";
+    await axios.post(
+      `/api/registration/checkpoint/transaction/suspicious?transaction_id=${route.params.transaction_id}`,
+      {
+        reason: reason.value,
+      }
+    );
+    reason.value = "";
     router.push("/dashboard");
   } catch (err) {
     open_alert_box(err.response.data.message, err.response.data.type);
@@ -27,21 +31,20 @@ const register_fn = async () => {
 <template>
   <div class="flex justify-center items-center">
     <div
-      class="max-w-sm w-full bg-white p-10 border shadow-md rounded-2xl m-5 sm:m-10"
+      class="max-w-xl w-full bg-white p-10 border shadow-md rounded-2xl m-5 sm:m-10"
     >
       <div class="mb-4">
         <div class="font-semibold text-2xl text-yellow-700">
-          Batch Registration
+          Suspicious Registration
         </div>
-        <div class="text-gray-500 text-sm">Register a Batch</div>
+        <div class="text-gray-500 text-sm">Register a Suspicious</div>
       </div>
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
         <input
           class="w-full px-3 py-1.5 border rounded-lg focus:outline-none focus:border-yellow-600/40"
-          v-model="quantity"
+          v-model="reason"
           type="text"
-          placeholder="Quantity(in mt)"
-          pattern="[0-9]+"
+          placeholder="Reason"
           required
         />
         <button
@@ -52,7 +55,7 @@ const register_fn = async () => {
           class="w-full flex text-lg justify-center items-center bg-yellow-600 text-white px-3 py-1.5 rounded-lg shadow-md"
           :disabled="loading"
         >
-          <span v-if="!loading" class="h-6"> Create Batch </span>
+          <span v-if="!loading" class="h-6"> Submit </span>
           <span v-else>
             <svg
               class="w-6 h-6 animate-spin text-yellow-600 fill-white"

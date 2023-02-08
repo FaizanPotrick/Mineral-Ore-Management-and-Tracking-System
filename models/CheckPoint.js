@@ -9,9 +9,6 @@ const CheckPoint = new Schema({
     type: String,
     required: true,
   },
-  transactions: {
-    type: Array,
-  },
   coordinates: {
     latitude: {
       type: Number,

@@ -69,7 +69,7 @@ const downloadQRCode = async () => {
           :class="{
             'mt-6':
               transaction.is_suspicious &&
-              $cookies.get('type_of_user') === 'mine',
+              $cookies.get('type_of_user') !== 'government',
           }"
           class="bg-orange-400 font-semibold py-2 px-4 rounded-lg text-center w-full"
           :href="`http://localhost:3000/dashboard/suspicious/${transaction._id}`"

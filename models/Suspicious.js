@@ -8,7 +8,7 @@ const Suspicious = new Schema(
     },
     type_of_activity: {
       type: String,
-      enum: ["all", "transaction"],
+      enum: ["all", "transaction", "checkpoint"],
       required: true,
     },
     mine_id: {

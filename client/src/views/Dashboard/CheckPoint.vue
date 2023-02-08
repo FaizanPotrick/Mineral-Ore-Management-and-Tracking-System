@@ -49,6 +49,9 @@ onBeforeMount(() => {
               :key="log._id"
               v-for="log in logs"
               class="text-center hover:bg-yellow-100/20 cursor-pointer"
+              :class="{
+                'bg-red-100/20': log.is_suspicious,
+              }"
               @click="router.push(`/dashboard/transactions/${log._id}`)"
             >
               <td class="py-2">
@@ -66,7 +69,15 @@ onBeforeMount(() => {
               <td class="py-2 capitalize">
                 {{ log.status }}
               </td>
-              <td class="py-2">
+              <td class="flex justify-center items-center gap-2 py-2">
+                <button
+                  class="bg-yellow-400 px-2 py-1 rounded-md text-sm hover:scale-105"
+                  @click.stop="
+                    router.push(`/dashboard/registration/suspicious/${log._id}`)
+                  "
+                >
+                  Suspect
+                </button>
                 <button
                   class="bg-yellow-400 px-2 py-1 rounded-md text-sm hover:scale-105"
                   @click.stop="

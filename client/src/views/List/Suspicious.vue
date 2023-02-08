@@ -26,9 +26,7 @@ det_data();
             <tr>
               <th class="py-2">Transaction Id</th>
               <th class="py-2">Mine Id</th>
-              <th class="py-2">Region Id</th>
               <th class="py-2">Type Of activity</th>
-              <th class="py-2">Price Difference</th>
               <th class="py-2">Reason</th>
             </tr>
           </thead>
@@ -47,14 +45,10 @@ det_data();
                 {{ transaction.transaction_id }}
               </td>
               <td class="py-2">{{ transaction.mine_id }}</td>
-              <td class="py-2">{{ transaction.region_id }}</td>
               <td class="py-2 capitalize">
                 {{ transaction.type_of_activity }}
               </td>
-              <td class="py-2">
-                {{ Math.round(transaction.price_difference) }}%
-              </td>
-              <td class="py-2">
+              <td class="py-2 capitalize">
                 {{ transaction.reason }}
               </td>
             </tr>
