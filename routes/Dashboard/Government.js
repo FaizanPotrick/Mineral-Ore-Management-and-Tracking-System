@@ -535,8 +535,58 @@ router.get("/api/dashboard/government/district", async (req, res) => {
       },
     },
     {
+      $lookup: {
+        from: "transactions",
+        pipeline: [
+          {
+            $match: {
+              mine_id: {
+                $in: mine_ids,
+              },
+            },
+          },
+        ],
+        as: "transactions",
+      },
+    },
+    {
+      $lookup: {
+        from: "suspicious",
+        pipeline: [
+          {
+            $match: {
+              mine_id: {
+                $in: mine_ids,
+              },
+            },
+          },
+        ],
+        as: "suspicious",
+      },
+    },
+    {
+      $addFields: {
+        total_transactions: { $size: "$transactions" },
+        total_suspicious_transactions: {
+          $size: {
+            $filter: {
+              input: "$transactions",
+              as: "transaction",
+              cond: { $eq: ["$$transaction.is_suspicious", true] },
+            },
+          },
+        },
+      },
+    },
+    {
       $project: {
         _id: 0,
+        fine_high: 1,
+        fine_medium: 1,
+        fine_low: 1,
+        lump_high: 1,
+        lump_medium: 1,
+        lump_low: 1,
         title: "district",
         cards: [
           {
@@ -574,6 +624,22 @@ router.get("/api/dashboard/government/district", async (req, res) => {
             value: {
               fine: { $ceil: { $avg: "$fine_low.price" } },
               lump: { $ceil: { $avg: "$lump_low.price" } },
+            },
+          },
+          {
+            title: "Total Suspicious Activities",
+            value: {
+              $size: "$suspicious",
+            },
+          },
+          {
+            title: "Suspicious Transactions",
+            value: {
+              $concat: [
+                { $toString: "$total_suspicious_transactions" },
+                " / ",
+                { $toString: "$total_transactions" },
+              ],
             },
           },
         ],

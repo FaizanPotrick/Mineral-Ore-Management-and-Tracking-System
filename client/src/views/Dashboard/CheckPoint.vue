@@ -41,7 +41,10 @@ onBeforeMount(() => {
               <th class="py-2">Type of Ore</th>
               <th class="py-2">Quantity</th>
               <th class="py-2">Status</th>
-              <th class="py-2"></th>
+              <th
+                class="py-2"
+                v-if="$cookies.get('type_of_user') === 'checkpoint'"
+              ></th>
             </tr>
           </thead>
           <tbody class="whitespace-nowrap">
@@ -69,7 +72,10 @@ onBeforeMount(() => {
               <td class="py-2 capitalize">
                 {{ log.status }}
               </td>
-              <td class="flex justify-center items-center gap-2 py-2">
+              <td
+                class="flex justify-center items-center gap-2 py-2"
+                v-if="$cookies.get('type_of_user') === 'checkpoint'"
+              >
                 <button
                   class="bg-yellow-400 px-2 py-1 rounded-md text-sm hover:scale-105"
                   @click.stop="

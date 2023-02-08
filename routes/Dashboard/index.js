@@ -201,8 +201,36 @@ router.get("/api/dashboard/mine", async (req, res) => {
       },
     },
     {
+      $lookup: {
+        from: "suspicious",
+        localField: "mine_id",
+        foreignField: "mine_id",
+        as: "suspicious",
+      },
+    },
+    {
+      $addFields: {
+        total_transactions: { $size: "$transactions" },
+        total_suspicious_transactions: {
+          $size: {
+            $filter: {
+              input: "$transactions",
+              as: "transaction",
+              cond: { $eq: ["$$transaction.is_suspicious", true] },
+            },
+          },
+        },
+      },
+    },
+    {
       $project: {
         _id: 0,
+        fine_high: 1,
+        fine_medium: 1,
+        fine_low: 1,
+        lump_high: 1,
+        lump_medium: 1,
+        lump_low: 1,
         title: "$mine_name",
         cards: [
           {
@@ -247,15 +275,19 @@ router.get("/api/dashboard/mine", async (req, res) => {
             value: "$rom",
           },
           {
-            title: "Suspicious Activity",
+            title: "Total Suspicious Activities",
             value: {
-              $size: {
-                $filter: {
-                  input: "$transactions",
-                  as: "transaction",
-                  cond: { $eq: ["$$transaction.is_suspicious", true] },
-                },
-              },
+              $size: "$suspicious",
+            },
+          },
+          {
+            title: "Suspicious Transactions",
+            value: {
+              $concat: [
+                { $toString: "$total_suspicious_transactions" },
+                " / ",
+                { $toString: "$total_transactions" },
+              ],
             },
           },
         ],
@@ -270,15 +302,21 @@ router.get("/api/dashboard/checkpoint", async (req, res) => {
   if (req.query.checkpoint_id) {
     _id = req.query.checkpoint_id;
   }
-  const checkpoint_response = await CheckPoint.findById(_id).lean();
-  const transaction_response = await Transaction.find({
-    _id: checkpoint_response.transactions,
-  })
-    .sort({
-      updatedAt: -1,
-    })
-    .lean();
-  res.json(transaction_response);
+  const response = await Transaction.aggregate([
+    {
+      $match: {
+        checkpoints: {
+          $in: [_id],
+        },
+      },
+    },
+    {
+      $sort: {
+        updatedAt: -1,
+      },
+    },
+  ]);
+  res.json(response);
 });
 
 router.get("/api/dashboard/lab", async (req, res) => {
