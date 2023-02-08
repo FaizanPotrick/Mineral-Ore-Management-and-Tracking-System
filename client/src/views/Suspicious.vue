@@ -5,7 +5,7 @@ import { ref } from "vue";
 import moment from "moment";
 
 const route = useRoute();
-const suspicious = ref([]);
+const suspicious = ref([[]]);
 
 const get_suspicious = async () => {
   const { data } = await axios.get(
@@ -25,61 +25,57 @@ get_suspicious();
       <div class="font-semibold text-2xl text-yellow-700 w-full text-center">
         Suspicious
       </div>
+      <table class="mt-5 text-gray-900">
+        <tr>
+          <td class="pr-6 py-1 font-bold whitespace-nowrap">Transaction Id:</td>
+          <td class="py-1">
+            {{ suspicious[0].transaction_id && suspicious[1].transaction_id }}
+          </td>
+        </tr>
+        <tr>
+          <td class="pr-6 py-1 font-bold whitespace-nowrap">Mine Id:</td>
+          <td class="py-1">
+            {{ suspicious[0].mine_id && suspicious[1].mine_id }}
+          </td>
+        </tr>
+        <tr>
+          <td class="pr-6 py-1 font-bold whitespace-nowrap">Region Id:</td>
+          <td class="py-1">
+            {{ suspicious[0].region_id && suspicious[1].region_id }}
+          </td>
+        </tr>
+      </table>
       <table
         :key="sus._id"
         v-for="sus in suspicious"
-        class="my-5 min-w-full text-gray-900"
+        class="mt-5 text-gray-900"
       >
-        <tbody>
-          <tr>
-            <td class="mr-6 py-1 font-bold whitespace-nowrap">
-              Transaction Id:
-            </td>
-            <td class="py-1">
-              {{ sus.transaction_id }}
-            </td>
-          </tr>
-          <tr>
-            <td class="mr-6 py-1 font-bold whitespace-nowrap">Mine Id:</td>
-            <td class="py-1">
-              {{ sus.mine_id }}
-            </td>
-          </tr>
-          <tr>
-            <td class="mr-6 py-1 font-bold whitespace-nowrap">Region Id:</td>
-            <td class="py-1">
-              {{ sus.region_id }}
-            </td>
-          </tr>
-          <tr>
-            <td class="mr-6 py-1 font-bold whitespace-nowrap">
-              Type of Activity:
-            </td>
-            <td class="py-1 capitalize">
-              {{ sus.type_of_activity }}
-            </td>
-          </tr>
-          <tr>
-            <td class="mr-6 py-1 font-bold whitespace-nowrap">
-              Price Difference:
-            </td>
-            <td class="py-1">
-              {{ sus.price_difference }}
-            </td>
-          </tr>
-          <tr>
-            <td class="mr-6 py-1 font-bold whitespace-nowrap">Reason:</td>
-            <td class="py-1 capitalize">
-              {{ sus.reason }}
-            </td>
-          </tr>
-          <tr>
-            <td class="mr-6 py-1 font-bold whitespace-nowrap">Timestamp:</td>
-            <td class="py-1">
-              {{ moment(sus.createdAt).format("DD/MM/YYYY hh:mm A") }}
-            </td>
-          </tr>
-        </tbody>
+        <tr>
+          <td class="pr-6 py-1 font-bold whitespace-nowrap">
+            Type of Activity:
+          </td>
+          <td class="py-1 capitalize">
+            {{ sus.type_of_activity }}
+          </td>
+        </tr>
+        <tr v-if="sus.price_difference">
+          <td class="pr-6 py-1 font-bold whitespace-nowrap">
+            Price Difference:
+          </td>
+          <td class="py-1">{{ Math.round(sus.price_difference) }}%</td>
+        </tr>
+        <tr class="align-top">
+          <td class="pr-6 py-1 font-bold whitespace-nowrap">Reason:</td>
+          <td class="py-1 capitalize">
+            {{ sus.reason }}
+          </td>
+        </tr>
+        <tr>
+          <td class="pr-6 py-1 font-bold whitespace-nowrap">Timestamp:</td>
+          <td class="py-1 whitespace-nowrap">
+            {{ moment(sus.createdAt).format("DD/MM/YYYY hh:mm A") }}
+          </td>
+        </tr>
       </table>
     </div>
   </div>
