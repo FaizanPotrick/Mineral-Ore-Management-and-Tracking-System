@@ -218,6 +218,19 @@ router.get("/api/government/suspicious", async (req, res) => {
   res.json(response);
 });
 
+router.get("/api/transaction/suspicious", async (req, res) => {
+  const { transaction_id } = req.query;
+  const response = await Suspicious.find({
+    transaction_id: transaction_id,
+  })
+    .sort({ updatedAt: -1 })
+    .lean();
+  if (response.length === 0) {
+    res.status(404).send("No Suspicious Found");
+  }
+  res.json(response);
+});
+
 router.get("/api/region/country", async (req, res) => {
   const region_response = await Region.find({
     type_of_region: "state",

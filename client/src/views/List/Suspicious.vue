@@ -1,12 +1,13 @@
 <script setup>
+import { useRouter } from "vue-router";
 import axios from "axios";
 import { ref } from "vue";
 
+const router = useRouter();
 const suspicious = ref([]);
 
 const det_data = async () => {
   const { data } = await axios.get("/api/government/suspicious");
-  console.log(data);
   suspicious.value = data;
 };
 
@@ -35,7 +36,12 @@ det_data();
             <tr
               :key="transaction._id"
               v-for="transaction in suspicious"
-              class="text-center"
+              class="text-center hover:bg-red-100/20 cursor-pointer"
+              @click="
+                router.push(
+                  `/dashboard/suspicious/${transaction.transaction_id}`
+                )
+              "
             >
               <td class="py-2">
                 {{ transaction.transaction_id }}

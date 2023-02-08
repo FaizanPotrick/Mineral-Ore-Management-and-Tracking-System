@@ -281,6 +281,24 @@ app.use(
             component: () => import("@/views/List/Suspicious.vue"),
           },
           {
+            path: "suspicious/:transaction_id",
+            name: "suspicious_transaction",
+            meta: {
+              active: "transactions",
+              access: false,
+              type_of_user: [
+                "government",
+                "organization",
+                "mine",
+                "checkpoint",
+                "lab",
+              ],
+              type_of_region: ["country", "state", "district"],
+            },
+            beforeEnter: [Authentication, PageAccess],
+            component: () => import("@/views/Suspicious.vue"),
+          },
+          {
             path: "registration/government",
             name: "officer_registration",
             meta: {

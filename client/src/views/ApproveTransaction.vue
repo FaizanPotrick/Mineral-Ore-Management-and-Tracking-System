@@ -127,6 +127,14 @@ const register_fn = async () => {
               {{ transaction.status }}
             </td>
           </tr>
+          <tr v-if="transaction.is_suspicious">
+            <a
+              class="bg-orange-400 font-semibold py-2 px-4 rounded-lg text-center w-full"
+              :href="`http://localhost:3000/dashboard/suspicious/${transaction._id}`"
+              target="_blank"
+              >Suspicious Details</a
+            >
+          </tr>
         </tbody>
       </table>
       <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
