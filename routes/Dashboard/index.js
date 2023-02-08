@@ -81,6 +81,7 @@ router.get("/api/dashboard/mine", async (req, res) => {
               mine_id: _id,
               type_of_ore: "fine",
               grade: "high",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -100,6 +101,7 @@ router.get("/api/dashboard/mine", async (req, res) => {
               mine_id: _id,
               type_of_ore: "fine",
               grade: "medium",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -119,6 +121,7 @@ router.get("/api/dashboard/mine", async (req, res) => {
               mine_id: _id,
               type_of_ore: "fine",
               grade: "low",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -138,6 +141,7 @@ router.get("/api/dashboard/mine", async (req, res) => {
               mine_id: _id,
               type_of_ore: "lump",
               grade: "high",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -157,6 +161,7 @@ router.get("/api/dashboard/mine", async (req, res) => {
               mine_id: _id,
               type_of_ore: "lump",
               grade: "medium",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -176,6 +181,7 @@ router.get("/api/dashboard/mine", async (req, res) => {
               mine_id: _id,
               type_of_ore: "lump",
               grade: "low",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -184,6 +190,14 @@ router.get("/api/dashboard/mine", async (req, res) => {
           },
         ],
         as: "lump_low",
+      },
+    },
+    {
+      $lookup: {
+        from: "transactions",
+        localField: "mine_id",
+        foreignField: "mine_id",
+        as: "transactions",
       },
     },
     {
@@ -210,27 +224,39 @@ router.get("/api/dashboard/mine", async (req, res) => {
           {
             title: "Average High Ores Price",
             value: {
-              fine: { $avg: "$fine_high.price" },
-              lump: { $avg: "$lump_high.price" },
+              fine: { $ceil: { $avg: "$fine_high.price" } },
+              lump: { $ceil: { $avg: "$lump_high.price" } },
             },
           },
           {
             title: "Average Medium Ores Price",
             value: {
-              fine: { $avg: "$fine_medium.price" },
-              lump: { $avg: "$lump_medium.price" },
+              fine: { $ceil: { $avg: "$fine_medium.price" } },
+              lump: { $ceil: { $avg: "$lump_medium.price" } },
             },
           },
           {
             title: "Average Low Ores Price",
             value: {
-              fine: { $avg: "$fine_low.price" },
-              lump: { $avg: "$lump_low.price" },
+              fine: { $ceil: { $avg: "$fine_low.price" } },
+              lump: { $ceil: { $avg: "$lump_low.price" } },
             },
           },
           {
             title: "Total ROM",
             value: "$rom",
+          },
+          {
+            title: "Suspicious Activity",
+            value: {
+              $size: {
+                $filter: {
+                  input: "$transactions",
+                  as: "transaction",
+                  cond: { $eq: ["$$transaction.is_suspicious", true] },
+                },
+              },
+            },
           },
         ],
       },

@@ -56,13 +56,27 @@ const downloadQRCode = async () => {
           id="qr_code"
         />
       </div>
-      <button
-        v-if="$cookies.get('type_of_user') === 'government'"
-        class="bg-orange-400 font-semibold py-2 px-4 rounded-lg text-center w-full"
-        @click="downloadQRCode"
-      >
-        Download QR Code
-      </button>
+      <div class="flex justify-between items-center gap-4">
+        <button
+          v-if="$cookies.get('type_of_user') === 'government'"
+          class="bg-orange-400 font-semibold py-2 px-4 rounded-lg text-center w-full"
+          @click="downloadQRCode"
+        >
+          Download QR Code
+        </button>
+        <a
+          v-if="transaction.is_suspicious"
+          :class="{
+            'mt-6':
+              transaction.is_suspicious &&
+              $cookies.get('type_of_user') === 'mine',
+          }"
+          class="bg-orange-400 font-semibold py-2 px-4 rounded-lg text-center w-full"
+          :href="`http://localhost:3000/dashboard/suspicious/${transaction._id}`"
+          target="_blank"
+          >Suspicious Details</a
+        >
+      </div>
       <table class="my-5 min-w-full text-gray-900">
         <tbody>
           <tr>

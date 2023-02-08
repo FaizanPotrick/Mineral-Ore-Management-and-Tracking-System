@@ -41,7 +41,7 @@ const Transaction = new Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "dispatched", "delivered", "holding"],
+      enum: ["pending", "dispatched", "delivered"],
       default: "pending",
       required: true,
     },
@@ -58,6 +58,11 @@ const Transaction = new Schema(
     },
     vehicle_no: {
       type: String,
+      required: true,
+    },
+    is_suspicious: {
+      type: Boolean,
+      default: false,
       required: true,
     },
   },

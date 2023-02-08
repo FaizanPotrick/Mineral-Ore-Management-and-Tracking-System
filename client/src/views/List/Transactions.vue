@@ -45,6 +45,9 @@ get_data();
             <tr
               :key="transaction._id"
               v-for="transaction in transactions"
+              :class="{
+                'bg-red-100/20': transaction.is_suspicious,
+              }"
               class="text-center hover:bg-yellow-100/20 cursor-pointer"
               @click="
                 router.push(

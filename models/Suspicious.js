@@ -8,7 +8,7 @@ const Suspicious = new Schema(
     },
     type_of_activity: {
       type: String,
-      enum: ["transaction"],
+      enum: ["all", "transaction"],
       required: true,
     },
     mine_id: {
@@ -21,11 +21,9 @@ const Suspicious = new Schema(
     },
     price_difference: {
       type: Number,
-      required: true,
     },
     transaction_id: {
       type: String,
-      required: true,
     },
   },
   {

@@ -41,17 +41,79 @@ router.post("/api/registration/mine/transaction", async (req, res) => {
     ]);
     if (
       warehouse_response.length !== 0 &&
-      warehouse_response[0].grade <= parseInt(quantity)
+      warehouse_response[0].grade < parseInt(quantity)
     ) {
       return res.status(400).json({
         message: "Not enough ore in the warehouse",
         type: "warning",
       });
     }
+    const region_response = await Region.findById(mine_response.region_id);
+    const mine_average_price_response = await Transaction.aggregate([
+      {
+        $match: {
+          mine_id: _id,
+          type_of_ore: type_of_ore,
+          grade: grade,
+          is_suspicious: false,
+          createdAt: {
+            $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+            $lt: new Date(),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: 0,
+          price: {
+            $avg: "$price",
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          price: { $ceil: "$price" },
+        },
+      },
+    ]);
+    const mine_response_ids = await Mine.find({
+      region_id: region_response._id,
+    }).distinct("_id");
+    const mine_ids = mine_response_ids.map((mine) => mine._id.toString());
+    const region_average_price_response = await Transaction.aggregate([
+      {
+        $match: {
+          mine_id: {
+            $in: mine_ids,
+          },
+          type_of_ore: type_of_ore,
+          grade: grade,
+          is_suspicious: false,
+          createdAt: {
+            $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+            $lt: new Date(),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: 0,
+          price: {
+            $avg: "$price",
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          price: { $ceil: "$price" },
+        },
+      },
+    ]);
     const organization_response = await Organization.findById(organization_id)
       .select(["ceo_id"])
       .lean();
-    const region_response = await Region.findById(mine_response.region_id);
     const transaction_response = await Transaction.create({
       mine_id: _id,
       manager_id: mine_response.manager_id,
@@ -87,65 +149,6 @@ router.post("/api/registration/mine/transaction", async (req, res) => {
         },
       }
     );
-    const mine_average_price_response = await Transaction.aggregate([
-      {
-        $match: {
-          mine_id: _id,
-          type_of_ore: type_of_ore,
-          grade: grade,
-          createdAt: {
-            $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
-            $lt: new Date(),
-          },
-        },
-      },
-      {
-        $group: {
-          _id: 0,
-          price: {
-            $avg: "$price",
-          },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-        },
-      },
-    ]);
-    const mine_response_ids = await Mine.find({
-      region_id: region_response._id,
-    }).distinct("_id");
-    const mine_ids = mine_response_ids.map((mine) => mine._id.toString());
-    const region_average_price_response = await Transaction.aggregate([
-      {
-        $match: {
-          mine_id: {
-            $in: mine_ids,
-          },
-          type_of_ore: type_of_ore,
-          grade: grade,
-          createdAt: {
-            $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
-            $lt: new Date(),
-          },
-        },
-      },
-      {
-        $group: {
-          _id: 0,
-          price: {
-            $avg: "$price",
-          },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-        },
-      },
-    ]);
-    const acceptable_difference = AcceptablePercentage;
     if (
       mine_average_price_response.length !== 0 &&
       region_average_price_response.length !== 0
@@ -157,17 +160,31 @@ router.post("/api/registration/mine/transaction", async (req, res) => {
         100 - (parseInt(price) * 100) / region_average_price_response[0].price
       );
       if (
-        mine_actual_difference > acceptable_difference &&
-        region_actual_difference > acceptable_difference
+        mine_actual_difference > AcceptablePercentage &&
+        region_actual_difference > AcceptablePercentage
       ) {
         await Suspicious.create({
           region_id: region_response._id,
           mine_id: _id,
           type_of_activity: "transaction",
-          reason: `price difference by more then ${acceptable_difference} % wrt mine average price`,
+          reason: `price difference by more then ${AcceptablePercentage}% wrt mine average price`,
           price_difference: mine_actual_difference,
           transaction_id: transaction_response._id,
         });
+        await Transaction.findByIdAndUpdate(transaction_response._id, {
+          is_suspicious: true,
+        });
+        const suspicious_response = await Suspicious.find({
+          mine_id: _id,
+        }).count();
+        if (suspicious_response > 3) {
+          await Suspicious.create({
+            region_id: region_response._id,
+            mine_id: _id,
+            type_of_activity: "all",
+            reason: `Suspicious found more then ${suspicious_response} times`,
+          });
+        }
       }
     }
     res.status(200).end();
