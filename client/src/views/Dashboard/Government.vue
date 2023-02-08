@@ -98,16 +98,58 @@ onBeforeMount(() => {
       </ol-tile-layer>
       <ol-zoom-control />
       <ol-overlay
-        v-for="marker of markers"
+        v-for="marker of markers.mines"
         :key="marker._id"
         :position="marker.coordinates"
       >
         <img
-          src="@/assets/marker.png"
+          src="@/assets/mine.png"
           class="h-8 w-8 cursor-pointer"
           alt="marker"
           @click="router.push(`/dashboard/mines/${marker._id}`)"
         />
+      </ol-overlay>
+      <ol-overlay
+        v-for="marker of markers.check_points"
+        :key="marker._id"
+        :position="marker.coordinates"
+      >
+        <img
+          src="@/assets/checkpoint.png"
+          class="h-8 w-8 cursor-pointer"
+          alt="marker"
+          @click="router.push(`/dashboard/checkpoints/${marker._id}`)"
+        />
+      </ol-overlay>
+      <ol-overlay
+        v-for="marker of markers.labs"
+        :key="marker._id"
+        :position="marker.coordinates"
+      >
+        <img
+          src="@/assets/lab.png"
+          class="h-8 w-8 cursor-pointer"
+          alt="marker"
+          @click="router.push(`/dashboard/labs/${marker._id}`)"
+        />
+      </ol-overlay>
+      <ol-overlay
+        v-if="
+          $cookies.get('type_of_region') !== 'district' &&
+          $cookies.get('type_of_region')
+        "
+        v-for="marker of markers.officers"
+        :key="marker._id"
+        :position="marker.coordinates"
+      >
+        <a
+          :href="`/dashboard/governments/${marker.type_of_region}/${marker._id}`"
+        >
+          <img
+            src="@/assets/officer.png"
+            class="h-8 w-8 cursor-pointer"
+            alt="marker"
+        /></a>
       </ol-overlay>
     </ol-map>
   </div>

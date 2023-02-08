@@ -106,15 +106,57 @@ router.get("/api/dashboard/government/country", async (req, res) => {
           },
         ],
         markers: {
-          $map: {
-            input: "$mines",
-            as: "mine",
-            in: {
-              _id: "$$mine._id",
-              coordinates: [
-                "$$mine.coordinates.longitude",
-                "$$mine.coordinates.latitude",
-              ],
+          mines: {
+            $map: {
+              input: "$mines",
+              as: "mine",
+              in: {
+                _id: "$$mine._id",
+                coordinates: [
+                  "$$mine.coordinates.longitude",
+                  "$$mine.coordinates.latitude",
+                ],
+              },
+            },
+          },
+          check_points: {
+            $map: {
+              input: "$check points",
+              as: "check_point",
+              in: {
+                _id: "$$check_point._id",
+                coordinates: [
+                  "$$check_point.coordinates.longitude",
+                  "$$check_point.coordinates.latitude",
+                ],
+              },
+            },
+          },
+          labs: {
+            $map: {
+              input: "$labs",
+              as: "lab",
+              in: {
+                _id: "$$lab._id",
+                coordinates: [
+                  "$$lab.coordinates.longitude",
+                  "$$lab.coordinates.latitude",
+                ],
+              },
+            },
+          },
+          officers: {
+            $map: {
+              input: "$officers",
+              as: "officer",
+              in: {
+                _id: "$$officer._id",
+                type_of_region: "$$officer.type_of_region",
+                coordinates: [
+                  "$$officer.coordinates.longitude",
+                  "$$officer.coordinates.latitude",
+                ],
+              },
             },
           },
         },
@@ -236,15 +278,57 @@ router.get("/api/dashboard/government/state", async (req, res) => {
           },
         ],
         markers: {
-          $map: {
-            input: "$mines",
-            as: "mine",
-            in: {
-              _id: "$$mine._id",
-              coordinates: [
-                "$$mine.coordinates.longitude",
-                "$$mine.coordinates.latitude",
-              ],
+          mines: {
+            $map: {
+              input: "$mines",
+              as: "mine",
+              in: {
+                _id: "$$mine._id",
+                coordinates: [
+                  "$$mine.coordinates.longitude",
+                  "$$mine.coordinates.latitude",
+                ],
+              },
+            },
+          },
+          check_points: {
+            $map: {
+              input: "$check points",
+              as: "check_point",
+              in: {
+                _id: "$$check_point._id",
+                coordinates: [
+                  "$$check_point.coordinates.longitude",
+                  "$$check_point.coordinates.latitude",
+                ],
+              },
+            },
+          },
+          labs: {
+            $map: {
+              input: "$labs",
+              as: "lab",
+              in: {
+                _id: "$$lab._id",
+                coordinates: [
+                  "$$lab.coordinates.longitude",
+                  "$$lab.coordinates.latitude",
+                ],
+              },
+            },
+          },
+          officers: {
+            $map: {
+              input: "$states",
+              as: "officer",
+              in: {
+                _id: "$$officer._id",
+                type_of_region: "$$officer.type_of_region",
+                coordinates: [
+                  "$$officer.coordinates.longitude",
+                  "$$officer.coordinates.latitude",
+                ],
+              },
             },
           },
         },
@@ -329,6 +413,7 @@ router.get("/api/dashboard/government/district", async (req, res) => {
               },
               type_of_ore: "fine",
               grade: "high",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -350,6 +435,7 @@ router.get("/api/dashboard/government/district", async (req, res) => {
               },
               type_of_ore: "fine",
               grade: "medium",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -371,6 +457,7 @@ router.get("/api/dashboard/government/district", async (req, res) => {
               },
               type_of_ore: "fine",
               grade: "low",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -392,6 +479,7 @@ router.get("/api/dashboard/government/district", async (req, res) => {
               },
               type_of_ore: "lump",
               grade: "high",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -413,6 +501,7 @@ router.get("/api/dashboard/government/district", async (req, res) => {
               },
               type_of_ore: "lump",
               grade: "medium",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -434,6 +523,7 @@ router.get("/api/dashboard/government/district", async (req, res) => {
               },
               type_of_ore: "lump",
               grade: "low",
+              is_suspicious: false,
               createdAt: {
                 $gte: new Date(new Date().setDate(new Date().getDate() - 30)),
                 $lte: new Date(),
@@ -468,35 +558,63 @@ router.get("/api/dashboard/government/district", async (req, res) => {
           {
             title: "Average High Region Price",
             value: {
-              fine: { $avg: "$fine_high.price" },
-              lump: { $avg: "$lump_high.price" },
+              fine: { $ceil: { $avg: "$fine_high.price" } },
+              lump: { $ceil: { $avg: "$lump_high.price" } },
             },
           },
           {
             title: "Average Medium Region Price",
             value: {
-              fine: { $avg: "$fine_medium.price" },
-              lump: { $avg: "$lump_medium.price" },
+              fine: { $ceil: { $avg: "$fine_medium.price" } },
+              lump: { $ceil: { $avg: "$lump_medium.price" } },
             },
           },
           {
             title: "Average Low Region Price",
             value: {
-              fine: { $avg: "$fine_low.price" },
-              lump: { $avg: "$lump_low.price" },
+              fine: { $ceil: { $avg: "$fine_low.price" } },
+              lump: { $ceil: { $avg: "$lump_low.price" } },
             },
           },
         ],
         markers: {
-          $map: {
-            input: "$mines",
-            as: "mine",
-            in: {
-              _id: "$$mine._id",
-              coordinates: [
-                "$$mine.coordinates.longitude",
-                "$$mine.coordinates.latitude",
-              ],
+          mines: {
+            $map: {
+              input: "$mines",
+              as: "mine",
+              in: {
+                _id: "$$mine._id",
+                coordinates: [
+                  "$$mine.coordinates.longitude",
+                  "$$mine.coordinates.latitude",
+                ],
+              },
+            },
+          },
+          check_points: {
+            $map: {
+              input: "$check points",
+              as: "check_point",
+              in: {
+                _id: "$$check_point._id",
+                coordinates: [
+                  "$$check_point.coordinates.longitude",
+                  "$$check_point.coordinates.latitude",
+                ],
+              },
+            },
+          },
+          labs: {
+            $map: {
+              input: "$labs",
+              as: "lab",
+              in: {
+                _id: "$$lab._id",
+                coordinates: [
+                  "$$lab.coordinates.longitude",
+                  "$$lab.coordinates.latitude",
+                ],
+              },
             },
           },
         },
