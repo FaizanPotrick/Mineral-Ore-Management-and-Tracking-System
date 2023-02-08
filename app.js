@@ -8,6 +8,8 @@ const cookieParser = require("cookie-parser");
 const fileupload = require("express-fileupload");
 const session = require("express-session");
 
+const Image = require("./models/Image");
+
 const app = express();
 
 try {
@@ -66,6 +68,19 @@ app.get("/api/logout", async (req, res) => {
     .clearCookie("_id")
     .status(200)
     .end();
+});
+app.get("/api/mine/tested_mined_batch/image/:batch_id", async (req, res) => {
+  const { batch_id } = req.params;
+  if (!batch_id) {
+    return res.status(400).send("No batch id provided");
+  }
+  const image_response = await Image.findOne({
+    batch_id: batch_id,
+  });
+  if (image_response === null) {
+    return res.status(404).send("No image found");
+  }
+  res.contentType(image_response.contentType).send(image_response.data);
 });
 app.use(require("./routes/User"));
 app.use(require("./routes/Registration"));

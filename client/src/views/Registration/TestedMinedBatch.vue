@@ -11,21 +11,30 @@ const tested_mined_batch = ref({
   fe_percentage: "",
   quantity: "",
   waste: "",
+  sample_image: {},
 });
 const loading = ref(false);
 
+const store_image = (event) => {
+  tested_mined_batch.value.sample_image = event.target.files[0];
+};
+
 const register_fn = async () => {
   loading.value = true;
+  const formData = new FormData();
+  formData.append("type_of_ore", tested_mined_batch.value.type_of_ore);
+  formData.append("fe_percentage", tested_mined_batch.value.fe_percentage);
+  formData.append("quantity", tested_mined_batch.value.quantity);
+  formData.append("waste", tested_mined_batch.value.waste);
+  formData.append("sample_image", tested_mined_batch.value.sample_image);
   try {
-    await axios.post(
-      "/api/registration/mine/tested_mined_batch",
-      tested_mined_batch.value
-    );
+    await axios.post("/api/registration/mine/tested_mined_batch", formData);
     tested_mined_batch.value = {
       type_of_ore: "",
       fe_percentage: "",
       quantity: "",
       waste: "",
+      sample_image: {},
     };
     router.push("/dashboard/tested_mined_batches");
   } catch (err) {
@@ -47,8 +56,12 @@ const register_fn = async () => {
         </div>
         <div class="text-gray-500 text-sm">Testing a Batch</div>
       </div>
-      <form class="space-y-5 drop-shadow-md" @submit.prevent="register_fn()">
-        <div class="grid gap-6 mb-6 sm:grid-cols-2">
+      <form
+        class="space-y-5 drop-shadow-md"
+        @submit.prevent="register_fn()"
+        enctype="multipart/form-data"
+      >
+        <div class="grid gap-6 sm:grid-cols-2">
           <select
             class="w-full px-3 py-1.5 border rounded-lg focus:outline-none focus:border-yellow-600/40"
             v-model="tested_mined_batch.type_of_ore"
@@ -84,6 +97,16 @@ const register_fn = async () => {
             required
           />
         </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700">Sample Image</label>
+          <input
+            class="w-full border rounded-lg focus:outline-none focus:border-yellow-600/40"
+            @change="store_image"
+            type="file"
+            accept="image/*"
+            required
+          />
+        </div>
         <button
           type="submit"
           :class="{
@@ -114,3 +137,10 @@ const register_fn = async () => {
     </div>
   </div>
 </template>
+
+<style>
+input[type="file"]::-webkit-file-upload-button,
+input[type="file"]::file-selector-button {
+  @apply bg-yellow-600 text-white font-medium border-0 py-1.5 px-4 mr-2.5;
+}
+</style>

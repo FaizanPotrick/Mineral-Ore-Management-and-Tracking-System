@@ -5,6 +5,7 @@ const Mine = require("../../models/Mine");
 const Warehouse = require("../../models/Warehouse");
 const MinedBatch = require("../../models/MinedBatch");
 const TestedMinedBatch = require("../../models/TestedMinedBatch");
+const Image = require("../../models/Image");
 const { Grade } = require("../../Constant");
 
 const router = express.Router();
@@ -37,6 +38,7 @@ router.post("/api/registration/mine/mined_batch", async (req, res) => {
 router.post("/api/registration/mine/tested_mined_batch", async (req, res) => {
   const { _id } = req.cookies;
   const { type_of_ore, fe_percentage, quantity, waste } = req.body;
+  const { sample_image } = req.files;
   const grade =
     parseInt(fe_percentage) >= Grade.high
       ? "high"
@@ -53,28 +55,35 @@ router.post("/api/registration/mine/tested_mined_batch", async (req, res) => {
       type: "warning",
     });
   }
+  const batch_response = new TestedMinedBatch({
+    mine_id: _id,
+    manager_id: mine_response.manager_id,
+    type_of_ore: type_of_ore,
+    fe_percentage: parseInt(fe_percentage),
+    grade: grade,
+    quantity: parseInt(quantity),
+    waste: parseInt(waste),
+    batch_hash: bcrypt.hashSync(
+      JSON.stringify({
+        mine_id: _id,
+        manager_id: mine_response.manager_id,
+        type_of_ore: type_of_ore,
+        fe_percentage: parseInt(fe_percentage),
+        grade: grade,
+        quantity: parseInt(quantity),
+        waste: parseInt(waste),
+      }),
+      10
+    ),
+  });
+  const image_response = new Image({
+    batch_id: batch_response._id,
+    data: sample_image.data,
+    contentType: sample_image.mimetype,
+  });
   try {
-    await TestedMinedBatch.create({
-      mine_id: _id,
-      manager_id: mine_response.manager_id,
-      type_of_ore: type_of_ore,
-      fe_percentage: parseInt(fe_percentage),
-      grade: grade,
-      quantity: parseInt(quantity),
-      waste: parseInt(waste),
-      batch_hash: bcrypt.hashSync(
-        JSON.stringify({
-          mine_id: _id,
-          manager_id: mine_response.manager_id,
-          type_of_ore: type_of_ore,
-          fe_percentage: parseInt(fe_percentage),
-          grade: grade,
-          quantity: parseInt(quantity),
-          waste: parseInt(waste),
-        }),
-        10
-      ),
-    });
+    await Promise.all([batch_response.validate(), image_response.validate()]);
+    await Promise.all([batch_response.save(), image_response.save()]);
     await Mine.findByIdAndUpdate(_id, {
       $inc: {
         rom: -(parseInt(quantity) + parseInt(waste)),
