@@ -8,6 +8,8 @@ const route = useRoute();
 const title = ref("");
 const cards = ref([]);
 const markers = ref([]);
+const fine = ref([]);
+const lump = ref([]);
 
 const dashboard = async () => {
   const { data } = await axios.get(
@@ -21,12 +23,22 @@ const dashboard = async () => {
   title.value = data.title;
   cards.value = data.cards;
   markers.value = data.markers;
+  fine.value = [data.fine_high, data.fine_medium, data.fine_low];
+  lump.value = [data.lump_high, data.lump_medium, data.lump_low];
 };
 
 dashboard();
 onBeforeMount(() => {
   dashboard();
 });
+
+const ApexOptions = {
+  chart: {
+    toolbar: {
+      show: false,
+    },
+  },
+};
 </script>
 
 <template>
@@ -91,7 +103,61 @@ onBeforeMount(() => {
         </div>
       </div>
     </div>
-    <ol-map style="height: 40vh; width: 92vw" class="my-2">
+    <div
+      v-if="
+        $cookies.get('type_of_region') === 'district' ||
+        route.params.region_type !== undefined
+      "
+      class="flex gap-6"
+    >
+      <div
+        class="bg-white p-4 text-center rounded-xl w-full max-w-xl drop-shadow-md text-2xl"
+      >
+        Fine Transaction Overview
+        <apexchart
+          type="line"
+          :options="ApexOptions"
+          :series="[
+            {
+              name: 'High',
+              data: fine[0],
+            },
+            {
+              name: 'Medium',
+              data: fine[1],
+            },
+            {
+              name: 'Low',
+              data: fine[2],
+            },
+          ]"
+        ></apexchart>
+      </div>
+      <div
+        class="bg-white p-4 text-center rounded-xl w-full max-w-xl drop-shadow-md text-2xl"
+      >
+        Lump Transaction Overview
+        <apexchart
+          type="line"
+          :options="ApexOptions"
+          :series="[
+            {
+              name: 'High',
+              data: lump[0],
+            },
+            {
+              name: 'Medium',
+              data: lump[1],
+            },
+            {
+              name: 'Low',
+              data: lump[2],
+            },
+          ]"
+        ></apexchart>
+      </div>
+    </div>
+    <ol-map style="height: 40vh; width: 95vw" class="my-2">
       <ol-view :center="[78.9629, 20.5937]" :zoom="5" projection="EPSG:4326" />
       <ol-tile-layer>
         <ol-source-osm />
