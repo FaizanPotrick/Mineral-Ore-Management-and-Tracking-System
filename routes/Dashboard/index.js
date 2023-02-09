@@ -225,12 +225,48 @@ router.get("/api/dashboard/mine", async (req, res) => {
     {
       $project: {
         _id: 0,
-        fine_high: 1,
-        fine_medium: 1,
-        fine_low: 1,
-        lump_high: 1,
-        lump_medium: 1,
-        lump_low: 1,
+        fine_high: {
+          $map: {
+            input: "$fine_high",
+            as: "high",
+            in: "$$high.price",
+          },
+        },
+        fine_medium: {
+          $map: {
+            input: "$fine_medium",
+            as: "medium",
+            in: "$$medium.price",
+          },
+        },
+        fine_low: {
+          $map: {
+            input: "$fine_low",
+            as: "low",
+            in: "$$low.price",
+          },
+        },
+        lump_high: {
+          $map: {
+            input: "$lump_high",
+            as: "high",
+            in: "$$high.price",
+          },
+        },
+        lump_medium: {
+          $map: {
+            input: "$lump_medium",
+            as: "medium",
+            in: "$$medium.price",
+          },
+        },
+        lump_low: {
+          $map: {
+            input: "$lump_low",
+            as: "low",
+            in: "$$low.price",
+          },
+        },
         title: "$mine_name",
         cards: [
           {
