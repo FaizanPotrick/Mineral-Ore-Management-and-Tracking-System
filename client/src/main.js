@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import axios from "axios";
 import VueCookies from "vue-cookies";
 import OpenLayersMap from "vue3-openlayers";
+import VueApexCharts from "vue3-apexcharts";
 import "vue3-openlayers/dist/vue3-openlayers.css";
 import App from "./App.vue";
 
@@ -31,6 +32,7 @@ const PageAccess = (to) => {
 
 app.use(createPinia());
 app.use(OpenLayersMap);
+app.use(VueApexCharts);
 app.use(VueCookies);
 
 app.use(
