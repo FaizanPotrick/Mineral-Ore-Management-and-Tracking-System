@@ -29,19 +29,19 @@ get_suspicious();
         <tr>
           <td class="pr-6 py-1 font-bold whitespace-nowrap">Transaction Id:</td>
           <td class="py-1">
-            {{ suspicious[0].transaction_id && suspicious[1].transaction_id }}
+            {{ suspicious.map((sus) => sus.transaction_id)[0] }}
           </td>
         </tr>
         <tr>
           <td class="pr-6 py-1 font-bold whitespace-nowrap">Mine Id:</td>
           <td class="py-1">
-            {{ suspicious[0].mine_id && suspicious[1].mine_id }}
+            {{ suspicious.map((sus) => sus.mine_id)[0] }}
           </td>
         </tr>
         <tr>
           <td class="pr-6 py-1 font-bold whitespace-nowrap">Region Id:</td>
           <td class="py-1">
-            {{ suspicious[0].region_id && suspicious[1].region_id }}
+            {{ suspicious.map((sus) => sus.region_id)[0] }}
           </td>
         </tr>
       </table>

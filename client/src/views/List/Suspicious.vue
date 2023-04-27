@@ -34,15 +34,23 @@ det_data();
             <tr
               :key="transaction._id"
               v-for="transaction in suspicious"
-              class="text-center hover:bg-red-100/20 cursor-pointer"
+              class="text-center"
+              :class="{
+                'hover:bg-red-100/20 cursor-pointer':
+                  transaction.transaction_id,
+              }"
               @click="
-                router.push(
-                  `/dashboard/suspicious/${transaction.transaction_id}`
-                )
+                () => {
+                  if (transaction.transaction_id) {
+                    router.push(
+                      `/dashboard/suspicious/${transaction.transaction_id}`
+                    );
+                  }
+                }
               "
             >
               <td class="py-2">
-                {{ transaction.transaction_id }}
+                {{ transaction.transaction_id || "-" }}
               </td>
               <td class="py-2">{{ transaction.mine_id }}</td>
               <td class="py-2 capitalize">
