@@ -1,5 +1,5 @@
 
-# SIH-2022
+# Mineral Ore Management and Tracking System
 
 
 This web portal is developed to manage, monitor and restrict irregularities in mineral ore export. Producers have been known to misclassify one grade for another to pay a reduced royalty fee for that grade. State governments lose revenue as a result of this. Usage of QR for uniquely identifying a batch being transported helps granular level tracking of the iron ore. Our solution will be very effective as it will track the iron ore from the ores to the end points and would also reduce the loss incurred to the state government.
@@ -40,10 +40,10 @@ Steps to install and setup the app are demonstrated with following commands:
 
 #### Clone the repository
 ```bash
-  git clone https://github.com/FaizanPotrick/SIH-2022.git
+  git clone https://github.com/FaizanPotrick/Mineral-Ore-Management-and-Tracking-System.git
 ```
 ```bash
-  cd SIH-2022
+  cd Mineral-Ore-Management-and-Tracking-System
 ```
  
 #### Install npm packages
@@ -87,7 +87,7 @@ Don't forget to give the project a star! Thanks again!
 #### 1. Fork the repository.
 #### 2. Clone your forked repository to local machine.
 ```bash
-git clone https://github.com/FaizanPotrick/SIH-2022.git
+git clone https://github.com/FaizanPotrick/Mineral-Ore-Management-and-Tracking-System.git
 ```
 #### 3. Create a branch 
 ```bash
