@@ -110,10 +110,10 @@ git push -u origin branchname
 
 Distributed under the [MIT](https://choosealicense.com/licenses/mit/) License. See `LICENSE.md `for more information.
 
-## Acknowledgements
-
-
- - [Vue js](https://vuejs.org/)
- - [TailwindCSS](https://tailwindcss.com/)
- - [Node js](https://nodejs.org/en/)
- - [MongoDB](https://www.mongodb.com/)
+## Developed by
+- [Siddhant Vispute](https://github.com/skieer-ssv)
+- [Faizan Potrick](https://github.com/FaizanPotrick)
+- [Darshika Pongallu](https://github.com/darshikapongallu)
+- [Siddhesh Potdar](https://github.com/Siddhesh-Potdar)
+- [Preet Patel](https://github.com/Preet552001)
+- [Ruchita Sonawale](https://github.com/ruchi-115)
